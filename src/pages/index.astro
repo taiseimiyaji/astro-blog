@@ -1,10 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ReactCounter from '../components/ReactCounter/ReactCounter';
 import Header from '../components/Header/Header';
 import Sidebar from '../components/Sidebar/Sidebar';
-import Content from '../components/Content/Content';
-
+import '../styles/index.scss';
+import { getEntryBySlug } from 'astro:content';
 ---
 <html>
   <head>
@@ -14,8 +13,6 @@ import Content from '../components/Content/Content';
   <body>
       <main>
         <Header></Header>
-        <Content></Content>
-
       </main>
   </body>
 </html>
