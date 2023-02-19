@@ -1,0 +1,15 @@
+@import "/src/components/variables";
+
+.footer {
+    border-top: 1px solid $white;
+    padding: 1rem;
+    align-items: center;
+    display: flex;
+    .copyright {
+        order: 1;
+    }
+    .icons {
+        margin-left: auto;
+        order: 2;
+    }
+}
