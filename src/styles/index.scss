@@ -20,4 +20,15 @@ code {
 	margin: 0 auto;
 	max-width: 70rem;
 	width: 94vw;
+	.post {
+		overflow-wrap: normal;
+		overflow: auto;
+	}
+}
+a {
+	color: $white;
+	text-decoration: none;
+}
+img {
+	width: 100%;
 }

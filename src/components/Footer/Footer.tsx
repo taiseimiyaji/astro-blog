@@ -7,7 +7,7 @@ export default function Footer() {
             <div className="icons">
                 <span className="github">
                     <a href="https://github.com/taiseimiyaji" target="_blank">
-                        <img src="/dist/github-mark/github-mark-white.png" width="25" height="25"></img>
+                        <img src="/github-mark/github-mark-white.png" width="25" height="25"></img>
                     </a>
                 </span>
                 </div>

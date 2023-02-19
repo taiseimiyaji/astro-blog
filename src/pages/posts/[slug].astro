@@ -18,15 +18,20 @@ const { Content } = await entry.render();
 <html>
   <head>
     <title>{entry.data.title}</title>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   </head>
   <body>
-    <Header></Header>
-    <div class="content">
-      <div class="date">{getNowDateWithString(entry.data.createDate)}</div>
-      <h1>{entry.data.title}</h1>
-      <Content />
-    </div>
-    <Footer></Footer>
+    <main>
+      <Header></Header>
+      <div class="content">
+        <div class="date">{getNowDateWithString(entry.data.createDate)}</div>
+        <h1>{entry.data.title}</h1>
+        <div class="post">
+          <Content />
+        </div>
+      </div>
+      <Footer></Footer>
+    </main>
   </body>
 </html>

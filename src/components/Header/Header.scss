@@ -10,6 +10,9 @@ html {
     justify-content: space-around;
     border-bottom: 0.5px solid;
     &-link{
+        div {
+            color: $white;
+        }
         display: flex;
         justify-content: space-around;
         font-size: 1.5rem;

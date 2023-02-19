@@ -1,14 +1,9 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header/Header';
-import Sidebar from '../components/Sidebar/Sidebar';
 import '../styles/index.scss';
-import { getEntryBySlug } from 'astro:content';
 import Footer from '../components/Footer/Footer';
-import Card from '../components/Card/Card';
 import CardList from '../components/CardList/CardList';
 import { getCollection } from "astro:content";
-import type { article } from '../entities/article';
 import { postOrderByCreatedAt } from '../utils/sort';
 
 const blogEntries = await getCollection("blog");

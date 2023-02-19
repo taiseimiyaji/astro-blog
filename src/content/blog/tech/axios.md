@@ -127,7 +127,7 @@ console.log("この行は実行されます");
 
 非同期処理がいくつも連なる場合にコールバック関数を利用すると、入れ子が深くなりすぎて1つの関数が肥大化する傾向にあります。
 
-```JavaScript
+```javascript
 first(function(data) {
     console.log("最初に実行する処理");
     second(function(data) {

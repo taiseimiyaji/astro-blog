@@ -9,13 +9,11 @@
     flex-direction: column;
     padding: 2rem;
     gap: 1rem;
+    color: $white;
     .date {
     }
     .title {
         font-size: large;
+        overflow:inherit;
     }
-}
-a {
-    color: $white;
-    text-decoration: none;
 }
