@@ -3,10 +3,10 @@ import { getCollection } from "astro:content";
 import Footer from "../../components/Footer/Footer";
 import Header from '../../components/Header/Header';
 import '../../styles/index.scss';
+import { getNowDateWithString } from "../../utils/date";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
-  console.log(blogEntries);
   return blogEntries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
@@ -23,6 +23,7 @@ const { Content } = await entry.render();
   <body>
     <Header></Header>
     <div class="content">
+      <div class="date">{getNowDateWithString(entry.data.createDate)}</div>
       <h1>{entry.data.title}</h1>
       <Content />
     </div>

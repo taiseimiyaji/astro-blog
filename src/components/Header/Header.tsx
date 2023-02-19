@@ -5,7 +5,9 @@ export default function Header() {
         <div className="header">
             <div className="title">Lyricrime.com</div>
             <div className="header-link">
-                <div>Article</div>
+                <a href="/">
+                    <div> Blog</div>
+                </a>
                 <div>Activity</div>
                 <div>SNS</div>
             </div>

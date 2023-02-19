@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JavaScriptにおける非同期処理について</title>
+    <meta charset="UTF-8">
+  <link rel="stylesheet" href="/_astro/index.01c5abbd.css" /></head>
+  <body>
+    <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+    <div class="content">
+      <div class="date">2023/01/31</div>
+      <h1>JavaScriptにおける非同期処理について</h1>
+      <h2 id="はじめに">はじめに</h2>
+<p>今までの学習内容でフロントエンドにあまり触れてなかったので今回はJavaScriptについて改めて理解をしていこうと思います。<br>
+JavaScriptに対する個人的な理解度はある程度文法や言語思想は理解できているもののJavaScriptらしい部分や歴史的な部分、いわゆるその言語の特性を理解できているとは言えないレベルだなと感じているため、今回は非同期処理について改めて調査してみます。</p>
+<h2 id="同期処理と非同期処理">同期処理と非同期処理</h2>
+<p>多くのプログラミング言語には同期処理(sync)と非同期処理(async)の２つのコードの評価の仕方があります。
+特にJavaScriptにおいて非同期処理は重要な概念になります。</p>
+<h3 id="同期処理">同期処理</h3>
+<p>同期処理ではコードを順番に処理していき、ひとつの処理が終わるまで次の処理は行いません。<br>
+同期処理においては実行している処理はひとつだけになり、直感的な動作となります。<br>
+一方、同期的にブロックする処理が行われていた場合にはひとつの処理が終わるまで、次の処理へ進むことができないです。</p>
+<p>このときに特に問題となるのはブラウザ上でJavaScriptを動作させる場合です。<br>
+基本的にJavaScript派ブラウザのメインスレッド(UIスレッドとも呼ばれる)で実行されます。
+メインスレッドは表示の更新といったUIに関する処理も行っています。
+そのため、メインスレッドがJavaScriptの処理で専有されると、表示が更新されなくなり、見た目上フリーズしたようになります。</p>
+<h3 id="非同期処理">非同期処理</h3>
+<p>非同期処理はコードを順番に処理していきますが、ひとつの非同期処理が終わるのを待たずに次の処理を実行します。
+つまり、同時に実行される処理が複数存在します。<br>
+これによって解決される問題としては、コストが大きく異なる2つの処理を同期的に順次処理していく効率の悪さを解決できます。</p>
+<p>ここまでの非同期処理の説明だけを見ると、完全に別々の処理が同時進行しているように感じます。
+基本的にJavaScriptの基本的な非同期処理はメインスレッドで実行されています。
+<code>setTimeOut</code>メソッドなどを利用すれば並列処理ができるのではないかと感じますが、実際には<code>setTimeout</code>で指定された作業は一旦脇に置かれているだけで、メインスレッド上で順番に処理されています。</p>
+<p>例外としては<a href="https://developer.mozilla.org/ja/docs/Web/API/Web_Workers_API/Using_web_workers">Web Worker</a> APIを使用した場合などです。</p>
+<h2 id="スレッドとは">スレッドとは</h2>
+<p>非同期処理について理解を進める前に<code>スレッド</code>について理解しておく必要があります。<br>
+<code>スレッド</code>(thread)はプログラムが連続して順番に何かしらの処理が実行される流れのことです。<br>
+英語で「糸」という意味があり、一般的なプログラムはこのスレッド(糸)を複数合わせて一本の丈夫なひも(機能)を実現しているとイメージするとわかりやすいかもしれません。<br>
+JavaScriptは基本的にシングルスレッドである、というのはこのスレッドが基本的に1つしかないということです。</p>
+<h3 id="javascriptにおけるメインスレッド">JavaScriptにおけるメインスレッド</h3>
+<p>ブラウザにおいて、JavaScriptは以下の2つのしごとをメインスレッドで行っています。</p>
+<ul>
+<li>JavaScriptの処理実行</li>
+<li>画面へのレンダリング(描写)処理</li>
+</ul>
+<p>JavaScriptでは一部の例外を除き、非同期処理は**並行処理(concurrent)**として扱われます。
+並行処理とは、処理を一定の単位ごとに分けて処理を切り替えながら実行することです。
+非同期処理を実装すると、メインスレッドに並んでいる処理の流れから一旦外れて次の処理に実行を譲るイメージです。</p>
+<p>一方、先程例外の例に上げた<code>Web Worker</code>におけるは<strong>並列処理</strong>です。
+並列処理とは、排他的に複数の処理を同時に実行することです。
+Web Workerではメインスレッドとは異なるWorkerスレッドで実行されるため、Workerスレッド内で同期的にブロックする処理を実行してもメインスレッドは影響を受けにくくなります。
+これによって重たい処理をWorkerスレッドに移動できます。</p>
+<p>このように、非同期処理をひとくくりにはできないですが、基本的には<code>JavaScriptはシングルスレッドで実行される</code>という性質を知っておくことが大事です。つまり、ここから先紹介する非同期処理の仕組みはほとんど<strong>並行処理</strong>となります。</p>
+<h2 id="非同期処理と例外処理">非同期処理と例外処理</h2>
+<h3 id="javascriptにおける例外処理同期処理">JavaScriptにおける例外処理(同期処理)</h3>
+<p>JavaScriptの場合、同期処理では<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/try...catch">try…catch</a>構文を使用することで同期的に発生した例外がキャッチできます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">Error</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"同期的なエラー"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">} </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (error) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"同期的エラーをキャッチ"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"><span style="color: #C9D1D9">console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"この行は実行されます"</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<h3 id="javascriptにおける例外処理非同期処理">JavaScriptにおける例外処理(非同期処理)</h3>
+<p>非同期処理ではtry…catchによる例外のキャッチができません。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #D2A8FF">setTimeout</span><span style="color: #C9D1D9">(() </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">Error</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"非同期的なエラー"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }, </span><span style="color: #79C0FF">10</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">} </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (error) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"実行されない"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"><span style="color: #C9D1D9">console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"この行は実行されます"</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>tryブロックはそのブロック内で発生した例外をキャッチする構文です。
+しかし、<code>setTimeout</code>関数で登録されたコールバック関数が実際に実行されて例外を投げるのは、すべての同期処理が終わったあととなります。
+つまり、tryブロックのマークしている範囲外で例外が発生するため、catchできないという仕組みです。</p>
+<p>そのため、コールバック関数内で同期的なエラーとしてキャッチします。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">// 非同期処理の外</span></span>
+<span class="line"><span style="color: #D2A8FF">setTimeout</span><span style="color: #C9D1D9">(() </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// 非同期処理の中</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">Error</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"エラー"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (error) {</span></span>
+<span class="line"><span style="color: #C9D1D9">        console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"エラーをキャッチできる"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}, </span><span style="color: #79C0FF">10</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"この行は実行されます"</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>上記のようにコールバック関数内でエラーのキャッチは可能ですが、非同期処理の外からは非同期処理の中で例外が発生したかがわかりません。
+非同期処理の外から、例外が発生したことを知るためには非同期処理の外へ伝える方法が必要です。</p>
+<p>また、JavaScriptでのHTTPリクエストやファイルの読み書きといった処理も非同期処理のAPIとして提供されているため、例外の扱い方は重要になります。</p>
+<p>非同期処理で発生した例外の扱い方には様々なパターンがありますが、主流な<code>Promise</code>について見ていきます。</p>
+<h2 id="promise">Promise</h2>
+<p>非同期処理がいくつも連なる場合にコールバック関数を利用すると、入れ子が深くなりすぎて1つの関数が肥大化する傾向にあります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">first(function(data) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    console.log("最初に実行する処理");</span></span>
+<span class="line"><span style="color: #c9d1d9">    second(function(data) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        console.log("first関数が成功した場合に実行する処理");</span></span>
+<span class="line"><span style="color: #c9d1d9">        third(function(data) {</span></span>
+<span class="line"><span style="color: #c9d1d9">            console.log("second関数が成功したときに実行する処理");</span></span>
+<span class="line"><span style="color: #c9d1d9">        });</span></span>
+<span class="line"><span style="color: #c9d1d9">    });</span></span>
+<span class="line"><span style="color: #c9d1d9">});</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<p>このような問題を解決するのが<code>Promise</code>オブジェクトの役割です。</p>
+<p>これまで、jQueryやAngularJSには似たような機能を提供してきましたが、ES2015でPromiseオブジェクトが標準化されたことで外部ライブラリに頼る必要がなくなりました。</p>
+<p>非同期処理はPromiseのインスタンスを返し、そのPromiseには状態変化をした際に呼び出されるコールバック関数を登録できます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">asyncProcess</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">value</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Promise</span><span style="color: #C9D1D9">((</span><span style="color: #FFA657">resolve</span><span style="color: #C9D1D9">, </span><span style="color: #FFA657">reject</span><span style="color: #C9D1D9">) </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #8B949E">// ここで非同期処理を行う</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #D2A8FF">setTimeout</span><span style="color: #C9D1D9">(() </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">if</span><span style="color: #C9D1D9"> (value) {</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #8B949E">// 成功した場合はresolveを呼ぶ</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #D2A8FF">resolve</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">`入力値: ${</span><span style="color: #C9D1D9">value</span><span style="color: #A5D6FF">}`</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">            } </span><span style="color: #FF7B72">else</span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #8B949E">// 失敗した場合はrejectを呼ぶ</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #D2A8FF">reject</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'入力は空です'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">            }</span></span>
+<span class="line"><span style="color: #C9D1D9">        }, </span><span style="color: #79C0FF">500</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    });</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D2A8FF">asyncProcess</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'input'</span><span style="color: #C9D1D9">).</span><span style="color: #D2A8FF">then</span><span style="color: #C9D1D9">(() </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// 非同期処理が成功したときの処理</span></span>
+<span class="line"><span style="color: #C9D1D9">}).</span><span style="color: #D2A8FF">catch</span><span style="color: #C9D1D9">(() </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// 非同期処理が失敗したときの処理</span></span>
+<span class="line"><span style="color: #C9D1D9">})</span></span></code></pre>
+<p>asyncProcess関数は<code>Promise</code>オブジェクトのインスタンスを返しています。
+PromiseインスタンスはasyncProcess関数内で行われた非同期処理が成功したか失敗したかの状態を表すオブジェクトです。<br>
+また、この<code>Promise</code>インスタンス二台した<code>then</code>や<code>catch</code>メソッドで成功時や失敗時に呼び出される処理をコールバック関数として登録することができます。</p>
+<p>書き方だけを見るとややこしく見えますが、Promiseは非同期処理の状態や結果を監視するためのオブジェククトです。<br>
+同期的な関数では関数を実行するとすぐに結果がわかりますが、非同期な関数では関数を実行してもすぐには結果がわからないため、非同期処理の状態をラップしたオブジェクトを返し、結果が決まったら登録しておいたコールバック関数へ結果を渡す仕組みになっています。</p>
+<h3 id="具体的にpromiseインスタンスを理解する">具体的にPromiseインスタンスを理解する</h3>
+<p>上記のコードで基本的な使用方法は把握できるかと思いますが今回はPromiseについてもう少し丁寧に理解してみます。</p>
+<p>まずはPromiseインスタンスの作成します。<br>
+thenメソッドでPromiseがresolve、rejectしたときに呼ばれるコールバック関数を登録します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">promise</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Promise</span><span style="color: #C9D1D9">((</span><span style="color: #FFA657">resolve</span><span style="color: #C9D1D9">, </span><span style="color: #FFA657">reject</span><span style="color: #C9D1D9">) </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// 非同期の処理が成功したときはresolve()を呼ぶ</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// 非同期の処理が失敗したときはreject()を呼ぶ</span></span>
+<span class="line"><span style="color: #C9D1D9">});</span></span>
+<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">onFulfilled</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> () </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"resolve時に実行される"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">};</span></span>
+<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">onRejected</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> () </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"reject時に実行される"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">promise.</span><span style="color: #D2A8FF">then</span><span style="color: #C9D1D9">(onFulfilled, onRejected);</span></span></code></pre>
+<h3 id="promiseprototypethenとpromiseprototypecatch">Promise.prototype.thenとPromise.prototype.catch</h3>
+<p>Promiseのthenメソッドは成功(<code>onFulfilled</code>)と失敗(<code>onRejected</code>)の２つのコールバック関数を受け取りますが、どちらの引数も省略できます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"></span>
+<span class="line"><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">Process</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">path</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Promise</span><span style="color: #C9D1D9">((</span><span style="color: #FFA657">resolve</span><span style="color: #C9D1D9">, </span><span style="color: #FFA657">reject</span><span style="color: #C9D1D9">) </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #D2A8FF">setTimeout</span><span style="color: #C9D1D9">(() </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">if</span><span style="color: #C9D1D9"> (path.</span><span style="color: #D2A8FF">startsWith</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"/success"</span><span style="color: #C9D1D9">)) {</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #D2A8FF">resolve</span><span style="color: #C9D1D9">({ body: </span><span style="color: #A5D6FF">`Response body of ${</span><span style="color: #C9D1D9">path</span><span style="color: #A5D6FF">}`</span><span style="color: #C9D1D9"> });</span></span>
+<span class="line"><span style="color: #C9D1D9">            } </span><span style="color: #FF7B72">else</span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #D2A8FF">reject</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">Error</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"Not Found"</span><span style="color: #C9D1D9">));</span></span>
+<span class="line"><span style="color: #C9D1D9">            }</span></span>
+<span class="line"><span style="color: #C9D1D9">        }, </span><span style="color: #79C0FF">1000</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> Math.</span><span style="color: #D2A8FF">random</span><span style="color: #C9D1D9">());</span></span>
+<span class="line"><span style="color: #C9D1D9">    });</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #8B949E">// thenメソッドで成功時と失敗時のコールバック関数を登録</span></span>
+<span class="line"><span style="color: #D2A8FF">Process</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"/success/data"</span><span style="color: #C9D1D9">).</span><span style="color: #D2A8FF">then</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">onfulfilled</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">response</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(response);</span></span>
+<span class="line"><span style="color: #C9D1D9">}, </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">onRejected</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">error</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"実行されない"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D2A8FF">Process</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"/failure/data"</span><span style="color: #C9D1D9">).</span><span style="color: #D2A8FF">then</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">onFulfilled</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">response</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"実行されない"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">}, </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">onRejected</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">error</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">error</span><span style="color: #C9D1D9">(error); </span><span style="color: #8B949E">// "Not Found"</span></span>
+<span class="line"><span style="color: #C9D1D9">});</span></span>
+<span class="line"></span></code></pre>
+<p>ここで、失敗時のコールバック関数のみ登録する場合を考えます。
+このときcatchメソッドは内部的にthenメソッドを呼び出しています。つまり、catchはthenの失敗時のみを記載するためのエイリアスとして動作します。</p>
+<p>参考:<br>
+<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch">https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch</a></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">errorProcess</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">message</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Promise</span><span style="color: #C9D1D9">((</span><span style="color: #FFA657">resolve</span><span style="color: #C9D1D9">, </span><span style="color: #FFA657">reject</span><span style="color: #C9D1D9">) </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #D2A8FF">reject</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">Error</span><span style="color: #C9D1D9">(message));</span></span>
+<span class="line"><span style="color: #C9D1D9">    });</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #8B949E">// 非推奨。thenで失敗時のコールバック関数のみを渡したい場合は第一引数にはundefinedを渡す。</span></span>
+<span class="line"><span style="color: #D2A8FF">errorProcess</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"thenでエラーハンドリング"</span><span style="color: #C9D1D9">).</span><span style="color: #D2A8FF">then</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">undefined</span><span style="color: #C9D1D9">, (</span><span style="color: #FFA657">error</span><span style="color: #C9D1D9">) </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(error.message);</span></span>
+<span class="line"><span style="color: #C9D1D9">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #8B949E">// 推奨</span></span>
+<span class="line"><span style="color: #D2A8FF">errorProcess</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"catchでエラーハンドリング"</span><span style="color: #C9D1D9">).</span><span style="color: #D2A8FF">catch</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">error</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(error.message);</span></span>
+<span class="line"><span style="color: #C9D1D9">});</span></span></code></pre>
+<p>resolveとrejectの使い方がわかったところで重要な以下の２点を覚えておいて次に進みます。</p>
+<ul>
+<li>Promise内のresolveメソッドが実行されるまで、then()の中身は実行されない</li>
+<li>Promise内のrejectメソッドが実行されるまで、catch()の中身は実行されない</li>
+</ul>
+<h3 id="promiseコンストラクタ内の例外処理">Promiseコンストラクタ内の例外処理</h3>
+<p>Promiseではコンストラクタの処理で例外が発生した<code>Promise</code>インスタンスは<code>reject</code>関数を呼び出したのと同じように処理されます。<br>
+try…catch構文を使用しなくても自動的に例外がキャッチされます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">throwPromise</span><span style="color: #C9D1D9">() {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Promise</span><span style="color: #C9D1D9">((</span><span style="color: #FFA657">resolve</span><span style="color: #C9D1D9">, </span><span style="color: #FFA657">reject</span><span style="color: #C9D1D9">) </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #8B949E">// Promiseコンストラクタの中で発生した例外は自動的にキャッチされreject関数が呼ばれる</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">Error</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"例外発生"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    });</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D2A8FF">throwPromise</span><span style="color: #C9D1D9">().</span><span style="color: #D2A8FF">catch</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">error</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(error.message);</span></span>
+<span class="line"><span style="color: #C9D1D9">});</span></span></code></pre>
+<h3 id="promiseの状態について">Promiseの状態について</h3>
+<p>Promiseインスタンスには以下の3つの状態が存在します。</p>
+<ul>
+<li>
+<p>Fulfilled<br>
+resolve(成功)した時の状態。<code>onFulfilled</code>メソッドが呼ばれる</p>
+</li>
+<li>
+<p>Rejected<br>
+reject(失敗)または例外が発生したときの状態。<code>onRejected</code>が呼ばれる。</p>
+</li>
+<li>
+<p>Pending<br>
+FulfilledまたはRejectedではない状態。インスタンスを作成したときの初期状態。</p>
+</li>
+</ul>
+<p>これらは内部的な状態なのでこの状態を直接扱うことはできませんが、Promiseについて理解するのに役立ちます。</p>
+<p><code>Promise</code>インスタンスは作成時に<code>Pending</code>状態になり、処理の結果によって<code>Fulfilled</code>または<code>Rejected</code>に変化するとそれ以降変化しなくなります。</p>
+<p>つまり、Promiseコンストラクタ内で一度resolveメソッドを呼び出すと、その後、rejectやもう一度resolveを呼び出したとしてもコールバック関数は1度しか呼び出されないことに注意する必要があります。</p>
+<p>この１度きりのコールバック関数を登録するのが、<code>then</code>や<code>catch</code>といったメソッドです。</p>
+<h3 id="非同期処理の連結">非同期処理の連結</h3>
+<p>ここまでPromiseオブジェクトについて説明してきました。
+ここからはPromiseオブジェクトのありがたみをイメージできるケースを考えます。</p>
+<p>単一の非同期処理の場合、Promiseオブジェクトを介する分、記述は冗長になります。
+Promiseオブジェクトが真価を発揮するのは、複数の非同期処理を連結するような場合です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">// 初回関数呼び出し</span></span>
+<span class="line"><span style="color: #D2A8FF">asyncProcess</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'初回'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">.</span><span style="color: #D2A8FF">then</span><span style="color: #C9D1D9">(</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FFA657">response</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(response);</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #8B949E">// 初回の関数呼び出しに成功した場合、2回目を実行</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">asyncProcess</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'２回目'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">.</span><span style="color: #D2A8FF">then</span><span style="color: #C9D1D9">(</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FFA657">response</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(response);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FFA657">error</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">`エラー: ${</span><span style="color: #C9D1D9">error</span><span style="color: #A5D6FF">}`</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre>
+<p>この仕組みは、thenやcatchといったメソッドが新しい<code>Promise</code>オブジェクトを返すことで成り立っています。
+これによって複数のthenメソッドをドット演算子で列記することができ、非同期処理を同期処理であるかのように書けます。(入れ子を深くせずに書けるという意味です)</p>
+<h3 id="非同期処理の並列実行">非同期処理の並列実行</h3>
+<p>非同期処理の直列実行の次は、並列実行のメソッドについて見ていきます。</p>
+<ul>
+<li><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise/all">Promise.all</a>メソッド<br>
+Promise.allメソッドは複数の非同期処理を並列に実行し、そのすべてが成功した場合に処理を実行します。</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #79C0FF">Promise</span><span style="color: #C9D1D9">.</span><span style="color: #D2A8FF">all</span><span style="color: #C9D1D9">([</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #D2A8FF">asyncProcess</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'1回目'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #D2A8FF">asyncProcess</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'2回目'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #D2A8FF">asyncProcess</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'3回目'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">]).</span><span style="color: #D2A8FF">then</span><span style="color: #C9D1D9">(</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FFA657">response</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(response);</span></span>
+<span class="line"><span style="color: #C9D1D9">    },</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FFA657">error</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> {</span></span>
+<span class="line"><span style="color: #C9D1D9">        console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">`エラー: ${</span><span style="color: #C9D1D9">error</span><span style="color: #A5D6FF">}`</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>Promise.allでは、配列のかたちで渡された複数のPromiseオブジェクトがすべてresolveした場合にだけthenメソッドの成功時コールバック関数を実行します。
+その際の引数(response)にはすべてのPromiseから渡された結果値が配列として渡されます。</p>
+<p>Promiseオブジェクトのいずれかがreject(失敗)した場合には失敗コールバックが呼び出されます。</p>
+<ul>
+<li><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise/race">Promise.race</a>メソッド<br>
+Promise.raceメソッドでは並列して実行した非同期処理のいずれか1つが最初に完了したところで成功時コールバック関数を実行します。
+例えば、複数のデータベースレプリケーションに対して一斉にクエリを投げて最初に応答があったものを使用する、といった使い方ができます。
+関数の命名通り、レースです。</li>
+</ul>
+<h2 id="参考">参考</h2>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/async_function">https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/async_function</a></p>
+<p><a href="https://jsprimer.net/basic/async/">https://jsprimer.net/basic/async/</a></p>
+<p><a href="https://www.amazon.co.jp/%E6%94%B9%E8%A8%82%E6%96%B0%E7%89%88JavaScript%E6%9C%AC%E6%A0%BC%E5%85%A5%E9%96%80-%E3%83%A2%E3%83%80%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB%E3%81%AB%E3%82%88%E3%82%8B%E5%9F%BA%E7%A4%8E%E3%81%8B%E3%82%89%E7%8F%BE%E5%A0%B4%E3%81%A7%E3%81%AE%E5%BF%9C%E7%94%A8%E3%81%BE%E3%81%A7-%E5%B1%B1%E7%94%B0-%E7%A5%A5%E5%AF%9B/dp/477418411X">https://www.amazon.co.jp/%E6%94%B9%E8%A8%82%E6%96%B0%E7%89%88JavaScript%E6%9C%AC%E6%A0%BC%E5%85%A5%E9%96%80-%E3%83%A2%E3%83%80%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB%E3%81%AB%E3%82%88%E3%82%8B%E5%9F%BA%E7%A4%8E%E3%81%8B%E3%82%89%E7%8F%BE%E5%A0%B4%E3%81%A7%E3%81%AE%E5%BF%9C%E7%94%A8%E3%81%BE%E3%81%A7-%E5%B1%B1%E7%94%B0-%E7%A5%A5%E5%AF%9B/dp/477418411X</a></p>
+<p><a href="https://qiita.com/ryosuketter/items/dd467f827c1b93a74d76">https://qiita.com/ryosuketter/items/dd467f827c1b93a74d76</a></p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>非同期処理にはもともとコールバック関数が使用されていたが、ネストの深さの問題や書きやすさから、ES2015以降はPromiseオブジェクトを使用する方法が主流。</li>
+<li>Promiseには内部的に3つの状態があり、1度状態変化した後は変化しない。</li>
+<li>Promiseのthenメソッドやcatchメソッドは新しいPromiseオブジェクトを返すため、thenやcatchメソッドをドット演算子でチェーンすることができ、例外処理がシンプルに書ける。</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>今回はJavaScriptにおける重要な仕組みである非同期処理について調べてみました。<br>
+個人的にJavaScriptはなにか作りたいときに都度調べるという方法で勉強してきましたが、調べて直感的に理解できなかったのが今回調査した非同期処理でした。<br>
+知らない技術を調べる際にはその技術が解決する問題を先に知っておきどんな<strong>つらみ</strong>を解消するのかを意識することでより深い理解につながると思っています。<br>
+また今回学んだPromiseオブジェクトを利用して個人開発のほうでなにか作ってみたいと思います。</p>
+    </div>
+    <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/dist/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+  </body></html>
