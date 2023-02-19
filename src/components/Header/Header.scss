@@ -8,19 +8,21 @@ html {
 .header {
     color: $white;
     justify-content: space-around;
+    border-bottom: 0.5px solid;
     &-link{
         display: flex;
         justify-content: space-around;
         font-size: 1.5rem;
-        border-top: 0.5px solid;
-        border-bottom: 0.5px solid;
         padding: 0.5rem;
         border-color: $white;
+        margin: 0 auto;
+	    max-width: 70rem;
+	    width: 94vw;
     }
     .title{
+        border-bottom: 0.5px solid;
         text-align: center;
         font-weight: 700;
-        margin: 0;
         padding: 2rem;
         font-size: 2.5rem;
     }

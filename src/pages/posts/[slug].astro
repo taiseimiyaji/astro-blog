@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import Footer from "../../components/Footer/Footer";
 import Header from '../../components/Header/Header';
 import '../../styles/index.scss';
 
@@ -25,5 +26,6 @@ const { Content } = await entry.render();
       <h1>{entry.data.title}</h1>
       <Content />
     </div>
+    <Footer></Footer>
   </body>
 </html>
