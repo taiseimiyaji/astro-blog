@@ -2,14 +2,17 @@
 <html>
   <head>
     <title>JavaScriptにおける非同期処理について</title>
-    <meta charset="UTF-8">
-  <link rel="stylesheet" href="/_astro/index.01c5abbd.css" /></head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.93e70d08.css" /></head>
   <body>
-    <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
-    <div class="content">
-      <div class="date">2023/01/31</div>
-      <h1>JavaScriptにおける非同期処理について</h1>
-      <h2 id="はじめに">はじめに</h2>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2023/01/31</div>
+        <h1>JavaScriptにおける非同期処理について</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
 <p>今までの学習内容でフロントエンドにあまり触れてなかったので今回はJavaScriptについて改めて理解をしていこうと思います。<br>
 JavaScriptに対する個人的な理解度はある程度文法や言語思想は理解できているもののJavaScriptらしい部分や歴史的な部分、いわゆるその言語の特性を理解できているとは言えないレベルだなと感じているため、今回は非同期処理について改めて調査してみます。</p>
 <h2 id="同期処理と非同期処理">同期処理と非同期処理</h2>
@@ -89,16 +92,16 @@ Web Workerではメインスレッドとは異なるWorkerスレッドで実行�
 <p>非同期処理で発生した例外の扱い方には様々なパターンがありますが、主流な<code>Promise</code>について見ていきます。</p>
 <h2 id="promise">Promise</h2>
 <p>非同期処理がいくつも連なる場合にコールバック関数を利用すると、入れ子が深くなりすぎて1つの関数が肥大化する傾向にあります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">first(function(data) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    console.log("最初に実行する処理");</span></span>
-<span class="line"><span style="color: #c9d1d9">    second(function(data) {</span></span>
-<span class="line"><span style="color: #c9d1d9">        console.log("first関数が成功した場合に実行する処理");</span></span>
-<span class="line"><span style="color: #c9d1d9">        third(function(data) {</span></span>
-<span class="line"><span style="color: #c9d1d9">            console.log("second関数が成功したときに実行する処理");</span></span>
-<span class="line"><span style="color: #c9d1d9">        });</span></span>
-<span class="line"><span style="color: #c9d1d9">    });</span></span>
-<span class="line"><span style="color: #c9d1d9">});</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #D2A8FF">first</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">data</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"最初に実行する処理"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #D2A8FF">second</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">data</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">        console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"first関数が成功した場合に実行する処理"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #D2A8FF">third</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9">(</span><span style="color: #FFA657">data</span><span style="color: #C9D1D9">) {</span></span>
+<span class="line"><span style="color: #C9D1D9">            console.</span><span style="color: #D2A8FF">log</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"second関数が成功したときに実行する処理"</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">        });</span></span>
+<span class="line"><span style="color: #C9D1D9">    });</span></span>
+<span class="line"><span style="color: #C9D1D9">});</span></span>
+<span class="line"></span></code></pre>
 <p>このような問題を解決するのが<code>Promise</code>オブジェクトの役割です。</p>
 <p>これまで、jQueryやAngularJSには似たような機能を提供してきましたが、ES2015でPromiseオブジェクトが標準化されたことで外部ライブラリに頼る必要がなくなりました。</p>
 <p>非同期処理はPromiseのインスタンスを返し、そのPromiseには状態変化をした際に呼び出されるコールバック関数を登録できます。</p>
@@ -297,6 +300,8 @@ Promise.raceメソッドでは並列して実行した非同期処理のいず�
 個人的にJavaScriptはなにか作りたいときに都度調べるという方法で勉強してきましたが、調べて直感的に理解できなかったのが今回調査した非同期処理でした。<br>
 知らない技術を調べる際にはその技術が解決する問題を先に知っておきどんな<strong>つらみ</strong>を解消するのかを意識することでより深い理解につながると思っています。<br>
 また今回学んだPromiseオブジェクトを利用して個人開発のほうでなにか作ってみたいと思います。</p>
-    </div>
-    <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/dist/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
   </body></html>
