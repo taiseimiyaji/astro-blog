@@ -10,10 +10,11 @@ const blogEntries = await(await getCollection("blog")).filter((entry) => !entry.
 const posts = postOrderByCreatedAt(blogEntries);
 
 ---
-<html>
+<html lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Lyricrime.com</title>
   </head>
   <body>
       <main>

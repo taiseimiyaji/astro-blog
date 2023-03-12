@@ -15,11 +15,12 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
-<html>
+<html lang="ja">
   <head>
     <title>{entry.data.title}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content={entry.body.substr(0, 120)} />
   </head>
   <body>
     <main>

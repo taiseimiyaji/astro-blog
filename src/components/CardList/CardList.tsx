@@ -10,7 +10,7 @@ export default function CardList(content: any) {
         <div className="card-list">
             {posts.map((post: any) => {
                 return (
-                    <div key={post.slug} role="listitem">
+                    <div key={post.slug}>
                         <Card content={post} />
                     </div>
                 )
