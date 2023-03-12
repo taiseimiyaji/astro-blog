@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TypeScriptの型について</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2023/01/29</div>
+        <h1>TypeScriptの型について</h1>
+        <div class="post">
+          <h2 id="typescriptの型付け">TypeScriptの型付け</h2>
+<p>TypeScriptはJavaScriptに対して型を付与するという思想で仕様が定められています。<br>
+TypeScriptでは型を付与する方法として、様々な方法が用意されていますが、どこまで利用するかは費用対効果を考えながら行う必要があります。</p>
+<h2 id="any型-最もゆるい型付け">any型 最もゆるい型付け</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">function example(args: any){</span></span>
+<span class="line"><span style="color: #c9d1d9">    // argsにhogeが存在するかのチェックはしないのでコンパイルエラーとはならない</span></span>
+<span class="line"><span style="color: #c9d1d9">    console.log(args.hoge);</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>any型を使った場合、TypeScriptの型チェックの恩恵を受けることができません。<br>
+any型は型チェックを無効化する型です。any型の変数になにかを代入することや、any型の値を他の型の変数に代入することに対してもコンパイルエラーは発生しません。<br>
+JavaScriptからの移行時等に一時的に利用するなど以外は原則使用しないようにするべきです。</p>
+<h2 id="unknown型">unknown型</h2>
+<p>unknown型はany型と似ています。<br>
+「型安全なany型」と呼ばれ、<code>何でも入れられる型</code>です。<br>
+unknown型にはどのようなデータもチェックなしに入れる事ができます。<br>
+any型と違う点は変数を利用する場合に型アサーションを使ってチェックを行わないとエラーになる点です。</p>
+<p>any型はどのような型の変数にも代入できますが、unknown型の値は具体的な型へ代入できません。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">const value: any = 10;</span></span>
+<span class="line"><span style="color: #c9d1d9">const int: number = value;</span></span>
+<span class="line"><span style="color: #c9d1d9">const bool: boolean = value;</span></span></code></pre>
+<p>また、ジェネリクスを使ったクラスや関数のうち、自動で型推論で設定できなかったものが<code>unknown</code>となります。<br>
+この型変数の<code>unknown</code>に関してはエラーチェックなどが行われることがなく、<code>any</code>のように振る舞います。</p>
+<p>unknownの用途としてはany型の値をより安全に扱うことです。<code>unknown</code>に対して許可される操作は限定的です。<br>
+例えば、ピリオドを使用してメンバーアクセスをしたり、メソッド呼び出しをしようとするとコンパイルエラーとなります。<br>
+any型を扱う場合は一旦unknown型にしておくことで存在しないプロパティへのアクセスにコンパイル時に気づきやすくなります。</p>
+<ul>
+<li>unknownと型の絞り込み</li>
+</ul>
+<p>unknownの値を実用的に使うためには型を絞り込む必要があります。<br>
+型の絞り込みには<code>typeof</code>や<code>instanceof</code>などを条件式に含んだif文やswitch文を使います。
+これは<strong>型ガード</strong>といい、それ以降の処理では絞り込まれた型として扱う事ができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">function useUnknown(value: unknown) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    if (typeof value === "string") {</span></span>
+<span class="line"><span style="color: #c9d1d9">        // この時点でvalはstring型になる</span></span>
+<span class="line"><span style="color: #c9d1d9">        console.log(value.toUpperCase());</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<h2 id="ユニオン型とインターセクション型">ユニオン型とインターセクション型</h2>
+<p>日本語でいう「または」や「かつ」を表現する型です。</p>
+<ul>
+<li>ユニオン型</li>
+</ul>
+<p>「型Tまたは型U」のような表現ができる型です。<br>
+「T | U」のように書きます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">type Animal = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    species: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">type Human = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    name: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">type User = Animal | Human;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const tama: User = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    species: "calico"</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const you: User = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    name: "Your Name"</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<p>「ユーザーには動物と人間の2種類がある」という場合、つまりユーザーは動物または人間である」という場合を想定しています。<br>
+下記のように、コンパイラによる型チェックを受けられます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">// エラーが発生する</span></span>
+<span class="line"><span style="color: #c9d1d9">const book: User = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    title: "Software Design"</span></span>
+<span class="line"><span style="color: #c9d1d9">};</span></span></code></pre>
+<p>User型を持つことだけがわかっている場合は実際にはそれがAnimalなのかHumanなのか不明です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">function getName(user: User): string {</span></span>
+<span class="line"><span style="color: #c9d1d9">    return user.name;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>userはAnimalかもしれないしHumanかもしれません。Animalにはnameというプロパティが存在しないため、userがnameを持たない可能性がある場合はコンパイルエラーになります。<br>
+つまり、上記で作成したUser型は全くプロパティアクセスができません。</p>
+<p>反対に、必ず存在するプロパティの場合は下記のようになります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">type Animal = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    species: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">    age: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">type Human = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    name: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">    age: number;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">type User = Animal | Human;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const tama: User = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    species: "calico",</span></span>
+<span class="line"><span style="color: #c9d1d9">    age: "永遠の17歳"</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const you: User = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    name: "Your Name",</span></span>
+<span class="line"><span style="color: #c9d1d9">    age: 25</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">function showAge(user: User) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    const age = user.age;</span></span>
+<span class="line"><span style="color: #c9d1d9">    console.log(age); // ageは string | number型となる</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>ユニオン型に対するプロパティアクセスが可能である場合、その結果はユニオンの構成要素それぞれのプロパティの型を集めたユニオン型となります。</p>
+<ul>
+<li>インターセクション型</li>
+</ul>
+<p>「T &#x26; U」のように書く、「T型かつU型」を意味する型です。<code>交差型</code>とも呼ばれます。<br>
+例えば、下記のように「HumanはAnimalの一種である」ことを表現します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">type Animal = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    species: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">    age: number;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">type Human = Animal &#x26; {</span></span>
+<span class="line"><span style="color: #c9d1d9">    name: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const tama: Animal = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    species: "calico",</span></span>
+<span class="line"><span style="color: #c9d1d9">    age: 3</span></span>
+<span class="line"><span style="color: #c9d1d9">};</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const you: Human = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    species: "Homo sapiens",</span></span>
+<span class="line"><span style="color: #c9d1d9">    age: 26,</span></span>
+<span class="line"><span style="color: #c9d1d9">    name: "Your Name"</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>Human型は、Animal型を拡張してstring型のnameプロパティを持ちます。<br>
+つまり、下記と同様になります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">type Human = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    species: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">    age: number;</span></span>
+<span class="line"><span style="color: #c9d1d9">    name: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>また、&#x26;で作られた型はそれぞれの構成要素の型の部分型となります。<br>
+<code>HumanはAnimalの部分型</code>となります。</p>
+<h2 id="ユニオン型とインターセクション型の関係">ユニオン型とインターセクション型の関係</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">type Human = {name: string};</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">type Animal = {species: string};</span></span>
+<span class="line"><span style="color: #c9d1d9">function getName(human; Human) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    return human.name;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9">function getSpecies(animal: Animal) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    return animal.species;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9">const mysteryFunc = Math.random() &#x3C; 0.5 ? getName : getSpecies;</span></span></code></pre>
+<p>変数mysteryFuncにはgetNameが入るかもしれないしgetSpeciesが入るかもしれません。<br>
+この場合、mysteryFuncは以下の様な型になります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">((human: Human) => string | ((animal: Animal) => string))</span></span></code></pre>
+<p>mysteryFuncを関数として呼び出したい場合、Human型を受け取るとは限らないのでHumanを渡すことはできないし、その一方でAnimalを受け取るとは限らないのでAnimalを渡すこともできません。<br>
+ユニオン型を持つ関数はどんな引数を受け取るのか不明なので扱いが困難です。</p>
+<p>ここでmysteryFuncを呼び出す方法は、Human &#x26; Animal型を渡すことです。<br>
+つまり、ユニオン型とインターセクション型は全くの無関係ではなく、ユニオン型からインターセクション型が生み出される場合もあります。<br>
+「AND」と「OR」は論理学的にも表裏一体の関係なので不自然ではないです。</p>
+<p>異なるプリミティブ型同士でインターセクション型を作った場合は<code>never型</code>が出現します。</p>
+<h2 id="never型">never型</h2>
+<p><code>unknown</code>型の真逆の存在で、「当てはまる値が存在しない」という性質を持ちます。<br>
+<code>never</code>型にはnever型以外何も代入できません。<br>
+正規の手段でnever型の値を得ることは不可能であり、言い換えるとnever型の値が存在しているコードは実際には実行されません。<br>
+ただし、never型はどんな型にも代入することができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">const nev = 1 as never;</span></span>
+<span class="line"><span style="color: #c9d1d9">const a: string = nev;</span></span>
+<span class="line"><span style="color: #c9d1d9">const b: number = nev;</span></span>
+<span class="line"><span style="color: #c9d1d9">const c: string[] = nev;</span></span></code></pre>
+<p>これは、「never型はすべての型の部分型である」からです。<br>
+また、never型はユニオン型の中では消えることも把握しておく必要があります。<br>
+例えば、string | never はstringと同じです。</p>
+<h2 id="ユーザー定義型ガードuser-defined-type-guards">ユーザー定義型ガード(user-defined type guards)</h2>
+<p>ユーザー定義型ガードとは、型の絞り込みを自由に行うためのしくみです。<br>
+注意点として、ユーザー定義型ガードはanyやasの仲間であり、型安全性を破壊する恐れのある危険な機能の一つです。<br>
+<code>型述語(type predicates)</code>と呼ばれるものを返り値の型に書きます。<br>
+型述語の書き方には以下の2種類があります。</p>
+<ul>
+<li>引数名 is 型</li>
+<li>asserts 引数名 is 型</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">function isStringOrNumber(value: unknown): value is string | number {</span></span>
+<span class="line"><span style="color: #c9d1d9">    return typeof value === "string" || typeof value === "number";</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const something: unknown = 123;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">if(isStringOrNumber(something)) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    //この時点でsomethingは string | number型</span></span>
+<span class="line"><span style="color: #c9d1d9">    console.log(something.toString());</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>下記のように、<code>isStringOrNumber</code>の返り値をbooleanに変えてみると、コンパイルエラーとなります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">function isStringOrNumber(value: unknown): boolean {</span></span>
+<span class="line"><span style="color: #c9d1d9">    return typeof value === "string" || typeof value === "number";</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const something: unknown = 123;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">if(isStringOrNumber(something)) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    // エラー: Object is of type 'unknown'.</span></span>
+<span class="line"><span style="color: #c9d1d9">    console.log(something.toString());</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>ユーザー定義型ガードは関数を絞り込みに使うことができます。ですが、その関数の型定義でユーザー定義型ガードを使わなければいけません。<br>
+注意点としては、ユーザー定義型ガードは関数の実装内容はTypeScriptの保証する範囲ではないことです。<br>
+下記のような間違った実装をしてしまった場合でもコンパイルエラーは発生しないため、型安全性を破壊することになります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">function isStringOrNumber(value: unknown): value is string | number {</span></span>
+<span class="line"><span style="color: #c9d1d9">    // 実装を間違えているがエラーが起きない!</span></span>
+<span class="line"><span style="color: #c9d1d9">    return typeof value === "string" || typeof value === "boolean";</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<h2 id="所感">所感</h2>
+<p>今回はTypeScriptの型の一部について調査しました。<br>
+特にユニオン型とインターセクション型は使用頻度が高くなりそうな型でした。<br>
+TypeScriptには他にも高度な型が用意されていますが、今回の記事である程度基本的な型をおさえることができたので、残りについてはなにか作ってみてから調査したいと思います。<br>
+個人的には最近のフロントエンド界隈ではastroが気になっているので入門記事も今度書いてみようと思います。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://future-architect.github.io/typescript-guide/typing.html">https://future-architect.github.io/typescript-guide/typing.html</a><br>
+<a href="https://typescriptbook.jp/">https://typescriptbook.jp/</a>
+　</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

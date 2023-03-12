@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LaravelのEagerLoadについて</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/10/23</div>
+        <h1>LaravelのEagerLoadについて</h1>
+        <div class="post">
+          <h2 id="eagerloadとは">EagerLoadとは</h2>
+<ul>
+<li>「Eager」は「熱心」という意味</li>
+<li>ORMにおけるN+1問題を解決するために使用される</li>
+<li>先に取得したModelに対して事前にリレーションを取得する仕組み</li>
+<li>Eloquentの場合はプロパティとしてリレーションにアクセスする場合に行われる。</li>
+</ul>
+<h2 id="例">例</h2>
+<p>まずは<a href="https://readouble.com/laravel/7.x/ja/eloquent-relationships.html#eager-loading">公式サイト</a>にある例をもとに理解を進めます。</p>
+<h3 id="n--1問題とは">N + 1問題とは</h3>
+<p>ORMによるリレーションを扱う際には <code>N + 1問題</code>が発生することがあります。
+EagerLoadはその解決策ですがまずは<code>N + 1問題</code>について公式の例を確認します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">&#x3C;?php</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">namespace App;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">use Illuminate\Database\Eloquent\Model;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">class Book extends Model</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    /**</span></span>
+<span class="line"><span style="color: #c9d1d9">     * この本を書いた著者を取得</span></span>
+<span class="line"><span style="color: #c9d1d9">     */</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function author()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $this->belongsTo('App\Author');</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::all(); // 1. すべての本を取得</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">// 2. 著者をそれぞれの本について取得</span></span>
+<span class="line"><span style="color: #c9d1d9">foreach ($books as $book) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    echo $book->author->name;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>上記ループでは</p>
+<ol>
+<li>まずテーブルからすべての本を取得するために1回クエリが発行される。</li>
+<li>著者をそれぞれの本について取得。本の数だけクエリが発行される。</li>
+</ol>
+<p>という流れでクエリが発行されます。つまり、25冊の本について情報を取得する(N=25)場合、25回 + 全体のデータ取得の1回で合計26回のクエリが発行されることになります。</p>
+<p>そもそもこの問題の原因は、Eloquentの仕組みにあります。
+Eloquentは、<strong>リレーションにアクセスする度にクエリを発行する</strong>という仕組みです。
+このクエリの発行回数を抑えるために、事前にリレーション情報を含めた状態の親モデルを取得するEagerLoadという仕組みを使用する事ができます。</p>
+<h3 id="eagerload">EagerLoad</h3>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::with('author')->get();</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">foreach ($books as $book) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    echo $book->author->name;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>上記のように<code>with</code>メソッドを使用することでクエリの発行回数を抑える事ができます。
+発行されるクエリは以下のようになります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">select  * from books</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">select * from authors where id in (1,2,3,4,5,...)</span></span></code></pre>
+<p>複数のリレーションに対するEagerLoad</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::with(['author', 'publisher'])->get();</span></span></code></pre>
+<p>ネストしたリレーションに対するEagerLoad</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::with('author.contacts')->get();</span></span></code></pre>
+<p>特定カラムに対してのEagerLoad</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$users = App\Book::with('author:id,name')->get();</span></span></code></pre>
+<p>EagerLoad時に制約を追加する</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$users = App\User::with(['posts' => function ($query) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    $query->where('title', 'like', '%first%');</span></span>
+<span class="line"><span style="color: #c9d1d9">}])->get();</span></span></code></pre>
+<p>遅延EagerLoading
+すでに親のモデルを取得したあとにリレーションをEagerLoadしたい場合に利用します。<br>
+どのリレーションをロードするか動的に決定したい場合に便利です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::all();</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">if ($someCondition) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    $books->load('author', 'publisher');</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p><code>loadMissing</code>メソッドを使用すると、リレーションをまだロードしていない場合のみロードする事が可能です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">public function format(Book $book)</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    $book->loadMissing('author');</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    return [</span></span>
+<span class="line"><span style="color: #c9d1d9">        'name' => $book->name,</span></span>
+<span class="line"><span style="color: #c9d1d9">        'author' => $book->author->name</span></span>
+<span class="line"><span style="color: #c9d1d9">    ];</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<h2 id="eloquentにおける動的プロパティについて">Eloquentにおける動的プロパティについて</h2>
+<p>例えば以下のような1対多野リレーションがあったとします。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">&#x3C;?php</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">namespace App;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">use Illuminate\Database\Eloquent\Model;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">class Post extends Model</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    /**</span></span>
+<span class="line"><span style="color: #c9d1d9">     * ブログポストのコメントを取得</span></span>
+<span class="line"><span style="color: #c9d1d9">     */</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function comments()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $this->hasMany('App\Comment');</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>この場合に</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$post = Post::find(1);</span></span>
+<span class="line"><span style="color: #c9d1d9">$comments = $post->comments;</span></span></code></pre>
+<p>のように取得すると思います。<br>
+これは<code>comments()</code>メソッドではなく<code>comments</code>という動的プロパティを返しているという点に注意が必要です。<br>
+<code>comments</code>は<code>Comment</code>モデルのインスタンスのコレクションを返します。</p>
+<p>反対に、<code>comments()</code>メソッドは<code>HasMany</code>オブジェクトを返します。</p>
+<h3 id="動的プロパティとリレーションメソッドの違い">動的プロパティとリレーションメソッドの違い</h3>
+<p>モデルのインスタンスの中身を確認すると、インスタンスのプロパティには<code>attributes</code>のほかに、<code>relations</code>というものがあります。<br>
+個々にはkeyがリレーションメソッド名、valueがリレーション先のモデルインスタンスのコレクションとした連想配列が格納されます。</p>
+<p><code>HasMany</code>, <code>HasOne</code>などのリレーションメソッドではクエリビルダを使用する事ができます。</p>
+<p>EagerLoadにおいては動的プロパティを利用する必要があります。<br>
+動的プロパティは「遅延ロード」されます。遅延ロードはアクセスされたときにだけリレーションのデータをロードするという仕組みです。<br>
+リレーションメソッドを使用してしまうと、EagerLoadしても毎回クエリを発行してデータを取りに行ってしまうことになるため、効果が無いことに注意が必要です。</p>
+<p>まとめると、</p>
+<ul>
+<li>動的プロパティを使用することでアクセスされたときにクエリを発行してデータを取ってくる</li>
+<li><code>with</code>でリレーション先のデータを<code>relasions</code>プロパティに格納しておく</li>
+<li><code>relations</code>プロパティにデータが存在すれば動的プロパティはクエリを発行せずにそのデータを使用してくれる</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>今回はEagerLoadについて調査しました。<br>
+Eloquentのリレーションの仕組みやロードのタイミングについて理解が深まったと思います。<br>
+EagerLoadという単語自体は聞いたことありましたが、使用しない場合と使用した場合の差や、デフォルト状態のEloquentのデータを取得する仕組みについて理解できました。<br>
+Eloquentを利用する際には仕組みを理解しておくことで実行時間の予測がある程度できるようになるため、クエリビルダを利用するなど別の手段との比較がしやすくなるなと感じています。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://katsusand.dev/posts/laravel-eager-load/">https://katsusand.dev/posts/laravel-eager-load/</a><br>
+<a href="https://readouble.com/laravel/7.x/ja/eloquent-relationships.html#eager-loading">https://readouble.com/laravel/7.x/ja/eloquent-relationships.html#eager-loading</a><br>
+<a href="https://qiita.com/179Bell/items/7b4f991816f63946e738">https://qiita.com/179Bell/items/7b4f991816f63946e738</a><br>
+<a href="https://qiita.com/mpyw/items/ed058e2d679a672c3ba7">https://qiita.com/mpyw/items/ed058e2d679a672c3ba7</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

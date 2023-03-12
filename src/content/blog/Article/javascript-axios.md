@@ -1,8 +1,8 @@
 ---
 title: JavaScriptにおける非同期処理について
 tags: [test]
-createDate: 2023-01-31
-updateDate: 2023-01-31
+createDate: 2022-12-18
+updateDate: 2022-12-18
 slug: javascript-axios
 ---
 
@@ -73,7 +73,7 @@ Web Workerではメインスレッドとは異なるWorkerスレッドで実行�
 
 JavaScriptの場合、同期処理では[try...catch](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/try...catch)構文を使用することで同期的に発生した例外がキャッチできます。
 
-```javascript
+```JavaScript
 try {
     throw new Error("同期的なエラー");
 } catch (error) {
@@ -86,7 +86,7 @@ console.log("この行は実行されます");
 
 非同期処理ではtry...catchによる例外のキャッチができません。
 
-```javascript
+```JavaScript
 try {
     setTimeout(() => {
         throw new Error("非同期的なエラー");
@@ -103,7 +103,7 @@ tryブロックはそのブロック内で発生した例外をキャッチす�
 
 そのため、コールバック関数内で同期的なエラーとしてキャッチします。
 
-```javascript
+```JavaScript
 // 非同期処理の外
 setTimeout(() => {
     // 非同期処理の中
@@ -127,7 +127,7 @@ console.log("この行は実行されます");
 
 非同期処理がいくつも連なる場合にコールバック関数を利用すると、入れ子が深くなりすぎて1つの関数が肥大化する傾向にあります。
 
-```javascript
+```JavaScript
 first(function(data) {
     console.log("最初に実行する処理");
     second(function(data) {
@@ -145,7 +145,7 @@ first(function(data) {
 
 非同期処理はPromiseのインスタンスを返し、そのPromiseには状態変化をした際に呼び出されるコールバック関数を登録できます。
 
-```javascript
+```JavaScript
 function asyncProcess(value) {
     return new Promise((resolve, reject) => {
         // ここで非同期処理を行う
@@ -182,7 +182,7 @@ PromiseインスタンスはasyncProcess関数内で行われた非同期処理�
 まずはPromiseインスタンスの作成します。  
 thenメソッドでPromiseがresolve、rejectしたときに呼ばれるコールバック関数を登録します。
 
-```javascript
+```JavaScript
 const promise = new Promise((resolve, reject) => {
     // 非同期の処理が成功したときはresolve()を呼ぶ
     // 非同期の処理が失敗したときはreject()を呼ぶ
@@ -201,7 +201,7 @@ promise.then(onFulfilled, onRejected);
 
 Promiseのthenメソッドは成功(`onFulfilled`)と失敗(`onRejected`)の２つのコールバック関数を受け取りますが、どちらの引数も省略できます。
 
-```javascript
+```JavaScript
 
 function Process(path) {
     return new Promise((resolve, reject) => {
@@ -236,7 +236,7 @@ Process("/failure/data").then(function onFulfilled(response) {
 参考:  
 https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch
 
-```javascript
+```JavaScript
 function errorProcess(message) {
     return new Promise((resolve, reject) => {
         reject(new Error(message));
@@ -264,7 +264,7 @@ resolveとrejectの使い方がわかったところで重要な以下の２点�
 Promiseではコンストラクタの処理で例外が発生した`Promise`インスタンスは`reject`関数を呼び出したのと同じように処理されます。   
 try...catch構文を使用しなくても自動的に例外がキャッチされます。
 
-```javascript
+```JavaScript
 function throwPromise() {
     return new Promise((resolve, reject) => {
         // Promiseコンストラクタの中で発生した例外は自動的にキャッチされreject関数が呼ばれる
@@ -307,7 +307,7 @@ FulfilledまたはRejectedではない状態。インスタンスを作成した
 Promiseオブジェクトが真価を発揮するのは、複数の非同期処理を連結するような場合です。
 
 
-```javascript
+```JavaScript
 // 初回関数呼び出し
 asyncProcess('初回')
 .then(
@@ -339,7 +339,7 @@ asyncProcess('初回')
 - [Promise.all](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)メソッド  
 Promise.allメソッドは複数の非同期処理を並列に実行し、そのすべてが成功した場合に処理を実行します。
 
-```javascript
+```JavaScript
 Promise.all([
     asyncProcess('1回目');
     asyncProcess('2回目');

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Factoryパターンについて</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/06/02</div>
+        <h1>Factoryパターンについて</h1>
+        <div class="post">
+          <p>先日チーム内でFactoryパターンについて話し合う機会があったのでその内容をまとめたいと思います。<br>
+個人的にFactoryパターンについてよくわかっていなかったので質問する形でいろいろメンバー間で話し合ってみました。</p>
+<h2 id="参考">参考</h2>
+<p>今回のFactoryパターンについては以下のものを参考にしました。</p>
+<p>以下通称デザインパターン本<br>
+GoFのデザインパターン本と呼ばれる原典</p>
+<p><a href="https://www.amazon.co.jp/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E6%8C%87%E5%90%91%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%86%8D%E5%88%A9%E7%94%A8%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3-%E3%82%A8%E3%83%AA%E3%83%83%E3%82%AF-%E3%82%AC%E3%83%B3%E3%83%9E/dp/4797311126">https://www.amazon.co.jp/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E6%8C%87%E5%90%91%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E5%86%8D%E5%88%A9%E7%94%A8%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3-%E3%82%A8%E3%83%AA%E3%83%83%E3%82%AF-%E3%82%AC%E3%83%B3%E3%83%9E/dp/4797311126</a></p>
+<p>結城浩さんのJavaで書かれたデザインパターン本(持ってる)</p>
+<p><a href="https://www.amazon.co.jp/%E5%A2%97%E8%A3%9C%E6%94%B9%E8%A8%82%E7%89%88Java%E8%A8%80%E8%AA%9E%E3%81%A7%E5%AD%A6%E3%81%B6%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3%E5%85%A5%E9%96%80-%E7%B5%90%E5%9F%8E-%E6%B5%A9/dp/4797327030/ref=tmm_other_meta_binding_swatch_0?_encoding=UTF8&#x26;qid=&#x26;sr=">https://www.amazon.co.jp/%E5%A2%97%E8%A3%9C%E6%94%B9%E8%A8%82%E7%89%88Java%E8%A8%80%E8%AA%9E%E3%81%A7%E5%AD%A6%E3%81%B6%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3%E5%85%A5%E9%96%80-%E7%B5%90%E5%9F%8E-%E6%B5%A9/dp/4797327030/ref=tmm_other_meta_binding_swatch_0?_encoding=UTF8&#x26;qid=&#x26;sr=</a></p>
+<p>Factoryパターンについてのqiita記事</p>
+<p><a href="https://qiita.com/shoheiyokoyama/items/d752834a6a2e208b90ca">https://qiita.com/shoheiyokoyama/items/d752834a6a2e208b90ca</a></p>
+<h2 id="何がわからないのか">何がわからないのか</h2>
+<ul>
+<li>
+<p>なぜFactoryパターンを使うのか？という目的がピンときてない。</p>
+</li>
+<li>
+<p>実際に携わっているプロダクトでもFactoryパターンを使っていて、見よう見まねで実装はできるが、この機会に目的をきちんと押さえておきたい。</p>
+</li>
+</ul>
+<h2 id="自身で調べたこと">自身で調べたこと</h2>
+<h3 id="factory-methodパターン">Factory Methodパターン</h3>
+<blockquote>
+<p>インスタンス作成をサブクラスに任せる</p>
+</blockquote>
+<blockquote>
+<p>スーパークラスでインスタンスの作り方の骨組みを定め、具体的な作成そのものはサブクラスで行う</p>
+</blockquote>
+<h3 id="サンプル">サンプル</h3>
+<p>結城浩さんの本では以下のサンプルが紹介されている</p>
+<p>身分証明書カード(IDカード)を作る工場を題材としたもの。
+本はJavaで書かれているのでPHPで書き直してみました。</p>
+<p>ちなみにJavaの場合はパッケージが具体と抽象で分かれる。(PHPでいうnamespaceに近いかも)</p>
+<p>パッケージについての参考記事</p>
+<p><a href="https://kanda-it-school-kensyu.com/java-basic-contents/jb_ch07/jb_0702/#:~:text=%E3%80%8C%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%80%8D%E3%81%A8%E3%81%AF%E3%80%81Java,%E3%81%A6%E3%81%84%E3%81%8F%E5%A0%B4%E5%90%88%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82">https://kanda-it-school-kensyu.com/java-basic-contents/jb_ch07/jb_0702/#:~:text=%E3%80%8C%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%80%8D%E3%81%A8%E3%81%AF%E3%80%81Java,%E3%81%A6%E3%81%84%E3%81%8F%E5%A0%B4%E5%90%88%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82</a></p>
+<p>抽象</p>
+<ul>
+<li>Factory</li>
+<li>Product</li>
+</ul>
+<p>具体</p>
+<ul>
+<li>IDCardFactory</li>
+<li>IDCard</li>
+</ul>
+<p>Factory.php</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">abstract</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">Factory</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">create</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $owner)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Product</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        $product </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">createProduct</span><span style="color: #C9D1D9">($owner);</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">registerProduct</span><span style="color: #C9D1D9">($product);</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> $product;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">abstract</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">protected</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">createProduct</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $owner)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Product</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">abstract</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">protected</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">registerProduct</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Product</span><span style="color: #C9D1D9"> $product)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>Product.php</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">abstract</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">Product</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">abstract</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">use</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>IDCardFactory.php</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #FF7B72">require</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'./Factory.php'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #FF7B72">require</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'./IDCard.php'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">IDCardFactory</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">extends</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Factory</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">array</span><span style="color: #C9D1D9"> $owners;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">()</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">owners </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> [];</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">protected</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">createProduct</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $owner)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Product</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">IDCard</span><span style="color: #C9D1D9">($owner);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">protected</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">registerProduct</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Product</span><span style="color: #C9D1D9"> $product)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">owners[] </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $product</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getOwner</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">getOwners</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">array</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">owners;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>IDCard.php</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #FF7B72">require</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'./Product.php'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">IDCard</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">extends</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Product</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $owner;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $owner)</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">echo</span><span style="color: #C9D1D9"> $owner </span><span style="color: #FF7B72">.</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">"のカードを作ります。"</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">.</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">PHP_EOL</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">owner </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $owner;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">use</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">echo</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">owner </span><span style="color: #FF7B72">.</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">"のカードを使います。"</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">.</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">PHP_EOL</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">getOwner</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">owner;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"></span></code></pre>
+<p>JavaのコードをPHPで書いているので少し不自然ですがMainクラスを用意しました。</p>
+<p>main.php</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #FF7B72">require</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'./IDCardFactory.php'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">Main</span><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">()</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        $factory </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">IDCardFactory</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #C9D1D9">        $card1 </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $factory</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">create</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'結城浩'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">        $card2 </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $factory</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">create</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'とむら'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">        $card3 </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $factory</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">create</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'佐藤花子'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">        $card1</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">use</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #C9D1D9">        $card2</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">use</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #C9D1D9">        $card3</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">use</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Main</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"></span></code></pre>
+<h2 id="特徴">特徴</h2>
+<ul>
+<li>コンストラクタを直接呼ばずにインスタンスを生成できる。</li>
+<li>コンストラクタの生成時にValueObjectを引数として使う場合にnewする箇所を凝集できる</li>
+<li>クラスの生成に手順とかがあったらそのロジックを封じ込められる</li>
+<li>多態性を利用してFactory内で分岐ロジックを書ける</li>
+</ul>
+<p>以下のサイトには最大のメリットは「依存性の逆転」が実現できること、と書いてあるがピンときてない。</p>
+<p><a href="https://blog.ecbeing.tech/entry/2021/01/20/114000">https://blog.ecbeing.tech/entry/2021/01/20/114000</a></p>
+<hr>
+<p>ここから実際にメンバー間で話して得た知見を記述します。</p>
+<p>Factoryパターンの目的</p>
+<ul>
+<li>
+<p>Factoryパターンを使わずにUsecaseにnewする処理を書くということは具体に依存してしまっているということ。</p>
+</li>
+<li>
+<p>Repositoryパターンはデータベースに関連する処理を押し付ける。</p>
+</li>
+<li>
+<p>それと同じ感じでインスタンスの作成に関する処理をFactoryに押し付ける</p>
+</li>
+<li>
+<p>工場のラインを想像すると良い<br>
+->僕は工場の例えをものを作成する場所と考えてたけどライン工場を想像すると良いかも。<br>
+必要な部品(VO)を用意したり、自明な値を持ってきたり、最低限必要なものを引数で受け取ったりしてものを作る工程をFactoryが担う。</p>
+</li>
+</ul>
+<h2 id="依存性の逆転がわからん">「依存性の逆転」がわからん</h2>
+<p>ということで解説してもらったことをメモしておきます。</p>
+<p><a href="https://zenn.dev/naas/articles/c743a3d046fa78">https://zenn.dev/naas/articles/c743a3d046fa78</a></p>
+<p>上記ブログを参考に話を進める。</p>
+<p>AとBの間に<code>IB</code>というインターフェースを作成することで依存性を逆転させることができる。</p>
+<ol>
+<li>AがBに依存している</li>
+</ol>
+<p>から</p>
+<ol start="2">
+<li><code>AとIB</code>にBが依存する</li>
+</ol>
+<p>に逆転させることができる。</p>
+<p>Aを抽象に依存させることができる。</p>
+<p>->Aの中で記述しているのはinterfaceの型とAPI(メソッド名)のみ。</p>
+<p>Aがインターフェースを提供(IB)し、Bがインターフェースを実装してAに注入する、というパターンではAは一切Bに依存しません。<br>
+つまりAの中では具体的なクラスは登場せず、インターフェースのみを使用します。<br>
+Bを利用するためにはBに依存しないといけないところをAはBに依存せずに利用し、逆にBがAのインターフェース(IB)を実装するためにAに依存するのが「逆転」です。<br>
+ここでのポイントはBが実装している<strong>インターフェース(IB)はAが提供している</strong>、と考えることです（僕はここがわかっていなかった）。</p>
+<h2 id="依存性の注入について">依存性の注入について</h2>
+<p>LaravelではDI(依存性の注入)の実現のため、サービスコンテナやサービスプロバイダという仕組みを使用している。というだけ。<br>
+そもそもクラス内で使用するオブジェクトのインスタンスをクラス外で生成することを<strong>依存性の注入</strong>と呼ぶ。<br>
+依存性の逆転を起こすための手段が依存性の注入。(用語が似ていてややこしい)</p>
+<h2 id="サンプルコードを見直してみる">サンプルコードを見直してみる</h2>
+<p><strong>依存性の逆転</strong>についての理解ができたところでもう一度サンプルコードを見てみましょう。<br>
+今回のUseCaseに当たるMainクラス内ではIDCardをnewすることなくIDCardを使用しています。<br>
+つまりIDCardへの依存をせずにインターフェースへの依存(createメソッドやuseメソッドを使用できることを期待しているため)をするように変更されました。<br>
+Factoryの中でどんなクラスが生成された場合でも、それがProductインターフェースさえ実装していればMain(UseCase)では意識することなく使用することができます。<br>
+Factoryパターンを用いることで<strong>依存性の逆転</strong>を起こすことができています。<br>
+また、現状ではIDCardFactoryをnewしているため、具体的なクラスに依存していますが、これもDIすることでさらに依存関係を改善できそうです。<br>
+ここまでいろんな手法を用いて依存関係を整理してきました。どうして依存性にこんなに気を遣ったつくりにするのでしょうか。<br>
+大きなメリットとして以下の二つがあるのかなと考えています。</p>
+<ul>
+<li>外部を意識せずに対象クラスのテストを書きやすくなる</li>
+<li>特定のフレームワークに依存しなくて済む</li>
+</ul>
+<p>まずは一つ目について。<br>
+インターフェースに依存する作りにすることで、インターフェースさえ実装していれば使用することができるようになります。<br>
+これを利用してテストしたいクラスに必要なものをMockに置き換えることができるようになります。<br>
+よりテスタブルなコードが実現できます。</p>
+<p>二つ目について<br>
+インターフェースに依存させ、具体的な実装を引き剥がすことで特定のフレームワークに依存する処理を封じ込めることができるようになります。<br>
+例えばLaravelの場合、DBの操作には<code>Eloquent</code>という仕組みを使用することが多いです。<br>
+では途中でLaravelから他のフレームワークへ移行することを考えてみましょう。<br>
+今回のFactoryパターンと同じく依存性の逆転を実現するためのパターンとして、Repositoryパターンというものがあります。<br>
+このパターンを用いることでLaravelに依存しているコードをRepositoryに封じ込めることができます。<br>
+つまり、Repositoryさえ修正すればUseCaseのロジックを修正することなくフレームワークの移行が完了します。</p>
+<p>上記二つのメリットはいずれも<strong>依存性の逆転</strong>を起こすことで変更容易性を向上させ、それに伴って発生するメリットです。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>インスタンス生成に関わるロジックを担うのがFactory</li>
+<li>その利点を理解するには依存性の逆転や依存性の注入について理解する必要があった</li>
+<li>有効なパターンを使用することで変更容易性を向上させることができ、テスタブルなコードになる。</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p><strong>依存性の逆転</strong>を理解することでFactoryパターンのメリット、というか世の設計手法やデザインパターンの目指すところが掴めてきた感じがする。　　　
+個人的にはアンチパターンを踏み抜く経験がそもそもないからパターンのメリットが実感できてないのかもしれない。<br>
+車輪の再発明を積極的にしていくべきなのか、どういう勉強をしていくべきなのかが難しい。<br>
+クリーンアーキテクチャを具体的にどう実現していくのかわかってきた気がする。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

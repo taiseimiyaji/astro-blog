@@ -1,8 +1,8 @@
 ---
 title: 2022上半期を振り返ってみる(その他最近の雑記)
 tags: [test]
-createDate: 2023-01-31
-updateDate: 2023-01-31
+createDate: 2022-10-27
+updateDate: 2022-10-27
 slug: 2022-first-half
 ---
 

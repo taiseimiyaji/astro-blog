@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MVCモデルについて</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/03/18</div>
+        <h1>MVCモデルについて</h1>
+        <div class="post">
+          <h1 id="mvcモデルについて">MVCモデルについて</h1>
+<h2 id="mvcとは">MVCとは</h2>
+<p>ソフトウェアを<strong>Model</strong>,<strong>View</strong>,<strong>Controller</strong>の3要素の組み合わせでシステムを構築していく考え方。</p>
+<h2 id="model">Model</h2>
+<ul>
+<li>ビジネスロジックを担当するシステムの本体部分</li>
+<li>データの変更をViewに通知する(Observerパターンを使うこともある)</li>
+</ul>
+<h2 id="view">View</h2>
+<ul>
+<li>表示、入出力といった部分を担当する。</li>
+<li>Modelのデータを取り出してユーザが見る形で表示(Viewがデータを受け取っているわけではない)</li>
+</ul>
+<h2 id="controller">Controller</h2>
+<ul>
+<li>ViewとModelを制御する(HTTPリクエストを適切なModelに渡す、ViewからのレスポンスHTTPをユーザに返す)</li>
+<li>自分自身ではロジックの実行はせず、Viewから入力を受け取り、それに応じてModelのロジックを呼び出し、結果をViewに渡す。</li>
+<li>UIからの入力を担当する</li>
+<li>イベントを受け取る。つまり画面上構成するイベントの数だけ処理がある</li>
+</ul>
+<h2 id="メリット">メリット</h2>
+<ul>
+<li>機能ごとの分離が明確になるため、独立性が確保でき、分業しやすくなる。</li>
+<li>コンポーネント間の依存度を下げることができる。つまり、再利用しやすくなる。</li>
+<li>また、責任が分かれているため、複数人でメンテナンスすることを考えた時、同時に同じ領域を操作する危険が減り保守性も向上する。</li>
+</ul>
+<h2 id="middlewareパターン">Middlewareパターン</h2>
+<p><a href="https://qiita.com/suin/items/5c53f72e9c7e2c05b18f">❄️PHPでMiddlewareパターンを実装する方法</a></p>
+<h3 id="特性">特性</h3>
+<ul>
+<li>クライアントコードとハンドラの間に割って入り、入力を加工する</li>
+<li>ハンドラとクライアントコードの間に割って入り、出力を加工する</li>
+<li>クライアントコードとハンドラの間に割って入り、入力がハンドラに届く前に、早期に出力を返す</li>
+</ul>
+<h3 id="middlewareパターンとは">Middlewareパターンとは</h3>
+<p>Middlewareパターンの目的は、「ミドルウェア」と呼ばれるガワの処理で核となるハンドラを包むことで、プログラム本来の振る舞いを拡張可能にすること。<br>
+MVCウェブフレームワークでは、コントローラの入出力となるHTTPリクエストやレスポンスをアプリケーション全体で統一的に加工する用途などに採用されている。</p>
+<h3 id="どんな時に使えるか">どんな時に使えるか</h3>
+<ul>
+<li>HTTPS接続のみを許可し、HTTPで接続されると強制的にリダイレクトする。</li>
+<li>特定のIPアドレスだけ許可する</li>
+<li>ログインしているユーザーにのみページを表示する</li>
+<li>特定の言語のみ、特定の国のみページを表示する</li>
+<li>リクエストのログを記録する</li>
+</ul>
+<h3 id="laravelにおけるmiddleware">LaravelにおけるMiddleware</h3>
+<p><a href="https://tech-tech.blog/php/laravel/middleware/">Laravel Middleware 調べてみた</a><br>
+以下の三種類に分類できる。</p>
+<ul>
+<li>グローバルミドルウェア</li>
+<li>ルートミドルウェア</li>
+<li>コンストラクタ内のミドルウェア</li>
+</ul>
+<p>処理の順番は以下の通り。</p>
+<ol>
+<li>グローバルミドルウェア</li>
+<li>ルートミドルウェア</li>
+<li>コンストラクタ内ミドルウェア</li>
+<li>コントローラーの処理</li>
+<li>コンストラクタ内ミドルウェア</li>
+<li>ルートミドルウェア</li>
+<li>グローバルミドルウェア</li>
+</ol>
+<p>コントローラーの処理をラップするイメージ。</p>
+<h3 id="公式">公式</h3>
+<p><a href="https://laravel.com/docs/9.x/middleware#main-content">Laravel - ミドルウェア</a></p>
+<h2 id="追加後で読む">追加(後で読む)</h2>
+<h3 id="クリーンアーキテクチャ">クリーンアーキテクチャ</h3>
+<p><a href="https://gist.github.com/mpppk/609d592f25cab9312654b39f1b357c60">クリーンアーキテクチャ完全に理解した</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

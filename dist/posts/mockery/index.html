@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mockeryの基本的な使い方</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/07/22</div>
+        <h1>Mockeryの基本的な使い方</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>前回の記事でユニットテストについて書きました。
+今回は前回にも使用したMockeryというフレームワークについて少し掘り下げてみたいと思います。</p>
+<h2 id="公式">公式</h2>
+<p><a href="https://readouble.com/mockery/1.0/ja/index.html">https://readouble.com/mockery/1.0/ja/index.html</a></p>
+<p>公式にもあるように、他のテストフレームワークと合わせてユニットテストで使用します。</p>
+<p>PHPUnit公式</p>
+<p><a href="https://phpunit.readthedocs.io/ja/latest/index.html">https://phpunit.readthedocs.io/ja/latest/index.html</a></p>
+<h2 id="よく使う機能入門編">よく使う機能(入門編)</h2>
+<h3 id="モックの作成">モックの作成</h3>
+<p>Mockeryにおいて、スタブとモックは同じものが生成されます。<br>
+スタブは指定した結果を返すだけですが、モックは期待しているメソッド呼び出しのエクスペクションを指定できます。<br>
+以下すべてモックと呼びますが、スタブとしても使用できます。<br>
+モックはスタブの機能を含んでいる形です。<br>
+また、他のテストダブル(代替物)に<strong>スパイ</strong>というものがあります。</p>
+<p>公式にて推奨されるモックの作成方法は、以下のように具象クラス名を指定する方法です。<br>
+この方法で生成されたモックオブジェクトは継承により、<code>MyClass</code>という型を保ちます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>推奨されるのは上記ですが、モックオブジェクトは具象クラス、抽象クラス、そしてインターフェイスでもベースに指定することができます。<br>
+タイプヒントのために特定の方をモックオブジェクトに継承させたい場合に有用です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyInterface'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>このモックオブジェクトは<code>MyInterface</code>型を実装しています。</p>
+<p>唯一作成できないモックは<code>final</code>クラスですが、こちらについてはパーシャル(部分)モックという仕組みが用意されています。<br>
+こちらについては後ほど述べます。</p>
+<p>Mockeryは一つのクラスで複数のインターフェイスを実装するクラスに基づいたモックも作成できます。<br>
+僕が単体テストを書く際にもこの形で記述しています。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass, MyInterface, OtherInterface'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>単体テストを抽象に対して書きたいという気持ちはあるのでインターフェイスのみを指定してモックを生成してもいいかもしれません。<br>
+ただ、公式では</p>
+<blockquote>
+<p>Note: リストの最初の項目であるクラス名は必須ではありませんが、指定したほうが読みやすくフレンドリーでしょう。</p>
+</blockquote>
+<p>と記載があるので具象クラスを指定して記述するようにしています。</p>
+<p>抽象クラスを指定して、メソッドの期待している動作を書いていないまま呼び出したらどうなるんでしょう？</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">Received モッククラス名::メソッド名(), but no expectations were specified</span></span></code></pre>
+<p>というようなエラーが出てテストに失敗します。<br>
+モック以外を使用したくない場合等Interfaceを指定するとよさそうな場面もありそうです。</p>
+<h3 id="モックに期待動作を設定する">モックに期待動作を設定する</h3>
+<p>Mockeryではモックの動作に期待する内容を簡単に指定することができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'name_of_method'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>最も基本的な期待動作の指定はこのようにかけます。<br>
+<code>shouldReceive</code>を書くことでそのメソッドが呼び出されるのを期待することをテストダブルに伝えることができます。</p>
+<p>次に戻り値の指定です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'name_of_method'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">andReturn</span><span style="color: #C9D1D9">($value);</span></span></code></pre>
+<p><code>andReturn</code>を使用することでどのような戻り値が返されるのかを指定できます。<br>
+これで期待した値を返すよう指定できるのでスタブとして使用することができるようになりました。</p>
+<h3 id="複雑な返り値の指定">複雑な返り値の指定</h3>
+<p>他に考えられるパターンとして、テスト中に複数回モックメソッドが呼び出され、呼び出されるたびに異なる返り値を返したい場合です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'name_of_method'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">andReturn</span><span style="color: #C9D1D9">($value1, $value2, </span><span style="color: #FF7B72">...</span><span style="color: #C9D1D9">)</span></span></code></pre>
+<p>これは<code>andReturn</code>に複数指定するだけで順番に返されます。</p>
+<p><code>andReturnValues([$value1, $value2, ...])</code>のように<code>andReturnValues</code>を使用すれば配列の形で指定することもできます。<br>
+いずれの場合も指定した返り値の数より大きい回数呼び出された場合は最後の要素が返されます。</p>
+<h3 id="呼び出し回数のテスト">呼び出し回数のテスト</h3>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'name_of_method'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">times</span><span style="color: #C9D1D9">($n);</span></span></code></pre>
+<p>このようにモック化したメソッドが何回呼び出されることを期待するかを指定できます。<br>
+指定した回数と実際の呼び出し回数が一致しなかった場合は<code>\Mockery\Expectation\InvalidCountException</code>が投げられます。<br>
+また、<code>times</code>以外にも1回であれば<code>once</code>、2回であれば<code>twice</code>、呼び出されないことを指定する場合は<code>never</code>等が指定できます。</p>
+<p>最低n回呼び出したい、もしくは最高実行回数はn回という指定をしたい場合は<code>atLeast</code>や<code>atMost</code>が使用できます。</p>
+<h3 id="例外のテスト">例外のテスト</h3>
+<p>これまで動作の指定について調べましたが、異常系のテストの場合はモック化したオブジェクトで例外を投げたいパターンが考えられます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'name_of_method'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">andThrow</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Exception</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>これを使用することでモック化しない場合と比べて簡単にエラーハンドリングのテストを書くことができます。</p>
+<h3 id="モックに渡された引数を確認する">モックに渡された引数を確認する</h3>
+<p>公式:<br>
+<a href="https://readouble.com/mockery/1.0/ja/argument_validation.html">https://readouble.com/mockery/1.0/ja/argument_validation.html</a></p>
+<p>モックに期待する動作として、モックに渡された引数の中身を確認したい場合が考えられます。
+これは、以下のように書くことができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'foo'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">with</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">):</span></span></code></pre>
+<p>プリミティブ型の場合は<code>with()</code>を使用することで簡単に検証できます。
+ただ、</p>
+<blockquote>
+<p>このようなケースでは、Mockeryはまず引数の比較に===（厳密な比較）演算子を使用します。引数がプリミティブで、厳密な比較で不一致の場合、Mockeryは==（緩やかな比較）演算子をフォールバックとして使用します。</p>
+</blockquote>
+<p>とあるので厳密な比較のみ行いたい場合は注意が必要です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$object </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">stdClass</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"foo"</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">with</span><span style="color: #C9D1D9">($object);</span></span></code></pre>
+<p>オブジェクトの場合は厳密な比較を行うので、全く同じオブジェクトのみが一致します。</p>
+<p>上記以外で困るのがオブジェクトのプロパティに対して検証したい場合です。<br>
+こちらもMockeryで対応する方法が用意されています。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">"foo"</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">with</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">on</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">closure</span><span style="color: #C9D1D9">));</span></span></code></pre>
+<p>具体的に、PHPUnitと組み合わせて使うと</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'foo'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">with</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">on</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">Argument</span><span style="color: #C9D1D9"> $arg) </span><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> ($expect) {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">assertSame</span><span style="color: #C9D1D9">($expect, $arg);</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">true</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }));</span></span></code></pre>
+<p>こんな感じで書けます。<br>
+ここでの<code>$arg</code>はモックに渡された引数です。<br>
+<code>$expect</code>はテストドライバ内で用意しておいてクロージャで使用します。<br>
+クロージャの返却値が<code>true</code>であればその引数はエクスペクションと一致したと判断されるのでこのような書き方が可能となります。</p>
+<h3 id="モックの使い方発展編">モックの使い方(発展編)</h3>
+<h3 id="パーシャルモック">パーシャルモック</h3>
+<p>あるオブジェクトのいくつかのメソッドのみをモックし、残りは実際のメソッド通りに動作させることができます。</p>
+<p><a href="https://readouble.com/mockery/1.0/ja/partial_mocks.html">https://readouble.com/mockery/1.0/ja/partial_mocks.html</a></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">makePartial</span><span style="color: #C9D1D9">();</span></span></code></pre>
+<p>基本的には<code>makePartial</code>を使用することでパーシャルモックを生成できます。
+コンストラクタに引数を指定したい場合は、第二引数に渡すだけです。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">, [$arg1, $arg2])</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">makePartial</span><span style="color: #C9D1D9">();</span></span></code></pre>
+<p>ただし、finalクラスやfinalなメソッドをモックしたい場合はプロキシパーシャルモックを使用する必要があります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">MyClass</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>これは呼び出しを横取りして期待した動作に合わないメソッドは引数に渡したオブジェクトへ引き渡します。<br>
+ただ、モックしているクラスのタイプヒントのチェックは失敗します。<br>
+<code>final</code>なクラスを拡張することができないからです。</p>
+<h3 id="staticなメソッド">staticなメソッド</h3>
+<p>このあたりから少し特殊なテストになります。
+<a href="https://readouble.com/mockery/1.0/ja/public_static_properties.html">https://readouble.com/mockery/1.0/ja/public_static_properties.html</a></p>
+<p>staticなメソッドは実際のオブジェクト上で呼び出されないため、これまで紹介した方法ではモック化できません。<br>
+この問題の解決のために、エイリアスモックという仕組みが用意されています。<br>
+これを使用することでstaticメソッド呼び出しを横取りしてエクスペクションを追加できるようになります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'alias:MyClass'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>注意が必要なのは、このような形の単体テストを複数書く場合です。<br>
+これは結構あり得る話かと思います。</p>
+<blockquote>
+<p>２つ以上のテスト間で、エイリアス／インスタンスモックを使用すると、同じ名前の２つのクラスは持てないため、fatalエラーが発生します。
+これを防ぐには、この種のテストは、独立したPHPプロセスで実行してください。PHPUnitとPHPTで、サポートされています。</p>
+</blockquote>
+<p>公式でも上記のように書かれています。<br>
+これの対策にはPHPUnitで用意されているアノテーションを使用します。<br>
+PHPUnit: <a href="https://phpunit.de/manual/6.5/ja/appendixes.annotations.html#appendixes.annotations.preserveGlobalState">https://phpunit.de/manual/6.5/ja/appendixes.annotations.html#appendixes.annotations.preserveGlobalState</a></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">/**</span></span>
+<span class="line"><span style="color: #8B949E"> * @runInSeparateProcess</span></span>
+<span class="line"><span style="color: #8B949E"> * @preserveGlobalState disabled</span></span>
+<span class="line"><span style="color: #8B949E"> */</span></span>
+<span class="line"><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">testfunction</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<h3 id="publicプロパティのモック">publicプロパティのモック</h3>
+<p>モック化したオブジェクトのpublicプロパティへ特定の値をセットしたい場合は</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$mock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">$mock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'name_of_method'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">andSet</span><span style="color: #C9D1D9">($property, $value);</span></span></code></pre>
+<h3 id="スパイの作成">スパイの作成</h3>
+<p>Mockeryで作成できる、テストダブルにはスタブ/モックともう一つ、スパイと呼ばれるものを作成できます。<br>
+スパイはテストダブルに対して行われた呼び出しをテスト対象の呼び出し後に検査することができます。<br>
+モックの場合は呼び出す前に期待する動作を指定する必要がありました。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$spy </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">spy</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'MyClass, MyInterface, OtherInterface'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>ただ、スパイの場合はメソッド実行の戻り値を指定したりすることはできません。</p>
+<p><a href="https://readouble.com/mockery/1.0/ja/spies.html">https://readouble.com/mockery/1.0/ja/spies.html</a></p>
+<p>スパイを使用することのメリットは、テストコードがより直感的になることです。<br>
+モックの場合は期待する動作を実際の呼び出しよりも前に記述する必要がありました。<br>
+スパイの場合は呼び出し後に</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$spy</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldHaveReceived</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'foo'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">with</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'bar'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>のような形で記述できます。</p>
+<p>ただ、モックと比べると機能は限定的で、個人的にはスパイよりモックを使用すべきだと考えています。</p>
+<h2 id="他のモックフレームワークとの比較">他のモックフレームワークとの比較</h2>
+<p>以上の内容を押さえておけば大抵のケースのユニットテストは書けると思います。<br>
+他にも公式ドキュメントにトリック的な例も載っていたりするので参照してください。</p>
+<p>ところで、他にPHPではどのようなテストフレームワークがあり、Mockeryとどのような点で違うのかについて調査してみます。</p>
+<p>今回の比較対象として、</p>
+<ul>
+<li>PHPUnitで使用できるモック機能</li>
+<li>Mockery</li>
+</ul>
+<p>の2つを比較してみます。
+ほかにもPhake等フレームワークはあるのですが、Laravelを使用する場合は選択肢はこの二つに絞られそうです。</p>
+<p>PHPUnit公式 テストダブル<br>
+<a href="https://phpunit.readthedocs.io/ja/latest/test-doubles.html">https://phpunit.readthedocs.io/ja/latest/test-doubles.html</a></p>
+<p>Mockery<br>
+<a href="https://readouble.com/mockery/1.0/ja/index.html">https://readouble.com/mockery/1.0/ja/index.html</a></p>
+<p>参考:<br>
+<a href="https://rimuru.lunanet.gr.jp/notes/post/2953/">https://rimuru.lunanet.gr.jp/notes/post/2953/</a></p>
+<p>PHPUnit<br>
+Example 8.12抜粋</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">$observer</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">expects</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">once</span><span style="color: #C9D1D9">())</span></span>
+<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">method</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'update'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">with</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">equalTo</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'something'</span><span style="color: #C9D1D9">));</span></span></code></pre>
+<p>この部分でモックの期待動作の設定を行なっていますが、ほぼMockeryと同じような形で指定できます。<br>
+ただ、公式ドキュメントを見る限り、これ以上複雑な例になるとMockeryの方が簡潔に書くことができます。<br>
+また、参考サイトにもありますが、メソッド呼び出し順序についてはPHPUnitでは検証できないようです。</p>
+<h2 id="所感">所感</h2>
+<p>Laravelを使用する場合はMockryを使用するといい感じにテストを書けそうです。<br>
+また、簡単な返り値のテストのみであればPHPUnitから使ってみるのもいいかもしれません。<br>
+ただ、テスト自体が泥臭く、いろんなコードをテストコードに書きがちです。<br>
+その中でもテストコードは仕様を表現するべきであり、できるだけ直感的に把握できるべきだと考えています。<br>
+そう考えるとMockeryは簡潔に書くことのできるフレームワークだと感じました。<br>
+Laravelを使用している場合はインストールされていると思いますので簡単に使えることもメリットです。</p>
+<p>いいテストを書けるようになると、テストのしづらいコードに気づくことができるようになり、そういったコードは設計がいまいちだったりします。<br>
+いい設計を身につけるためにもユニットテストは重要だなと感じていますし、いいテストが書けるようになるとリファクタリングが怖くなくなります。<br>
+ドメインの変更にコードを追随させるためにも、いいテストが書けるよう工夫を続けていきたいと思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

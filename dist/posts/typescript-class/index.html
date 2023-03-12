@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JavaScriptにおけるクラスとTypeScriptにおけるクラスについて</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2023/01/08</div>
+        <h1>JavaScriptにおけるクラスとTypeScriptにおけるクラスについて</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>今回はES2015から変更されたJavaScriptのオブジェクト指向構文についてまとめたいと思います。<br>
+また、最近TypeScriptについて個人開発等で導入し始めているので違いを意識しながら理解していきたいと思います。</p>
+<h2 id="参考書籍">参考書籍</h2>
+<p>今回の記事は今読んでいるJavaScriptおよびTypeScriptの書籍を比較しながら書きました。</p>
+<p><a href="https://www.amazon.co.jp/%E6%94%B9%E8%A8%82%E6%96%B0%E7%89%88JavaScript%E6%9C%AC%E6%A0%BC%E5%85%A5%E9%96%80-%E3%83%A2%E3%83%80%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB%E3%81%AB%E3%82%88%E3%82%8B%E5%9F%BA%E7%A4%8E%E3%81%8B%E3%82%89%E7%8F%BE%E5%A0%B4%E3%81%A7%E3%81%AE%E5%BF%9C%E7%94%A8%E3%81%BE%E3%81%A7-%E5%B1%B1%E7%94%B0-%E7%A5%A5%E5%AF%9B/dp/477418411X">改訂新版JavaScript本格入門 ~モダンスタイルによる基礎から現場での応用まで</a><br>
+<a href="https://www.amazon.co.jp/%E3%83%97%E3%83%AD%E3%82%92%E7%9B%AE%E6%8C%87%E3%81%99%E4%BA%BA%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AETypeScript%E5%85%A5%E9%96%80-%E5%AE%89%E5%85%A8%E3%81%AA%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E6%9B%B8%E3%81%8D%E6%96%B9%E3%81%8B%E3%82%89%E9%AB%98%E5%BA%A6%E3%81%AA%E5%9E%8B%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9%E3%81%BE%E3%81%A7-Software-Design-plus/dp/4297127474">プロを目指す人のためのTypeScript入門 安全なコードの書き方から高度な型の使い方まで</a></p>
+<h2 id="javascriptにおけるクラス構文">JavaScriptにおけるクラス構文</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Member {</span></span>
+<span class="line"><span style="color: #c9d1d9">    constructor(firstName, lastName) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.firstName = firstName;</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.lastName = lastName;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    // メソッド</span></span>
+<span class="line"><span style="color: #c9d1d9">    getName() {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return this.lastName + this.firstName;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">let m = new Member('太郎', '山田');</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(m.getName());</span></span></code></pre>
+<h3 id="class命令">class命令</h3>
+<p>他のオブジェクト言語に近い形でclass命令を書くことができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class クラス名 {</span></span>
+<span class="line"><span style="color: #c9d1d9">    // コンストラクターの定義</span></span>
+<span class="line"><span style="color: #c9d1d9">    // プロパティの定義</span></span>
+<span class="line"><span style="color: #c9d1d9">    // メソッドの定義</span></span>
+<span class="line"><span style="color: #c9d1d9">    メソッド名(引数) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        メソッドのロジック</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>コンストラクターの名前は<code>constructor</code>で固定です。</p>
+<p>他言語との違いとして、<code>public/protected/private</code>のようなアクセス修飾子は利用できない点に注意が必要です。
+JavaScriptにおいてはクラスのすべてのメンバーがpublic、つまりどこからでもアクセスできるようになります。</p>
+<h3 id="無名クラス匿名クラスについて">無名クラス(匿名クラス)について</h3>
+<p>少し特殊な書き方で、無名クラスと呼ばれる書き方ができます。<br>
+リテラルなので、関数リテラルと同じく、式の中で利用できます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let Member = class {</span></span>
+<span class="line"><span style="color: #c9d1d9">    constructor(firstName, lastName) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.firstName = firstName;</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.lastName = lastName;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">    getName() {</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.lastName + this.firstName;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">let m = new Member('太郎', '山田');</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(m.getName());</span></span></code></pre>
+<p>また、無名クラスを定義して即時newすることもできます。<br>
+クラスのインスタンスが生成されるため、変数に代入することも可能です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">new class {</span></span>
+<span class="line"><span style="color: #c9d1d9">    constructor(name) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        console.log('hi!', name);</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9">('Yamada');</span></span></code></pre>
+<p>使いみちについてはぱっと思いつきませんが、こういう書き方ができると知っておくだけでいつか役に立つかも、、、？</p>
+<h3 id="class命令は内部的には関数である">class命令は内部的には関数である</h3>
+<p>class命令で定義されたクラスは内部的に「特別な関数」として扱われます。<br>
+つまり、ES2015にていわゆる<code>クラス</code>が導入されたわけではなくあくまで「これまでFunctionオブジェクトで表現していたクラス(コンストラクター)」をよりわかりやすく表現できるようになったに過ぎません。<br>
+ただし、class命令によって定義されたクラスはFunctionオブジェクトによるクラスと完全には等価ではなく、どの部分で違いがあるのかについてこれから見ていきます。</p>
+<ol>
+<li>関数としての呼び出しはできない</li>
+</ol>
+<p>例えばclass命令で定義されたMemberクラスを以下のように呼び出すことができません。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let m = Member('太郎', '山田');</span></span></code></pre>
+<p>functionでのクラスの表現の場合は呼び出せてしまうため、以下のように対策する必要がありました。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let Member = function(firstName, lastName) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    if(!(this instanceOf Member)) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return new Member(firstName, lastName);</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">    this.firstName = firstName;</span></span>
+<span class="line"><span style="color: #c9d1d9">    // 以下略</span></span>
+<span class="line"><span style="color: #c9d1d9">};</span></span></code></pre>
+<p>上記は、コンストラクターが関数として呼び出された場合にthisが<code>Member</code>オブジェクトではなくグローバルオブジェクトになる性質を利用してthisが<code>Member</code>オブジェクト出ない場合に改めてnew演算子でコンストラクターを呼び出しています。</p>
+<ol start="2">
+<li>定義前のクラスを呼び出すことはできない</li>
+</ol>
+<p>以下のようなコードを書くことはできません。(function命令の場合は呼び出せます)</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let m = new Member('太郎', '山田');</span></span>
+<span class="line"><span style="color: #c9d1d9">// Member is not defined.</span></span>
+<span class="line"><span style="color: #c9d1d9">class Member {...中略...}</span></span></code></pre>
+<h3 id="class命令によるプロパティの定義">class命令によるプロパティの定義</h3>
+<p>classブロックにおいて、get/set構文を使ってプロパティを定義することもできます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Member {</span></span>
+<span class="line"><span style="color: #c9d1d9">    constructor(firstName, lastName) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.firstName = firstName;</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.lastName = lastName;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">    // プロパティの定義</span></span>
+<span class="line"><span style="color: #c9d1d9">    get firstName() {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return this._firstName;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    set firstName(value) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        this._firstName = value;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    get lastName() {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return this._lastName;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    set lastName(value) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        this._lastName = value;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">    // メソッドの定義</span></span>
+<span class="line"><span style="color: #c9d1d9">    getName() {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return this.last.Name + this.firstName;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">let m = new Member('太郎', '山田');</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(m.getName()); // 山田太郎</span></span></code></pre>
+<p>他の言語のプロパティ定義のように<code>let firstName = 'hogehoge'</code>のような書き方はできませんが、直感的なプロパティの定義だと思います。</p>
+<h3 id="class命令によるその他のオブジェクト指向操作">class命令によるその他のオブジェクト指向操作</h3>
+<ol>
+<li>
+<p>静的メソッドの定義<br>
+<code>static</code>をメソッド定義の頭に付与することで静的メソッドを定義することができます。</p>
+</li>
+<li>
+<p>クラスの継承<br>
+<code>extends</code>を利用することで既存クラスを継承したサブクラスをシンプルに定義することができます。</p>
+</li>
+</ol>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Member {</span></span>
+<span class="line"><span style="color: #c9d1d9">    ...中略...</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">class BusinessMember extends Member {</span></span>
+<span class="line"><span style="color: #c9d1d9">    work() {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return this.getName() + 'は働いています。';</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">let bm = new businessMember('太郎', '山田');</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(bm.getName()); // 山田太郎</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(bm.work()); // 山田太郎は働いています。</span></span></code></pre>
+<ol start="3">
+<li>オーバーライドと<code>super</code>キーワード<br>
+基底クラスで定義されたメソッド/コンストラクターは、サブクラスで上書きすることもできます。
+これをメソッドのオーバーライドと呼び、JavaScriptにおいてもこの仕組みが用意されています。</li>
+</ol>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Member {</span></span>
+<span class="line"><span style="color: #c9d1d9">    ...中略</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9">class BusinessMember extends Member {</span></span>
+<span class="line"><span style="color: #c9d1d9">    // Memberのコンストラクタに役職を追加</span></span>
+<span class="line"><span style="color: #c9d1d9">    constructor(firstName, lastName, position) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        super(firstName, lastName);</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.position = position;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">    getName() {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return super.getName() + '/役職: ' + this.position;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9">let bm = new BusinessMember('太郎', '山田', '課長');</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(bm.getName()); // 結果: 山田太郎/役職: 課長</span></span></code></pre>
+<p>オーバーライドは、基底クラスの機能を完全に書き換えるより、差分の処理を追加する場合が多いかなと思います。<br>
+そのような場合に<code>super</code>を使用することで基底クラスの処理を利用しつつ新しいクラス定義が可能になります。</p>
+<h2 id="typescriptにおけるクラス構文">TypeScriptにおけるクラス構文</h2>
+<p>ここまで、JavaScriptにおけるクラスについて復習も兼ねて丁寧に確認してきました。<br>
+ここからはクラス構文をTypeScriptでどのように書くのかについてまとめてみたいと思います。<br>
+基本的な使い方にあまり差がない部分については省略して、JavaScriptと比較して有用な箇所や使用に注意が必要な箇所についてまとめます。</p>
+<h3 id="プロパティの宣言">プロパティの宣言</h3>
+<p>TypeScriptでは、JavaScriptでは不要だったプロパティの宣言を行う必要があります。<br>
+定義していないプロパティアクセスはエラーとなります。<br>
+以下の例のように、<code>プロパティ名: 型 = 式;</code>のかたちで書く事ができます。</p>
+<p>また、下記の例は初期値を書いていますが、省略することもできます。<br>
+ただし、初期値を省略する場合はコンストラクタを必ず書く必要があります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class User {</span></span>
+<span class="line"><span style="color: #c9d1d9">    name: string = "";</span></span>
+<span class="line"><span style="color: #c9d1d9">    age: number = 0;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<ul>
+<li>オプショナルなプロパティや読み取り専用のプロパティ</li>
+</ul>
+<p>以下のような形でオプショナルなプロパティ(任意のプロパティ)や読み取り専用のプロパティを宣言することができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class User {</span></span>
+<span class="line"><span style="color: #c9d1d9">    name?: string;  // オプショナルなプロパティ</span></span>
+<span class="line"><span style="color: #c9d1d9">    readonly age: int = 0;  // 読み取り専用プロパティ</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9">const u = new User();</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(u.name); // undefinedが表示される(エラーではない)</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(u.age); // 0が表示される</span></span>
+<span class="line"><span style="color: #c9d1d9">u.age = 2; // エラー</span></span></code></pre>
+<p>読み取り専用プロパティは基本的に代入不可能ですが、コンストラクタの中では代入が可能です。</p>
+<h3 id="3種類のアクセス修飾子">3種類のアクセス修飾子</h3>
+<p>TypeScriptでは、<code>public</code>, <code>protected</code>, <code>private</code>の３種類のアクセス修飾子をクラス宣言内のプロパティ宣言、及びメソッド宣言に付与することができます。</p>
+<ul>
+<li>public … どこからでもアクセス可能</li>
+<li>private … クラスの内部からのみアクセス可能</li>
+<li>protected … そのクラス自身と子クラスからアクセス可能</li>
+</ul>
+<p>省略した場合は<code>public</code>と同じになります。<br>
+これによって、<code>private</code>が付与されたプロパティやメソッドは外向きのインターフェースと内部実装とにはっきりと区分されます。</p>
+<h3 id="コンストラクタ引数でのプロパティ宣言">コンストラクタ引数でのプロパティ宣言</h3>
+<p>アクセス修飾子を用いることで、コンストラクタの引数でのプロパティ宣言が可能になります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class User {</span></span>
+<span class="line"><span style="color: #c9d1d9">    name: string;</span></span>
+<span class="line"><span style="color: #c9d1d9">    private age: number;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    constructor(name: string, age: number) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.name = name;</span></span>
+<span class="line"><span style="color: #c9d1d9">        this.age = age;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>上記のコードをコンストラクタ引数でプロパティ宣言を行うと以下のようになります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class User {</span></span>
+<span class="line"><span style="color: #c9d1d9">    constructor(public name: string, private age: number){}</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>コンストラクタの引数名の前にpublic,privateというアクセス修飾子が付きます。<br>
+これによってコンストラクタ引数であると同時にプロパティ宣言であるとみなされます。<br>
+ただし、この書き方をする場合はpublicの場合でもかならず修飾子が必要になります。</p>
+<p>処理は短くなりますが、プロパティ宣言を1箇所にまとめる事ができない点と、JavaScript本来の構文からかなり逸脱しているためこの書き方は好みが分かれますが、こういう書き方ができるということは知っておくといいと思います。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>JavaScriptにおけるclass構文はES2015で追加された比較的新しいもの</li>
+<li>プロパティの宣言にはコンストラクタを利用したものとget/setを利用したものがある</li>
+<li>TypeScriptにおけるclass構文ではプロパティの宣言が必要</li>
+<li>TypeScriptではプロパティとメソッドにアクセス修飾子が付与できる</li>
+</ul>
+<h2 id="参考">参考</h2>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Classes">https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Classes</a><br>
+<a href="https://future-architect.github.io/typescript-guide/class.html">https://future-architect.github.io/typescript-guide/class.html</a></p>
+<h2 id="所感">所感</h2>
+<p>今回はJavaScriptのclass構文とTypeScriptのclass構文の違いを主に学習しました。<br>
+TypeScriptでは他にも型引数やクラスの型の概念があるので引き続き調べていく必要がありそうです。</p>
+<p>2023年になり、年末は帰省していたため、久々に業務以外で一切勉強しない日が続きました。<br>
+気分転換あまりできていなかったのでいい休息になったかなと思います。<br>
+新年になったのでまた新たに目標を設定して2023年も駆け抜けたいと思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

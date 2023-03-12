@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LocalStorageとは</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/07/28</div>
+        <h1>LocalStorageとは</h1>
+        <div class="post">
+          <h2 id="localstorageとは">LocalStorageとは</h2>
+<p>参考:
+<a href="https://developer.mozilla.org/ja/docs/Web/API/Web_Storage_API">https://developer.mozilla.org/ja/docs/Web/API/Web_Storage_API</a></p>
+<p>WebStorageAPIの一種
+ブラウザがキーと値のペアを安全に保存できる仕組み。</p>
+<p>2種類の仕組みがある。</p>
+<ul>
+<li>sessionStorage</li>
+<li>localStorage</li>
+</ul>
+<h3 id="sessionstorage">sessionStorage</h3>
+<ul>
+<li>セッションデータを保存する。タブが閉じられるとデータは消去される</li>
+<li>データがサーバーに転送されることはない</li>
+<li>ストレージは最大5MBとcookieと比べると大きい。(cookieは4KB)</li>
+</ul>
+<h3 id="localstorage">localStorage</h3>
+<ul>
+<li>有効期限なし、クリアするにはJavaScriptを実行する必要がある。</li>
+</ul>
+<p>これらはHTML5から導入された技術です。
+それまではcookieやセッションといった方法しかありませんでした。</p>
+<p>文字列のみを保存できます。</p>
+<p>公式を見ていただくのが確実ですが、基本的な使い方について簡単にまとめておきます。</p>
+<h2 id="データの保存">データの保存</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">localStorage.setItem('key', 'value');</span></span></code></pre>
+<p>文字列として保存するので、</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">localStorage.setItem('number', 1);</span></span></code></pre>
+<p>のように保存しても文字列として保存されます。</p>
+<h2 id="データの取得">データの取得</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">const value = localStorage.getItem('key');</span></span></code></pre>
+<p>キーを指定して<code>getItem</code>メソッドで取得します。</p>
+<h2 id="データの削除">データの削除</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">localStorage.removeItem('key');</span></span></code></pre>
+<p>キーを指定して特定のvalueを削除するには<code>removeItem</code>メソッドを使用します。</p>
+<h2 id="全てのデータを削除する">全てのデータを削除する</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">localStorage.clear();</span></span></code></pre>
+<p>localStorageのデータを全て削除します。
+全部削除されるので基本的に使用するのは避けた方がいいかなと思います。
+削除される範囲について調べてみます。</p>
+<h2 id="localstorageの範囲">localStorageの範囲</h2>
+<p>localStorageは同じドメイン内でのみ有効。
+サブドメインやポート番号が違う場合はlocalStorageも別で管理される。</p>
+<p><code>hoge.fuga.com</code>と<code>hogehoge.fuga.com</code>ではサブドメインが違うのでlocalStorageは別扱いとなります。
+また、<code>hoge.fuga.com</code>と<code>hoge.fuga.com:8000</code>ではポート番号が違うので別扱いです。</p>
+<h2 id="配列やオブジェクトを保存する">配列やオブジェクトを保存する</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">const object = {</span></span>
+<span class="line"><span style="color: #c9d1d9">    key1: 'value1',</span></span>
+<span class="line"><span style="color: #c9d1d9">    key2: 'value2',</span></span>
+<span class="line"><span style="color: #c9d1d9">    key3: 'value3',</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9">localStorage.setItem('key', JSON.stringify(data));</span></span></code></pre>
+<h2 id="配列やオブジェクトを取得する">配列やオブジェクトを取得する</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">const object = JSON.parse(localStorage.getItem('key'))</span></span></code></pre>
+<h2 id="localstorageの使用用途">localStorageの使用用途</h2>
+<p>サーバーサイドに保存するほどではないデータ、例えば検索時の絞り込みの設定やブログ等にコメントする際の名前等でしょうか。
+ただ、初めに説明した通り半永久的に有効なデータであるため、管理するのが大変になります。
+規模が大きくなるに従ってグローバル関数と同様にどのタイミングでアクセスされているか管理するのが大変になります。
+クライアントサイドに保存されるためセキュリティ上のリスクに気をつけて扱う必要があります。</p>
+<h2 id="セキュリティについて">セキュリティについて</h2>
+<p>localStorageについてまとめようとしていたのですが思っていたより簡単に扱えて、記事に書くことがなくなってしまったのでセキュリティについても調べてみました。
+参考:
+<a href="https://techracho.bpsinc.jp/hachi8833/2019_10_09/80851">https://techracho.bpsinc.jp/hachi8833/2019_10_09/80851</a></p>
+<p>参考記事によると</p>
+<ul>
+<li>重要な情報を一切含まない</li>
+<li>ハイパフォーマンスを要求されない</li>
+<li>5MB以内に収まるデータ量</li>
+<li>文字列のみのデータ</li>
+</ul>
+<p>の条件を満たす、公開されても問題ない情報の場合でのみ利用しても良いと書かれています。</p>
+<p>OWASP（Open Web Application Security Project)のlocalStorageについての解説にも書かれていました。</p>
+<p><a href="https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/HTML5_Security_Cheat_Sheet.md#local-storage">https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/HTML5_Security_Cheat_Sheet.md#local-storage</a></p>
+<ul>
+<li>永続ストレージが必要ない場合は基本的にsessionStorageを使用する。</li>
+<li>XSSでこれらのオブジェクト全てのデータを盗むことができるため機密情報はローカルストレージには保存しない。</li>
+<li>XSSでこれらのオブジェクトに悪意のあるデータをロードすることもできるため、これらのオブジェクトを信頼しない</li>
+<li>データは常にJavaScriptでアクセスできるため、セッション識別子をローカルストレージに保存しない。<code>httpOnly</code>Cookieを利用するとリスクを軽減できる。</li>
+</ul>
+<p>基本的に公開されても問題のないデータのみを扱うべきで、セッションの識別子等トークンについてもlocalStorageを利用することは避けた方がよさそうです。
+この辺りの議論はいろんな記事があって混乱するのですがlocalStorageの仕組みを考えると機密情報は扱わない方がいいと思いました。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>Cookie</p>
+<ul>
+<li>サーバーからの指示でブラウザ上に保存される</li>
+<li>アクセスのたびにサーバーに送信される</li>
+</ul>
+<p>localStorage</p>
+<ul>
+<li>JavaScript操作によってブラウザに保存される</li>
+<li>シンプルなキーバリューストレージでサーバーには自動送信されない</li>
+<li>アクセスできる範囲は同一オリジンのみで消去しない限り半永久的に残り続ける</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>今回はlocalStorage自体がシンプルな仕組みなのでかなりライトな記事となりました。
+問題はシンプルが故の管理のしづらさとセキュリティ面でした。
+セキュリティについてまだまだ知識不足な部分があるので引き続き勉強したいと思います。
+以下のスライドがめちゃくちゃ良さそうで中身みてみましたがまだ全然理解できていないので一つずつ勉強していきたいです。</p>
+<p><a href="https://www.slideshare.net/ockeghem/phpconf2021spasecurity">https://www.slideshare.net/ockeghem/phpconf2021spasecurity</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

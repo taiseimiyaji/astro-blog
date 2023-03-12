@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ORM(オブジェクト関係マッピング)について</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/09/28</div>
+        <h1>ORM(オブジェクト関係マッピング)について</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>今回はORMについて調査したいと思います。<br>
+また、よく比較されるクエリビルダについても調査し、その違いを理解したいと思います。</p>
+<h2 id="ormとは">ORMとは</h2>
+<p>ORMとは、Object-Relational Mappingの略です。</p>
+<p>データベースとオブジェクト指向プログラミングの間のデータを変換するもの。<br>
+つまり、データベースに対するデータの操作をオブジェクト指向型言語の操作方法で扱えるようにします。</p>
+<p>オブジェクト指向…現実世界をモデル化したもの</p>
+<p>関係データベース…検索やCRUD処理に最適化されたデータのためのモデル。</p>
+<p>かなり大雑把な説明ですが、この二つの間には考え方の違いがあります。(インピーダンスミスマッチというらしいです)</p>
+<p>ORMを用いれば直接SQLを書くことなく、オブジェクトのメソッドを用いてDB操作ができるようになります。<br>
+例えば、createメソッドで新規作成するなど、オブジェクト指向のクラスのメソッドを用いてSQLを発行することができます。</p>
+<h2 id="ormのメリット">ORMのメリット</h2>
+<ul>
+<li>SQLを直接書かなくてもいい</li>
+<li>オブジェクト指向言語で書ける</li>
+<li>テーブル同士のリレーションを表現できる</li>
+<li>データベースごとの言語の違いを吸収してくれる</li>
+</ul>
+<h2 id="ormのデメリット">ORMのデメリット</h2>
+<ul>
+<li>各ORMライブラリの使い方を覚えないといけない</li>
+<li>直接SQLを書くわけではないのでチューニング等の面に課題がある</li>
+<li>オブジェクトを返すので大抵の場合メモリ消費量が大きくなる</li>
+</ul>
+<p>各言語ごとにORMのライブラリが用意されています。
+業務で用いているLaravelの場合は代表的なものとして<code>Eloquent</code>という仕組みがあります。</p>
+<h2 id="クエリビルダについて">クエリビルダについて</h2>
+<p>PHPのメソッドを使用するような書き方でSQLを発行できる仕組み。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>書き方の例</th><th>取得できるもの</th></tr></thead><tbody><tr><td>クエリビルダ</td><td>DB::table()</td><td>連想配列</td></tr><tr><td>ORM</td><td>Model::all()</td><td>モデルクラスのインスタンス</td></tr></tbody></table>
+<p>クエリビルダの所属クラスは<code>Illuminate\Support\Facades\DB</code>、Eloquentの所属クラスは<code>Illuminate\Database\Eloquent\Model</code>となります。</p>
+<p><strong>ちなみにEloquent形式で記述する際にもクエリビルダを使用することができます。</strong><br>
+Eloquentのリレーションはクエリビルダとして機能するため、クエリビルダチェーンを使用できます。<br>
+簡単に言うと、Eloquentにチェーンする形でクエリビルダを記述できます。<br>
+これがEloquentとクエリビルダの違いをややこしくしている原因です。</p>
+<h3 id="クエリビルダのメリット">クエリビルダのメリット</h3>
+<ul>
+<li>SQLを書くようにメソッドをチェーンできるため、SQLの知識があれば用意に記載できる</li>
+<li>Eloquentと比較すると高速</li>
+</ul>
+<h3 id="クエリビルダのデメリット">クエリビルダのデメリット</h3>
+<ul>
+<li>自分でテーブル結合をする必要がある</li>
+<li>Eloquentと比較するとSQLを意識して書く必要がある</li>
+<li>記述量はEloquentと比較すると多い</li>
+</ul>
+<p>例) <code>sample</code>というテーブルに対してクエリビルダを書く場合</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #79C0FF">DB</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">table</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'sample'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">select</span><span style="color: #C9D1D9">()</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">where</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">条件</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>のような形で簡単にSQLライクに書けます。</p>
+<h2 id="eloquentにおけるリレーション">Eloquentにおけるリレーション</h2>
+<p>参考: <a href="https://readouble.com/laravel/8.x/ja/eloquent-relationships.html">https://readouble.com/laravel/8.x/ja/eloquent-relationships.html</a></p>
+<p>テーブルのリレーションについて、Eloquentでのコード例を公式ドキュメントを参考にまとめます。</p>
+<h3 id="1対1hasone-belongto">1対1(hasOne, belongTo)</h3>
+<p><code>User</code>と<code>Phone</code>モデルが関連付けられている場合</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">namespace</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">App\Models</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Illuminate\Database\Eloquent\Model</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">User</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">extends</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Model</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">/**</span></span>
+<span class="line"><span style="color: #8B949E">     * ユーザーに関連している電話の取得</span></span>
+<span class="line"><span style="color: #8B949E">     */</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">phone</span><span style="color: #C9D1D9">()</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">hasOne</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Phone</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>上記のように<code>hasOne</code>メソッドを使用する。引数には関連モデルクラスの名前を渡す。</p>
+<p>逆に、<code>Phone</code>モデル空<code>User</code>モデルへアクセスできるようにする場合は<code>belongTo</code>メソッドを使用することで<code>hasOne</code>関係の逆を定義できる。</p>
+<p>あるモデルが多くの関連モデルを持つ場合、そのリレーションにおける「最新」または「最も古い」関連モデルを簡単に取得したい場合</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #8B949E">// 最新</span></span>
+<span class="line"><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">hasOne</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Phone</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">latestOfMany</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #8B949E">// 最も古い</span></span>
+<span class="line"><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">hasOne</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Phone</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">oldestOfMany</span><span style="color: #C9D1D9">();</span></span></code></pre>
+<p>デフォルトではソート可能なモデルの主キーに基づいて最新または最古の関連モデルを取得する。<br>
+別のソート基準を使用したい場合は<code>ofMany</code>メソッドを使用する。<br>
+引数には関連するモデルを検索する際にどの集約関数(<code>min</code>または<code>max</code>)を適用するかを指定する。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">hasOne</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Order</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">ofMany</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'price'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'max'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>キー制約等は引数で指定できる。詳細は公式ドキュメントを参照</p>
+<h3 id="1対多hasmany">1対多(hasMany)</h3>
+<p><code>hasOne</code>同様の使い方ができる<code>hasMany</code>メソッドを使用する。</p>
+<p><code>hasMany</code>の逆の所属関係を定義するには<code>belongsTo</code>メソッドを使用する。</p>
+<h3 id="デフォルトモデル">デフォルトモデル</h3>
+<p><code>belongsTo</code>, <code>hasOne</code>, <code>hasOneThrough</code>, <code>morphOne</code>等リレーションを使用する場合は指定する関係がnullの場合に返すデフォルトモデルを定義できる。
+一般的なNullオブジェクトパターンを実現できる。</p>
+<h3 id="多対多">多対多</h3>
+<ul>
+<li>users…ユーザーテーブル</li>
+<li>roles…役割テーブル</li>
+<li>role_user…中間テーブル</li>
+</ul>
+<p><code>belongsToMany</code>メソッドを使用する。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">namespace</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">App\Models</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Illuminate\Database\Eloquent\Model</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">User</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">extends</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Model</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">/**</span></span>
+<span class="line"><span style="color: #8B949E">     * このユーザーに属する役割</span></span>
+<span class="line"><span style="color: #8B949E">     */</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">roles</span><span style="color: #C9D1D9">()</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">belongsToMany</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Role</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>リレーションを定義したあと、アクセスする際は<code>roles</code>動的リレーションプロパティを使用してユーザーの役割へアクセスできます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">App\Models\User</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">$user </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">find</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">foreach</span><span style="color: #C9D1D9"> ($user</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">roles </span><span style="color: #FF7B72">as</span><span style="color: #C9D1D9"> $role) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">//</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>逆の関係も同様に<code>belongsToMany</code>を使用します。
+違いはUserモデルを参照することです。</p>
+<p>また、中間テーブルのカラムの取得には<code>pivot</code>を使用する。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">App\Models\User</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">$user </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">find</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">foreach</span><span style="color: #C9D1D9"> ($user</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">roles </span><span style="color: #FF7B72">as</span><span style="color: #C9D1D9"> $role) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #79C0FF">echo</span><span style="color: #C9D1D9"> $role</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">pivot</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">created_at;</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<h3 id="リレーションの存在のクエリ">リレーションの存在のクエリ</h3>
+<p>モデルレコードを取得する際にリレーションの有無に基づいた結果を制約したい場合。<br>
+例えば、コメントが少なくとも1つある全てのブログ投稿を取得する場合。<br>
+<code>has</code>メソッドと<code>orHas</code>メソッドを使用する。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">App\Models\Post</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #8B949E">// コメントが少なくとも1つあるすべての投稿を取得</span></span>
+<span class="line"><span style="color: #C9D1D9">$posts </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Post</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">has</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'comments'</span><span style="color: #C9D1D9">)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">get</span><span style="color: #C9D1D9">();</span></span></code></pre>
+<p>演算子を追加してクエリのカスタマイズする事もできる。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #8B949E">// コメントが３つ以上あるすべての投稿を取得</span></span>
+<span class="line"><span style="color: #C9D1D9">$posts </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Post</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">has</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'comments'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'>='</span><span style="color: #C9D1D9">, </span><span style="color: #79C0FF">3</span><span style="color: #C9D1D9">)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">get</span><span style="color: #C9D1D9">();</span></span></code></pre>
+<p><code>whereHas</code>と<code>orWhereHas</code>を使用することでコメントの内容の検査などの追加のクエリ制約を定義できる。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Illuminate\Database\Eloquent\Builder</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #8B949E">// code％と似ている単語を含むコメントが少なくとも１つある投稿を取得</span></span>
+<span class="line"><span style="color: #C9D1D9">$posts </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Post</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">whereHas</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'comments'</span><span style="color: #C9D1D9">, </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">Builder</span><span style="color: #C9D1D9"> $query) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    $query</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">where</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'content'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'like'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'code%'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">})</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">get</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #8B949E">// code％と似ている単語を含むコメントが１０件以上ある投稿を取得</span></span>
+<span class="line"><span style="color: #C9D1D9">$posts </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Post</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">whereHas</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'comments'</span><span style="color: #C9D1D9">, </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">Builder</span><span style="color: #C9D1D9"> $query) {</span></span>
+<span class="line"><span style="color: #C9D1D9">    $query</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">where</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'content'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'like'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'code%'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">}, </span><span style="color: #A5D6FF">'>='</span><span style="color: #C9D1D9">, </span><span style="color: #79C0FF">10</span><span style="color: #C9D1D9">)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">get</span><span style="color: #C9D1D9">();</span></span></code></pre>
+<p>以上のように、Eloquentを使用すると簡単にテーブルのリレーションを表現できます。<br>
+さらに、リレーションを表現した上で追加でSQLを発行したい場合はクエリビルダも使用する事ができるため、簡単にDB操作を行うことができます。</p>
+<h2 id="eloquentと比較したクエリビルダのメリット">Eloquentと比較したクエリビルダのメリット</h2>
+<p>ここまで紹介したように、非常に便利なEloquentですが、クエリビルダの方が勝っている点もあります。<br>
+はじめに紹介したメリットの中でも最も大きいのが<code>パフォーマンス</code>です。</p>
+<p>Eloquentモデルのメソッドを使用する場合、メソッドの種類にもよりますが内部で都度SQLが実行される場合があります。<br>
+それに対してクエリビルダの場合は明確にSQLの発行内容を指定できるためSQLの発行回数を抑えることができます。<br>
+また、最終的にModelに詰められてデータが返されるEloquentと比較するとメモリの消費量も抑えることができます。</p>
+<h2 id="クエリビルダとeloquentの選択">クエリビルダとEloquentの選択</h2>
+<p>選択基準としてはパフォーマンス(クエリビルダ)と扱いやすさ(Eloquent)のトレードオフになると思います。<br>
+ただ、かなり強力な機能なのでEloquentを全く使用しない場合はLaravelを使用する理由の一つを犠牲にすることになるかなと思います。</p>
+<h3 id="cqrsを採用し参照系はクエリビルダを用いる">CQRSを採用し、参照系はクエリビルダを用いる</h3>
+<p>クエリビルダとEloquentの選択において、基準としている考え方に<code>CQRS</code>があります。<br>
+<code>コマンドクエリ責務分離</code>と呼ばれるもので、簡単に言うとサーバーサイドの機能を「コマンド(副作用があるもの)」と「クエリ(副作用のないもの)」で完全に分けてしまおうという考え方です。</p>
+<p>コマンドの場合は副作用、つまりデータストアへの変更が発生するため、型を用いた値の確認や整合性の確認のためのロジックを実行する必要があります。<br>
+それに対してクエリの場合は副作用がないため、整合性等気にする必要性が薄いです。<br>
+また、クエリの場合は正規化しているDBを用いる場合にデータの取得が煩雑になります。<br>
+クエリはコマンドに比べると多く実行されるパターンが多いため、パフォーマンス面の負荷が大きくなります。</p>
+<p>つまり、コマンドには複雑なビジネスロジックを表現したドメイン駆動を適用するが、クエリの場合は省略するという考え方です。</p>
+<p>これについては以下のブログが参考になると考えています。</p>
+<p><a href="https://little-hands.hatenablog.com/entry/2019/12/02/cqrs">https://little-hands.hatenablog.com/entry/2019/12/02/cqrs</a></p>
+<p>CQRSにもどの層で分けるべきかという話があって、これは段階的に分けることができるという考え方です。</p>
+<ul>
+<li>共通のDBを利用し、コマンドとクエリで利用するモデルを分けて実装する</li>
+<li>DBをコマンド用とクエリ用で分ける</li>
+<li>イベントソーシングの考え方で実装する</li>
+</ul>
+<p>イベントソーシングについては先程のブログの中で</p>
+<blockquote>
+<p>イベントソーシングとは、データ永続化をドメインオブジェクト(EntityやValueObject)の状態(ステート)をそのまま保存するのではなく、「ユーザーが登録された」「タスクが完了された」といった イベントそのものを永続化する というアーキテクチャです。</p>
+</blockquote>
+<p>というように説明されています。</p>
+<p>また、下記のスライドもわかりやすいと思います。</p>
+<p><a href="https://pages.awscloud.com/rs/112-TZM-766/images/DevAx_connect_jp_season1_day4_CQRS%26EventSourcing.pdf">https://pages.awscloud.com/rs/112-TZM-766/images/DevAx_connect_jp_season1_day4_CQRS%26EventSourcing.pdf</a></p>
+<h2 id="参考">参考</h2>
+<p><a href="https://pages.awscloud.com/rs/112-TZM-766/images/DevAx_connect_jp_season1_day4_CQRS%26EventSourcing.pdf">https://pages.awscloud.com/rs/112-TZM-766/images/DevAx_connect_jp_season1_day4_CQRS%26EventSourcing.pdf</a></p>
+<p><a href="https://little-hands.hatenablog.com/entry/2019/12/02/cqrs">https://little-hands.hatenablog.com/entry/2019/12/02/cqrs</a></p>
+<p><a href="https://readouble.com/laravel/8.x/ja/eloquent-relationships.html">https://readouble.com/laravel/8.x/ja/eloquent-relationships.html</a></p>
+<h2 id="所感">所感</h2>
+<p>今回はORM(Eloquent)、クエリビルダについてそれぞれのメリットや違い等を理解するために調査してみました。<br>
+次回以降、またパフォーマンス面での比較や内部で発行されるSQLについても調査してみたいと思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

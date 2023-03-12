@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Docker Composeについて</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2023/02/11</div>
+        <h1>Docker Composeについて</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>前回の記事でDockerについて調査した続きです。<br>
+今回は実際にアプリを作成するとなると使うことになるであろう<code>Docker Compose</code>について調査します。<br>
+前回同様公式ドキュメントのGet startedの内容を確認し、自分なりの設定方法を考えてみます。</p>
+<h2 id="docker-composeとは">Docker Composeとは</h2>
+<p>複数コンテナのアプリケーションを定義、共有するためのツールです。<br>
+YAML形式のファイルを作成することでコマンド1つで複数のコンテナを立ち上げたり、解体することができます。</p>
+<p>Macの場合、Docker Desktopをインストール済みであれば、Docker Composeのインストールは不要です。<br>
+下記コマンドでバージョンが確認できればOKです。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker-compose version</span></span></code></pre>
+<h2 id="composeファイルの作成方法">Composeファイルの作成方法</h2>
+<p>アプリのプロジェクトルートで<code>docker-compose.yml</code>という名前でファイルを作成します。</p>
+<p>今回記載するコンテナの内容は下記になります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker run -dp 3000:3000 \</span></span>
+<span class="line"><span style="color: #c9d1d9">  -w /app -v "$(pwd):/app" \</span></span>
+<span class="line"><span style="color: #c9d1d9">  --network todo-app \</span></span>
+<span class="line"><span style="color: #c9d1d9">  -e MYSQL_HOST=mysql \</span></span>
+<span class="line"><span style="color: #c9d1d9">  -e MYSQL_USER=root \</span></span>
+<span class="line"><span style="color: #c9d1d9">  -e MYSQL_PASSWORD=secret \</span></span>
+<span class="line"><span style="color: #c9d1d9">  -e MYSQL_DB=todos \</span></span>
+<span class="line"><span style="color: #c9d1d9">  node:12-alpine \</span></span>
+<span class="line"><span style="color: #c9d1d9">  sh -c "yarn install &#x26;&#x26; yarn run dev"</span></span></code></pre>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">version: "3.7"</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">services:</span></span>
+<span class="line"><span style="color: #c9d1d9">  app:</span></span>
+<span class="line"><span style="color: #c9d1d9">    image: node:12-alpine</span></span>
+<span class="line"><span style="color: #c9d1d9">    command: sh -c "yarn install &#x26;&#x26; yarn run dev"</span></span>
+<span class="line"><span style="color: #c9d1d9">    ports:</span></span>
+<span class="line"><span style="color: #c9d1d9">      - 3000:3000</span></span>
+<span class="line"><span style="color: #c9d1d9">    working_dir: /app</span></span>
+<span class="line"><span style="color: #c9d1d9">    volumes:</span></span>
+<span class="line"><span style="color: #c9d1d9">      - ./:/app</span></span>
+<span class="line"><span style="color: #c9d1d9">    environment:</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_HOST: mysql</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_USER: root</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_PASSWORD: secret</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_DB: todos</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<ul>
+<li><code>version</code> … docker composeのスキーマバージョン。詳細は<a href="https://matsuand.github.io/docs.docker.jp.onthefly/compose/compose-file/">こちら</a></li>
+<li><code>services</code> … コンテナの一覧を定義します。</li>
+<li><code>app</code> … コンテナ名です。任意の値に変更可能で、自動的にネットワークエイリアスになります。</li>
+<li><code>command</code> … コマンドを記載します。通常は<code>image</code>定義のすぐ近くに書きます。</li>
+<li><code>ports</code> … ポートを指定します。<a href="https://matsuand.github.io/docs.docker.jp.onthefly/compose/compose-file/compose-file-v3/#ports">記載方法</a>がいくつかあります。今回の書き方は<code>HOST:CONTAINER</code>の書き方です。</li>
+<li><code>working_dir</code> … ワーキングディレクトリです。コマンドでいうと<code>-w</code>で指定したディレクトリです。</li>
+<li><code>volumes</code> … ボリュームの指定です。コマンドでいうと<code>-v</code> で指定したディレクトリです。ポート同様に<a href="https://matsuand.github.io/docs.docker.jp.onthefly/compose/compose-file/compose-file-v3/#volumes">記載方法</a>がいくつかあります。Docker Composeにボリュームを定義する場合はカレントディレクトリからの相対パスで記載することができます。</li>
+<li><code>environment</code> … 環境変数の指定です。コマンドでいうと<code>-e</code>で指定していた部分です。</li>
+</ul>
+<p>以上でアプリ用のコンテナの定義を記載できました。</p>
+<p>続いてMySQLサーバーの定義を記載していきます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker run -d \</span></span>
+<span class="line"><span style="color: #c9d1d9">  --network todo-app --network-alias mysql \</span></span>
+<span class="line"><span style="color: #c9d1d9">  -v todo-mysql-data:/var/lib/mysql \</span></span>
+<span class="line"><span style="color: #c9d1d9">  -e MYSQL_ROOT_PASSWORD=secret \</span></span>
+<span class="line"><span style="color: #c9d1d9">  -e MYSQL_DATABASE=todos \</span></span>
+<span class="line"><span style="color: #c9d1d9">  mysql:5.7</span></span></code></pre>
+<p>先程のアプリ用コンテナの定義の下にMySQL用のサービスを定義します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9"> version: "3.7"</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9"> services:</span></span>
+<span class="line"><span style="color: #c9d1d9">   app:</span></span>
+<span class="line"><span style="color: #c9d1d9">     # The app service definition</span></span>
+<span class="line"><span style="color: #c9d1d9">   mysql:</span></span>
+<span class="line"><span style="color: #c9d1d9">     image: mysql:5.7</span></span></code></pre>
+<p>次はボリュームマッピングの定義ですが、<code>docker run</code>を使用すると名前付きボリュームが自動生成されていました。<br>
+Composeの場合は最上位項目として<code>volumes:</code>というセクションを作成し、サービス定義の中のマウントポイントをここに指定します。
+ボリューム名だけを指定すれば、デフォルトのオプションが適用されます。<a href="https://matsuand.github.io/docs.docker.jp.onthefly/compose/compose-file/compose-file-v3/#volume-configuration-reference">composeにおけるボリュームについてはこちら</a></p>
+<p>概要としては、docker compose自体が複数のコンテナの利用を前提としているため、マルチサービスにまたがって使用できる名前付きボリュームを生成します。</p>
+<p>ボリューム自体の理解については<a href="https://matsuand.github.io/docs.docker.jp.onthefly/storage/volumes/">こちら</a></p>
+<p>ボリュームが設定できれば、後は必要な環境変数を<code>environment</code>として定義します。</p>
+<p>ここまでで完成した<code>docker-compose.yml</code>が以下のようになります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">version: "3.7"</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">services:</span></span>
+<span class="line"><span style="color: #c9d1d9">  app:</span></span>
+<span class="line"><span style="color: #c9d1d9">    image: node:12-alpine</span></span>
+<span class="line"><span style="color: #c9d1d9">    command: sh -c "yarn install &#x26;&#x26; yarn run dev"</span></span>
+<span class="line"><span style="color: #c9d1d9">    ports:</span></span>
+<span class="line"><span style="color: #c9d1d9">      - 3000:3000</span></span>
+<span class="line"><span style="color: #c9d1d9">    working_dir: /app</span></span>
+<span class="line"><span style="color: #c9d1d9">    volumes:</span></span>
+<span class="line"><span style="color: #c9d1d9">      - ./:/app</span></span>
+<span class="line"><span style="color: #c9d1d9">    environment:</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_HOST: mysql</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_USER: root</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_PASSWORD: secret</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_DB: todos</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">  mysql:</span></span>
+<span class="line"><span style="color: #c9d1d9">    image: mysql:5.7</span></span>
+<span class="line"><span style="color: #c9d1d9">    volumes:</span></span>
+<span class="line"><span style="color: #c9d1d9">      - todo-mysql-data:/var/lib/mysql</span></span>
+<span class="line"><span style="color: #c9d1d9">    environment:</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_ROOT_PASSWORD: secret</span></span>
+<span class="line"><span style="color: #c9d1d9">      MYSQL_DATABASE: todos</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">volumes:</span></span>
+<span class="line"><span style="color: #c9d1d9">  todo-mysql-data:</span></span></code></pre>
+<p>アプリケーションの起動には、<code>docker-compose up -d</code>コマンドを利用します。<br>
+<code>-d</code>オプションの指定でバックグラウンドで実行されるようになります。</p>
+<p>ちなみに、Docker Composeを利用するとネットワークは自動的に生成されます。</p>
+<p>ログを確認する場合は<code>docker-compose logs -f</code>コマンドを実行することでサービスのログを1つにまとめて表示する事ができます。<br>
+<code>-f</code>コマンドを指定するとログ出力を継続する事ができます。また、特定のサービスのログのみを確認したい場合は<code>docker-compose logs -f app</code>のようにログコマンドの最後にサービス名を指定します。</p>
+<p>アプリケーションのコンテナをまとめて削除する場合は<code>docker-compose down</code>コマンドを実行します。<br>
+この場合は名前付きボリュームは<code>docker-compose down</code>では削除されないため、<code>--volumes</code>フラグをつける必要があります。</p>
+<h3 id="ここまでのまとめ">ここまでのまとめ</h3>
+<p>ここまでの内容で公式ドキュメントにあるチュートリアルについて確認しました。</p>
+<ul>
+<li>docker composeを利用することで複数コンテナの立ち上げ、削除をコマンド一つで簡単に行う事ができる。</li>
+<li>docker composeファイル作成の際には<a href="https://matsuand.github.io/docs.docker.jp.onthefly/storage/volumes/">ボリューム</a>、<a href="https://matsuand.github.io/docs.docker.jp.onthefly/network/">ネットワーク</a>の理解があると楽</li>
+</ul>
+<h2 id="ベストプラクティス">ベストプラクティス</h2>
+<p>こちらに<a href="https://matsuand.github.io/docs.docker.jp.onthefly/get-started/09_image_best/">イメージビルドのベストプラクティス</a>がまとまっています。</p>
+<p>この中で、ぱっと理解できなかったキャッシュ処理とマルチステージビルドについてまとめます。</p>
+<h2 id="レイヤーのキャッシュ処理">レイヤーのキャッシュ処理</h2>
+<p>Dockerは<code>1つのレイヤーに変更が入ると、それ移行に続く全レイヤーは再生成されます。</code></p>
+<p>イメージがどのように構成されているかは<code>docker image history</code>コマンドで確認できます。</p>
+<p>Dockerfileの各コマンドはイメージ内の1つのレイヤーに対応しています。</p>
+<p>つまりイメージに変更があった場合、<code>yarn install --production</code>が再度実行され、依存パッケージが再インストールされます。<br>
+これをビルドのたびに何度もインストールするのは無駄なため、キャッシュ処理を考えます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9"># syntax=docker/dockerfile:1</span></span>
+<span class="line"><span style="color: #c9d1d9">FROM node:12-alpine</span></span>
+<span class="line"><span style="color: #c9d1d9">WORKDIR /app</span></span>
+<span class="line"><span style="color: #c9d1d9">COPY . .</span></span>
+<span class="line"><span style="color: #c9d1d9">RUN yarn install --production</span></span>
+<span class="line"><span style="color: #c9d1d9">CMD ["node", "src/index.js"]</span></span></code></pre>
+<p>Nodeベースのアプリケーションの場合、依存パッケージは<code>package.json</code>ファイルに定義されます。<br>
+このファイルに変更があった場合にのみyarnによる依存パッケージの更新を行うにはどうすればいいでしょうか。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9"> # syntax=docker/dockerfile:1</span></span>
+<span class="line"><span style="color: #c9d1d9"> FROM node:12-alpine</span></span>
+<span class="line"><span style="color: #c9d1d9"> WORKDIR /app</span></span>
+<span class="line"><span style="color: #c9d1d9"> COPY package.json yarn.lock ./</span></span>
+<span class="line"><span style="color: #c9d1d9"> RUN yarn install --production</span></span>
+<span class="line"><span style="color: #c9d1d9"> COPY . .</span></span>
+<span class="line"><span style="color: #c9d1d9"> CMD ["node", "src/index.js"]</span></span></code></pre>
+<p>Dockerfileと同じフォルダー内に<code>.dockerignore</code>という名前のファイルを生成して、その内容を以下とします。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">node_module</span></span></code></pre>
+<p><a href="https://matsuand.github.io/docs.docker.jp.onthefly/engine/reference/builder/#dockerignore-file">.dockerignore</a>ファイルを利用することでDockerCLIはそこに記述されたパターンにマッチするようなファイルやディレクトリを除外してコンテキストを扱います。<br>
+今回、<code>node_modules</code>フォルダを記載しておくことで<code>RUN</code>コマンドによって生成されたファイルを上書きしてしまうことを避ける事ができます。<br>
+node.jsを利用したベストプラクティスは<a href="https://nodejs.org/en/docs/guides/nodejs-docker-webapp/">こちら</a></p>
+<p>下記コマンドを実行して新たなイメージをビルドするとキャッシュが使用されていることを確認できます。<br>
+キャッシュが使用されている箇所では<code>Using cache</code>と出力されます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$  docker build -t getting-started .</span></span></code></pre>
+<h2 id="マルチステージビルド">マルチステージビルド</h2>
+<p><a href="https://matsuand.github.io/docs.docker.jp.onthefly/develop/develop-images/multistage-build/">マルチステージビルド</a>とは、イメージの生成に複数ステージを利用するというツールです。</p>
+<ul>
+<li>ビルド時の依存パッケージと実行時の依存パッケージを分離します。</li>
+<li>アプリとして実行する必要のあるものだけを作り出すことによって、イメージ全体のサイズを削減します。</li>
+</ul>
+<p>マルチステージビルドを行うには、Dockerfile内に<code>FROM</code>行を複数記述します。<br>
+各<code>FROM</code>命令のベースイメージはそれぞれ異なるもので、各命名から新しいビルドステージが開始されます。<br>
+これを利用して片方のビルドステージで生成した内容を他方にコピーして破棄するといった使い方ができます。</p>
+<p>例えば公式にあるReactアプリケーションの例を見てみます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9"># syntax=docker/dockerfile:1</span></span>
+<span class="line"><span style="color: #c9d1d9">FROM node:12 AS build</span></span>
+<span class="line"><span style="color: #c9d1d9">WORKDIR /app</span></span>
+<span class="line"><span style="color: #c9d1d9">COPY package* yarn.lock ./</span></span>
+<span class="line"><span style="color: #c9d1d9">RUN yarn install</span></span>
+<span class="line"><span style="color: #c9d1d9">COPY public ./public</span></span>
+<span class="line"><span style="color: #c9d1d9">COPY src ./src</span></span>
+<span class="line"><span style="color: #c9d1d9">RUN yarn run build</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">FROM nginx:alpine</span></span>
+<span class="line"><span style="color: #c9d1d9">COPY --from=build /app/build /usr/share/nginx/html</span></span></code></pre>
+<p>上記の<code>node:12</code>イメージはビルド処理を行ったあと、その出力結果をnginxコンテナにコピーします。<br>
+ビルドが終了したあとのコンテナは放置されます。</p>
+<p><code>FROM node:12 AS build</code>のように指定していますが、これはビルドステージを表します。<br>
+デフォルトではビルドステージに名前はつかず、最初の<code>FROM</code>命令を0として順番に整数値が割り振られます。<br>
+<code>FROM</code>命令に<code>AS &#x3C;NAME></code>という構文を加えることでステージ似名前をつける事ができ、<code>COPY</code>命令においてその名前を使用しています。<br>
+<code>COPY --from=build /app/build /usr/share/nginx/html</code>の部分です。</p>
+<p>また、<code>--target</code>を指定するとイメージをビルドする際に特定のステージのみを対象とすることもできます。<br>
+この機能を使用すると、デバッグ用に<code>debug</code>ステージを用意してデバッグツールを導入し、本番の<code>production</code>ステージではスリムなイメージを使用する事ができます。また、テストの場合も同様です。</p>
+<p>このように、イメージがどう構成されているかを理解できれば、イメージのビルドをより効率的にすることができます。<br>
+キャッシュを利用することでビルドがより早くなり、マルチステージビルドをうまく使えばイメージサイズ全体を小さくする事ができます。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>docker composeを利用することで複数コンテナの立ち上げ、削除をコマンド一つで簡単に行う事ができる。</li>
+<li>docker composeファイル作成の際には<a href="https://matsuand.github.io/docs.docker.jp.onthefly/storage/volumes/">ボリューム</a>、<a href="https://matsuand.github.io/docs.docker.jp.onthefly/network/">ネットワーク</a>の理解があると楽</li>
+<li>マルチステージビルドを利用して基本的にイメージのサイズを小さくするように工夫ができる</li>
+<li>キャッシュを利用してビルドは必要なときに必要なだけ行うようにする</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>あらためて公式ドキュメントを読むとまだまだDockerを雰囲気で使ってしまっていたなと反省しました。<br>
+今回である程度基本は理解できたので、CI/CDでの活用やクラウドへのデプロイ時にコンテナを利用してみたいと思います。<br>
+これらはまた個人開発等で使用してみる際に再度調査してみたいと思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LT会用のスライドを楽に作って楽に管理したい</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/07/01</div>
+        <h1>LT会用のスライドを楽に作って楽に管理したい</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>弊社では現在、月一回のペースで社内LT会を行なっています。<br>
+毎回観覧側として参加していましたが、入社して三ヶ月が経ち、自分でも発表してみようと思いました。<br>
+そこで必要なのが発表スライドです。<br>
+とは言ってもLT、つまりLightning Talksなので簡単なものでも大丈夫です。<br>
+スライドを用意するためのツールをいろいろ考えていて、その中でも今回はgithubを用いて簡単にスライドを作成、管理ができそうなmarpを使ってみたいと思います。</p>
+<h2 id="ltとは">LTとは</h2>
+<p>本題に入る前にサッとLTについておさらいしておきます。<br>
+LTとは、Lightning Talksの略です。<br>
+稲妻のように短いプレゼンテーション。といったイメージです。<br>
+基本的には何をどんなふうに発表してもOKで、時間だけが設定されていることが多いでしょうか。<br>
+弊社のLT会もそんな感じのゆるいLT会となっています。</p>
+<h2 id="marpとは">Marpとは</h2>
+<p>公式ページ<br>
+<a href="https://marp.app/">https://marp.app/</a></p>
+<p>GitHub<br>
+<a href="https://github.com/marp-team/marp">https://github.com/marp-team/marp</a></p>
+<p>Markdownからプレゼン用のスライドを生成してくれるエコシステムです。</p>
+<p>VSCodeを使用している場合は拡張機能が存在します。<br>
+<a href="https://github.com/marp-team/marp-vscode">https://github.com/marp-team/marp-vscode</a></p>
+<p>導入については以下のQiita記事が参考になるかもしれません。<br>
+<a href="https://qiita.com/tomo_makes/items/aafae4021986553ae1d8">https://qiita.com/tomo_makes/items/aafae4021986553ae1d8</a></p>
+<p>Marpを使用することのメリットは、Gitで管理しやすいことと共有しやすいことでしょうか。
+他にスライドを作る方法としてGoogleスライド等も候補にあがりましたが、Gitで管理したいなと考えMarpを選んでいます。</p>
+<h2 id="marpの書き方">Marpの書き方</h2>
+<p>Markdownファイルを作成し、以下のような記述をします。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">---</span></span>
+<span class="line"><span style="color: #c9d1d9">marp: true</span></span>
+<span class="line"><span style="color: #c9d1d9">---</span></span></code></pre>
+<p>たったこれだけでスライドが生成されるようになります。
+VSCodeの拡張機能を使用した場合は以下のように簡単にプレビューを確認しながらスライドを作成できます。
+僕が今回作成したスライドでは、この設定以外にも以下のような記述をしました。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">---</span></span>
+<span class="line"><span style="color: #c9d1d9">marp: true</span></span>
+<span class="line"><span style="color: #c9d1d9">paginate: true</span></span>
+<span class="line"><span style="color: #c9d1d9">header: GASでランダムに司会を決定するSlackBotを作った話</span></span>
+<span class="line"><span style="color: #c9d1d9">footer: taisei miyaji</span></span>
+<span class="line"><span style="color: #c9d1d9">---</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9"># GASでランダムに司会を決定するSlackBotを作った話</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">---</span></span></code></pre>
+<p>すると、スライドは以下のようになります。
+<img src="images/a6fe2ad9b0e874ec78a26812169390c6622bf47c07bb139bc3a8ce9e68958359.png" alt="picture 1"></p>
+<p>あとはMarkdownでスライドを作成していきます。</p>
+<p>作成したスライドはこんな感じ。<br>
+<a href="https://taiseimiyaji.github.io/slides/slides/SlackRandomBot/random.html">https://taiseimiyaji.github.io/slides/slides/SlackRandomBot/random.html</a></p>
+<h2 id="画像の貼り付けについて">画像の貼り付けについて</h2>
+<p>個人的にスライドを作成する際に使用しているVSCodeの拡張機能があるので紹介しておきます。<br>
+この拡張機能を使えばクリップボードにある画像を貼り付けた際に、WorkSpaceの下にimagesフォルダを作成して保存し、Markdownにリンクを書いてくれます。<br>
+ちょっとしためんどくささを回避できる拡張機能です。</p>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=hancel.markdown-image">https://marketplace.visualstudio.com/items?itemName=hancel.markdown-image</a></p>
+<h2 id="githubでの運用">GitHubでの運用</h2>
+<p>先ほどスライド例として添付した<br>
+<a href="https://taiseimiyaji.github.io/slides/slides/SlackRandomBot/random.html">https://taiseimiyaji.github.io/slides/slides/SlackRandomBot/random.html</a></p>
+<p>これはGitHub Pagesを使用してデプロイしています。
+これをできるだけ自動化していきたいと思います。</p>
+<h2 id="github-actionsでmarp">GitHub ActionsでMarp</h2>
+<p>まずはMarkdown->Marpでスライドを生成する工程を自動化します。<br>
+自動化にはGitHub Actionsという仕組みが利用できそうです。</p>
+<h3 id="github-actionsとは">GitHub Actionsとは</h3>
+<p><a href="https://docs.github.com/ja/actions/learn-github-actions/understanding-github-actions">https://docs.github.com/ja/actions/learn-github-actions/understanding-github-actions</a></p>
+<p>公式を翻訳してみると以下のような記載があります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">GitHub Actionsは、ビルド、テスト、デプロイのパイプラインを自動化するためのCI/CDプラットフォームです。</span></span>
+<span class="line"><span style="color: #c9d1d9">リポジトリへのプルリクエストごとにビルドとテストを行うワークフローを作成したり、マージされたプルリクエストを本番環境にデプロイしたりすることができます。</span></span></code></pre>
+<p>まずはリポジトリにPushされると、自動でMarpを実行し、Markdownからスライドを生成してみます。</p>
+<p>こちらの記事を参考に進めていきます。</p>
+<p><a href="https://zenn.dev/koharakazuya/articles/1abe9cb8d8f936">https://zenn.dev/koharakazuya/articles/1abe9cb8d8f936</a></p>
+<p>まずはリポジトリ直下に<code>.github/workflows</code>フォルダを生成します。
+フォルダ内に任意の名前で<code>yml</code>ファイルを作成して以下の記述を追記します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">name: Publish GitHub Pages</span></span>
+<span class="line"><span style="color: #c9d1d9">on:</span></span>
+<span class="line"><span style="color: #c9d1d9">  push:</span></span>
+<span class="line"><span style="color: #c9d1d9">    branches:</span></span>
+<span class="line"><span style="color: #c9d1d9">      - main</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">jobs:</span></span>
+<span class="line"><span style="color: #c9d1d9">  publish:</span></span>
+<span class="line"><span style="color: #c9d1d9">    runs-on: ubuntu-latest</span></span>
+<span class="line"><span style="color: #c9d1d9">    timeout-minutes: 5</span></span>
+<span class="line"><span style="color: #c9d1d9">    steps:</span></span>
+<span class="line"><span style="color: #c9d1d9">      - uses: actions/checkout@v2</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">      - name: Convert Markdown into HTML and PDF</span></span>
+<span class="line"><span style="color: #c9d1d9">        uses: KoharaKazuya/marp-cli-action@v2</span></span></code></pre>
+<p>これでリポジトリへのPushをするたびにMarpを使用してPDFとHTMLが生成されます。<br>
+ちなみに生成されるのは<code>gh-pages</code>というブランチなので注意してください。</p>
+<h2 id="github-pagesへのデプロイ">Github Pagesへのデプロイ</h2>
+<p>GitHub Pagesへのデプロイには先ほどの<code>yml</code>ファイルに以下の記述を追記します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">      - name: Deploy to GitHub Pages</span></span>
+<span class="line"><span style="color: #c9d1d9">        uses: peaceiris/actions-gh-pages@v3</span></span>
+<span class="line"><span style="color: #c9d1d9">        with:</span></span>
+<span class="line"><span style="color: #c9d1d9">          github_token: ${{ secrets.GITHUB_TOKEN }}</span></span>
+<span class="line"><span style="color: #c9d1d9">          publish_dir: ./</span></span></code></pre>
+<p>これでGitHub Pagesにデプロイされます。<br>
+フォルダ構成によりますが、indexを用意しておくと良いかもしれません。<br>
+GitHub Pagesにはindex.htmlが最初に表示されるので、Marpでindex.htmlが生成されるようにindex.mdを作成します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">---</span></span>
+<span class="line"><span style="color: #c9d1d9">marp: true</span></span>
+<span class="line"><span style="color: #c9d1d9">---</span></span>
+<span class="line"><span style="color: #c9d1d9"># index</span></span>
+<span class="line"><span style="color: #c9d1d9">- [GASでランダムに司会を決定するSlackBotを作った話](slides/SlackRandomBot/random.html)</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<p>このようにindexにリンクを置いておくと管理もしやすく、共有する際もリンクの共有だけで簡単にスライドを共有できます。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>Markdownから簡単にスライドを作成できるMarp</li>
+<li>htmlファイルを簡単にデプロイできるGitHub Pages</li>
+<li>デプロイ時にパイプラインを自動化できるGitHub Actions</li>
+<li>上記3つを組み合わせることでpushするだけで自動でスライドをデプロイできる。</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>今回はスライド作成を楽にしたいと考え、いろんなツールを用いて実現しました。<br>
+全くわからない状態からなんとなく使えるようにはなれたかなと思います。<br>
+とはいえ、巨人の肩に乗っている感は否めないのでゆくゆくは自分でGitHub Actionsやツールを作成できればと思いました。<br>
+簡単にスライドを作成することができるようになったのでどんどんLTも発表者として参加していきたいと思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

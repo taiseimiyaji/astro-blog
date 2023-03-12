@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TypeScriptでAtCoderに挑戦してみる</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2023/01/17</div>
+        <h1>TypeScriptでAtCoderに挑戦してみる</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>スマレジでは、副業が可能です。<br>
+<a href="https://corp.smaregi.jp/recruit/culture/workstyle.php">https://corp.smaregi.jp/recruit/culture/workstyle.php</a></p>
+<p>個人的に最近、副業にも挑戦しようかなと考え始めています。<br>
+副業に割ける稼働時間的には週10h程度となりそうなので、比較的タスクを細かくしやすいフロントエンドの案件を中心に探していたりします。<br>
+担当するプロダクト的にはバックエンドを中心に開発してきましたが、最近TypeScriptやReactに興味があるので、そちらのキャッチアップの加速にも役立つかなと考えています。<br>
+そこで今回はTypeScriptに慣れることと、コーディングテスト等への対策としてAtCoderの問題をTypeScriptで解いてみたいと思います。</p>
+<h2 id="atcoder">AtCoder</h2>
+<p>競技プログラミングと呼ばれるプログラミングコンテストサイトです。<br>
+後の説明は省略します。</p>
+<p><a href="https://atcoder.jp/?lang=ja">https://atcoder.jp/?lang=ja</a></p>
+<p>過去問は下記サイトから閲覧できます。</p>
+<p><a href="https://kenkoooo.com/atcoder/#/table/">https://kenkoooo.com/atcoder/#/table/</a></p>
+<p>なお、問題に色がついていますが、</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">灰色 -> 茶色 -> 緑色 -> 水色 -> 青色 ...</span></span></code></pre>
+<p>の順番で難しくなっていきます。<br>
+この辺りのレートのシステムについても公式を参考にしていただければと思います。</p>
+<p>以前少しやったことがあるんですが、その際の<strong>個人的な感触</strong>としては以下の様な感じです。<br>
+業務上はC問題くらいはすらすら解けるといいな〜と思ってたりします。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">A問題...標準入出力とプログラミングの基礎がわかれば誰でも解ける   </span></span>
+<span class="line"><span style="color: #c9d1d9">B問題...問題文をきちんと理解できてfor文とif文が書ければ愚直に解ける   </span></span>
+<span class="line"><span style="color: #c9d1d9">C問題...愚直に解くだけでは大抵計算量で弾かれてしまうのでなにかしら対策が必要   </span></span>
+<span class="line"><span style="color: #c9d1d9">D問題以降...何回か挑戦したけど試行回数少なくてあまりわかってない   </span></span></code></pre>
+<h2 id="環境構築">環境構築</h2>
+<p>前提として、真面目に競技プログラミングに取り組む場合はTypeScriptはおすすめしません。<br>
+大人しくC++かPythonを使用するべきだと思っています。<br>
+が、今回はTypeScriptに慣れることが目的のため、あえてTypeScriptを使用していきます。</p>
+<p>nodeやnpmのインストールは今回は省略します。<br>
+まずはパッケージ管理のためにpackage.jsonを下記コマンドで作成します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">npm install</span></span></code></pre>
+<p>必要なものは以下のパッケージとなります。</p>
+<ul>
+<li>typescript@3.8 (本記事執筆時点でのAtCoderでのTypeScript対応バージョン)</li>
+<li>ts-node (TypeScriptのまま実行するためのライブラリ)</li>
+<li>@types/node (TypeScriptの標準入出力ライブラリ等を含むライブラリ)</li>
+</ul>
+<p>忘れずに<code>tsconfig.json</code>の作成もしておきましょう。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">npx tsc --init</span></span></code></pre>
+<h2 id="標準入出力">標準入出力</h2>
+<p>TypeScriptで一番めんどくさいのが標準入出力になります。</p>
+<p>windowsでは使えないですが、以下が一番シンプルな記述かと思います。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">const input = require('fs').readFileSync('/dev/stdin', 'utf8');</span></span></code></pre>
+<p>毎回書くのも面倒なのである程度テンプレートとしておくのがいいと思います。<br>
+Ctrl + Dで入力終了です。<br>
+他にもいくつか手段はあるので気になる方がいれば調べてみてください。</p>
+<h2 id="簡単な問題に挑戦abc285">簡単な問題に挑戦!(ABC285)</h2>
+<p>以下、AtCoderの問題にいくつか挑戦してみます。<br>
+正解できるコードではあるはずですが、より効率的なものやわかりやすい処理等あると思いますのであくまで参考としてください。</p>
+<h3 id="a問題-edge-checker-2">A問題 Edge Checker 2</h3>
+<p>まずは一番簡単なA問題に挑戦してみます。<br>
+記事執筆時の直近のA問題に挑戦します。</p>
+<p><a href="https://atcoder.jp/contests/abc285/tasks/abc285_a">https://atcoder.jp/contests/abc285/tasks/abc285_a</a></p>
+<ul>
+<li>考え方</li>
+</ul>
+<p>競技プログラミングではある程度スピードが求められるので、問題を見て実装方法を判断します。<br>
+今回のA問題では2パターンぱっと思いついたのでそれぞれ考え方を整理しておきます。</p>
+<ol>
+<li>規則性を見つける方法<br>
+直接結ばれている親と子には規則性があります。<br>
+親の数字をnとしたとき、<code>2n</code>,<code>2n+1</code>であれば直接結ばれています。</li>
+</ol>
+<p>上記を考慮してコードを書くと以下の様になります。(競技プログラミングの特に簡単な問題では変数名の命名が適当になりがちなんですがご容赦ください)</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">import * as fs from 'fs';</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span style="color: #c9d1d9">const a = +input[0];</span></span>
+<span class="line"><span style="color: #c9d1d9">const b = +input[1];</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const ans = (Boolean)(b === (2 * a) || b === (2 * a + 1));</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">if (ans) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    console.log("Yes");</span></span>
+<span class="line"><span style="color: #c9d1d9">} else {</span></span>
+<span class="line"><span style="color: #c9d1d9">    console.log("No");</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<ol start="2">
+<li>愚直に書く方法<br>
+これはA問題のようなパターンが少なく、制約がある問題で使える方法なんですが、愚直に全てのパターンを実行することでも正解することができます。
+説明するよりコードを見てもらった方が早いと思います。</li>
+</ol>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">import * as fs from 'fs';</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span style="color: #c9d1d9">const a = +input[0];</span></span>
+<span class="line"><span style="color: #c9d1d9">const b = +input[1];</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const tree =</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    1: [2, 3],</span></span>
+<span class="line"><span style="color: #c9d1d9">    2: [4, 5],</span></span>
+<span class="line"><span style="color: #c9d1d9">    3: [6, 7],</span></span>
+<span class="line"><span style="color: #c9d1d9">    4: [8, 9],</span></span>
+<span class="line"><span style="color: #c9d1d9">    5: [10, 11],</span></span>
+<span class="line"><span style="color: #c9d1d9">    6: [12, 13],</span></span>
+<span class="line"><span style="color: #c9d1d9">    7: [14, 15],</span></span>
+<span class="line"><span style="color: #c9d1d9">};</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(tree[a] &#x26;&#x26; tree[a].includes(b) ? "Yes" : "No");</span></span></code></pre>
+<p><code>console.log()</code>の中で<code>tree[a]</code>の存在をチェックして7より大きい場合は全てNoとしています。<br>
+あとは愚直にオブジェクトを使用しています。<br>
+今回の様なわかりやすい例ではあまり使用しませんが、いざコンテストとなると早く解かないとという焦りなどからA問題で混乱してしまうこともあるので、この様な愚直な解き方も覚えておくと使えるかもしれません。</p>
+<h3 id="b問題-longest-uncommon-prefix">B問題 Longest Uncommon Prefix</h3>
+<p><a href="https://atcoder.jp/contests/abc285/tasks/abc285_b">https://atcoder.jp/contests/abc285/tasks/abc285_b</a></p>
+<p>個人的にB問題を解く時の注意点は仕様の誤解をしない様にすることです。<br>
+愚直な方法で解けることが多いですが、少し問題文が複雑になっていたりするので、そこだけ気をつければ解ける問題が多いと思います。(もちろんたまに難しいやつもあります)</p>
+<p>いや難しい、、、。普通に問題の意味を理解するのに時間かかりました。<br>
+しかもバグらせて一回WA(不正解)出しました、、、。</p>
+<p>考えた方法を整理していきます。</p>
+<ol>
+<li>まずはTypeScriptの標準入力でちゃんと数値と文字列として受け取る(ここで少し調べたりしてロス)</li>
+<li>問題文を見てループ変数<code>i</code>のループをまず書く</li>
+<li>問題文のケースを見てチェックするためのループ(ループ変数が<code>k</code>)のものを考える。</li>
+<li>i = 1の時チェックはS5まで行う(最後のチェックはS5とS6)</li>
+<li>i = 2の時チェックはS4まで行うが途中で条件を満たしbreak</li>
+<li>i = 3の時チェックはS3まで行う(最後のチェックはS3とS6)</li>
+<li>ここまででkの最大値が<code>n-6</code>であることがわかる。また、チェックする文字は(SkとSk+i)</li>
+<li>求めるのは条件を満たす最大値<code>l</code>なので、問題の条件を満たしていれば更新、条件を満たさない場合はbreakする;</li>
+<li>問題文より、breakする条件は<code>Si</code> === <code>Sk+i</code>のとき。</li>
+</ol>
+<p>上記をもとにまずは愚直にループを回してみます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">import * as fs from 'fs';</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span style="color: #c9d1d9">const n: number = parseInt(input[0]);</span></span>
+<span class="line"><span style="color: #c9d1d9">const s: String = input[1];</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">for (let i = 0; i &#x3C; n; i++) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    let l = 0;</span></span>
+<span class="line"><span style="color: #c9d1d9">    for (let k = 0; k &#x3C; n - i; k++) {</span></span>
+<span class="line"><span style="color: #c9d1d9">        if (s.charAt(k) === s.charAt(k + i)) {</span></span>
+<span class="line"><span style="color: #c9d1d9">            break;</span></span>
+<span class="line"><span style="color: #c9d1d9">        } else {</span></span>
+<span class="line"><span style="color: #c9d1d9">            l++;</span></span>
+<span class="line"><span style="color: #c9d1d9">        }</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">    console.log(l);</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>愚直に用件を実装しましたがこれで正解(AC)取れたのでよしとします。</p>
+<h3 id="c問題">C問題</h3>
+<p>C問題以降は多少実装に工夫が必要になる場合があります。<br>
+今回の問題の鍵は問題文をみて入力文字列を26進数の数値だと考えることだと思います。<br>
+と、個人的に考えていたのですが公式解説を回答後に確認すると26進数として考えるのが一番目の解説方法じゃなかったです。<br>
+類題をみたことがあったのでパッと解法思いつきましたが大変なのはここからでした。</p>
+<ul>
+<li>一回目の提出(WA)</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">import * as fs from 'fs';</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span style="color: #c9d1d9">const s: String = input[0];</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const length = s.length;</span></span>
+<span class="line"><span style="color: #c9d1d9">const charCodeAt = 64;</span></span>
+<span class="line"><span style="color: #c9d1d9">let num = 0;</span></span>
+<span class="line"><span style="color: #c9d1d9">for (let i = 0; i &#x3C; length; i++) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    num += (s.charCodeAt(i) - 64) * (26 ** (length - (i+1)));</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(num);</span></span></code></pre>
+<p>上記の提出で50ケース中47ケースACで3ケースWAとなりました。<br>
+このパターンが一番きついですね。ある程度のロジックは合っていますし、人間は自分の書いたコードを信じたがる業の深い生き物なので。</p>
+<p>経験上ですが、こういったほぼほぼ正解でいくつかのテストケースのみ落ちる場合は境界値系のテストで落ちている可能性が高いです。<br>
+今回の場合はJavaScriptのnumber型の最大値を超えていました。<br>
+BigIntを使用するよう修正します。合わせて少し解説コメントもいれてみやすくしました。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">import * as fs from 'fs';</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span style="color: #c9d1d9">const s: String = input[0];</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">const length = s.length;</span></span>
+<span class="line"><span style="color: #c9d1d9">const charCodeAt = 64;</span></span>
+<span class="line"><span style="color: #c9d1d9">let num = BigInt(0);</span></span>
+<span class="line"><span style="color: #c9d1d9">for (let i = 0; i &#x3C; length; i++) {</span></span>
+<span class="line"><span style="color: #c9d1d9">    const charNum = (s.charCodeAt(i) - charCodeAt); // アルファベットを文字コードを使用して数値に変換</span></span>
+<span class="line"><span style="color: #c9d1d9">    // 1桁目の場合は　26の0乗 * 文字列の番号</span></span>
+<span class="line"><span style="color: #c9d1d9">    // 2桁目の場合は　26の1乗 * 文字列の番号</span></span>
+<span class="line"><span style="color: #c9d1d9">    num += BigInt(charNum * (26 ** (length - (i+1))));</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9">console.log(num.toString());</span></span></code></pre>
+<h2 id="所感">所感</h2>
+<p>今回はAtCoderにTypeScriptで挑戦してみました。<br>
+C問題くらいまでであれば言語に関係なく解くことができそうです。(D問題以降は挑戦してみる価値はありそう)<br>
+今回はB問題で思いのほか時間を取られましたが、C問題はさくっと解くことができました。<br>
+これからもアルゴリズム力の強化のためにコンテストに参加してみたいと思います。<br>
+TypeScriptは使用しているユーザーは多いと思うので興味があれば過去問等からでも解いてみてください。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

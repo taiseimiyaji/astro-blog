@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>再帰的なデータ構造で閉包テーブルを使用したToDoリストを作ってみる ~その1~ 目標設定とDB設計</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/11/05</div>
+        <h1>再帰的なデータ構造で閉包テーブルを使用したToDoリストを作ってみる ~その1~ 目標設定とDB設計</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p><a href="https://taisei-miyaji.hatenadiary.com/entry/2022/10/27/232126">前回の記事</a>で半年間の振り返りをしました。このブログも約半年間継続できていろんなことをインプットできているかなと思います。
+そろそろアウトプットとしてゴリゴリ実装したいなという気持ちになっているので、インプットと並行してなにか個人開発に挑戦してみようかと思います。</p>
+<h2 id="todoリストを開発する上での目標">ToDoリストを開発する上での目標</h2>
+<p>以前の記事からサンプルとしてちらほらToDoリストをあげていました。入社して早い段階でフロントエンドの勉強のためにVue.jsで簡易的なToDoリストを作ったんですが、それを改良する形で機能を追加していこうと思います。<br>
+未完成のまま放置することを避けるために今回の開発における目標を優先度を決めて設定しておきたいとおもいます。まずは小さく目標設定してver.1.0として作りきってしまってから色々と機能追加をしていこうと思います。
+なお、この設計自体に誤りがあったり方針を見直したり場合は適宜修正加筆をします。</p>
+<h3 id="目標">目標</h3>
+<p><strong>MUST</strong></p>
+<ul>
+<li>使用する技術スタックはLaravel,Vue.js,MySQL等を使用</li>
+<li>タスクをカード化して移動できるカンバンの実現(Trelloを参考にします)</li>
+<li>タスクの親子関係の実現(Redmineを参考にします)</li>
+<li>ドメイン駆動開発、クリーンアーキテクチャの採用(設計の思想についてのブログ記事化)</li>
+</ul>
+<p><strong>WILL</strong></p>
+<ul>
+<li>テスト駆動開発を意識したユニットテストの整備</li>
+<li>規模が小さいため、ドキュメント整備について色々と試してみて、よければプロダクトへの導入を検討してみる</li>
+<li>フロントエンドのカタログ化(storybook)</li>
+<li>その他実装経験が薄い部分の機能追加(ログイン機能やメール送信機能など)</li>
+</ul>
+<h2 id="設計について">設計について</h2>
+<p>機能設計やDB設計等の方針についてはせっかくこれまでいろんな技術書を読んできたのでこれまで読んだものと照らし合わせながら根拠を持って決定していきたいと思います。<code>この本(記事)のこの部分を参考にこう決定した</code>といったような内容をブログとして公開できればと思います。</p>
+<h2 id="db設計について">DB設計について</h2>
+<p>まずはタスクの仕様を整理してそこからDB設計をしたいと思います。
+その後書籍「SQLアンチパターン」を改めて確認し、アンチパターンになっていないかを確認していきたいと思います。</p>
+<p>まずは実現したいタスクの仕様を整理します。</p>
+<p>タスク持つ基本的な情報</p>
+<ul>
+<li>ID</li>
+<li>タスクの名前</li>
+<li>タスクにかかる予定工数</li>
+<li>タスクの完了期限</li>
+<li>タスクの内容</li>
+</ul>
+<p>上記に加えて、今回はカンバン形式でのタスク管理を実現したいため、<code>タスクのステータス</code>を持つようにし、これをカラムとしてタスクカードを移動させられるようにします。
+つまり、<code>タスクのステータス=カラム名</code>としたいと思います。</p>
+<p>タスクの親子関係の管理のために持つプロパティも考えたいと思います。
+まず、直近の親子関係を取得したいです。
+ただ、Redmineを参考にすると、先祖すべて、もしくは子孫すべてを参照する事ができます。このことから、先祖と子孫すべてに対してリレーションがあることが伺えます。このような再起的な構造を実現するために今回は書籍「SQLアンチパターン」にて紹介されている**閉包テーブル(Closure Table)**を使用したいと思います。<br>
+以前に<a href="https://taisei-miyaji.hatenadiary.com/entry/2022/08/19/230714">ブログ</a>でも内容について軽く触れましたが、今回はその復習とともに実際に有効に使用できるかを実装したいと思います。</p>
+<h3 id="テーブル構造">テーブル構造</h3>
+<p>まずは作成するテーブルを考えます。</p>
+<ul>
+<li>
+<p>tasks<br>
+タスクに関わる属性を格納するテーブルです。</p>
+</li>
+<li>
+<p>task_status<br>
+タスクの持つステータスを管理するテーブルです。ステータスとタスクは1対多の関係になります。そのため、このテーブルにはステータスのidとステータス名を格納しておき、taskテーブルのほうにstatus_idを持つようにして関係を表現します。</p>
+</li>
+<li>
+<p>tree_paths<br>
+閉包テーブルです。
+それぞれのtaskに関して、その祖先と子孫の関係を格納しているテーブルです。</p>
+</li>
+</ul>
+<h2 id="閉包テーブルの復習">閉包テーブルの復習</h2>
+<p>再帰的な構造をもつデータに対しての解決策です。
+再帰的な関係にあるデータ(今回の場合はtask)には子孫関係の情報を持たせず、子孫関係の情報は別のテーブルにもたせます。</p>
+<p>tree_pathsテーブル(子孫関係の情報を持つテーブル)<br>
+taskについて子孫関係を持つ場合の閉包テーブルがどのようになるか考えてみます。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>ancestor</th><th>descendant</th></tr></thead><tbody><tr><td>1</td><td>1</td></tr><tr><td>1</td><td>2</td></tr><tr><td>1</td><td>3</td></tr><tr><td>1</td><td>4</td></tr><tr><td>1</td><td>5</td></tr><tr><td>1</td><td>6</td></tr><tr><td>1</td><td>7</td></tr><tr><td>2</td><td>2</td></tr><tr><td>2</td><td>3</td></tr><tr><td>3</td><td>3</td></tr><tr><td>4</td><td>4</td></tr><tr><td>4</td><td>5</td></tr><tr><td>4</td><td>6</td></tr><tr><td>4</td><td>7</td></tr><tr><td>5</td><td>5</td></tr><tr><td>6</td><td>6</td></tr><tr><td>6</td><td>7</td></tr><tr><td>7</td><td>7</td></tr></tbody></table>
+<p>上記のような形で、それぞれのtaskに関する祖先と子孫の関係を格納します。
+このような形式のテーブルをどのように用いるのかパッとイメージができなかったのでそれぞれのケースごとにSQLをどう書くか確認していきます。</p>
+<ul>
+<li>あるレコードの子孫をすべて取得する場合<br>
+tree_pathsテーブルで例えば4の子孫のtaskのレコードを取得する場合のSQL
+先祖が4のレコードを検索します。</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">SELECT tasks.*</span></span>
+<span class="line"><span style="color: #c9d1d9">FROM tasks</span></span>
+<span class="line"><span style="color: #c9d1d9">    INNER JOIN tree_paths ON tasks.id = tree_paths.descendant</span></span>
+<span class="line"><span style="color: #c9d1d9">    WHERE tree_paths.ancestor = 4;</span></span></code></pre>
+<ul>
+<li>あるレコードの先祖をすべて取得する場合<br>
+6の先祖を取得したい場合は逆に子孫が6のレコードを検索します。</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">SELECT tasks.*</span></span>
+<span class="line"><span style="color: #c9d1d9">FROM tasks</span></span>
+<span class="line"><span style="color: #c9d1d9">    INNER JOIN tree_paths ON tasks.id = tree_paths.ancestor</span></span>
+<span class="line"><span style="color: #c9d1d9">    WHERE tree_paths.descendant = 6;</span></span></code></pre>
+<ul>
+<li>あるレコードに子を追加する場合<br>
+8というレコードを5の子として追加する場合<br>
+まず、新しい行を追加する場合には自己参照の行を追加します。<br>
+次に、task5を子孫として参照する行の集合(task5が自己参照する行を含めて)を取得して子孫を新しいtaskの番号で更新したものを新たに挿入します。</li>
+</ul>
+<p>個人的にここが少しわかりにくかったところなんですが、先述した取得時のクエリを見直すと理解しやすかったです。<br>
+具体的にはあるレコード<code>x</code>からみた子孫を取得する場合には先祖が<code>x</code>であるレコードを検索します。
+今回はtask5の子として8を追加するので、追加時には</p>
+<ol>
+<li>task5を子孫として参照する行をすべて取得</li>
+<li>その子孫を8に置き換えたレコードを用意して追加(これまでtask5を子孫としているレコードは新たに8も子孫に含めるため)</li>
+</ol>
+<p>という手順になります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">INSERT INTO tasks(id, name, costs, deadline, detail)</span></span>
+<span class="line"><span style="color: #c9d1d9">    VALUES(8, 'newTask', 12, '2022-11-04', '新しいタスク');</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">INSERT INTO tree_paths (ancestor, descendant)</span></span>
+<span class="line"><span style="color: #c9d1d9">    SELECT tree_paths.ancestor, 8</span></span>
+<span class="line"><span style="color: #c9d1d9">    FROM tree_paths</span></span>
+<span class="line"><span style="color: #c9d1d9">    WHERE tree_paths.descendant = 5</span></span>
+<span class="line"><span style="color: #c9d1d9">    UNION ALL</span></span>
+<span class="line"><span style="color: #c9d1d9">        SELECT 8, 8;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<ul>
+<li>ある末尾の葉レコードを削除する場合<br>
+例えばtask7を削除する場合、子孫としてtask7を参照しているすべての行を削除します。
+これも先程同様に取得時のレコードを考えると削除するべきレコードがどういうものになるか理解できると思います。</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">DELETE FROM tree_paths WHERE descendant = 7;</span></span></code></pre>
+<ul>
+<li>あるサブツリー全体を削除する場合
+例えばtask4とその子孫をすべて削除するには、子孫としてtask4を参照しているすべての行と、task4の子孫を子孫として参照するすべての行を削除します。</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">DELETE FROM tree_paths</span></span>
+<span class="line"><span style="color: #c9d1d9">WHERE descendant IN (SELECT x.id FROM</span></span>
+<span class="line"><span style="color: #c9d1d9">                    (SELECT descendant AS id</span></span>
+<span class="line"><span style="color: #c9d1d9">                    FROM tree_paths</span></span>
+<span class="line"><span style="color: #c9d1d9">                    WHERE ancestor = 4) AS x);</span></span></code></pre>
+<ul>
+<li>サブツリーを移動する場合
+tree_pathsテーブルはtaskレコードの関連性を格納しているテーブルのため、レコードを削除してもtask自体は削除されません。<br>
+これを利用することで、柔軟に各taskの関連付けを変更できます。</li>
+</ul>
+<p>まずはサブツリーのトップのノードとそのノードの子孫の先祖を参照する行を削除して先祖からサブツリーを外します。
+例えば、task6をtask4の子からtask3の子に移動する場合を考えてみます。<br>
+移動するtaskの自己参照レコードを削除しないよう注意が必要です。
+6のすべての先祖とそれらの子孫を削除します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">DELETE FROM tree_paths</span></span>
+<span class="line"><span style="color: #c9d1d9">WHERE descendant IN (SELECT x.id FROM(SELECT descendant AS id</span></span>
+<span class="line"><span style="color: #c9d1d9">                    FROM tree_paths</span></span>
+<span class="line"><span style="color: #c9d1d9">                    WHERE ancestor = 6) AS x)</span></span>
+<span class="line"><span style="color: #c9d1d9">                AND ancestor IN (SELECT y.id FROM (SELECT ancestor AS id</span></span>
+<span class="line"><span style="color: #c9d1d9">                FROM tree_paths</span></span>
+<span class="line"><span style="color: #c9d1d9">                WHERE descendant = 6</span></span>
+<span class="line"><span style="color: #c9d1d9">                AND ancestor != descendant) AS y)</span></span></code></pre>
+<p>次に、移動先の先祖とサブツリーの子孫の組み合わせを表す行を挿入します。
+新しい移動先の先祖とサブツリーのすべてのノードの組み合わせ行を生成するために、デカルト積を生成するCROSS JOIN構文を使用できます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">INSERT INTO tree_paths (ancestor, descendant)</span></span>
+<span class="line"><span style="color: #c9d1d9">    SELECT supertree.ancestor, subtree.descendant</span></span>
+<span class="line"><span style="color: #c9d1d9">    FROM tree_paths AS supertree</span></span>
+<span class="line"><span style="color: #c9d1d9">        CROSS JOIN tree_paths AS subtree</span></span>
+<span class="line"><span style="color: #c9d1d9">        WHERE supertree.descendant = 3</span></span>
+<span class="line"><span style="color: #c9d1d9">            AND subtree.ancestor = 6;</span></span></code></pre>
+<p>上記SQLで、task3を含むtask3の先祖と、task6を含むtask6の子孫のパスを挿入します。
+結果としてtask6から開始されるサブツリーはtask3の子に移動します。</p>
+<h3 id="閉包テーブルの欠点">閉包テーブルの欠点</h3>
+<p>閉包テーブルは先祖や子孫の一覧を比較的カンタンなクエリで取得できます。<br>
+一方で、隣接リストや経路列挙といったデータ構造と比べると直近の子や親へのクエリがやや複雑になります。この問題への対処としてtree_pathsテーブルへpath_length属性を追加します。path_lengthにはノードの自己参照を0、直近の子は1、孫は2といったように割り当てることが可能です。
+例えば以下のようにtask4の子を簡単に取得できます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">SELECT *</span></span>
+<span class="line"><span style="color: #c9d1d9">FROM tree_paths</span></span>
+<span class="line"><span style="color: #c9d1d9">WHERE ancestor = 4 AND path_length = 1;</span></span></code></pre>
+<h2 id="今回作成するtodoリストのテーブル設計">今回作成するToDoリストのテーブル設計</h2>
+<ul>
+<li>taskテーブル</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">CREATE TABLE `task` (</span></span>
+<span class="line"><span style="color: #c9d1d9">  `id` char(26) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `detail` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `deadline` datetime NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `cost` int NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `status_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `created_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `updated_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `deleted_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  PRIMARY KEY (`id`),</span></span>
+<span class="line"><span style="color: #c9d1d9">  CONSTRAINT `task_id_foreign` FOREIGN KEY (`id`) REFERENCES `task_status` (`id`)</span></span>
+<span class="line"><span style="color: #c9d1d9">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span></span></code></pre>
+<ul>
+<li>task_statusテーブル</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">CREATE TABLE `task_status` (</span></span>
+<span class="line"><span style="color: #c9d1d9">  `id` char(26) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `created_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `updated_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  PRIMARY KEY (`id`)</span></span>
+<span class="line"><span style="color: #c9d1d9">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span></span></code></pre>
+<ul>
+<li>tree_paths</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">CREATE TABLE `tree_paths` (</span></span>
+<span class="line"><span style="color: #c9d1d9">  `ancestor` int NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `descendant` int NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  `path_length` int NOT NULL,</span></span>
+<span class="line"><span style="color: #c9d1d9">  PRIMARY KEY (`ancestor`,`descendant`)</span></span>
+<span class="line"><span style="color: #c9d1d9">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span></span></code></pre>
+<h2 id="所感">所感</h2>
+<p>今回はこれまで勉強してきた内容でなにか作ってみるための第一歩としてToDoリストを制作することに決め、その際の目標を決めました。<br>
+また、永続化のためにDBの設計について考えました。<br>
+参考としたのは以前記事にもした「SQLアンチパターン」中心にしています。<br>
+再帰的データ構造の実現のために閉包テーブルを作成し、その復習も兼ねて記事にしました。<br>
+次回はこのテーブル構造からtaskエンティティの作成とRepositoryの作成を行いたいと思います。<br>
+インプットしてきたことがアウトプットの役に立っている実感があり、モチベ的にも高くなってる気がします。<br>
+引き続き楽しみながらプログラミングしていこうと思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

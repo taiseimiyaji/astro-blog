@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Laravel Mixについて</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/04/21</div>
+        <h1>Laravel Mixについて</h1>
+        <div class="post">
+          <h2 id="参考">参考</h2>
+<p><a href="https://readouble.com/laravel/6.x/ja/mix.html">https://readouble.com/laravel/6.x/ja/mix.html</a><br>
+<a href="https://qiita.com/minato-naka/items/bfc3bbd9a388084e6f17">https://qiita.com/minato-naka/items/bfc3bbd9a388084e6f17</a><br>
+<a href="https://qiita.com/kamykn/items/45fb4690ace32216ca25">https://qiita.com/kamykn/items/45fb4690ace32216ca25</a>
+<a href="https://qiita.com/minato-naka/items/0db285f4a3ba5adb6498">https://qiita.com/minato-naka/items/0db285f4a3ba5adb6498</a>
+<a href="https://goworkship.com/magazine/how-to-webpack/">https://goworkship.com/magazine/how-to-webpack/</a>
+<a href="https://qiita.com/non_cal/items/a8fee0b7ad96e67713eb">https://qiita.com/non_cal/items/a8fee0b7ad96e67713eb</a>
+<a href="https://qiita.com/righteous/items/e5448cb2e7e11ab7d477">https://qiita.com/righteous/items/e5448cb2e7e11ab7d477</a>
+<a href="https://udemy.benesse.co.jp/design/web-design/sass.html">https://udemy.benesse.co.jp/design/web-design/sass.html</a>
+<a href="http://blog.sakurachiro.com/2017/08/scss_sourcemap/">http://blog.sakurachiro.com/2017/08/scss_sourcemap/</a></p>
+<h2 id="はじめに">はじめに</h2>
+<p>今回の記事はうまくまとまらなかったなと感じていますが、今時点の私の知識ではまとめきれないなと判断しました。
+随時更新していきたいと考えています。
+Laravelに初めて触った時に僕がつまづいたのはフォルダの多さでした。<br>
+この辺りの層の分け方は設計云々も絡んでくると思うので今は触れませんが、
+Laravelでは役割ごとにファイルを分けやすい仕組みが用意されていて、その一つが<code>Laravel Mix</code>です。</p>
+<h2 id="laravel-mixとは">Laravel Mixとは</h2>
+<p>以下参考サイトより引用。</p>
+<blockquote>
+<p>Laravel Mixは多くの一般的なCSSとJavaScriptのプリプロセッサを使用し、Laravelアプリケーションために、構築過程をwebpackでスラスラと定義できるAPIを提供しています。</p>
+</blockquote>
+<blockquote>
+<p>webpackファイルをよりわかりやすく簡単に書けるように設定ファイルをラップしている。
+フロントエンド開発では、webpackというものを使用して開発をするとメリットがあるのですが、設定ファイルが長い。この問題を解決するためのツールがLaravel Mixということらしいです。
+ちなみに、Laravelでなくても使用できます。</p>
+</blockquote>
+<figure class="figure-image figure-image-fotolife" title="ざっくりしたイメージ図">[f:id:taisei_miyaji:20220421195840p:plain]<figcaption>ざっくりしたイメージ図</figcaption></figure>
+<h2 id="そもそもwebpackとは">そもそもwebpackとは?</h2>
+<p><a href="https://qiita.com/kamykn/items/45fb4690ace32216ca25">https://qiita.com/kamykn/items/45fb4690ace32216ca25</a>
+<a href="https://qiita.com/minato-naka/items/0db285f4a3ba5adb6498">https://qiita.com/minato-naka/items/0db285f4a3ba5adb6498</a>
+<a href="https://goworkship.com/magazine/how-to-webpack/">https://goworkship.com/magazine/how-to-webpack/</a></p>
+<p>ここが一番重要な部分で、webpackがどういうことをしているのかわかればMixはそれのラッパーのようなイメージなのかなと思っています。</p>
+<p>webpackとは、主にjsをバンドルするためのモジュールバンドラ。
+バンドラ…複数のファイルを1つにまとめて出力してくれるツールのこと。</p>
+<p>ちなみに、js以外にもCSSや画像もバンドルできるらしい。</p>
+<p>使用することで、</p>
+<ul>
+<li>ファイルを分割して開発できるため、開発効率や保守性の向上につながる。</li>
+<li>ファイルを1つにまとめることでリクエストの回数を削減し、パフォーマンスの向上につながる。</li>
+</ul>
+<p><code>webpack.config.js</code>に<code>entry:エントリーポイントファイル</code>と<code>output:バンドルされたファイル名と出力先パス</code>を書く。</p>
+<p>この状態で<code>webpack</code>コマンドを実行すると<code>bundle.js</code>が出力される。
+あとはこのファイルをhtmlファイルで読み込めば使える。</p>
+<h2 id="laravel-mixのインストール">Laravel Mixのインストール</h2>
+<p>Laravelをインストールした時点で<code>package.json</code>が存在しているはずなので、下記コマンドでインストールします。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">npm install</span></span></code></pre>
+<p>この<code>package.json</code>はNodeの依存パッケージのための構成ファイルです。</p>
+<p>Nodeとは、簡単にいうとサーバーサイドでJavaScriptを動かすための仕組みです。
+Nodeについては以下を参照するとすんなり理解できるかなと思いました。</p>
+<p><a href="https://qiita.com/non_cal/items/a8fee0b7ad96e67713eb">https://qiita.com/non_cal/items/a8fee0b7ad96e67713eb</a></p>
+<p>PHPの場合は<code>composer.json</code>にあたるやつです。</p>
+<p>ちなみに、<code>npm install</code>は<code>package.json</code>に基づいてdependencyがインストールされ、実際にインストールされたバージョンが<code>package.json</code>に書き込まれます。<br>
+既に<code>package-lock.json</code>が存在する場合、基本的には<code>package-lock.json</code>に基づいてインストールされます。<br>
+<code>package.json</code>内で指定されたバージョンと<code>package-lock.json</code>に矛盾があれば<code>package.json</code>が優先され、インストールされたバージョンが<code>package.json</code>に書き込まれます。</p>
+<p><code>package-lock.json</code>を優先させたい場合は、<code>npm install</code>の代わりに</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">npm ci</span></span></code></pre>
+<p>を実行します。</p>
+<p>環境構築の際にこの辺りのパッケージのバージョンでトラブルが発生することが考えられるので基本的には<code>package-lock.json</code>が存在する場合はそちらを参照した方がよさそうです。</p>
+<p><a href="https://qiita.com/righteous/items/e5448cb2e7e11ab7d477">https://qiita.com/righteous/items/e5448cb2e7e11ab7d477</a></p>
+<h2 id="laravel-mixの使用">Laravel Mixの使用</h2>
+<p>Laraavel Mixは先述した通り、webpack上の設定のためのパッケージなので、</p>
+<p><code>package.json</code>ファイル上のNPMスクリプトの1つをMixの実行で起動する。</p>
+<p>公式サイトにはこんな感じで書かれてますが、要するにnpmコマンドで実行しろってことですね。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">npm run dev</span></span></code></pre>
+<p>のような形で実行します。</p>
+<p>以下のように</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">npm run watch</span></span></code></pre>
+<p>を実行することで関連ファイルが更新された際に自動で再コンパイルしてくれます。</p>
+<h2 id="実際の操作について">実際の操作について</h2>
+<p>先述した通り、webpackの設定ファイルをより簡単に書くための仕組みがLaravel Mixですが、具体的にどう書いてどういう流れで処理されるのか、公式例等を用いて確認していきます。</p>
+<p>公式
+<a href="https://readouble.com/laravel/6.x/ja/mix.html">https://readouble.com/laravel/6.x/ja/mix.html</a></p>
+<p><code>webpack.mix.js</code>ファイルは全アセットコンパイルのエントリポイントです。
+つまり、このファイルに設定を書くことでwebpackの設定が適用されるイメージです。</p>
+<p>Mixを用いることで以下のファイルのコンパイルができます。</p>
+<ul>
+<li>
+<p>CSS関係</p>
+<ul>
+<li>Less</li>
+<li>Sass</li>
+<li>Stylus</li>
+<li>PostCSS</li>
+<li>平文CSS</li>
+</ul>
+</li>
+<li>
+<p>JavaScript関係</p>
+<ul>
+<li>ベンダの抽出</li>
+<li>React</li>
+<li>バニラJS</li>
+<li>webpackカスタム設定</li>
+</ul>
+</li>
+</ul>
+<p>聞いたことのないワードもあるのでそれぞれ確認しながら、記述方法を確認します。</p>
+<p>また、公式ドキュメントで以下の内容について触れています。</p>
+<ul>
+<li>ファイル/ディレクトリコピー</li>
+<li>バージョン付け/キャッシュ対策</li>
+<li>Browsersyncリロード</li>
+<li>環境変数</li>
+<li>通知</li>
+</ul>
+<p>ここからは公式ドキュメントの内容をなぞりながら僕がわからなかったことについて調査したメモ書きになるので読み飛ばしてもらっても大丈夫です。(うまくまとめられなかった)</p>
+<h3 id="less">Less</h3>
+<p>LessというCSSプリプロセッサがあります。
+<a href="https://www.tohoho-web.com/ex/less.html">https://www.tohoho-web.com/ex/less.html</a>
+CSSをより簡単に書いてメンテナンスしやすくできるもの、といったイメージでしょうか。
+Laravel Mixではこの<code>Less</code>をCSSへコンパイルすることができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">mix.less(元のlessファイル, 出力先)</span></span></code></pre>
+<p>のように記載することでコンパイルが可能です。</p>
+<p>ちなみにLaravelではMixなどでコンパイルされたあとのデータを<code>public</code>配下に置きます。<br>
+いろんな場所で部品を作ってそれを文字通りMixして出来上がったものを<code>public</code>に出力するイメージです。<br>
+(初めてLarabelプロジェクトを見た時このフォルダの意味がわからなくて混乱してました。)</p>
+<p>以下、公式ドキュメントの例を紹介します。
+<code>resources/less/app.less</code>を<code>public/css/app.css</code>にコンパイルします。</p>
+<p>単一ファイルの場合</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">mix.less('resources/less/app.less', 'public/css');</span></span></code></pre>
+<p>複数ファイルの場合</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">mix.less('resources/less/app.less', 'public/css')</span></span>
+<span class="line"><span style="color: #c9d1d9">    .less('resources/less/admin.less', 'public/css');</span></span></code></pre>
+<p>コンパイル後のファイル名を指定したい場合は第二引数に指定すればいいです。</p>
+<h3 id="sass">Sass</h3>
+<p>SassもLessと同じような形でコンパイルすることが可能です。</p>
+<p><a href="https://udemy.benesse.co.jp/design/web-design/sass.html">https://udemy.benesse.co.jp/design/web-design/sass.html</a></p>
+<p>(Sassとscssなにが違うのかよくわかってなかったことがわかった。)</p>
+<p>公式のコード例は以下</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #79C0FF">mix</span><span style="color: #FF7B72">.</span><span style="color: #D2A8FF">sass</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'resources/sass/app.scss'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'public/css'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<h3 id="stylus">Stylus</h3>
+<p>Stylusも同様にコンパイルできるらしい。
+Stylusが何かわからないので調べてみます。</p>
+<p><a href="https://qiita.com/morishitter/items/b9a2d78c79c3c07de776">https://qiita.com/morishitter/items/b9a2d78c79c3c07de776</a></p>
+<blockquote>
+<p>Node.js製のCSSプリプロセッサ。
+SassとLessのいいとこ取りをしているらしい。</p>
+</blockquote>
+<h3 id="postcss">PostCSS</h3>
+<p>CSS加工ツール</p>
+<h3 id="平文css">平文CSS</h3>
+<p><code>styles</code>メソッドを使用することで平文のCSSを一つのファイルにまとめることもできます。
+mix.styles([
+‘public/css/vendor/normalize.css’,
+‘public/css/vendor/videojs.css’
+], ‘public/css/all.css’);</p>
+<h3 id="url処理">URL処理</h3>
+<blockquote>
+<p>Webpackはスタイルシート中の<code>url()</code>呼び出しをリライトし、最適化します。
+画像への相対パスを含むスタイルシートをコンパイルする際にURLを書き換えてくれる機能、といったイメージです。
+例</p>
+</blockquote>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">.example {</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FFA657">background</span><span style="color: #C9D1D9">: </span><span style="color: #D2A8FF">url</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'../images/example.png'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>デフォルトでは、パスを解決して<code>example.png</code>を見つけて、<code>public/images</code>フォルダにコピーします。</p>
+<p>勝手に解釈させずに自分で指定したフォルダ構成を適用したい場合は下記のように記述することで<code>url()</code>リライトを停止できます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">mix.</span><span style="color: #D2A8FF">sass</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'resources/assets/app/app.scss'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'public/css'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">   .</span><span style="color: #D2A8FF">options</span><span style="color: #C9D1D9">({</span></span>
+<span class="line"><span style="color: #C9D1D9">      processCssUrls: </span><span style="color: #79C0FF">false</span></span>
+<span class="line"><span style="color: #C9D1D9">   });</span></span></code></pre>
+<h3 id="ソースマップ">ソースマップ</h3>
+<p><a href="http://blog.sakurachiro.com/2017/08/scss_sourcemap/">http://blog.sakurachiro.com/2017/08/scss_sourcemap/</a></p>
+<p>使い方</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">mix.</span><span style="color: #D2A8FF">js</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'resources/assets/js/app.js'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'public/js'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">   .</span><span style="color: #D2A8FF">sourceMaps</span><span style="color: #C9D1D9">();</span></span></code></pre>
+<ul>
+<li>ソースマップとは<br>
+コンパイルする前のファイルを保持したもの。
+コンパイルした後のファイルで不具合があった場合にコンパイル前のどの箇所でエラーが出たか特定しやすくなる。</li>
+</ul>
+<h3 id="javascriptの操作">JavaScriptの操作</h3>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">mix.</span><span style="color: #D2A8FF">js</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'resources/assets/js/app.js'</span><span style="color: #C9D1D9">, </span><span style="color: #A5D6FF">'public/js'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<p>このように書くことで以下の利点がある。(この辺りはLaravelのバージョンによって異なる？みたい)</p>
+<ul>
+<li>ES2015記法</li>
+<li>モジュール</li>
+<li><code>.vue</code>ファイルのコンパイル</li>
+<li>開発環境向けに圧縮</li>
+</ul>
+<h3 id="バニラjs">バニラJS</h3>
+<p>スタイルシートのときと同様に、JavaScriptファイルをまとめることができる。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">mix.</span><span style="color: #D2A8FF">scripts</span><span style="color: #C9D1D9">([</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #A5D6FF">'public/js/admin.js'</span><span style="color: #C9D1D9">,</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #A5D6FF">'public/js/dashboard.js'</span></span>
+<span class="line"><span style="color: #C9D1D9">], </span><span style="color: #A5D6FF">'public/js/all.js'</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<h3 id="browsersyncリロード">Browsersyncリロード</h3>
+<p>Browsersyncとは
+自動的にファイルの変更を監視し、手動で再読み込みしなくても変更をブラウザに反映してくれる。
+<code>mix.browserSync()</code>メソッドを呼び出し、有効にする。</p>
+<p>公式例</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">mix.</span><span style="color: #D2A8FF">browserSync</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'my-domain.test'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #8B949E">// もしくは</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #8B949E">// https://browsersync.io/docs/options</span></span>
+<span class="line"><span style="color: #C9D1D9">mix.</span><span style="color: #D2A8FF">browserSync</span><span style="color: #C9D1D9">({</span></span>
+<span class="line"><span style="color: #C9D1D9">    proxy: </span><span style="color: #A5D6FF">'my-domain.test'</span></span>
+<span class="line"><span style="color: #C9D1D9">});</span></span></code></pre>
+<p><code>npm run watch</code>コマンドにより、webpackの開発サーバを起動します。
+PHPファイルを変更すると、すぐにページが再読み込みされ、変更が反映されるのを目にする。</p>
+<h3 id="環境変数">環境変数</h3>
+<p><code>.env</code>ファイルの中でキーに<code>MIX_</code>をつけることで環境変数をMixへ注入できる。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">MIX_SENTRY_DSN_PUBLIC=http://example.com</span></span></code></pre>
+<p>.envファイルで定義した内容にprocess.envオブジェクトを通してアクセスできるようになる。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">process.env.</span><span style="color: #79C0FF">MIX_SENTRY_DSN_PUBLIC</span></span></code></pre>
+<h2 id="まとめ">まとめ</h2>
+<p>今回は公式サイト+αといった形でうまくまとまらなかった部分がありますが、</p>
+<ul>
+<li>Laravel Mixを使うことでファイルの分割がしやすくなる(というより、分割した後の管理がしやすくなる)</li>
+<li>特にスタイルシートやjsについては分割して管理できるとメリットが大きい</li>
+</ul>
+<p>ことが掴めたかなと思います。</p>
+<h2 id="所感">所感</h2>
+<p>普段使っている技術について調べていくと、他の技術との関連性や比較をする機会が出てくるので勉強になります。</p>
+<p>詳細を追っていくと時間がいくらあっても足りないのでこのくらいで切り上げようと思いました。
+実際使ってみてわかったことなどがあれば随時追記していきたいと思います。</p>
+<p>cssのコンパイル一つとってもさまざまな方法があり、それぞれの長所があるので理解して使うことで長所を最大限活かせるなと感じました。</p>
+<p>また、まだまだ知らない技術が多すぎてなかなか網羅的には調べきれていない部分があるのでもう少し局所的にまとめていく方がいいのかな？と悩んでいます。。。
+あとはそろそろ手を動かして勉強していけるようになってきた、、、かな？と思ってます。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>システムの権限方式について</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/11/17</div>
+        <h1>システムの権限方式について</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>今回はシステムのアクセス制御、つまりユーザーの操作権限の管理のしくみを考えていきます。</p>
+<h2 id="管理者フラグ形式">管理者フラグ形式</h2>
+<p>最も簡単に実装できる方法です。<br>
+ユーザーテーブルに管理者フラグを実装し、管理者の場合は権限を持つように実装します。</p>
+<ul>
+<li>メリットはシンプルな実装となること。</li>
+<li>デメリットはユーザーごとに権限を設定できないこと。</li>
+</ul>
+<p>「このユーザーにはこの操作のみを許可したい」のようなパターンに対応できません。管理者フラグが立っている場合はすべての権限を与えることになります。<br>
+また、以降紹介するテーブル設計パターンへの以降が難しくなります。(1から作り直すことになる)</p>
+<h2 id="aclaccess-control-list">ACL(Access Control List)</h2>
+<p>管理者フラグと比べてユーザーに個別に操作権限を付与できる方式です。<br>
+作成するテーブルとしては以下の３つを作成します。</p>
+<ul>
+<li>ユーザーテーブル
+<ul>
+<li>ユーザーID</li>
+<li>ユーザー名</li>
+</ul>
+</li>
+<li>ユーザー操作権限テーブル(中間テーブル)
+<ul>
+<li>ユーザーID</li>
+<li>操作権限ID</li>
+<li>権限の有無</li>
+</ul>
+</li>
+<li>操作権限テーブル
+<ul>
+<li>操作権限ID</li>
+<li>権限名</li>
+</ul>
+</li>
+</ul>
+<p>このパターンのデメリットは、権限の数、もしくはユーザー数が増えてくると管理が煩雑になる点です。<br>
+ユーザーと操作権限の中間テーブルにてすべて管理されているので、単純に<code>ユーザー数 * 操作権限数</code>だけレコードが必要になります。<br>
+権限、もしくは権限数を追加する場合に対応する数だけレコードを新規追加する必要があるため、設計画面も煩雑になります。（ユーザーを追加する度にすべての機能について権限の設定を行わないといけない）</p>
+<p>ACL形式を適用するパターンは、機能数、ユーザー数がどちらも少ないことが想定される場合です。<br>
+大抵のシステムの場合はどちらかがある程度の数となることが想定されると思います。<br>
+次に紹介するRBAC、ABACと比較してどれが適切な設計か検討しましょう。</p>
+<h2 id="rbacrole-based-access-control">RBAC(Role Based Access Control)</h2>
+<p>RBACは、ユーザーにロール(一般ユーザー・管理者など)が紐づき、ロールに対して権限が紐づきます。<br>
+実装の難易度と解消できる複雑さのバランスが取れていて、権限の管理について考える場合はまず検討するべき考え方になるかと思います。</p>
+<p>作成するテーブルは以下のようになります。</p>
+<ul>
+<li>ユーザーテーブル
+<ul>
+<li>ユーザーID</li>
+<li>ユーザー名</li>
+</ul>
+</li>
+<li>ユーザーロールテーブル(中間テーブル)
+<ul>
+<li>ユーザーID</li>
+<li>ロールID</li>
+</ul>
+</li>
+<li>ロールテーブル
+<ul>
+<li>ロールID</li>
+<li>ロール名</li>
+</ul>
+</li>
+<li>ロール操作権限テーブル(中間テーブル)
+<ul>
+<li>ロールID</li>
+<li>操作権限ID</li>
+</ul>
+</li>
+<li>操作権限テーブル
+<ul>
+<li>操作権限ID</li>
+<li>権限名</li>
+</ul>
+</li>
+</ul>
+<p>上記テーブル構成を見るとわかるようにACLに比べるとテーブル設計としては少し複雑になります。</p>
+<p>比較する際にはユーザー側、実装側のそれぞれの視点からどういう操作が必要になるか考えましょう。</p>
+<h3 id="acl形式でユーザーを追加する場合のユーザー側の操作">ACL形式でユーザーを追加する場合のユーザー側の操作</h3>
+<p>ACL形式で権限が管理されている場合、ユーザーに直接権限が紐づきます。<br>
+そのため、ユーザーを新規追加する場合は以下のような流れになります。</p>
+<ol>
+<li>ユーザーに必要な情報を入力(名前等)</li>
+<li>ユーザーに紐づく権限をひとつひとつ編集して設定</li>
+</ol>
+<p>DB設計を見直すと、ユーザーを1人追加する度に機能の数だけレコードを中間テーブルに追加する必要があります。<br>
+すべての機能について、そのユーザーの権限を考えて登録する必要があります。</p>
+<h3 id="rbac形式でユーザーを追加する場合のユーザー側の操作">RBAC形式でユーザーを追加する場合のユーザー側の操作</h3>
+<p>RBAC形式で権限が管理されている場合は、</p>
+<ul>
+<li>ユーザーとロールが紐づく</li>
+<li>それぞれのロールと権限が紐づく</li>
+</ul>
+<p>の２つの関連が発生します。</p>
+<p>ユーザーを新規追加する場合の操作は、</p>
+<ol>
+<li>ユーザーに必要な情報を入力(名前等)</li>
+<li>ユーザーに紐づくロールを一つ設定</li>
+</ol>
+<p>という流れになります。<br>
+ACL形式と比較すると、ユーザー新規追加の際にはロールを一つ設定するのみで、各権限については個別に設定せずに作成が可能になります。<br>
+管理の面から考えても権限はロールに紐づくため、ユーザーの数だけ設定が必要なACL形式と比較するとロールの数に絞られ、いくらか簡単に管理ができます。</p>
+<h3 id="acl形式で機能を追加する場合の実装の流れ">ACL形式で機能を追加する場合の実装の流れ</h3>
+<p>ACL形式の場合に機能を追加した場合を考えてみます。<br>
+基本的に機能の追加に伴う権限の更新についてはシステム側でマイグレーション等を行うことになると思います。</p>
+<ol>
+<li>機能を追加</li>
+<li>機能の操作権限とユーザーIDの紐付けを中間テーブルに登録</li>
+</ol>
+<p>ユーザーの数だけレコードを中間テーブルに追加する必要があります。<br>
+また、新規追加された機能の権限をユーザーごとに考えなければならず、かなり複雑になります。</p>
+<h3 id="rbac形式で機能を追加する場合の実装の流れ">RBAC形式で機能を追加する場合の実装の流れ</h3>
+<p>RBAC形式で権限が管理されていて機能を追加する場合、ユーザーと各権限には直接関連が発生しないことになります。</p>
+<ol>
+<li>機能を追加</li>
+<li>機能の操作権限とロールIDの紐付けを中間テーブルに登録</li>
+</ol>
+<p>中間テーブルに追加するレコードの数はロールの数になります。<br>
+また、新規追加された機能の権限について考えるのもロールの数になるため、ACL形式と比較すると少なくなります。</p>
+<h2 id="acl形式とrbac形式の比較結果">ACL形式とRBAC形式の比較結果</h2>
+<p>比較結果として大事なのはユーザー側からみた操作がシンプルになるのはどちらかという観点です。<br>
+複数の権限を一つのロールに紐付けることができるのでRBACのほうがシンプルになります。</p>
+<p>ただ、実装としてはテーブル数等の面で複雑になりますが、機能を追加する際に追加するレコード数は少なくなるため、RBACを選択するほうがメリットが大きそうです。</p>
+<p>前提として、追加する機能の数や想定されるユーザー数を考慮した上で判断しましょう。</p>
+<h2 id="abacattribute-based-access-control">ABAC(Attribute Based Access Control)</h2>
+<p>先程紹介したACL、RBACの他にユーザーの属性をベースに考えるABAC方式があります。</p>
+<p>たとえば、ユーザーの「部署」「役職」といった属性をチェックし、部署が「人事部」、役職が「部長」の場合のみアクセスを許可するといった制御が必要な場合はABAC形式を検討します。</p>
+<h2 id="管理方式の比較まとめ">管理方式の比較まとめ</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>ACL</th><th>RBAC</th><th>ABAC</th></tr></thead><tbody><tr><td>長所</td><td>実装自体は楽</td><td>実装は楽。ロールの数が少ない場合は管理コストが低い</td><td>きめ細かい権限管理が可能。新しくユーザーを追加する場合でも既存のルールを変更する必要がない。</td></tr><tr><td>短所</td><td>管理が煩雑</td><td>きめ細かい権限管理のためにはロールの数を増やす必要がある</td><td>実装が一番複雑。慎重に設計を検討する必要がある</td></tr></tbody></table>
+<h2 id="rbacの実装を考えてみる">RBACの実装を考えてみる</h2>
+<p>個人的には大規模なシステム出ない場合はRBACをベースに考えるのが一番汎用性が高いかなと思いました。<br>
+RBACの際の実装パターンとして、DB上のデータとして管理するか実装上で直接制御するかの二通りが考えられます。</p>
+<p>まずは実装上で直接制御する場合の処理について考えてみます。</p>
+<p>クリーンアーキテクチャを意識しながら実装すると<code>Role</code>というエンティティを用意するのが自然かなと思いました。<br>
+また、それらのインターフェースを用意しておくことでユースケースから具体的なRoleクラスの実装を意識せずにメソッドを使用できます。</p>
+<p>RoleInterface</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">interface RoleInterface</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function id(): int;</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function name(): string;</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<p>AdminRole(管理者ロール)</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class AdminRole implements RoleInterface</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    /**</span></span>
+<span class="line"><span style="color: #c9d1d9">     * @var string</span></span>
+<span class="line"><span style="color: #c9d1d9">     */</span></span>
+<span class="line"><span style="color: #c9d1d9">    private string $name;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    private const ID = 1;</span></span>
+<span class="line"><span style="color: #c9d1d9">    private const NOT_ALLOWED = 0;</span></span>
+<span class="line"><span style="color: #c9d1d9">    private const READ_ONLY = 1;</span></span>
+<span class="line"><span style="color: #c9d1d9">    private const ALLOW_UPDATE = 2;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    public function __construct()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        $this->name = 'admin';</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    /**</span></span>
+<span class="line"><span style="color: #c9d1d9">     * @return int</span></span>
+<span class="line"><span style="color: #c9d1d9">     */</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function id(): int</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return self::ID;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    /**</span></span>
+<span class="line"><span style="color: #c9d1d9">     * @return string</span></span>
+<span class="line"><span style="color: #c9d1d9">     */</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function name(): string</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $this->name;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    /**</span></span>
+<span class="line"><span style="color: #c9d1d9">     * @return int</span></span>
+<span class="line"><span style="color: #c9d1d9">     */</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function FunctionAuthority(): int</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return self::READ_ONLY;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<p>上記のような形になるかと思います。あとはビジネスロジックに応じたバリデーションをValueObjectを用意して凝集しておけば実現できそうです。</p>
+<p>ここで意識しておきたいことはRBACの場合はロールの数が増えた場合に実装でのカバーが難しくなることです。<br>
+そのためできるだけDBへの移行がしやすいような設計にしておいたほうがいいです。</p>
+<p>具体的にはRepositoryパターンを採用しその中に隠蔽します。<br>
+DBから取得する場合はクエリビルダ等を使用しますが、クラスで制御する場合は具象クラスを返すロジックをRepositoryに隠蔽しておきます。具体的にはIDを入力をとして渡して動的に具象クラスを生成する等の方法が考えられます。</p>
+<p>このようにしておけばDBへの移行が必要となった場合も比較的スムーズな移行が可能です。</p>
+<h2 id="所感">所感</h2>
+<p>今回は権限管理について整理してみました。<br>
+ひとえに実行する権限を管理するといっても様々な方法がありそれぞれのパターンで実際の運用上の操作等を想定することが大切でした。<br>
+RoleをDB上で表現するのか実装上で表現するのか。実装上で表現するにはどう表現するのかについては明確な答えではないですが現状考えつくなかでスッキリするのは上記の方法かなと思いました。<br>
+なんだかすぐより良い方法を思いつきそうな気もしますが、思いついた場合はまた記事にしたいと思います。<br>
+ここ最近はいろんなことに対して自分なりの根拠や考え方を持てるようになってきました。人の意見に対しても自分の意見をぶつけたうえでよりよい方法を模索できるようになってきたのでチームメンバーとの議論が楽しくなっていい傾向かなと個人的には感じています。</p>
+<h2 id="余談">余談</h2>
+<p>今回紹介したACLはLinuxのファイルシステムでも使用されている方法です。<br>
+今回こうして権限管理について整理していくなかで言われてみればたしかにそうか、、、となって気づく瞬間がありました。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://knooto.info/software-design-access-control/#top">https://knooto.info/software-design-access-control/#top</a><br>
+<a href="https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%99%E3%83%BC%E3%82%B9%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E5%88%B6%E5%BE%A1">https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%99%E3%83%BC%E3%82%B9%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E5%88%B6%E5%BE%A1</a><br>
+<a href="https://kenfdev.hateblo.jp/entry/2020/01/13/115032">https://kenfdev.hateblo.jp/entry/2020/01/13/115032</a><br>
+<a href="https://www.onelogin.com/jp-ja/learn/rbac-vs-abac">https://www.onelogin.com/jp-ja/learn/rbac-vs-abac</a><br>
+<a href="https://ja.wikipedia.org/wiki/%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E5%88%B6%E5%BE%A1%E3%83%AA%E3%82%B9%E3%83%88">https://ja.wikipedia.org/wiki/%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E5%88%B6%E5%BE%A1%E3%83%AA%E3%82%B9%E3%83%88</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

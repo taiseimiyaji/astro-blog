@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>astroに入門してみる</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2023/02/04</div>
+        <h1>astroに入門してみる</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>最近フロントエンドへの自身の理解の甘さを感じるようになってきました。<br>
+ここ最近TypeScriptなどフロントエンドに関係する記事をいくつか公開しましたが、そろそろ実際になにか作ってみようと感じるようになりました。<br>
+そこで今回は気になっていた<code>astro</code>というフレームワークを触ってみようと思います。<br>
+題材としては、自作ブログにしたいと思います。<br>
+目的はブログ記事の管理を簡単にすることと、フロントエンドの学習、また、レンタルサーバーなどを用いてインフラ周りを含めた実践です。</p>
+<p>今回はフロントエンド関連のキーワードについて調べながらastroの公式ドキュメントを読み進めていきたいと思います。</p>
+<h2 id="3行まとめ">3行まとめ</h2>
+<ul>
+<li>astroはパフォーマンスを重視したMPAフレームワーク</li>
+<li>React, Vue, Svelteのような異なるフレームワークを使用できる</li>
+<li>MarkdownやMDXを使用したコンテンツ重視のWebサイト構築にはかなり向いている。</li>
+</ul>
+<h2 id="astroとは">astroとは</h2>
+<p>astroというフレームワークについて特徴をまとめておきます。</p>
+<ul>
+<li>高速なWebサイトの構築のためのオールインワンWebフレームワーク</li>
+<li>サーバーファーストでサーバーサイドレンダリングを最大限活用する。</li>
+<li>アイランドアーキテクチャと呼ばれるアーキテクチャを採用している</li>
+<li>高価なハイドレーションをデバイスから取り除く</li>
+<li>様々なインテグレーションによってカスタマイズが可能</li>
+<li>ロードが遅くなる原因となる JavaScript をデフォルトではクライアントで起動しない</li>
+<li>React, Preact, Vue, Svelte, Solidなど様々なフレームワークをサポートしています。</li>
+</ul>
+<h3 id="コアコンセプト">コアコンセプト</h3>
+<p><a href="https://docs.astro.build/ja/concepts/mpa-vs-spa/">https://docs.astro.build/ja/concepts/mpa-vs-spa/</a></p>
+<p>astroはMPAの考え方に沿ったフレームワークです。<br>
+そのため、フロントエンドにおいてMPAとSPAの違いを再確認してみます。</p>
+<h3 id="mpa">MPA</h3>
+<p>マルチページアプリケーションの略。複数のHTMLページから構成されるWebサイトのこと。<br>
+新しいページに移動すると、ブラウザはサーバーに新しいページのHTMLを要求します。<br>
+従来のフレームワークの例としては<code>Ruby on Rails</code>や<code>Python Django</code>, <code>PHP Laravel</code>や<code>WordPress</code>なども静的サイトジェネレータです。<br>
+ただ、astroがその他のMPAフレームワークと違う点はサーバー言語とランタイムにJavaScriptを使用している点です。<br>
+結果として、Next.jsやその他のモダンWebフレームワークとよく似た感覚で、MPAサイトの利点であるパフォーマンス特性を備えた開発者体験が得られます。</p>
+<h3 id="spa">SPA</h3>
+<p>シングルページアプリケーションの略。
+ユーザーのブラウザに読み込まれ、ローカルでHTMLをレンダリングする単一のJavaScriptアプリケーションで構成されるウェブサイトのこと。<br>
+ブラウザ上でJavaScriptアプリケーションとしてウェブサイトを実行し、ページ遷移したときに同じHTMLのページを再描画する機能が特徴的。
+従来のフレームワークとしては<code>Nuxt.js</code>, <code>Next.js</code>, <code>SvelteKit</code>, <code>Gatsby</code>, <code>Create React App</code>などが挙げられます。</p>
+<p>MPAと比較した場合のメリット</p>
+<ul>
+<li>最初のページロード以降はユーザー体験としてはMPAより良くなる。</li>
+<li>SPAはページレンダリングに関連する多くの制御を行うため、遷移時のアニメーションを提供する事ができる。MPAの場合は<a href="https://turbo.hotwired.dev/">Turbo</a>のようなツールを使う必要がある。</li>
+<li>アプリケーションが複数のページに渡って状態とメモリを維持できるため、複雑な複数ページの状態管理を扱うWebサイトとして優れている。</li>
+</ul>
+<p>MPAと比較した場合のデメリット</p>
+<ul>
+<li>ブラウザでHTMLをレンダリングするため、最初のページ読み込み時のパフォーマンスはMPAに劣る。</li>
+<li>シンプルさ、パフォーマンスではMPAノフが優れている。</li>
+</ul>
+<h3 id="結論">結論</h3>
+<p>MPAとSPAでは「どちらが優れている」ということはなく、常にトレードオフの関係にある。</p>
+<ul>
+<li>複雑な状態管理を必要とするページの場合はWebサイト全体を単一のJavaScriptアプリケーションのように扱えるSPAのほうが向いている</li>
+<li>コンテンツに特化してシンプルさやパフォーマンスを重視するような場合はMPAのほうが向いていて、astroはMPA。</li>
+</ul>
+<h2 id="astroアイランド">astroアイランド</h2>
+<p><a href="https://docs.astro.build/ja/concepts/islands/">https://docs.astro.build/ja/concepts/islands/</a></p>
+<p>astroアイランドとはざっくりいうとHTMLの静的なページ上にあるインタラクティブなコンポーネントを指します。<br>
+アイランドは常に独立したコンポーネントとして表示され、静的なコンテンツの海に浮かぶ島に比喩されます。<br>
+astroでは、<code>React</code>や<code>Svelte</code>、<code>Vue</code>などのコンポーネントを使用して、ブラウザ上でアイランドをレンダリングする事ができます。<br>
+アイランドの考え方から、同じページで様々なフレームワークを混在させることも可能です。<br>
+astroはデフォルトではクライアントサイドでは一切JavaScriptを使用しません。<br>
+<code>React</code>や<code>Svelte</code>、<code>Vue</code>などのコンポーネントを使用した場合には自動的に前もってHTMLとして生成し、JavaScriptを取り除いて表示します。<br>
+インタラクティブにしたい部分のみを<code>clientディレクティブ</code>と呼ばれるものをつけて描画するよう指示します。</p>
+<h3 id="参考">参考</h3>
+<p><a href="https://jasonformat.com/islands-architecture/">https://jasonformat.com/islands-architecture/</a></p>
+<h2 id="astro20について">astro2.0について</h2>
+<p><a href="https://astro.build/blog/astro-2/">https://astro.build/blog/astro-2/</a>
+2023年の1月24日にastro2.0がリリースされました。<br>
+特に大きなアップデートとして、MarkdownとMDXに型安全性が追加されました。<br>
+WebでMarkdownを使用する場合に型安全に取り扱う事ができます。</p>
+<p>例えば、ブログ、ニュースレターなど多くのファイルが存在する場合にプロパティを設定しておくと一貫性を保つことができます。<br>
+この一貫性のために、型安全性が追加されました。</p>
+<p>また、astro2.0にて追加されたハイブリッドレンダリングという機能で、静的コンテンツと動的コンテンツを組み合わせて使用することができます。<br>
+これによって、既存の静的サイトにAPIを追加したり、ページのレンダリングパフォーマンスを改善する事ができます。</p>
+<h2 id="markdownとmdxについて">MarkdownとMDXについて</h2>
+<p><a href="https://docs.astro.build/ja/guides/markdown-content/">https://docs.astro.build/ja/guides/markdown-content/</a><br>
+astroでは、インテグレーションをインストールすることで各種UIフレームワークを使用できるようになりますが、MDXファイルも対応しています。</p>
+<h3 id="mdxの機能について">MDXの機能について</h3>
+<p>ざっくり簡単なMDXの概念をまとめておきます。</p>
+<p>公式: <a href="https://mdxjs.com/">https://mdxjs.com/</a></p>
+<p>参考: <a href="https://zenn.dev/spring_raining/articles/3eb62ff93df1eb">https://zenn.dev/spring_raining/articles/3eb62ff93df1eb</a></p>
+<p>MDXはMarkdown + JSXを名前の由来としています。<br>
+MDXを使用することで以下のメリットがあります。</p>
+<ul>
+<li>簡単にJSXで作成した独自コンポーネントを使える</li>
+<li>直接JavaScriptとして読み込める(JSXコンポーネントのように扱うことができる)</li>
+</ul>
+<p>公式サイトから引用した例は下記の様になります。<br>
+一見MarkdownにHTMLが埋め込まれたもののように見えます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">export const Thing = () => &#x3C;>World&#x3C;/></span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #79C0FF; font-style: italic"># Hello &#x3C;Thing /></span></span></code></pre>
+<p>これがJavaScriptに変換され、下記のようになります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">/* @jsxRuntime automatic @jsxImportSource react */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">export</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">Thing</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> () </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> &#x3C;>World&#x3C;/></span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">export</span><span style="color: #FFA657"> </span><span style="color: #FF7B72">default</span><span style="color: #FFA657"> </span><span style="color: #FF7B72">function</span><span style="color: #FFA657"> </span><span style="color: #D2A8FF">MDXContent</span><span style="color: #FFA657">() </span><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">  </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> &#x3C;</span><span style="color: #7EE787">h1</span><span style="color: #C9D1D9">>Hello &#x3C;</span><span style="color: #7EE787">Thing</span><span style="color: #C9D1D9"> />&#x3C;/</span><span style="color: #7EE787">h1</span><span style="color: #C9D1D9">></span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>変換後のコードを見てみると、exportが記載されており、コンポーネントとして出力されることがわかります。</p>
+<p>下記のようなmdxコンポーネントを作成し、</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #79C0FF; font-style: italic"># Hi!</span></span></code></pre>
+<p>下記のようにインポートできます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">import</span><span style="color: #C9D1D9"> React </span><span style="color: #FF7B72">from</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'react'</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #FF7B72">import</span><span style="color: #C9D1D9"> ReactDom </span><span style="color: #FF7B72">from</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'react-dom'</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #FF7B72">import</span><span style="color: #C9D1D9"> Example </span><span style="color: #FF7B72">from</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'./example.mdx'</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">ReactDom.</span><span style="color: #D2A8FF">render</span><span style="color: #C9D1D9">(&#x3C;</span><span style="color: #7EE787">Example</span><span style="color: #C9D1D9"> />, document.</span><span style="color: #D2A8FF">querySelector</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'#root'</span><span style="color: #C9D1D9">));</span></span></code></pre>
+<p>jsxとして出力されていますが、Reactに結合しているわけではなく、<code>Preact</code>, <code>Vue</code>, <code>Emotion</code>などでも使用できるようです。<br>
+あくまでプログラミング言語ですが、jsxを理解できればあまり学習コストは高くないように感じました。</p>
+<h2 id="astroにおけるルーティング">astroにおけるルーティング</h2>
+<p><a href="https://docs.astro.build/ja/guides/markdown-content/#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%83%99%E3%83%BC%E3%82%B9%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0">https://docs.astro.build/ja/guides/markdown-content/#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%83%99%E3%83%BC%E3%82%B9%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0</a></p>
+<p>astroでは、先述したMarkdown及びMDXを使用することで簡単にルーティングを行うことができます。<br>
+<code>src/pages</code>ディレクトリ内に<code>.md</code>ファイルもしくは<code>.mdx</code>ファイルを置くだけです。<br>
+また、サブディレクトリ配下も自動的にページルートを構築します。<br>
+また、front-matterを使用することで下書きページ扱いできたりもします。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">---</span></span>
+<span class="line"><span style="color: #7EE787">title</span><span style="color: #C9D1D9">: </span><span style="color: #A5D6FF">タイトル</span></span>
+<span class="line"><span style="color: #7EE787">draft</span><span style="color: #C9D1D9">: </span><span style="color: #79C0FF">true</span></span>
+<span class="line"><span style="color: #C9D1D9">---</span></span></code></pre>
+<p>markdownファイルの結果は<code>astro.glob()</code>関数にて取得できるので、ビルドに含めないようにフィルタリングすることで下書き機能が実現できます。<br>
+<code>astro.glob()</code>については公式リファレンスを参照すると動きがわかりやすいです。<br>
+<a href="https://docs.astro.build/en/reference/api-reference/">https://docs.astro.build/en/reference/api-reference/</a></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">posts</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">await</span><span style="color: #C9D1D9"> Astro.</span><span style="color: #D2A8FF">glob</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'../pages/post/*.md'</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">nonDraftPosts</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> posts.</span><span style="color: #D2A8FF">filter</span><span style="color: #C9D1D9">((</span><span style="color: #FFA657">post</span><span style="color: #C9D1D9">) </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">!</span><span style="color: #C9D1D9">post.frontmatter.draft);</span></span></code></pre>
+<p>また、デフォルトでShikiとPrismといったシンタックスハイライトをサポートしているのもエンジニアからすると嬉しい機能です。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>astroはパフォーマンスを重視したMPAフレームワーク</li>
+<li>React, Vue, Svelteのような異なるフレームワークを使用できる</li>
+<li>MarkdownやMDXを使用したコンテンツ重視のWebサイト構築にはかなり向いている。</li>
+<li>シンタックスハイライトやファイルベースルーティングなどmarkdownを中心にサイト構築する際に楽な要素が多い</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>個人的には特にエンジニアにとって、技術ブログや個人サイトを構築する際に最有力になり得るフレームワークだと感じています。<br>
+現在担当プロダクトでReactを導入しているプロダクトはないのですが、これを機にastroでReactを使ってみたいと思っています。<br>
+現在主流のNext.jsとはすこし方針が違いますが、個人のブログではこちらのほうが向いてそうだなと感じています。(いい意味で少し変態的な部分に惹かれています)</p>
+<p>また、いままで個人サイトの構築経験がなかったため、ドメインの取得やサーバーへのデプロイなど含めてチャレンジしてみようと思ってます。<br>
+最近は下記のリポジトリでastroのチュートリアルを試してみたり、ファイルベースルーティングなどを試しながら遊んでいます。<br>
+デプロイ方法としてはRoute53でドメインを購入して、astro公式ドキュメント通りNetlifyにデプロイしています。<br>
+astroを布教して社内でもエンジニアの技術発信がもっと活発になればいいなと思ってます。</p>
+<p>リポジトリ
+<a href="https://github.com/taiseimiyaji/astro-blog">https://github.com/taiseimiyaji/astro-blog</a></p>
+<p>デプロイ先
+<a href="https://www.lyricrime.com/">https://www.lyricrime.com/</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

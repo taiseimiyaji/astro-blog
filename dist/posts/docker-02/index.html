@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dockerを雰囲気ではなく理解して使う</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2023/02/11</div>
+        <h1>Dockerを雰囲気ではなく理解して使う</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>以前Dockerについてごく簡単に<a href="https://taisei-miyaji.hatenadiary.com/entry/2022/03/02/230306">まとめた記事</a>を書きましたが、Webエンジニアになって一年が経とうとしているので改めてDockerについてまとめようと思います。<br>
+公式ドキュメントを自分なりに解釈してまとめたいと思います。<br>
+Dockerについての入門からみていき、普段業務で使用しているコマンドの中身を理解していきます。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>Dockerを使えばコードを管理するようにインフラも管理できる。</li>
+<li><code>イメージ</code>とは、Dockerコンテナを作成する命令が入った読み込み専用のテンプレートのこと。</li>
+<li>Dockerfileは、イメージの作成の際に使用する。</li>
+<li><code>コンテナ</code>とは、イメージが実行状態となったインスタンス(実体)のこと。</li>
+<li>コンテナ内でのファイルの変更を保存するには、<code>ボリューム</code>を使用する。</li>
+<li>複数のコンテナ同士の接続にはネットワーク機能を使用する</li>
+</ul>
+<h2 id="dockerとは">Dockerとは</h2>
+<p>公式には以下のように説明があります。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">Docker はアプリケーションを開発（developing）、移動（shipping）、実行（running）するためのオープンなプラットフォームです。Docker はインフラストラクチャ 1 とアプリケーションを切り離すため、ソフトウェアを短時間で提供できます。Docker があれば、アプリケーションを管理するのと同じ方法で、あなたのインフラも管理できます。Docker 的な手法を最大限活用しますと、テストやコードのデプロイを素早くできますので、コードを書いてから、プロダクション（実行環境）で動かすまでにかかる時間を著しく軽減できます。</span></span></code></pre>
+<p>Dockerを使用することで、コンテナというものを使ってインフラをGitのようなバージョン管理ツールを用いて管理することができます。<br>
+コンテナは隔離された環境です。<br>
+ホストコンピュータ上に何がインストールされているかに関係なく、コンテナ上にアプリケーションのパッケージ化、実行が可能です。<br>
+コンテナは、アプリケーションの配布とテストをする単位です。<br>
+Dockerはこのコンテナという技術のライフサイクルを管理するツールとプラットフォームです。</p>
+<h2 id="dockerが解決する問題">Dockerが解決する問題</h2>
+<h3 id="cicd">CI/CD</h3>
+<p>開発するアプリケーションやサービスをローカルのコンテナ内で実現することで、開発者は標準化された環境で作業が進められます。<br>
+コンテナを使っての開発はCI/CDのワークフローに適しています。<br>
+コンテナは開発者のローカル環境だけではなく、本番環境を含めた様々な環境の組み合わせにおいて実行可能です。<br>
+いろんな環境で実行できる<code>可搬性</code>のおかげで、</p>
+<ul>
+<li>処理負荷を動的に管理できる</li>
+<li>スケールアップやサービス終了時に簡単に行える</li>
+</ul>
+<p>といったメリットがあります。</p>
+<h2 id="同じハードウェア上で負荷の高い処理を実行">同じハードウェア上で負荷の高い処理を実行</h2>
+<p>以下公式からの引用です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">Docker は軽量かつ高速です。ハイパーバイザ・ベースの仮想マシンに取って変わる、実用的で費用対効果の高いものです。したがってコンピュータ性能をフルに活用してビジネス目標を達成できます。Docker は高度に処理集中する環境に適しており、さらには中小規模の、より少ないリソースの中でのシステム構築にも適しています。</span></span></code></pre>
+<h2 id="dockerにおける用語">Dockerにおける用語</h2>
+<p>雰囲気でDockerを使わないために、イメージとコンテナという用語についてどういうものなのかを理解する必要がありそうです。</p>
+<h3 id="イメージとは">イメージとは</h3>
+<ul>
+<li>Dockerコンテナを作成する命令が入った読み込み専用のテンプレートのこと</li>
+<li>通常、他のイメージをベースにカスタマイズして利用する</li>
+<li>イメージを自分で作る場合は<code>Dockerfile</code>というファイルを生成する</li>
+</ul>
+<h3 id="コンテナとは">コンテナとは</h3>
+<ul>
+<li>イメージが実行状態となったインスタンス(実体)のこと。</li>
+<li>複数のネットワークへの接続、ストレージの追加を行う事ができ、現時点の状態にもとづいた新たなイメージを生成する事もできる。</li>
+<li>ローカルマシン上や仮想マシン上でも実行でき、クラウドにもデプロイができ、可搬性があります。</li>
+<li>コンテナを削除すると永続的なストレージに保存されていないものは消失します。</li>
+</ul>
+<h2 id="dockerのアーキテクチャ">Dockerのアーキテクチャ</h2>
+<p>具体的なDockerの動作イメージについては下記公式を参考.</p>
+<p><a href="https://docs.docker.jp/get-started/overview.html#docker-architecture">https://docs.docker.jp/get-started/overview.html#docker-architecture</a></p>
+<h2 id="dockerfileとは">Dockerfileとは</h2>
+<p>アプリケーションを構築するには、<code>Dockerfile</code>を使います。
+<code>Dockerfile</code>とは、コンテナイメージの作成で使う命令が書かれたスクリプトです。</p>
+<p>以下のようなファイルを用意し、<code>docker build</code>コマンドを使ってコンテナイメージを構築します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9"># syntax=docker/dockerfile:1</span></span>
+<span class="line"><span style="color: #c9d1d9">FROM node:18-alpine</span></span>
+<span class="line"><span style="color: #c9d1d9">WORKDIR /app</span></span>
+<span class="line"><span style="color: #c9d1d9">COPY ..</span></span>
+<span class="line"><span style="color: #c9d1d9">RUN yarn install --production</span></span>
+<span class="line"><span style="color: #c9d1d9">CMD ["node", "src/index.js"]</span></span>
+<span class="line"><span style="color: #c9d1d9">EXPOSE 3000</span></span></code></pre>
+<p>内容は</p>
+<ul>
+<li>イメージのダウンロード</li>
+<li>アプリの依存関係をインストール</li>
+<li>CMD … このイメージでコンテナを起動するときにデフォルトで実行するコマンドを指定</li>
+</ul>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker build -t getting-started .</span></span></code></pre>
+<p><code>-t</code>タグでイメージにタグをつけることができます。コンテナの実行時にこのイメージ名を指定できます。<br>
+最後の<code>.</code>で現在のディレクトリの<code>Dockerfile</code>を探します。</p>
+<h3 id="コンテナの起動">コンテナの起動</h3>
+<p>コンテナの起動には下記の様なコマンドを実行します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker run -dp 3000:3000 getting-started</span></span></code></pre>
+<p><code>-d</code>オプションでバックグラウンドで実行されます。<br>
+<code>-p</code>オプションでコンテナのポートとホスト側のポートをマッピングします。</p>
+<h2 id="コンテナの停止削除">コンテナの停止、削除</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker ps</span></span></code></pre>
+<p>コンテナのIDが出力されます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker stop &#x3C;コンテナID></span></span></code></pre>
+<p>コンテナが停止されます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker rm  [-f] &#x3C;コンテナID></span></span></code></pre>
+<p>コンテナを削除します。<code>-f</code>オプションでコンテナと削除を同時に行います。</p>
+<h2 id="コンテナのデータの永続化">コンテナのデータの永続化</h2>
+<p>前提として、各コンテナではコンテナのファイルシステムに対する変更は他のコンテナからは見えません。<br>
+動作させて確認する場合は下記公式を参照してください。<br>
+<a href="https://docs.docker.jp/get-started/05_persisting_data.html">https://docs.docker.jp/get-started/05_persisting_data.html</a></p>
+<h3 id="コンテナのボリューム">コンテナのボリューム</h3>
+<p>コンテナはファイルの作成、更新、削除ができますが、コンテナを削除すると、それらの変更は失われます。<br>
+ボリュームをコンテナ内にマウントすると、ディレクトリに対する変更はホストマシン上からも見ることができます。<br>
+コンテナの再起動の際にも同じディレクトリをマウントしていれば再起動後も同じファイルが見えます。</p>
+<p>ボリュームには<code>名前付きボリューム</code>と<code>バインドマウント</code>があります。<br>
+Dockerがディスク上で物理的な場所を確保するので、ボリュームの名前を覚えておくだけで利用できます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker volume create &#x3C;ボリューム名></span></span></code></pre>
+<p>その後、コンテナを起動する際に<code>-v</code>フラグを追加することでボリュームをコンテナにマウントできます。<br>
+これでこのパスに生成されたすべてのファイルを保存します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker run -dp 3000:3000 -v &#x3C;ボリューム名:マウントするパス> イメージタグ名</span></span></code></pre>
+<h3 id="ボリュームの実体">ボリュームの実体</h3>
+<p>公式の例では下記のように<code>docker volume inspect</code>コマンドでボリュームの詳細を見ることができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker volume inspect todo-db</span></span>
+<span class="line"><span style="color: #c9d1d9">[</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        "CreatedAt": "2019-09-26T02:18:36Z",</span></span>
+<span class="line"><span style="color: #c9d1d9">        "Driver": "local",</span></span>
+<span class="line"><span style="color: #c9d1d9">        "Labels": {},</span></span>
+<span class="line"><span style="color: #c9d1d9">        "Mountpoint": "/var/lib/docker/volumes/todo-db/_data",</span></span>
+<span class="line"><span style="color: #c9d1d9">        "Name": "todo-db",</span></span>
+<span class="line"><span style="color: #c9d1d9">        "Options": {},</span></span>
+<span class="line"><span style="color: #c9d1d9">        "Scope": "local"</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">]</span></span></code></pre>
+<p><code>MountPoint</code>にディスク上で実際のデータが保管されます。</p>
+<h2 id="バインドマウントの使用">バインドマウントの使用</h2>
+<p>シンプルにデータを保存したい場合は名前付きボリュームが優れていますが、ホスト上でどこにマウントされるかを管理したい場合は<code>バインドマウント</code>という方法があります。</p>
+<p>バインドマウントはデータ保持に使えますが、使用時はコンテナに対する追加データの指定が度々必要です。<br>
+アプリケーションの動作中でも、バインドマウントを使ってソースコードをコンテナ内にマウントするとコードの変更が見えたり反映したりできるようになります。</p>
+<p>名前つきボリュームを利用した場合はホストマシン上に新たなディレクトリが生成され、そこがDockerの保存ディレクトリになりますが、バインドマウントはホストマシンのファイルシステムに依存します。<br>
+バインドマウントはDockerの初期のころから存在していて、今後は原則<code>名前付きボリューム</code>のほうが便利そうです。<br>
+<a href="https://matsuand.github.io/docs.docker.jp.onthefly/storage/bind-mounts/">https://matsuand.github.io/docs.docker.jp.onthefly/storage/bind-mounts/</a></p>
+<h2 id="複数コンテナのアプリ">複数コンテナのアプリ</h2>
+<p>アプリケーションとは別に例えばMySQLを用意したい場合、通常1つ1つのコンテナが1つのことをしっかりと実行すべきです。<br>
+公式には下記の理由が記載されています。</p>
+<ul>
+<li>データベースとは別に、 API とフロントエンドをスケールする良い機会</li>
+<li>コンテナを分けると、現在のバージョンと更新したバージョンを分離できる</li>
+<li>今はローカルにあるデータベースをコンテナが使っているが、プロダクションではデータベースのマネージド サービスを利用したくなるかもしれない</li>
+<li>複数プロセスの実行にはプロセスマネージャが必要であり（コンテナは１つのプロセスのみ起動するため）、コンテナの起動や停止が複雑になる</li>
+</ul>
+<p>先述したとおりコンテナは、外部とは隔離された状態で実行されるため、基本的には同じマシン上の他のプロセスやコンテナを一切知りません。<br>
+他のコンテナと通信するために、<code>ネットワーク機能</code>と呼ばれる機能を使います。</p>
+<p>ネットワーク機能の利用には以下の二種類の方法があります。</p>
+<ul>
+<li>起動する前にネットワークに割り当てる</li>
+<li>既存のコンテナに接続する</li>
+</ul>
+<p>ネットワークを作成するコマンドは下記</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker network create &#x3C;ネットワーク名></span></span></code></pre>
+<p>公式のチュートリアルにあるコンテナ起動とネットワーク接続用コマンド(Apple Siliconの場合)が下記です。<br>
+<code>todo-app</code>という名前のネットワークに接続しています。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker run -d \</span></span>
+<span class="line"><span style="color: #c9d1d9">    --network todo-app --network-alias mysql \</span></span>
+<span class="line"><span style="color: #c9d1d9">    --platform "linux/amd64" \</span></span>
+<span class="line"><span style="color: #c9d1d9">    -v todo-mysql-data:/var/lib/mysql \</span></span>
+<span class="line"><span style="color: #c9d1d9">    -e MYSQL_ROOT_PASSWORD=secret \</span></span>
+<span class="line"><span style="color: #c9d1d9">    -e MYSQL_DATABASE=todos \</span></span>
+<span class="line"><span style="color: #c9d1d9">    mysql:5.7</span></span></code></pre>
+<p><code>--network</code>で接続するネットワークを指定しています。<br>
+<code>--network-alias</code>で<code>mysql</code>という文字列を指定しているので、IPアドレスを調べる際に使用する事ができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ dig mysql</span></span></code></pre>
+<p><code>-v</code>はボリュームの指定、<code>-e</code>で環境変数を設定できます。</p>
+<p>データベースが実行中であることを確認するには、下記のコマンドを使用します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker exec -it &#x3C;mysql-container-id> mysql -u root -p</span></span></code></pre>
+<p>これでMySQLのコンテナを作成することができました。</p>
+<h2 id="あらためてまとめ">あらためてまとめ</h2>
+<ul>
+<li>Dockerを使えばコードを管理するようにインフラも管理できる。</li>
+<li><code>イメージ</code>とは、Dockerコンテナを作成する命令が入った読み込み専用のテンプレートのこと。</li>
+<li>Dockerfileは、イメージの作成の際に使用する。</li>
+<li><code>コンテナ</code>とは、イメージが実行状態となったインスタンス(実体)のこと。</li>
+<li>コンテナ内でのファイルの変更を保存するには、<code>ボリューム</code>を使用する。</li>
+<li>複数のコンテナ同士の接続にはネットワーク機能を使用する</li>
+</ul>
+<p>また、アプリケーションの起動に必要なコンテナの作成をより簡単な方法で実現するために、<code>Docker Compose</code>という仕組みがあります。
+こちらについてはまたの機会に調べてみることにします!</p>
+<h2 id="所感">所感</h2>
+<p>業務で携わるたいていのプロジェクトではすでに環境構築がされている場合がほとんどかと思います。<br>
+ただ、新規プロダクトの立ち上げであったり、より効果的なインフラ構成や開発者体験を求めようとすると避けては通れないものだと思います。<br>
+個人的には個人開発で環境構築する際に自分がDockerについて全然わかっていないことを改めて認識しました。<br>
+CI/CDとの相性もよく、簡単にデプロイできる環境を構築しておくことは取れる工数の少なくなりがちな個人開発においてもとても有用なものだと思いました。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

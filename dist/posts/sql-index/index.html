@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MySQLのインデックスの役割と活用について</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/06/16</div>
+        <h1>MySQLのインデックスの役割と活用について</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>WEBエンジニアとなってクエリパターンの実装をする際に、SQLのパフォーマンスについて意識する場面が出てきました。<br>
+その際にインデックスが貼られていないカラムのソートのパフォーマンスについて指摘をいただく機会があったのでこの機会に調査してまとめたいと思います。<br>
+WEB開発の基本としてのSQLがまだまだ足りていないと感じているのでできるだけキャッチアップしたいと考えて記事を書きました。<br>
+この記事は特にMySQLについてのまとめとなります。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/ja/optimization-indexes.html">https://dev.mysql.com/doc/refman/5.6/ja/optimization-indexes.html</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/ja/mysql-indexes.html">https://dev.mysql.com/doc/refman/5.6/ja/mysql-indexes.html</a></p>
+<p><a href="https://use-the-index-luke.com/ja/sql/where-clause">https://use-the-index-luke.com/ja/sql/where-clause</a></p>
+<h2 id="インデックスとは">インデックスとは</h2>
+<p>まずは公式ドキュメント等を参照しながらインデックスがどういうものか理解したいと思います。</p>
+<ul>
+<li>インデックスは特定のカラムのある行を素早く見つけるために使用される。</li>
+<li>インデックスがない場合、関連する行を見つけるために戦闘業から始めてテーブル全体を読み取る必要がある。</li>
+<li>この時のコストはテーブルが大きいほど大きくなります。</li>
+</ul>
+<h3 id="インデックスを使用するパターン">インデックスを使用するパターン</h3>
+<p>MySQLは次の操作にインデックスを使用する。</p>
+<ul>
+<li>WHERE句に一致する行を素早く見つけるため</li>
+<li>行を考慮に入れないようにするため(複数のインデックスから選択する場合に通常最小行を見つけるインデックスを使用します)</li>
+<li>テーブルに<code>マルチカラムインデックス</code>がある場合、オプティマイザはインデックスの左端のプリフィクスを使用して行をルックアップできる。</li>
+<li>結合の実行時に、他のテーブルから行を取得するため。カラムが同じ型とサイズで宣言されていると、MySQLはカラムのインデックスをより効率的に使用できる。（VARCHARとCHARは同じサイズで宣言されていれば同じとみなされます。）</li>
+<li>特定のインデックス設定されたカラム<code>key_col</code>に対して、MIN()あるいはMAX()値を見つけるため。</li>
+<li>使用可能なインデックスの左端のプリフィクスに対してソートまたはグループ化が行われている場合(例えば、ORDER BY key_part1, key_part2)に、テーブルをソートまたはグループ化するため。全てのキーパートのあとにDESCが付けられている場合、キーは逆の順序で読み取られます。</li>
+<li>場合によって、データ行を参照しないで値を取得するように、クエリを最適化できます。(クエリーの必要な全ての結果を提供するインデックスは、カバーするインデックスと呼ばれます。)クエリーがテーブルから特定のインデックスに含まれるカラムのみを使用している場合、極めて高速に、選択した値をインデックスツリーから取得できます。</li>
+</ul>
+<p>小さなテーブルまたはレポートクエリーが行の大半または全てを処理する大きなテーブルに対するクエリーではインデックスはあまり重要ではありません。クエリーで行の大半にアクセスする必要がある場合は、順次読み取る方が、インデックスを処理するより高速です。<br>
+クエリーで全ての行が必要でない場合でも、順次読み取りは、ディスクシークを最小にします。</p>
+<p>上記を参考にすると、以下のことがわかります。</p>
+<ul>
+<li>インデックスを設定しない場合、レコードが多くなってくると単純な検索にも時間がかかるようになる。フルテーブルスキャンが行われるため。</li>
+<li>インデックスを設定することでWHERE句での比較等が高速化する。</li>
+</ul>
+<p><a href="https://roy29fuku.com/infra/sql/mysql-summary-of-index/">https://roy29fuku.com/infra/sql/mysql-summary-of-index/</a></p>
+<h3 id="主キープライマリキーの使用">主キー(プライマリキー)の使用</h3>
+<p>また、通常MySQLではテーブルにデフォルトでidカラムが設定されています。idにはPRIMARYキーが設定されており、インデックスが設定されています。すなわち、WHERE句を使用する場合でもidを使用した場合は高速に結果を取得できます。<br>
+また、プライマリキーにはNULL値を含めることができないため、NOT NULL最適化からメリットが得られます。(NULLが多いデータベースの場合により有効になる)</p>
+<h3 id="外部キーの使用">外部キーの使用</h3>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/ja/optimizing-foreign-keys.html">https://dev.mysql.com/doc/refman/5.6/ja/optimizing-foreign-keys.html</a></p>
+<p>テーブルに多くのカラムがあり、さまざまなカラムを組み合わせてクエリを作成する場合、あまり頻繁に使用されないデータをそれぞれ少数のカラムを持つ個別のテーブルに分割し、それらをメインテーブルのIDカラムを複製してメインテーブルに紐づけると効率的な場合があります。</p>
+<h3 id="カラムインデックス">カラムインデックス</h3>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/ja/column-indexes.html">https://dev.mysql.com/doc/refman/5.6/ja/column-indexes.html</a></p>
+<p>もっとも一般的なインデックスの種類には単一カラムというものがある。<br>
+データ構造にそのカラムのコピーを格納し、対応するカラム値のある行を高速にルックアップすることができる。<br>
+Bツリーデータ構造により、以下の操作が素早くなる。</p>
+<ul>
+<li>WHERE句内の =, >, &#x3C;=, BETWEEN, INなどの演算子に対応する特定の値、値のセット、または値の範囲を見つける</li>
+</ul>
+<h3 id="プリフィックスインデックス">プリフィックスインデックス</h3>
+<p>インデックス指定で<code>col_name(N)</code>構文を使用することで文字列カラムの先頭のN文字のみを使用するインデックスを作成できる。<br>
+メリットはインデックスファイルをかなり小さくできること。</p>
+<h3 id="マルチカラムインデックス">マルチカラムインデックス</h3>
+<p>単一のインデックスで絞りきれないような場合には<code>マルチカラムインデックス</code>という機能を使用できます。</p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/ja/multiple-column-indexes.html">https://dev.mysql.com/doc/refman/5.6/ja/multiple-column-indexes.html</a></p>
+<h2 id="実際にインデックスを使用する場面について">実際にインデックスを使用する場面について</h2>
+<p>ここまで公式ドキュメントを元にインデックスの仕組みについて確認してきました。<br>
+実際に使用する際に脳死でインデックスを貼れば良い、というわけでもなさそうです。</p>
+<p>インデックスを使用すべきパターンと使用すべきでないパターンについて調査してみます。</p>
+<h3 id="インデックスを貼るべきカラムとは">インデックスを貼るべきカラムとは</h3>
+<p>参考:<br>
+<a href="https://qiita.com/katsukii/items/3409e3c3c96580d37c2b">https://qiita.com/katsukii/items/3409e3c3c96580d37c2b</a></p>
+<p><a href="https://qiita.com/C058/items/1c9c57f634ebf54d99bb#%E3%83%81%E3%83%A5%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0%E3%81%99%E3%82%8B%E9%9A%9B%E3%81%AE%E3%83%A1%E3%83%A2">https://qiita.com/C058/items/1c9c57f634ebf54d99bb#%E3%83%81%E3%83%A5%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0%E3%81%99%E3%82%8B%E9%9A%9B%E3%81%AE%E3%83%A1%E3%83%A2</a></p>
+<p>上記Qiitaを参考にまとめてみます。</p>
+<ul>
+<li>デーブル内のデータ量が多く、少量のレコードを検索する場合</li>
+<li>WHERE句の条件、結合の条件、ORDER BY句の条件に利用する。</li>
+<li>NULL値が多いデータから、NULL値以外の検索をする。</li>
+</ul>
+<h3 id="インデックスを作成すべきではないカラム">インデックスを作成すべきではないカラム</h3>
+<ul>
+<li>表の規模が小さいか、表から大部分のレコードを検索する場合</li>
+<li>WHERE句等の条件としてあまり使用されないもの</li>
+<li>列の値が頻繁に挿入、更新、削除される</li>
+<li>WHERE句の条件として使用されるが、列が式の一部として参照される</li>
+</ul>
+<h3 id="インデックスを使用するとき">インデックスを使用するとき</h3>
+<ul>
+<li>フィールド値を定数と比較する時</li>
+<li>フィールド値全体でJOINするとき</li>
+<li>フィールド値の範囲を求めるとき</li>
+<li>LIKEで文字列の先頭が固定の時</li>
+<li>MIN(),MAX()</li>
+<li>文字列のプレフィックスを元にしたORDER BY,GROUP BY</li>
+<li>WHEREのすべてのフィールドがindexの一部の場合</li>
+</ul>
+<h3 id="使用しない時">使用しない時</h3>
+<ul>
+<li>LIKEがワイルドカードで始まる時</li>
+<li>DB全体を読んだ方が早いとMySQLが判断した時</li>
+<li>通常はindexはORDER BYには使われない</li>
+<li>WHEREとORDER BYのフィールドが違う時にはどちらかしか使われない</li>
+</ul>
+<h2 id="カーディナリティーとは">カーディナリティーとは</h2>
+<p>一般的にインデックスはカーディナリティが高いものを設定するとより効果的らしいです。<br>
+カーディナリティーという単語自体初耳だったので調査してみます。</p>
+<p>一言で言うと</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">カラムの値の種類の絶対値</span></span></code></pre>
+<p>レコードの数に対してカラムの値の種類が少ない場合はカーディナリティが低いと表現します。<br>
+例えば、以下の2つカラムがあるとします。</p>
+<ol>
+<li>性別の値が入力されているパターン。</li>
+<li>1年間の日付が入力されている365日が入力されているパターン。</li>
+</ol>
+<p>1の場合は2パターン。2の場合は365パターンあります。<br>
+定義からするとレコードの数に対してのパターンの数なので前者がカーディナリティが低くて後者がカーディナリティが高いということになります。</p>
+<p>インデックスの貼る順序は、<strong>カーディナリティの高い順</strong>に貼っていくのが定石らしいです。<br>
+貼る順序で一回の処理で絞り込む量が変わってくるのでカーディナリティの高い順に貼ることで効果が高くなります。<br>
+複合インデックスを貼る際にもこの理論は適用されます。</p>
+<p>参考:</p>
+<p><a href="https://blog.shibayu36.org/entry/2012/06/02/210848">https://blog.shibayu36.org/entry/2012/06/02/210848</a></p>
+<p><a href="https://kiyotakakubo.hatenablog.com/entry/20101117/1289952549">https://kiyotakakubo.hatenablog.com/entry/20101117/1289952549</a></p>
+<h3 id="インデックスが貼られているカラムを確認する方法">インデックスが貼られているカラムを確認する方法</h3>
+<p>ちなみにどのカラムにインデックスが貼られているかは以下のコマンドで確認できます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">show index from テーブル名;</span></span></code></pre>
+<p>また、実行するコマンドに<code>explain</code>をつけることで実行プランを確認できます。</p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/ja/explain-output.html">https://dev.mysql.com/doc/refman/5.6/ja/explain-output.html</a></p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>インデックスを作成することで検索などの処理が高速化できる。</li>
+<li>インデックスを貼るべきカラムを選ぶ基準は<code>カーディナリティ</code>の高いカラム。</li>
+<li>実際の速度の改善については<code>explain</code>を使用して調べる。</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>インデックスを適切に利用することで処理の高速化ができる、というか基本的に貼るべき。<br>
+インデックスを貼るべきカラムの選定については考える基準やベストプラクティスのようなものがあるので仕様と合わせて考慮する必要があると思いました。<br>
+カーディナリティという考え方自体を初めて知りましたが、パフォーマンスを考える上でとても大事な考え方でした。<br>
+インデックスの仕組みを一通り抑えることがSQLの勉強の第一歩かなと思いました。<br>
+個人的にSQLについてまだまだ知るべきことが多いのでまたまとめたいと思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

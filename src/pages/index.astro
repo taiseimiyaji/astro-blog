@@ -6,7 +6,7 @@ import CardList from '../components/CardList/CardList';
 import { getCollection } from "astro:content";
 import { postOrderByCreatedAt } from '../utils/sort';
 
-const blogEntries = await getCollection("blog");
+const blogEntries = await(await getCollection("blog")).filter((entry) => !entry.data.draft);
 const posts = postOrderByCreatedAt(blogEntries);
 
 ---

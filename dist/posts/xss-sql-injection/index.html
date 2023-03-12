@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>XSSとSQLインジェクションについて</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/03/31</div>
+        <h1>XSSとSQLインジェクションについて</h1>
+        <div class="post">
+          <h2 id="xssとは">XSSとは</h2>
+<p>Webアプリケーションの脆弱性を利用して行われるサイバー攻撃の1つ。<br>
+入力フォームなどに悪質なサイトへ誘導するスクリプトを埋め込みます。<br>
+悪質なサイトに誘導されると、ユーザーのブラウザ上で不正なスクリプトが実行されます。<br>
+攻撃の種類はマルウェア感染や個人情報の漏えい、フィッシング詐欺などがあります。<br>
+もともとのサイトから悪質なサイトへ跨いでスクリプトが実行されるので「クロスサイト」スクリプティングと呼ばれます。</p>
+<h2 id="xssへの対策">XSSへの対策</h2>
+<p>XSSは入力フォームなどに直接スクリプトを埋め込んで実行されます。<br>
+参考 : <a href="https://www.amiya.co.jp/column/cross_site_scripting_20210118.html">https://www.amiya.co.jp/column/cross_site_scripting_20210118.html</a><br>
+対策としては以下のような方法があります。</p>
+<ul>
+<li>エスケープ処理を行う</li>
+<li>バリデーション処理によって意図していない文字の入力を制限する</li>
+<li>文字数制限によって長いコードの入力を制限することも効果があります。</li>
+<li>WAF(Web Applicaton FireWall)を設置することも効果的です。</li>
+</ul>
+<h2 id="xssの種類">XSSの種類</h2>
+<p>XSSには以下の3種類がある。<br>
+参考:
+<a href="https://www.ipa.go.jp/files/000024726.pdf">https://www.ipa.go.jp/files/000024726.pdf</a></p>
+<h3 id="non-persistentreflected-xss反射型xss">non-persistent/Reflected XSS（反射型XSS）</h3>
+<ul>
+<li>スクリプトを含むリクエストを送信し、スクリプトがリクエストの送信者へ返る攻撃(反射)。</li>
+</ul>
+<h3 id="storedpersistent-xss格納型蓄積型持続型xss">Stored/Persistent XSS（格納型/蓄積型/持続型XSS）</h3>
+<ul>
+<li>攻撃者からのリクエストに含まれるスクリプトに相当する文字列をウェブアプリケーション内部に永続的に保存し、保存された文字列がウェブページとして出力されてしまう。</li>
+<li>ユーザーが当該ページにアクセスするたびに、ウェブアプリケーションに保存された文字列がスクリプトとして実行されることから、格納型クロスサイトスクリプティングと呼ばれている。</li>
+<li>スクリプトはサーバに格納されることが特徴。</li>
+</ul>
+<h3 id="dom-based-xss">DOM Based XSS</h3>
+<ul>
+<li>DOMは、「Document Object Model」の略で、HTMLやXMLを取り扱うためのAPIやデータ構造を定義したもの</li>
+<li>ウェブページに含まれる正規のスクリプトにより、動的にウェブページを操作した結果、意図しないスクリプトをウェブページに出力してしまうタイプのXSS。</li>
+<li>対策のためには正規のスクリプトを修正する必要がある。</li>
+</ul>
+<h2 id="クロスサイトリクエストフォージェリcsrfとは">クロスサイトリクエストフォージェリ(CSRF)とは</h2>
+<ul>
+<li>XSSに似たものにクロスサイトリクエストフォージェリ(CRSF)がある。</li>
+<li>XSSとは違いセッション管理における脆弱性を狙った攻撃。</li>
+<li>罠となるサイトにアクセスしてしまうと、ターゲットとなる他のサイトにログイン状態になっていると、ターゲットとなるサイトに偽のリクエストが送信、実行されてしまう。</li>
+</ul>
+<h2 id="sqlインジェクションとは">SQLインジェクションとは</h2>
+<p>XSSと同じくWebアプリケーションの脆弱性を利用して行われるサイバー攻撃の1つ。
+入力フォームからSQL文を生成しているような場合に不正なSQL文を埋め込まれ、データベース内のデータの消去や改ざんを行われる。</p>
+<h2 id="sqlインジェクションへの対策">SQLインジェクションへの対策</h2>
+<p>SQLインジェクションも同様に入力フォームなどに不正なSQLを埋め込んで実行されます。<br>
+対策として以下のような方法があります。</p>
+<ul>
+<li>SQL文をプログラム中で作成する際にで特別な意味を持つ記号を素通りしないようエスケープ処理を行う。</li>
+<li>データベースエンジンによっては安全にSQL文を生成する「バインド機構」やエスケープ処理用にAPIが用意されていたりする。
+<ul>
+<li>PHPの場合はPDOを用いてDBを操作する手法が主流となっており、<code>bindParam</code>や<code>bindValue</code>といった関数が用意されています。</li>
+<li><a href="https://www.php.net/manual/ja/pdostatement.bindvalue.php">bindValue</a></li>
+<li><a href="https://www.php.net/manual/ja/pdostatement.bindparam.php">bindParam</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="本当に十分な対策なのか">本当に十分な対策なのか</h2>
+<p>上記あたりがよくある対策というか、グーグル先生に聞くと真っ先に出てくる情報かなと思います。<br>
+もう少しちゃんと調べていくと、このような対策だけでは不十分なようです。<br>
+結論から言うと、IPAが以下のサイトで安全なSQLの呼び出し方という資料を配布しています。<br>
+かなり信頼が置けそうです。<br>
+<a href="https://www.ipa.go.jp/security/vuln/websecurity.html">https://www.ipa.go.jp/security/vuln/websecurity.html</a></p>
+<p>さくっと内容をまとめますが、一度資料全体に目を通しておくとよさそうです。
+<a href="https://www.ipa.go.jp/files/000017320.pdf">https://www.ipa.go.jp/files/000017320.pdf</a></p>
+<h3 id="安全なsqlの呼び出し方">安全なSQLの呼び出し方</h3>
+<ul>
+<li>SQLインジェクションの根本的解決の基本はバインド機構だが、エスケープ処理による対策も根本的解決の一つになる。</li>
+<li>ただ、SQLにとって特別な意味を持つ記号はデータベースエンジンによって異なる。</li>
+<li>SQLインジェクションの原因はSQL文を実際の値に展開する際にリテラルとして正しく文を生成しないと、パラメータに与えられた値がリテラルの外にはみ出した状態になり、リテラルの後ろに続く文として解釈される<br>
+<code>$q = "SELECT * FROM atable WHERE id='$id'";</code><br>
+<code>$id = ';DELETE FROM atable--</code><br>
+のような場合に展開すると<br>
+<code>SELECT * FROM atable WHERE id='';DELETE FROM atable--'</code><br>
+となり、データベースの内容が全て削除される結果となる。</li>
+<li>具体的な対策は以下の二つ。
+<ul>
+<li>文字列リテラルに対してはエスケープすべき文字をエスケープすること。</li>
+<li>数値リテラルに対しては数値以外の文字を混入させないこと</li>
+</ul>
+</li>
+<li>アプリケーションからSQLを呼び出す際の方法には以下の二つがある。
+<ul>
+<li>文字列連結による組み立て</li>
+<li>プレースホルダによる組み立て(さらに以下の二つに分かれる)
+<ul>
+<li>静的プレースホルダ</li>
+<li>動的プレースホルダ</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>それぞれの説明については割愛するが資料にある。</li>
+<li>データベースエンジンや言語ごとに対応方法が違うのでそれも資料を参照。</li>
+<li>特にMySQLとPostgreSQLはシングルクォート以外の文字をエスケープしないといけない。</li>
+<li>バックスラッシュがエスケープ処理に使用されるメタ文字として解釈されるため、バックスラッシュ自身のエスケープも必要となる。</li>
+<li>文字列リテラルのエスケープ処理では、文字エンコーディングに配慮する必要がある。</li>
+</ul>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>SQLインジェクションへの対策はバインド機構とエスケープ処理が基本</li>
+<li>そもそもSQLインジェクションの原因を知らないと対策が十分かどうかすら判断できないので理解が必要</li>
+<li>使用する言語、データベースエンジンごとの対策を確認することが大事。</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>軽く検索するとなんとなくの概要は掴めるけど、信頼のおける情報かどうか、必要十分な情報かどうか判断するにはちゃんと自分で考える必要があるなと感じました。<br>
+以下のサイトはその辺りの検証をしていて参考になるとともに、こういう視点を持って自分で検証できる、してみるというのはブログの読者側にもメリットが大きくてありがたいです。
+<a href="https://ockeghem.hatenablog.jp/entry/20111109/p1">https://ockeghem.hatenablog.jp/entry/20111109/p1</a><br>
+また、本質的な対策を書いてくださっている方もいます。
+<a href="https://ajiyoshi.hatenadiary.org/entry/20100409/1270809525">https://ajiyoshi.hatenadiary.org/entry/20100409/1270809525</a></p>
+<blockquote>
+<ul>
+<li>単にプリペアドステートメントを使え</li>
+<li>絶対に文字列結合でSQLを構築しようとしてはいけない</li>
+<li>IPAの「安全なSQLの呼び出し方」を読むこと</li>
+</ul>
+</blockquote>
+<p>この辺りのセキュリティ対策はWebエンジニアとしては必須の知識なのできちんと身につけていきたいです。</p>
+<p>(何も知らない判断できない状態でのグーグル先生との付き合い方が最近むずかしくなってるけど丸呑みせずに自分で判断しないと。。。)</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

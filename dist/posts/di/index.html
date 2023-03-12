@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>プログラミングにおける「DI」二種類の違いとは。依存性注入と依存性逆転について</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/12/06</div>
+        <h1>プログラミングにおける「DI」二種類の違いとは。依存性注入と依存性逆転について</h1>
+        <div class="post">
+          <h1 id="依存性注入と依存性逆転について">依存性注入と依存性逆転について</h1>
+<h2 id="はじめに">はじめに</h2>
+<p>エンジニアになって初めて人に知識を伝えるという場面がありました。<br>
+これまでチーム内ではたいてい自分が一番技術的に拙い部分が多かったので少しうれしくもありますが、正しくわかりやすく伝えるために勉強してきたことを棚卸しするとともに現時点での考えを整理していきたいと思います。</p>
+<h2 id="diとは">DIとは</h2>
+<p>プログラミングの文脈で登場する<strong>DI</strong>という単語には以下の二種類があります。</p>
+<ul>
+<li>依存性逆転の原則(Dependency inversion principle)</li>
+<li>依存性注入(Dependency Injection)</li>
+</ul>
+<p>混乱しやすいのは両者はかなり密接な関係にあります。
+この２つのDIを理解するために、まずは依存性逆転の原則について理解を進めます。</p>
+<h2 id="依存性逆転の原則">依存性逆転の原則</h2>
+<p><strong>依存性逆転の原則</strong>とは、一言でいうと「抽象へ依存させることで依存関係を逆転させる」という原則です。
+次の２つが中心的な考え方になります。</p>
+<ol>
+<li>上位のモジュールは下位のモジュールに依存してはならない。双方とも抽象（例としてインターフェース）に依存するべきである。</li>
+<li>「抽象」は実装の詳細に依存してはならない。実装の詳細が「抽象」に依存すべきである。</li>
+</ol>
+<p>理解を進めるにあたって、「依存」について知っておく必要があります。<br>
+JSでいうとimport、PHPでいうとuseなどを使用してモジュールを使う側が依存する側です。<br>
+反対に、使用される側が依存される側です。
+依存先のモジュールがないとモジュールが成り立たない状態を依存先のモジュールに「依存している」といいます。</p>
+<p>プログラミングにおいては、例えば重要性が高いビジネスロジックをまとめたドメイン層の部分と表示における関心事をまとめたプレゼンテーション層では変更頻度が異なります。</p>
+<p>それぞれの層に求められる性質は以下のようになります。</p>
+<p>ドメイン層->安定性が高い、柔軟性は求められない<br>
+プレゼンテーション層->安定性が低い、柔軟性が求められる</p>
+<p>システムの本質であるドメイン知識(ドメイン層)は最も安定性が高くなければなりません。<br>
+モジュール間に依存関係が成立する場合、依存する側は安定性が低く、柔軟性が高くなります。<br>
+これはモジュールを使用すればするほどコードが複雑になるからです。</p>
+<p>今回はPHPを例に依存性逆転の原則を適用した場合とそうでない場合を比較してみます。<br>
+前回の記事にて軽量DDDを紹介しているのでそれに合わせたレイヤ構造を例にしてみます。</p>
+<ul>
+<li>リポジトリ層</li>
+<li>サービス(ドメイン)層</li>
+</ul>
+<h3 id="従来のレイヤーパターン">従来のレイヤーパターン</h3>
+<p><a href="https://ja.wikipedia.org/wiki/%E4%BE%9D%E5%AD%98%E6%80%A7%E9%80%86%E8%BB%A2%E3%81%AE%E5%8E%9F%E5%89%87">依存性逆転の原則のwikipedia</a>に下記の説明が記載されています。過不足なくわかりやすい説明だと思ったので引用しておきます。</p>
+<blockquote>
+<p>伝統的なアプリケーションアーキテクチャにおいては下位レベルのコンポーネントはより複雑なシステムの構築を可能にする上位レベルコンポーネントによって使用される形で設計がおこなわれる。この方法では上位レベルコンポーネントは直接下位レベルコンポーネントに依存する。この低レベルコンポーネントへの依存は、上位レベルコンポーネントの再利用の機会を制限してしまう。</p>
+</blockquote>
+<p>実際にPHPで書いてみると以下のようなコードになります。C言語のような手続き型言語の場合は結構使用されているパターンだと思います。簡単に言うと部品を作ってそれをまとめ上げるイメージです。</p>
+<p>(イメージなので実際には動作しないと思いますので注意してください)</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Service</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    private Repository $repository;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    public function __construct()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        $this->repository = new Repository();</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    public function process()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $this->repository->findAll();</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">class Repository</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function findAll()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        // 具体的なDBアクセス処理</span></span>
+<span class="line"><span style="color: #c9d1d9">        $result = 'hoge';</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $result;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<p>このように上位のレイヤから下位のレイヤを呼び出す形がレイヤーパターンと呼ばれていたりします。
+注目してほしいのはコンストラクタで直接newをしている部分です。このように直接newをしている場合はRepositoryという具象クラスの実装に依存してしまいます。</p>
+<p>この場合、システムの本質であるServiceがRepositoryに依存しているため安定性が低くなってしまいます。<br>
+ここでいう<code>安定性が低い</code>というのは他のモジュールの影響を受けやすく、変更に弱いことを意味しています。<br>
+安定性を上げるために、ドメイン層であるServiceはモジュールをuse(具象クラスをnew)しないように書くべきです。</p>
+<h2 id="依存性注入">依存性注入</h2>
+<p>さて次はどうやってドメイン層の安定性を上げていくのかについて考えてみます。<br>
+ここで登場するのが依存性注入です。<br>
+<strong>依存性注入</strong>とはプログラミングにおける設計思想の一種です。<br>
+コードの実行時にインターフェース(または抽象クラス)に対して具象クラスを外部から注入(Inject)するという考え方です。<br>
+オブジェクトが他のオブジェクトを利用する際、コードをはじめから結合させるのではなく、オブジェクトの実行時に呼び出して結合するようにしています。</p>
+<p>広義的には対象モジュール以外のモジュールから具象クラスが渡される場合はDIと呼びます。</p>
+<p>先程のレイヤーパターンの例でDIを使用してみます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">use Repository;</span></span>
+<span class="line"><span style="color: #c9d1d9">class Service</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    private Repository $repository;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    public function __construct(Repository $repository)</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        $this->repository = $repository;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    public function process()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $this->repository->findAll();</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Repository</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function findAll()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        // 具体的なDBアクセス処理</span></span>
+<span class="line"><span style="color: #c9d1d9">        $result = 'hoge';</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $result;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">// ここで依存性を注入</span></span>
+<span class="line"><span style="color: #c9d1d9">$service = new Service(new Repository());</span></span>
+<span class="line"><span style="color: #c9d1d9">$action = new Action($service);</span></span>
+<span class="line"><span style="color: #c9d1d9">// 実行</span></span>
+<span class="line"><span style="color: #c9d1d9">$action->process();</span></span></code></pre>
+<p>変更点はコンストラクタにて外部からインスタンスを渡すように変更している点です。<br>
+外部から具象クラスを渡す事によってクラス単位での単体テストが可能になります。<br>
+どのクラスを使用するかは外部から決める事ができるので、モック等を使用しやすくなります。<br>
+ここでServiceのコンストラクタにはRepository型のインスタンスを渡す必要がありますが、コンストラクタで渡すように変更したため、Repositoryクラスを継承したクラスを渡すことが可能になリます。</p>
+<p>次のステップとして、Repositoryにインターフェースを実装します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">use RepositoryInterface;</span></span>
+<span class="line"><span style="color: #c9d1d9">class Service</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    private RepositoryInterface $repository;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    public function __construct(RepositoryInterface $repository)</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        $this->repository = $repository;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    public function process()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $this->repository->findAll();</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">interface RepositoryInterface</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function findAll();</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Repository implements RepositoryInterface</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function findAll()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        // 具体的なDBアクセス処理</span></span>
+<span class="line"><span style="color: #c9d1d9">        $result = 'hoge';</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $result;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">// ここで依存性を注入</span></span>
+<span class="line"><span style="color: #c9d1d9">$service = new Service(new Repository());</span></span>
+<span class="line"><span style="color: #c9d1d9">$action = new Action($service);</span></span>
+<span class="line"><span style="color: #c9d1d9">// 実行</span></span>
+<span class="line"><span style="color: #c9d1d9">$action->process();</span></span></code></pre>
+<p>ここでのポイントはドメイン層側にインターフェースを持つことです。<br>
+ドメイン層側というのはPHPの場合はnamespaceにおけるドメイン層を指しています。(Javaの場合はパッケージにあたるかなと思います)<br>
+明示的にドメイン層とその他の層を分けておくことをおすすめします。</p>
+<p>これによってドメイン層はRepositoryInterfaceに依存し、Repositoryの具体的な実装に依存しなくなります。<br>
+反対に、Repositoryがnamespace的にドメイン層にあるRepositoryInterfaceに依存します。</p>
+<p>最初のレイヤーパターンと比較すると依存性が逆転しています。これを<strong>依存性逆転の原則</strong>と呼びます。<br>
+このパターンを採用することでドメイン層はRepositoryに依存しないため、変更があった場合でも影響を受けにくくなります。</p>
+<p>また、依存性注入はフレームワークやライブラリでおこなってくれる場合が多く、<code>DIコンテナ</code>と呼ばれたりします。
+Laravelにおいてはサービスコンテナ、サービスプロバイダを理解するとイメージが湧くかなと思います。</p>
+<p><a href="https://readouble.com/laravel/8.x/ja/container.html">サービスコンテナ</a><br>
+<a href="https://readouble.com/laravel/8.x/ja/providers.html">サービスプロバイダ</a></p>
+<h2 id="アーキテクチャについて">アーキテクチャについて</h2>
+<p><strong>依存性逆転の原則</strong>を利用したアーキテクチャとして良く取り入れられているものにクリーンアーキテクチャやオニオンアーキテクチャ、ヘキサゴナルアーキテクチャ等があります。</p>
+<p>これらのアーキテクチャはどれも本質的なビジネスロジックをまとめた層に向けて依存させるという依存の方向性を重視しています。依存の方向を内側(ドメイン層)へ向けるための具体的なレイヤ分けが異なるだけで、本質となる考え方は共通していると私は考えています。</p>
+<p>どのアーキテクチャもレイヤ分けしたそれぞれの層の責務を明確にして依存関係を明確にするという目的が共通しています。</p>
+<p>責務を明確にすることで振る舞いを適切に抽象化してインターフェースを作成します。そのインターフェースに対して依存することで共通の振る舞いを持つ別クラスに交換可能になります。<br>
+別のオブジェクトが同じふるまいを持ち、異なるクラスを同じものとみなせる性質をオブジェクト指向の文脈においてはポリモーフィズムと呼びます。</p>
+<p>これにより交換可能なコード、つまり単体テストのしやすいコードになります。<br>
+私個人の考えですが、良い設計というのは変更容易性を高めるために必然的に交換可能なコードになります。<br>
+そのため、良い設計になっているかどうかの指標としてテストがしやすいかどうかは一つのポイントだと思っています。<br>
+テストがしにくいなと感じた場合は設計が悪い可能性が高い、といえます。</p>
+<p>先程挙げた例のServiceをテストしてみます。<br>
+このとき、必要なのはRepositoryInterfaceのみであり、Repositoryの具体的な実装は必要ないため、Mock化することができます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">use RepositoryInterface;</span></span>
+<span class="line"><span style="color: #c9d1d9">class Service</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    private RepositoryInterface $repository;</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    public function __construct(RepositoryInterface $repository)</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        $this->repository = $repository;</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">    public function process()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        return $this->repository->findAll();</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">interface RepositoryInterface</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function findAll();</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class ServiceTest</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function testProcess()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        $repositoryMock = new RepositoryMock();</span></span>
+<span class="line"><span style="color: #c9d1d9">        $result = new Service($repositoryMock);</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">class RepositoryMock implements RepositoryInterface</span></span>
+<span class="line"><span style="color: #c9d1d9">{</span></span>
+<span class="line"><span style="color: #c9d1d9">    public function findAll()</span></span>
+<span class="line"><span style="color: #c9d1d9">    {</span></span>
+<span class="line"><span style="color: #c9d1d9">        // テストのための値を返す</span></span>
+<span class="line"><span style="color: #c9d1d9">        return 'test';</span></span>
+<span class="line"><span style="color: #c9d1d9">    }</span></span>
+<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>
+<p>DIには、<code>依存性の注入(Dependency Injection)</code>と<code>依存性逆転の原則(Dependency inversion principle)</code>の2種類がある。</p>
+</li>
+<li>
+<p><strong>依存性逆転の原則</strong>とは、一言でいうと「抽象へ依存させることで依存関係を逆転させる」という原則。</p>
+</li>
+</ul>
+<ol>
+<li>上位のモジュールは下位のモジュールに依存してはならない。双方とも抽象（例としてインターフェース）に依存するべきである。</li>
+<li>「抽象」は実装の詳細に依存してはならない。実装の詳細が「抽象」に依存すべきである。</li>
+</ol>
+<ul>
+<li>依存性の注入とは、コードの実行時にインターフェース(または抽象クラス)に対して具象クラスを外部から注入(Inject)するという考え方です、</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>今回はDIについてメンバーに説明する機会があったのでまとめてみました。<br>
+自分でサンプルコードを書いてみたり、人に説明することで自分自身の理解もより高まるなと感じています。<br>
+ここ最近は自分の知識を吐き出すことが多かったのですが、さまざまな技術ブログでアドベントカレンダーイベントが始まっているので毎日いろんな記事を参考にできて最近はインプットも増えて嬉しいです。<br>
+またなにか新しい考えを身に着けられれば記事にしたいと思います。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://qiita.com/okazuki/items/a0f2fb0a63ca88340ff6">https://qiita.com/okazuki/items/a0f2fb0a63ca88340ff6</a><br>
+<a href="https://zenn.dev/chida/articles/e46a66cd9d89d1">https://zenn.dev/chida/articles/e46a66cd9d89d1</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

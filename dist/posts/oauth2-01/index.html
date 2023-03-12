@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OAuth2をおおまかに理解する</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/09/17</div>
+        <h1>OAuth2をおおまかに理解する</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p><a href="https://taisei-miyaji.hatenadiary.com/entry/2022/09/07/213441">前回の記事</a>で認証と認可について触れ、OpenID Connectのざっくりとした仕組みについて紹介しました。<br>
+今回は認証、認可においてよく聞くOAuth2について、調査してみようと思います。<br>
+今回の記事のゴールは、「OAuthという単語を聞いたことがある」くらいのレベルから「なんとなくOAuthについて説明することができる」レベルになることです。<br>
+具体的なフローについてはまた別の記事としたいと思います。</p>
+<p>以下の動画を中心にその他参考に挙げているブログをもとにまとめたいと思います。<br>
+<a href="https://www.youtube.com/watch?v=PKPj_MmLq5E">https://www.youtube.com/watch?v=PKPj_MmLq5E</a></p>
+<h2 id="oauthとは">OAuthとは</h2>
+<p>複数のサービスを連携して　動作させるために使われる仕組みです。</p>
+<p>OAuthを使用しない場合、WebサービスごとにユーザーIDとパスワードを入力してユーザーを認証する必要があります。<br>
+OAuthを利用することで、IDやパスワードを入力することなく、アプリケーション間の連動ができます。<br>
+例えば、オンラインアルバムサービスに写真を投稿すると、同時にツイッターで投稿されたことをつぶやく事ができます。</p>
+<h2 id="openid-connectとの違い">OpenID Connectとの違い</h2>
+<p>よく併せて登場するOAuthとOpenID Connectは何が違うのでしょうか。<br>
+OpenID ConnectはGoogleのようなある一つのサービスで利用している認証用のユーザーIDとパスワードを複数のWebサービスで利用するというものでした。
+認証の役割を一つのサービスに任せるような形です。
+Webサービスの増加に伴って、複数のWebサービスを連動させることでWebサービスごとに別々にユーザー登録をする煩わしさを防ぐための仕組みです。<br>
+OpenID Connectは認証の仕組みなので、<code>その人物が誰であるか</code>という認証を行うことはできますが、どのような操作ができるかという認可ではありません。
+つまり、ログインすることはできても、操作はあくまでもユーザーが別々に行う必要があります。</p>
+<p>OAuthの場合、認証を与えたサービスの保持しているリソースを、認証が与えられたサービスが利用することができます。
+どのような利用が可能かについても、OAuthの認証のなかで明確に記述されています。</p>
+<h2 id="oauthの流れ">OAuthの流れ</h2>
+<h2 id="登場人物">登場人物</h2>
+<ul>
+<li>クライアントアプリ<br>
+データを利用したいアプリ</li>
+<li>リソースサーバ<br>
+データを提供するサーバ</li>
+<li>認可サーバ</li>
+</ul>
+<p>リソースサーバはAPIを介してクライアントアプリにデータを提供します。<br>
+悪意あるクライアントアプリがAPIにアクセスしてきた場合、データを利用されてしまいます。<br>
+そのため、何らかの方法でAPIを保護する必要があります。<br>
+このAPIを保護する仕組みのベストプラクティスが、「アクセストークンをクライアントアプリに持たせる」ことです。<br>
+クライアントアプリは、アクセストークンをリクエストに含んだ状態でリソースサーバーにアクセスし、リソースサーバーはアクセストークンをチェックしてAPIにアクセスしていいアプリかどうかを判定します。</p>
+<p>上記仕組みを実現させるためにはクライアントアプリにアクセストークンを渡す役割が必要になります。<br>
+それが<code>認可サーバー</code>と呼ばれるものです。</p>
+<p>アクセストークンを発行する際にユーザーに許可を取りに行きます。<br>
+<strong>クライアントアプリがアクセストークンの発行を認可サーバーに依頼します。</strong><br>
+そこで認可サーバーはユーザーに対して「クライアントアプリに権限を与えるかどうか」確認します。<br>
+<strong>ユーザー側が許可すれば認可サーバーはアクセストークンを生成し、クライアントアプリに発行します。</strong></p>
+<p>上記太字箇所の流れを標準化したものが<code>OAuth2.0</code>です。</p>
+<p>認可サーバーはユーザーに対してクライアントアプリに権限を与えるかどうかを確認する際に認可画面(どのアプリに、なんの画面を与えるかという情報と、ログイン情報の入力画面)を表示します。<br>
+ここで実行されるログイン処理が<code>認証</code>です。</p>
+<p><code>何に対して</code>、<code>なんの権限を</code>、<code>誰が与える</code>のか、この３つの要素を含んだものが認可です。</p>
+<h2 id="rfc6749について">RFC6749について</h2>
+<p>以下の4つの認可フロー(アクセストークンの発行手順)が定義されています。</p>
+<ul>
+<li>
+<p>認可コード<br>
+一時的に発行される認可コードとアクセストークンの交換フロー</p>
+</li>
+<li>
+<p>インプリシット<br>
+認可エンドポイントからアクセストークンが直接発行されるフロー</p>
+</li>
+<li>
+<p>リソースオーナー・パスワード・クレデンシャルズ<br>
+ユーザーのIDとパスワードをクライアントアプリに渡すフロー</p>
+</li>
+<li>
+<p>クライアント・クレデンシャルズ<br>
+ユーザー認証なし。クライアントアプリの認証のみが必要なフロー</p>
+</li>
+</ul>
+<h3 id="認可コード">認可コード</h3>
+<ol>
+<li>ユーザーがサービスと連携したいとクライアントアプリに対して要求する</li>
+<li>クライアントアプリは認可サーバーの認可エンドポイントに認可リクエストを送信する</li>
+<li>認可サーバーは認可画面をユーザーに表示します。</li>
+<li>ユーザーはその画面を見て、<code>何に対して</code>,<code>なんの権限を</code>与えるのかを確認した上で認証情報を入力します。</li>
+<li>認可サーバーは認可コード(一時的なコード)をクライアントアプリに対して発行します。</li>
+<li>クライアントアプリは認可コードを持ってトークンエンドポイントにアクセスし、認可コードとアクセストークンを交換します。</li>
+<li>アクセストークンを持ってリソースサーバーのWebAPIを利用することが可能になる</li>
+</ol>
+<p>OAuth2.0の仕様書で定義されているのは上記のフローのうち、2,5,6のみです。それ以外に関しては言及がないので自由に作成できます。
+つまり、上記フローで行われる認証にOpenID Connectを使用しているという形になります。</p>
+<p>OpenIDConnectはOAuth2.0は流れがかなり似ています。<br>
+これはOpenID ConnectがOAuth2.0の上に作られたアイデンティティレイヤのため、わざと似せて作られているようです。<br>
+これによってサーバーはOpenID プロバイダと認可サーバーの役割を併せて持つ事ができます。<br>
+OpenID Connectで必要なIDトークンとOAuth2.0で必要なアクセストークンを同時に生成して発行することができます。</p>
+<h2 id="oauth-フロー">OAuth フロー</h2>
+<p>認可サーバーは以下の2つのエンドポイントを提供する必要があります。</p>
+<ul>
+<li>認可エンドポイント</li>
+<li>トークンエンドポイント</li>
+</ul>
+<p>RFC6749でエンドポイントの動作を定義しています。(OAuth2.0)
+OAuthのフローの種類によってこのエンドポイントを使用するかどうかが決まっている。</p>
+<ul>
+<li>認可コード<br>
+認可エンドポイントとトークンエンドポイントの両方を使用する</li>
+<li>インプリシット<br>
+認可エンドポイントのみ使用する</li>
+<li>リソースオーナーパスワードクレデンシャルズ<br>
+トークンエンドポイントのみ使用する</li>
+<li>クライアントクレデンシャルズ<br>
+トークンエンドポイントのみ使用する</li>
+<li>リフレッシュトークン<br>
+トークンエンドポイントのみ使用する</li>
+</ul>
+<h2 id="使用されるデータ形式について">使用されるデータ形式について　</h2>
+<p>OpenID Connectについてまとめた際にも出てきましたが、OAuthでも使用される形式なので改めてまとめたいと思います。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>仕様書</th><th>略称</th><th>名称</th></tr></thead><tbody><tr><td>RFC7515</td><td>JWS</td><td>JSON Web Signature</td></tr><tr><td>RFC7516</td><td>JWE</td><td>JSON Web Encryption</td></tr><tr><td>RFC7517</td><td>JWK</td><td>JSON Web Key</td></tr><tr><td>RFC7518</td><td>JWA</td><td>JSON Web Algorithms</td></tr><tr><td>RFC7519</td><td>JWT</td><td>JSON Web Token</td></tr></tbody></table>
+<h3 id="jws">JWS</h3>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ヘッダー.ペイロード.署名</span></span></code></pre>
+<p>の形式。それぞれの部分はBASE64URL形式でエンコードされています。</p>
+<p>ヘッダーについて</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">{</span><span style="color: #7EE787">"kid"</span><span style="color: #C9D1D9">: </span><span style="color: #A5D6FF">"1e9gdk7"</span><span style="color: #C9D1D9">, </span><span style="color: #7EE787">"alg"</span><span style="color: #C9D1D9">:</span><span style="color: #A5D6FF">"RS256"</span><span style="color: #C9D1D9">}</span></span></code></pre>
+<p><code>alg</code>の部分は使用しているアルゴリズムの種類を示していて、これはRFC7518、先程の表にも出てきた<code>JWA</code>にて定義されています。</p>
+<p>ペイロードについて</p>
+<p>任意のバイト列が入ります。
+ペイロードにはバイナリが入ればよくて、JWSの仕様書ではペイロードにJSONがはいることを特に策定しているわけでは無いです。
+ただ、JSONが入るように決めているのはRFC7519の<code>JWT</code>の仕様書で定められています。</p>
+<h2 id="ここまでのまとめ">ここまでのまとめ</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">JWS...署名</span></span>
+<span class="line"><span style="color: #c9d1d9">JWT...トークン</span></span></code></pre>
+<p>JWSを発展させたのがJWTで、更にそこから発展したのがIDトークンという関係性。</p>
+<p>ただ、JWSだけでなくJWEという形式から発展したJWTもあります。</p>
+<h3 id="jwe">JWE</h3>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ヘッダー.暗号化されたキー.初期ベクター.暗号文.認証タグ</span></span></code></pre>
+<p>の形式。<code>JWS</code>同様にBASE64URL形式でエンコードされている。</p>
+<ul>
+<li>暗号化されたキーについて<br>
+なんで暗号キーではなくて暗号化<strong>された</strong>キーなのか？についてですが、<code>JWE</code>は「共有鍵を非対称鍵で暗号化」しています。<br>
+つまり、キー自体を暗号化するという二段階の暗号化が行われていることになります。</li>
+</ul>
+<p>この二段階暗号化は暗号化においては一般的によく使われる手法らしいです。</p>
+<h2 id="二段階暗号化の流れ">二段階暗号化の流れ</h2>
+<p>暗号化する側は公開鍵<br>
+復号化する側は秘密鍵<br>
+を持ちます。</p>
+<p>暗号化する側は平文を<code>共有鍵</code>を用いて暗号化します。<br>
+<code>共有鍵</code>は暗号化する側でランダムに生成します。<br>
+公開鍵を使用して<code>共有鍵</code>を暗号化します。</p>
+<p>暗号化する側は<code>暗号化された共有鍵</code>と暗号文をセットで復号化する側に渡します。</p>
+<p>復号化する側は受け取った<code>暗号化された共有鍵</code>を秘密鍵を用いて復号化します。<br>
+そして共有鍵を用いて暗号文を復号化します。</p>
+<h3 id="二段階で暗号化することのメリット">二段階で暗号化することのメリット</h3>
+<ul>
+<li>公開鍵の処理速度の問題</li>
+</ul>
+<p>公開鍵はいくらでも公開してよく、鍵の共有が楽だというメリットがあります。<br>
+ただ、公開鍵暗号化の処理は時間がかかります。<br>
+特に暗号化された文書が大きいものの場合は時間がネックとなります。</p>
+<ul>
+<li>鍵の配布問題</li>
+</ul>
+<p>共有鍵形式の場合は暗号処理自体は高速ですが、鍵の共有方法が難しくなるデメリットがあります。</p>
+<p>二段階暗号化は、文書自体の暗号処理には共有鍵形式を使い、鍵の公開には公開鍵形式を用いることで双方の形式のいいとこどりができます。</p>
+<h2 id="二段階暗号化の際のjwe">二段階暗号化の際のJWE</h2>
+<p>ヘッダー</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">{</span><span style="color: #7EE787">"alg"</span><span style="color: #C9D1D9">:</span><span style="color: #A5D6FF">"RSA-OAEP"</span><span style="color: #C9D1D9">, </span><span style="color: #7EE787">"enc"</span><span style="color: #C9D1D9">:</span><span style="color: #A5D6FF">"A256GCM"</span><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>のような形式。</p>
+<p><code>alg</code>が共有鍵の暗号アルゴリズム<br>
+<code>enc</code>が平文の暗号アルゴリズム</p>
+<p>を示しています。アルゴリズムの形式については<code>JWA</code>の仕様書に書かれているものです。</p>
+<h2 id="jwt">JWT</h2>
+<p><code>JSON形式で表現されたクレームの集合をJWSもしくはJWEに埋め込んだもの</code><br>
+先程出たように、<code>JWS形式のJWT</code>と<code>JWE形式のJWT</code>があります。</p>
+<h3 id="jws形式のjwt">JWS形式のJWT</h3>
+<p>JWSの形式</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ヘッダー.ペイロード.署名</span></span></code></pre>
+<p>JSON形式で表現されたクレームの集合をBASE64URLエンコードして、JWSのペイロード部分に格納したもの。<br>
+署名をしたい場合はこちらを使用します。</p>
+<h3 id="jwe形式のjwt">JWE形式のJWT</h3>
+<p>JWEの形式</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ヘッダー.暗号化されたキー.初期ベクター.暗号文.認証タグ</span></span></code></pre>
+<p>JSON形式で表現されたクレームの集合を暗号化して、暗号文をBASE64URLエンコードする。<br>
+それを暗号文部分に格納したもの。<br>
+暗号化したい場合はこちらを使用します。</p>
+<h3 id="署名と暗号化をしたい場合">署名と暗号化をしたい場合</h3>
+<p>署名と暗号化を両方行いたいケースも考えられます。<br>
+その際には、</p>
+<ul>
+<li>JWSをJWEでくるむ</li>
+<li>JWEをJWSでくるむ</li>
+</ul>
+<p>のどちらかのパターンを採用することになります。
+この形式の<code>JWT</code>を<code>Nested JWT</code>と呼びます。</p>
+<p>OpenID Connectで使用するIDトークンには署名が必須と仕様書で定められています。
+暗号化は任意だが、暗号化する際には「署名後に暗号化」という流れにしないといけないという仕様となっています。</p>
+<h2 id="jwtクレームとは">JWTクレームとは</h2>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #7EE787">"クレーム名"</span><span style="color: #C9D1D9">: </span><span style="color: #FFA198">クレーム値</span><span style="color: #C9D1D9">,</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #7EE787">"クレーム名"</span><span style="color: #C9D1D9">: </span><span style="color: #FFA198">クレーム値</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>詳細はRFC7519に記載があります。</p>
+<h2 id="所感">所感</h2>
+<p>今回は前回の復習 + OAuth2.0について大まかな流れを理解できたかと思います。<br>
+暗号化の仕組みや署名の仕組みについて、情報処理技術者試験の対策として勉強した事はあったので全く知らない内容ではなかったのですが、具体的なフローについては初めて聞く単語も多く、理解するのに結構苦労しました。<br>
+仕組み的にもかなり複雑なところなので少しずつ理解を進めていきたいです。<br>
+また別の記事でOAuth2.0の4つのフローについての具体的な流れや、リクエストやレスポンスの中身についてもまとめたいと思います。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://qiita.com/TakahikoKawasaki/items/200951e5b5929f840a1f">https://qiita.com/TakahikoKawasaki/items/200951e5b5929f840a1f</a></p>
+<p><a href="https://qiita.com/TakahikoKawasaki/items/e37caf50776e00e733be">https://qiita.com/TakahikoKawasaki/items/e37caf50776e00e733be</a></p>
+<p><a href="https://www.youtube.com/watch?v=j0pIlZdD7-A">https://www.youtube.com/watch?v=j0pIlZdD7-A</a></p>
+<p><a href="https://www.youtube.com/watch?v=PKPj_MmLq5E">https://www.youtube.com/watch?v=PKPj_MmLq5E</a></p>
+<p><a href="https://www.tdk.com/ja/tech-mag/knowledge/147">https://www.tdk.com/ja/tech-mag/knowledge/147</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

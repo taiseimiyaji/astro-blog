@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenID Connectについて</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/09/07</div>
+        <h1>OpenID Connectについて</h1>
+        <div class="post">
+          <h3 id="はじめに">はじめに</h3>
+<p>今回はOpenID Connectについてです。<br>
+認証の仕組みについて理解に乏しい部分があったため、調査したいと思います。<br>
+今回はOpenID Connectを利用した認証の流れについて理解することを目的としています。<br>
+暗号化やデータの形式については今回理解したいスコープとは異なるため、またの機会に調査しようと思います。</p>
+<h2 id="openid-connectとは">OpenID Connectとは</h2>
+<p>認証の仕組みの一種。<br>
+本来、クライアント側で行っていた認証処理をOpenID Providerと呼ばれる他のサーバーに任せ、認証結果のみをクライアントが受け取って認証する仕組み。</p>
+<h2 id="認証と認可について">認証と認可について</h2>
+<p>認証の仕組みであるOpenID Connectについて見るまえに認証と認可の違いについて調査しておく。</p>
+<h3 id="認証">認証</h3>
+<p>英語では「Authentication」<br>
+IT分野における文脈では、<strong>通信の相手が誰であるかを確認すること</strong>。<br>
+例: マイナンバーカードを使用した本人確認<br>
+純粋な認証というのは、誰かを確かめることであって、なにかを許可することではない。</p>
+<p>認証における3つの要素</p>
+<ul>
+<li>
+<p>WHAT YOU ARE<br>
+相手にさまざまな情報(顔、声、指紋など、その人自身)を提示してアイデンティティ(その人であること)を確認させる方法</p>
+</li>
+<li>
+<p>WHAT YOU HAVE<br>
+身分証や携帯電話などの本人しか持っていないものを提示することでアイデンティティの確認をする方法。<br>
+身分証の場合は顔写真等がプリントされている場合もあり、その場合はWHAT YOU AREの要素も含んでいる。</p>
+</li>
+<li>
+<p>WHAT YOU KNOW<br>
+パスワードや秘密の質問など、本人しか知り得ない情報を提示することでアイデンティティの確認をする方法。<br>
+IT分野では最も多く使用される要素。</p>
+</li>
+</ul>
+<p>一般的には上記いずれかを満たすことで認証しますが、より確実な認証のためにワンタイムパスワードなどに挙げられるMFA(Multi-Factor Authentication)という考え方が採用されることもある。<br>
+要するに認証とは、<strong>本人であることをあの手この手で確かめること</strong>。</p>
+<h3 id="認可">認可</h3>
+<p>英語では「Authorization」<br>
+IT分野における文脈では、<strong>とある特定の条件に対して、リソースアクセスの権限を与えること</strong>。<br>
+例: 鍵の発行、チケットの発行</p>
+<p>純粋な認可は、認可されたからといって身元の証明とはなんの関係も無い。<br>
+チケットを例に挙げると、チケットを購入した場合、電車に乗ることを許可される。
+チケットを知人から譲り受けた場合でも、電車に乗ることを許可される。</p>
+<p>認可は、認可情報を持っているという事実によって、なにか(リソースへのアクセス)が許可される。<br>
+鍵の例で言えば、鍵を持っていればドアを開けることができる。ドアを開ける人が誰であるかはこのことには無関係。</p>
+<h3 id="認証と認可の分離">認証と認可の分離</h3>
+<p>ここでややこしいのが、「多くの場合、認可は認証に依存している」ということ。</p>
+<ul>
+<li>
+<p>認可のみの場合(認証はしない)<br>
+このパターンは考え得る。先程のドアやチケットの例のように特定のなにかを持っていればリソースへのアクセスができるパターン。</p>
+</li>
+<li>
+<p>認証のみのパターン(認可はしない)<br>
+このパターンは考えにくい。本人であることを検証してなにもしないパターンは無駄になるため、なんのために認証するのかわからない。<br>
+ただ、今回のテーマであるOpenID Connectのように認証処理の委譲が発生するような場合、認証するシステムと認可するシステムが分離することはあり得る。</p>
+</li>
+</ul>
+<h3 id="認証に基づく認可">認証に基づく認可</h3>
+<p>一番に思いつく認証と認可のパターン。<br>
+例: 運転免許証<br>
+写真により誰かを認証した上で車の運転を許可している。他人に渡しても受け取った人が運転を許可されるわけではないのが先程のチケットの例とは違う。</p>
+<h3 id="認可に基づく認証">認可に基づく認証</h3>
+<p>家の鍵を持っているから、家の持ち主本人である。と認証する場合。<br>
+「OAuth認証」はこの仕組み。<br>
+認証するために認可するというのは不要なリソースへのアクセスを許可しなくてはならない問題や、認可されているからといってその人本人とは言い切れない可能性がある。</p>
+<p>認証と認可はよく比べられるが、</p>
+<ul>
+<li>認証は証明書の検証(発行された証明書が正しいかどうか検証する)</li>
+<li>認可は証明書の発行(証明書を発行し、持っている人にたいして何かを許可する)</li>
+</ul>
+<p>なのでタイミングがそもそも違う。</p>
+<p>参考: <a href="https://dev.classmethod.jp/articles/authentication-and-authorization/">https://dev.classmethod.jp/articles/authentication-and-authorization/</a></p>
+<h2 id="従来の認証の流れ">従来の認証の流れ</h2>
+<p>ここから、今回のテーマであるOpenID Connectについて調査する。
+以降、開発者が作成するシステムを<strong>サービス</strong>、OpenIDを発行するベンダを<strong>OpenID Provider</strong>とする。</p>
+<p>OpenID Connectを使用しないサービスの従来の認証の流れは以下のようになる。</p>
+<ol>
+<li>ユーザーは利用するサービスにIDとパスワードを使用してログイン</li>
+<li>サービスはID・パスワード認証処理を行いデータベースに登録されているユーザー情報と一致すれば認証OKとする</li>
+</ol>
+<p>ここで、ユーザーからの新規要望によりワンタイムパスワード処理を追加することになった場合、従来の認証の流れではサービスの開発者はワンタイムパスワード処理を自前で実装する必要がある。</p>
+<h2 id="openidconnectを使用した認証の流れ">OpenIDConnectを使用した認証の流れ</h2>
+<p>OpenID Connectでは、今までサービス側で行っていたユーザーの認証をOpenID Provider側で行う。<br>
+OpenID ProviderはGoogleなどを筆頭に様々なベンダがある。</p>
+<ol>
+<li>ユーザーはOpenID Provider側にID・パスワードを入力</li>
+<li>ワンタイムパスワードが必要な場合でも、OpenID Provider側に実装されているので入力</li>
+<li>認証に必要な情報を入力すると、OpenID Providerから認証に成功したという証を受け取れる</li>
+<li>サービス側はその証を受け取り、OpenID Providerに提示する</li>
+<li>サービス側から提示し証が正しいものかつ有効期限内であった場合、OpenID Providerはサービス側に<strong>IDトークン</strong>を発行する。</li>
+</ol>
+<p>ここで、<strong>従来の認証の流れ</strong>と<strong>OpenID Connectを利用した際の流れ</strong>を比較すると、</p>
+<ul>
+<li>ID・パスワード認証、ワンタイムパスワード認証などの認証に関わる処理</li>
+<li>認証に使用するID、パスワードなどの認証情報</li>
+</ul>
+<p>の２つがサービス側からOpenID Provider側に移動していることがわかる。
+サービス側で自前で実装するのではなく、OpenID Providerに認証にかかわる情報を任せることでセキュリティリスクの低減と、実装する手間の削減ができる。<br>
+要するにOpenID Connectは、OpenID Providerに認証にかかわるプロセスを任せるためのプロトコル。</p>
+<h2 id="idトークンについて">IDトークンについて</h2>
+<p>先程の例で挙げた認証の流れの最後に登場した<strong>IDトークン</strong>について理解する。<br>
+OpenID Connectは認証のための仕組みだが、本質は<strong>IDトークンを発行</strong>することにある。</p>
+<p>詳細は以下参考記事にて解説されています。<br>
+<a href="https://qiita.com/TakahikoKawasaki/items/8f0e422c7edd2d220e06">https://qiita.com/TakahikoKawasaki/items/8f0e422c7edd2d220e06</a></p>
+<h3 id="idトークンとは">IDトークンとは</h3>
+<p>以下で構成される文字列</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ヘッダー.ペイロード(本文).署名</span></span></code></pre>
+<p>1つ目のピリオドまでがヘッダー、2つ目のピリオドまでがペイロード、以降が署名を表している。</p>
+<p>例</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">eyJraWQiOiIxZTlnZGs3IiwiYWxnIjoiUlMyNTYifQ.ewogImlz</span></span>
+<span class="line"><span style="color: #c9d1d9">cyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4</span></span>
+<span class="line"><span style="color: #c9d1d9">Mjg5NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAi</span></span>
+<span class="line"><span style="color: #c9d1d9">bi0wUzZfV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEz</span></span>
+<span class="line"><span style="color: #c9d1d9">MTEyODA5NzAsCiAibmFtZSI6ICJKYW5lIERvZSIsCiAiZ2l2ZW5fbmFtZSI6</span></span>
+<span class="line"><span style="color: #c9d1d9">ICJKYW5lIiwKICJmYW1pbHlfbmFtZSI6ICJEb2UiLAogImdlbmRlciI6ICJm</span></span>
+<span class="line"><span style="color: #c9d1d9">ZW1hbGUiLAogImJpcnRoZGF0ZSI6ICIwMDAwLTEwLTMxIiwKICJlbWFpbCI6</span></span>
+<span class="line"><span style="color: #c9d1d9">ICJqYW5lZG9lQGV4YW1wbGUuY29tIiwKICJwaWN0dXJlIjogImh0dHA6Ly9l</span></span>
+<span class="line"><span style="color: #c9d1d9">eGFtcGxlLmNvbS9qYW5lZG9lL21lLmpwZyIKfQ.rHQjEmBqn9Jre0OLykYNn</span></span>
+<span class="line"><span style="color: #c9d1d9">spA10Qql2rvx4FsD00jwlB0Sym4NzpgvPKsDjn_wMkHxcp6CilPcoKrWHcip</span></span>
+<span class="line"><span style="color: #c9d1d9">R2iAjzLvDNAReF97zoJqq880ZD1bwY82JDauCXELVR9O6_B0w3K-E7yM2mac</span></span>
+<span class="line"><span style="color: #c9d1d9">AAgNCUwtik6SjoSUZRcf-O5lygIyLENx882p6MtmwaL1hd6qn5RZOQ0TLrOY</span></span>
+<span class="line"><span style="color: #c9d1d9">u0532g9Exxcm-ChymrB4xLykpDj3lUivJt63eEGGN6DH5K6o33TcxkIjNrCD</span></span>
+<span class="line"><span style="color: #c9d1d9">4XB1CKKumZvCedgHHF3IAK4dVEDSUoGlH9z4pP_eWYNXvqQOjGs-rDaQzUHl</span></span>
+<span class="line"><span style="color: #c9d1d9">6cQQWNiDpWOl_lxXjQEvQ</span></span></code></pre>
+<p>この形式は<a href="https://www.rfc-editor.org/rfc/rfc7515">RFC 7515</a>で定義されている形式らしい。<br>
+JWS(JSON Web Signature)と呼ばれる形式。
+<strong>base64url</strong>という方式でエンコードされたデータ。</p>
+<h3 id="jwejson-web-encryption">JWE(JSON Web Encryption)</h3>
+<p>また、以下のような<strong>JWE</strong>という形式のIDトークンも存在する(<a href="https://www.rfc-editor.org/rfc/rfc7516">RFC 7516</a>)</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ヘッダー.キー.初期ベクター.暗号文.認証タグ</span></span></code></pre>
+<p>この形式はIDトークンを暗号化したいときに使用される。
+IDトークンの場合、4番目のフィールド、暗号文には<code>ヘッダー.ペイロード.署名</code>の形の平文を暗号化したものが入る。
+つまりJWEの中にJWSが入る形式となる。</p>
+<h3 id="jwtjson-web-token">JWT(JSON Web Token)</h3>
+<p>さらにJWT(JSON Web Token)、ジョットと呼ばれる形式がある。(<a href="https://www.rfc-editor.org/rfc/rfc7519">RFC 7519</a>)</p>
+<blockquote>
+<p>「JWTとは、JSON形式で表現されたクレームの集合を、JWSもしくはJWEに埋め込んだもの」</p>
+</blockquote>
+<p>IDトークンはJWTの一種で、クレーム、つまり認証に関わる情報を内包した平文を暗号化したもの。</p>
+<h2 id="振り返り">振り返り</h2>
+<p>IDトークンについてざっくり理解したところで改めてOpenID Connectの具体的な流れについて振り返っておくと、以下のような流れになる。
+先程の例より具体的な用語を使用している。</p>
+<ol>
+<li>
+<p>サービス管理者は、OpenID ProviderにクライアントIDとクライアントシークレットを発行してもらう。<br>
+このクライアントIDとは、OpenID Connectを使用して認証に関する情報をOpenID Providerに委譲する際に、OpenID Providerからサービスに対して発行される固有のID。<br>
+クライアントシークレットはクライアントIDに紐づくパスワード。</p>
+</li>
+<li>
+<p>ユーザーはサービスを利用する際にOpenID Providerの認証画面へとリダイレクトされる(このとき、クライアントIDと認可コード等のクエリパラメータが渡される)。ユーザーは認証画面でID、パスワード、ワンタイムパスワードなどの認証情報を入力する。</p>
+</li>
+<li>
+<p>認証に成功するとOpenID Provider側で発行された認可コードとともにサービス側へリダイレクトされる。このときOpenID Providerは発行した認可コードを有効期限とともに保存している。</p>
+</li>
+<li>
+<p>認可コードを受け取ったサービスは、IDトークンをOpenID Provider側にリクエストする。</p>
+</li>
+<li>
+<p>OpenID Providerは渡された認可コードが存在し、かつ有効期限内であれば<strong>IDトークン</strong>を返す。この形式が<strong>JWT</strong>と呼ばれる形式。</p>
+</li>
+<li>
+<p>IDトークンを検証し、問題なければ認証OK</p>
+</li>
+</ol>
+<h2 id="参考">参考</h2>
+<p><a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0 incorporating errata set 1</a><br>
+<a href="https://www.rfc-editor.org/rfc/rfc7515">RFC7515 JSON Web Signature(JWS)</a><br>
+<a href="https://tech-lab.sios.jp/archives/8651">多分わかりやすいOpenID Connect</a><br>
+<a href="https://qiita.com/TakahikoKawasaki/items/498ca08bbfcc341691fe">一番分かりやすい OpenID Connect の説明</a><br>
+<a href="https://qiita.com/TakahikoKawasaki/items/4ee9b55db9f7ef352b47">OpenID Connect 全フロー解説</a><br>
+<a href="https://dev.classmethod.jp/articles/authentication-and-authorization/">よく分かる認証と認可</a></p>
+<h2 id="まとめ">まとめ</h2>
+<p>今回はOpenID Connectについて調査しました。<br>
+最近のサービスでは利用していないほうが珍しい仕組みだと思うのでその内容を詳しく勉強する機会になりました。<br>
+認証と認可の違いについてもきちんと説明できるレベルまで自分の中に落とし込めた気がします。<br>
+認証処理の委譲を行うことでセキュリティリスクの低減や実装コストの低減ができます。<br>
+ただ、仕組み上OpenID ProviderへのIDとパスワードが漏洩してしまうと利用しているサービスすべてへ影響が出る点はデメリットかなとも感じましたが、それを超えるメリットがあると思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

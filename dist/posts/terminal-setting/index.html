@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>bash,zshにおける設定ファイルの読み込み順序について</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2022/04/06</div>
+        <h1>bash,zshにおける設定ファイルの読み込み順序について</h1>
+        <div class="post">
+          <h2 id="bashとzsh">bashとzsh</h2>
+<p>Macユーザーの場合はどちらかを使用している人が多いのではと思います。<br>
+<code>MacOS X Catalina</code>以前はbash、以降はzshが標準のシェルです。</p>
+<p>以下のサイトによると、</p>
+<p><a href="https://kanasys.com/tech/803">https://kanasys.com/tech/803</a></p>
+<blockquote>
+<p>MacOS Xは当初tcshであったのがv10.3 Pantherよりbashに変更された</p>
+</blockquote>
+<p>らしいです。</p>
+<p>bashは”バッシュ”らしいですが、zshは”ズィーシェル”らしいです。(ゼッシュじゃないんだ、、、)</p>
+<h2 id="今回のテーマは設定ファイル">今回のテーマは設定ファイル</h2>
+<p>例えば環境構築の際に設定ファイルにパスを通したりします。<br>
+その時にの設定ファイルに設定を書いていて、どのように適用されているのか。<br>
+なんか<code>zprofile</code>とか<code>zshrc</code>とかいろいろあるけど違いがわからない、、、。<br>
+そういった背景から、設定ファイルの仕組みについて理解しておくべきかなと思い調査します。<br>
+(前職が組み込み系でLinuxPCを触ってたのでbashrcに書けばいいんやなくらいの理解はありますが詳しいことは知らなかったので)</p>
+<h2 id="設定ファイルの違い">設定ファイルの違い</h2>
+<p>起動時に読み込まれるファイルがbashとzshでは異なります。
+(bashでパス通してもzshじゃ通ってないみたいなことが起きます)</p>
+<h2 id="zshrczprofile">zshrc?zprofile?</h2>
+<p>設定ファイルには種類があり、それぞれ読み込まれるタイミングが違います。
+(僕は全部<code>zshrc</code>に書いておけばいいと思ってました。)</p>
+<p>以下の要素でどのファイルが読み込まれるかが変わります。</p>
+<ul>
+<li>ログインシェルかどうか</li>
+<li>対話モードか非対話モードか</li>
+</ul>
+<h2 id="ログインシェルとは">ログインシェルとは</h2>
+<p>例えば、ターミナルウインドウ開いた時に自動的にzshが立ち上がった状態がログインシェルです。
+コマンドラインで<code>bin/bash</code>や<code>bin/zsh</code>を実行した場合は非ログインシェルとなります。</p>
+<h2 id="対話モードとは">対話モードとは</h2>
+<p>読んで字の如くターミナルで入力できるかどうかです。
+例えばシェルスクリプト実行中はターミナル入力できないので非対話モードです。</p>
+<h2 id="設定ファイルの読み込み順">設定ファイルの読み込み順</h2>
+<p>設定ファイルごとにglobalとlocalの二種類が存在します。(この定義が公式のものかどうかは調査できてないですが、理解をしやすくなる上で役に立つので便宜上以下の定義をします。)</p>
+<ul>
+<li>globalは全てのユーザーで有効にしたい設定を記述します。場所は<code>/etc/xxx</code>です。</li>
+<li>localは特定ユーザーでのみ有効にしたい場合に記述します。場所は<code>~/.xxxx</code>です。(隠しファイルなので<code>ls -a</code>などじゃないと表示されません)</li>
+</ul>
+<h3 id="ログインシェル-対話モードの場合">ログインシェル-対話モードの場合</h3>
+<p>global→localの順番で読み込まれます。(globalを読み込んだ後にlocalの内容で上書き読み込みされます)<br>
+bashの場合はlocalのファイルを一つ読み込んだあとは以降の探索が行われません。<br>
+(例えば<code>.bash_profile</code>に設定を記述していて、<code>.profile</code>にも設定を記述していた場合、後者は無視されます。)
+zshの場合は全て探索されます。
+以下表の上から順番に読み込まれます。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>bash</th><th>zsh</th></tr></thead><tbody><tr><td><code>/etc/profile</code></td><td><code>/etc/zshenv</code></td></tr><tr><td><code>~/.bash_profile</code></td><td><code>~/.zshenv</code></td></tr><tr><td><code>~/bash_login</code></td><td><code>/etc/zprofile</code></td></tr><tr><td><code>~/.profile</code></td><td><code>/~/.zprofile</code></td></tr><tr><td></td><td><code>/etc/zshrc</code></td></tr><tr><td></td><td><code>~/.zshrc</code></td></tr><tr><td></td><td><code>/etc/zlogin</code></td></tr><tr><td></td><td><code>~/.zlogin</code></td></tr></tbody></table>
+<p>ちなみに<code>.bashrc</code>は<code>.bash_profile</code>の中で読み込まれます。</p>
+<p>ログインシェルの終了時には以下の順で読み込まれます。</p>
+<p>終了時のみlocal→globalの順で読み込まれる点に注意</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>bash</th><th>zsh</th></tr></thead><tbody><tr><td><code>~/bash_logout</code></td><td><code>~/.zlogout</code></td></tr><tr><td></td><td><code>/etc/zlogout</code></td></tr></tbody></table>
+<h3 id="非ログインシェル-対話モード時">非ログインシェル-対話モード時</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>bash</th><th>zsh</th></tr></thead><tbody><tr><td><code>~/.bashrc</code></td><td><code>/etc/zshenv</code></td></tr><tr><td></td><td><code>~/.zshenv</code></td></tr><tr><td></td><td><code>/etc/zshrc</code></td></tr><tr><td></td><td><code>~/.zshrc</code></td></tr></tbody></table>
+<h3 id="非ログインシェル-非対話モード時">非ログインシェル-非対話モード時</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>bash</th><th>zsh</th></tr></thead><tbody><tr><td><code>$BASH_ENV</code></td><td><code>/etc/zshenv</code></td></tr><tr><td></td><td><code>~/.zshenv</code></td></tr></tbody></table>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>基本的にはglobal→localの順に読み込まれるが、終了時のみlocal→globalの順。</li>
+<li>zshのetc/zshenvは影響範囲が大きいことがわかる。</li>
+<li>どのファイルに何を書くべきかを考える必要がある。</li>
+<li>参考サイトにも書いているが、bashとzsh両方から読み込まれるファイルを作ってそこにPATHを通すといいかもしれない。</li>
+<li><code>.zprofile</code>や<code>.bash_profile</code>にはログインシェルに必要な設定のみを記述し、その他設定は<code>.zshrc</code>や<code>.bashrc</code>にどんどん書くのがいいかもしれない。</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>とりあえず<code>.zshrc</code>に書いておけばいいのかと思ってたのですがちゃんと調べると順番とかあってややこしかったです。<br>
+エラーの解決策を探っている時にこういう基本的なことが気になったりして勉強するいい機会になっています。<br>
+さくさくタスク進んでいる時よりエラーとか出て試行錯誤している時の方が成長しているまである。<br>
+それぞれのシェルの違いについてはまた調べようと思います。<br>
+ターミナルのカスタマイズも早くやらなきゃと思いつつまだ手を出せていないのでそのうち記事にします。</p>
+<h3 id="参考">参考</h3>
+<p><a href="https://kanasys.com/tech/803">https://kanasys.com/tech/803</a><br>
+<a href="https://qiita.com/muran001/items/7b104d33f5ea3f75353f">https://qiita.com/muran001/items/7b104d33f5ea3f75353f</a><br>
+<a href="https://bacchi.me/linux/bash-settings/">https://bacchi.me/linux/bash-settings/</a><br>
+<a href="https://qiita.com/dark-space/items/cf25001f89c41341a9fd">https://qiita.com/dark-space/items/cf25001f89c41341a9fd</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>

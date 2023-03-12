@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dotfilesを作ってみる</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="/_astro/index.4a7299d1.css" /></head>
+  <body>
+    <main>
+      <div class="header"><div class="title">Lyricrime.com</div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><div>SNS</div></div></div>
+      <div class="content">
+        <div class="date">2023/02/20</div>
+        <h1>Dotfilesを作ってみる</h1>
+        <div class="post">
+          <h2 id="参考">参考</h2>
+<p><a href="https://qiita.com/yutkat/items/c6c7584d9795799ee164">https://qiita.com/yutkat/items/c6c7584d9795799ee164</a><br>
+<a href="https://dev.classmethod.jp/articles/joined-mac-dotfiles-customize/">https://dev.classmethod.jp/articles/joined-mac-dotfiles-customize/</a></p>
+<h2 id="はじめに">はじめに</h2>
+<p>今週M2 Pro Mac mini(2023)を購入しました!</p>
+<p>2023モデルのM2チップ搭載Mac miniは最小構成で84800円と前モデルより安くなっていてライトな使い方にもピッタリのコスパになっています。<br>
+そしてM2 Proチップ搭載のMac miniは184800円からですがメモリを32GBまで増設可能で個人使用であれば十分なスペックを選択できるようになりました。<br>
+M2とM2 Proのモデルにはほかにもポートの違い等がありますが詳細は割愛します。</p>
+<p>私用のMacとしては2019モデルのMacbook Proを最小構成で購入して以来のPCで二台目となります。<br>
+また、Apple SiliconのMacを購入するのが初めてなので思い切ってメモリを32GBにカスタマイズして購入しました！</p>
+<p>今回は新しいMacの設定をしながら、dotfilesと呼ばれる設定ファイル管理用リポジトリを作成しました。<br>
+チーム内で雑談しているときに話題に上げたのですが思ったよりみんな知らない文化だったので布教の意味も込めて記事にしてみます。<br>
+自身のdotfilesはまだまだ細部までこだわれてないので今回は文化の紹介という感じでライトな記事にしたいと思います。</p>
+<h2 id="dotfilesとは">dotfilesとは</h2>
+<p>dotfilesとは、普段自身で使っているソフトウェアの設定ファイルをまとめて管理するリポジトリです。<br>
+慣例的に<code>.</code>(ドット)から始めるファイルになっているため<code>dotfiles</code>と呼ばれています。</p>
+<h2 id="dotfilesの目的">dotfilesの目的</h2>
+<ul>
+<li>どんな環境で作業することになっても自分の環境をさくっと用意できる</li>
+<li>docker等で環境を立ち上げた際にも簡単に環境を用意できる</li>
+</ul>
+<p>そして何よりすぐ新しいパソコンを買っちゃったとしてもすぐにセットアップができる!</p>
+<h2 id="dotfilesのはじめかた">dotfilesのはじめかた</h2>
+<p>まずは簡単な設定ファイルを置くところから始めます。<br>
+GitHubにdotfilesという名前でリポジトリを作成します。<br>
+このとき、GitHub Actions等でのCIを考えていたりする場合はpublicリポジトリで作成しておくといいと思います。<br>
+当然ながら機密性の高い情報やキャッシュ等のファイルはgitに追加しないようにしておきましょう!</p>
+<p>dotfilesはホームディレクトリ直下にcloneするようにしておくと使い勝手がいいかと思います。</p>
+<p>今回はまずシェルの設定から追加してみます。<br>
+自身のシェルの設定をdotfiles配下にコピーします。<br>
+あとでシンボリックリンクを貼るので移動してもいいと思います。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">mv ~./bashrc ~/dotfiles/.zshrc</span></span></code></pre>
+<p>ホームディレクトリに対してシンボリックリンクを作成します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ln -s ~/dotfiles/.zshrc ~zshrc</span></span></code></pre>
+<p>これでシェルの設定がdotfiles配下の設定ファイルを参照するようになりました。</p>
+<h2 id="dotfilesを工夫してみる">dotfilesを工夫してみる</h2>
+<h3 id="dotfilesのホワイトリスト化">dotfilesのホワイトリスト化</h3>
+<p>エディタやシェルにプラグインを入れたりすると勝手にファイルが作られることがあるため、その更新が見えないように.gitignoreをホワイトリストにします。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9"># 全ての階層を無視</span></span>
+<span class="line"><span style="color: #c9d1d9">/*</span></span>
+<span class="line"><span style="color: #c9d1d9">/.**</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9"># ホワイトリスト</span></span>
+<span class="line"><span style="color: #c9d1d9">!/.zshrc</span></span>
+<span class="line"><span style="color: #c9d1d9">!/README.md</span></span>
+<span class="line"><span style="color: #c9d1d9">!/LICENSE</span></span>
+<span class="line"><span style="color: #c9d1d9">!.gitignore</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9"># ほかにも追加したいものを追加</span></span></code></pre>
+<h3 id="macosの場合はhomebrewのインストールファイルも作成する">macOSの場合はHomebrewのインストールファイルも作成する</h3>
+<p>今の環境からインストールリストファイルを作成するには下記のコマンドを実行します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">brew bundle dump</span></span></code></pre>
+<p>新しい環境で下記コマンドを実行すると先ほど作成した<code>.Brewfile</code>が読み込まれ、一括インストールされます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">brew bundle --global</span></span></code></pre>
+<p>私の環境では最低限下記のような<code>Brewfile</code>を作成しました。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">tap "homebrew/bundle"</span></span>
+<span class="line"><span style="color: #c9d1d9">tap "homebrew/cask"</span></span>
+<span class="line"><span style="color: #c9d1d9">tap "homebrew/core"</span></span>
+<span class="line"><span style="color: #c9d1d9">brew "anyenv"</span></span>
+<span class="line"><span style="color: #c9d1d9">brew "php"</span></span>
+<span class="line"><span style="color: #c9d1d9">brew "composer"</span></span>
+<span class="line"><span style="color: #c9d1d9">brew "jq"</span></span>
+<span class="line"><span style="color: #c9d1d9">brew "tree"</span></span>
+<span class="line"><span style="color: #c9d1d9"></span></span>
+<span class="line"><span style="color: #c9d1d9">cask "authy"</span></span>
+<span class="line"><span style="color: #c9d1d9">cask "docker"</span></span>
+<span class="line"><span style="color: #c9d1d9">cask "iterm2"</span></span>
+<span class="line"><span style="color: #c9d1d9">cask "postman"</span></span>
+<span class="line"><span style="color: #c9d1d9">cask "sequel-ace"</span></span>
+<span class="line"><span style="color: #c9d1d9">cask "visual-studio-code"</span></span>
+<span class="line"><span style="color: #c9d1d9">cask "google-chrome"</span></span>
+<span class="line"><span style="color: #c9d1d9">cask "kindle"</span></span>
+<span class="line"><span style="color: #c9d1d9">cask "slack"</span></span></code></pre>
+<p>よく使う構文をいくつか紹介しておきます。</p>
+<h3 id="tap"><code>tap</code></h3>
+<p>Homebrewに正式に登録されてはいないライブラリをインストールする際に<code>tap</code>を使用します。<br>
+GitHubリポジトリをHomebrewに登録する仕組みとなっています。</p>
+<h3 id="brew"><code>brew</code></h3>
+<p>Homebrewに正式に登録されたライブラリをインストールする際には<code>brew</code>構文を作成します。</p>
+<h3 id="cask"><code>cask</code></h3>
+<p>Macアプリをインストールする際には<code>cask</code>構文を使います。</p>
+<h3 id="mas"><code>mas</code></h3>
+<p><code>mas</code>構文を使用するとApp StoreからMacアプリをインストールできます。</p>
+<h3 id="シンボリックリンクやpathも自動化">シンボリックリンクやPATHも自動化</h3>
+<p>先ほど説明したシンボリックリンク作成コマンドや最低限必要なPATHを通すためのコマンドもシェルスクリプトで用意しておくと楽です。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ln -s ~/dotfiles/.zshrc ~zshrc</span></span></code></pre>
+<p>また、シェルスクリプトを作成する際には以下のような内容に気をつけます。</p>
+<ul>
+<li>冪等性を保つ(すでにインストールされている場合はスキップしたりして何度実行しても同じ結果になるようにしておく)</li>
+<li>実行する場所がどこでも正常に終了するようにパスを工夫しておく</li>
+</ul>
+<h3 id="ciの作成">CIの作成</h3>
+<p>dotfilesにもCIの考えを導入することができます。<br>
+GitHub Actions等を用いてインストールコマンドが成功するかどうかを確認できます。<br>
+今回は作成していないんですがいずれ挑戦したいと思います。</p>
+<p>参考: <a href="https://dev.classmethod.jp/articles/joined-mac-dotfiles-customize/">https://dev.classmethod.jp/articles/joined-mac-dotfiles-customize/</a></p>
+<h2 id="所感">所感</h2>
+<p>新しいPCを買うのと合わせてセットアップの自動化スクリプトをいじった週末でした。<br>
+エンジニアのこういう自動化文化自体が大好きなのでこれからもメンテナンスして自分なりのdotfilesを育てていきたいと思います!<br>
+また、Docker等を使用する上でもLinux、というよりUnix系のコマンドを理解しておくと色々と捗りそうなのでそのあたりも学習していきたいと思います。</p>
+<h2 id="おまけ">おまけ</h2>
+<h3 id="シェルスクリプトにちょっと入門してみる">シェルスクリプトにちょっと入門してみる</h3>
+<p>先ほど気をつけた方がいいと書いた</p>
+<ul>
+<li>冪等性を保つ(すでにインストールされている場合はスキップしたりして何度実行しても同じ結果になるようにしておく)</li>
+<li>実行する場所がどこでも正常に終了するようにパスを工夫しておく</li>
+</ul>
+<p>について、シェルスクリプトでどう工夫するかについて調査してみます。</p>
+<h3 id="実行する場所の設定">実行する場所の設定</h3>
+<p>スクリプトの配置位置や実行位置を気にせずにスクリプトを実行するには</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">SCRIPT_DIR=</span><span style="color: #A5D6FF">$(cd $(dirname </span><span style="color: #C9D1D9">$0</span><span style="color: #A5D6FF">)</span><span style="color: #FF7B72">;</span><span style="color: #A5D6FF"> pwd)</span></span></code></pre>
+<ul>
+<li>$0 で実行コマンドを取得</li>
+<li>dirname でベースディレクトリを取得</li>
+<li>サブシェル内で cd で移動</li>
+<li>pwd で絶対パスの取得</li>
+</ul>
+<p>使用する際は<code>$SCRIPT_DIR</code>で使用できます。
+シェルスクリプトの場合は「変数名=値」のように指定します。<code>=</code>の前後に空白を入れることができない点に注意が必要です。<br>
+定義した変数の値は「$変数名」で参照できます。</p>
+<p>参考: <a href="https://qiita.com/koara-local/items/2d67c0964188bba39e29">https://qiita.com/koara-local/items/2d67c0964188bba39e29</a></p>
+<h3 id="冪等性を保つには">冪等性を保つには</h3>
+<p>インストール済みの場合はコマンドを実行しないように工夫してみます。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">if</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">!</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">type</span><span style="color: #C9D1D9"> コマンド </span><span style="color: #FF7B72">></span><span style="color: #C9D1D9">/dev/null </span><span style="color: #FF7B72">2>&#x26;1;</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">then</span></span>
+<span class="line"><span style="color: #C9D1D9"> </span><span style="color: #8B949E"># インストール処理</span></span>
+<span class="line"><span style="color: #FF7B72">fi</span></span></code></pre>
+<p>基本的には上記で書けるのですが、内容についても調査してみます。</p>
+<p><code>type</code>コマンドを使用します。<code>type</code>コマンドはコマンドのタイプに関する情報を表示するコマンドです。</p>
+<ul>
+<li>ファイルディスクリプタ</li>
+</ul>
+<p>Unixには下記のように入出力に番号が振られています。</p>
+<ul>
+<li>0: 標準入力</li>
+<li>1: 標準出力</li>
+<li>2: 標準エラー出力</li>
+</ul>
+<p>これら入出力をOSが判別するために割り当てられた番号を<code>ファイルディスクリプタ</code>といいます。</p>
+<ul>
+<li>リダイレクト</li>
+</ul>
+<p>標準出力に出力した結果を別の場所に出力する際に<code>></code>を使用できます。</p>
+<ul>
+<li><code>/dev/null</code>とは</li>
+</ul>
+<p><code>/dev/null</code>はUnixのスペシャルファイルで、空ファイルを指します。</p>
+<p>これを利用して、<code>type</code>コマンドの結果を捨てて分岐ロジックを書いていることが理解できました。</p>
+<p>参考:<br>
+<a href="https://qiita.com/yn-misaki/items/3ec0605cba228a7d5c9a">https://qiita.com/yn-misaki/items/3ec0605cba228a7d5c9a</a><br>
+<a href="https://qiita.com/ritukiii/items/b3d91e97b71ecd41d4ea">https://qiita.com/ritukiii/items/b3d91e97b71ecd41d4ea</a><br>
+<a href="https://qiita.com/i35_267/items/158cd20ed26f73a3d894">https://qiita.com/i35_267/items/158cd20ed26f73a3d894</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="25" height="25"/></a></span></div></div>
+    </main>
+  </body></html>
