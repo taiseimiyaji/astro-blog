@@ -23,6 +23,8 @@ jobs:
         run: cp -n -r blog_article/Article/* src/content/blog/Article
       - name: clean repository
         run: rm -rf blog_article
+      - name: npm install
+        run: npm ci
       - name: build
         run: npm run build
       - name: create pr
