@@ -14,7 +14,7 @@ jobs:
         with:
           repository: taiseimiyaji/blog_article
           path: blog_article
-          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          token: ${{ secrets.COPY_ACCESS_TOKEN }}
       - name: copy article
         run: cp -r -n blog_article/Article /src/content/blog/Article
       - name: clean repository
@@ -22,7 +22,7 @@ jobs:
       - name: create pr
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          token: ${{ secrets.COPY_ACCESS_TOKEN }}
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit-message: 'copy Articles'
           branch: copy_Articles
