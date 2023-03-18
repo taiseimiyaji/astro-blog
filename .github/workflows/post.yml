@@ -15,10 +15,14 @@ jobs:
           repository: taiseimiyaji/blog_article
           path: blog_article
           token: ${{ secrets.COPY_ACCESS_TOKEN }}
+      - name: delete article
+        run: rm -rf src/content/blog/Article
       - name: copy article
         run: cp -n -r blog_article/Article/* src/content/blog/Article
       - name: clean repository
         run: rm -rf blog_article
+      - name: build
+        run: npm run build
       - name: create pr
         uses: peter-evans/create-pull-request@v3
         with:
