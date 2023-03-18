@@ -17,6 +17,8 @@ jobs:
           token: ${{ secrets.COPY_ACCESS_TOKEN }}
       - name: delete article
         run: rm -rf src/content/blog/Article
+      - name: create folder
+        run: mkdir -p src/content/blog/Article
       - name: copy article
         run: cp -n -r blog_article/Article/* src/content/blog/Article
       - name: clean repository
