@@ -16,7 +16,7 @@ jobs:
           path: blog_article
           token: ${{ secrets.COPY_ACCESS_TOKEN }}
       - name: copy article
-        run: cp -n blog_article/Article/* src/content/blog/Article
+        run: cp -n -r blog_article/Article/* src/content/blog/Article
       - name: clean repository
         run: rm -rf blog_article
       - name: create pr
