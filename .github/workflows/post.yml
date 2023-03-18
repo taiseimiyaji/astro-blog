@@ -1,0 +1,31 @@
+name: copy articles from blog-article
+on:
+  repository_dispatch:
+    types: [post-article]
+jobs:
+  copy-article:
+    name: copy articles
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: clone blog-article
+        uses: actions/checkout@v2
+        with:
+          repository: taiseimiyaji/blog_article
+          path: blog_article
+          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+      - name: copy article
+        run: cp -r -n blog_article/Article /src/content/blog/Article
+      - name: clean repository
+        run: rm -rf blog_article
+      - name: create pr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          commit-message: 'copy Articles'
+          branch: copy_Articles
+          branch-suffix: timestamp
+          delete-branch: true
+          title: 'updated Articles'
