@@ -17,7 +17,12 @@ const { Content } = await entry.render();
 ---
 <html lang="ja">
   <head>
-    <!-- Google tag (gtag.js) -->
+    <title>{entry.data.title}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content={entry.body.substr(0, 120)} />
+  </head>
+  <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -26,11 +31,6 @@ const { Content } = await entry.render();
 
       gtag('config', 'G-ZBD90YGZ4N');
     </script>
-    <title>{entry.data.title}</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content={entry.body.substr(0, 120)} />
-  </head>
   <body>
     <main>
       <Header></Header>
