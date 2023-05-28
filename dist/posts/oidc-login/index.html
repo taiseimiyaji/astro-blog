@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>OIDCを使用したクライアントシークレットなしでのソーシャルログイン実装について調査してみる</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="
+## はじめに
+
+最近OpenID Connect(OIDC)を使用したログインを実装するにあたって、implecit flowを用いる方法があることを教えてもらったので調査した結果をまとめてみます。
+
+関連するRFCや信頼できそうな記事">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/index.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head>
+  <!-- Google tag (gtag.js) -->
+    
+    
+  <body>
+    <main>
+      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><div>Activity</div><a href="/profile"><div>Profile</div></a></div></div>
+      <div class="content">
+        <div class="date">2023/05/28</div>
+        <h1>OIDCを使用したクライアントシークレットなしでのソーシャルログイン実装について調査してみる</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>最近OpenID Connect(OIDC)を使用したログインを実装するにあたって、implecit flowを用いる方法があることを教えてもらったので調査した結果をまとめてみます。</p>
+<p>関連するRFCや信頼できそうな記事、理解しやすい記事を含めたいと思います。</p>
+<p>参考: <a href="https://zenn.dev/ritou/articles/2796b1cc8b6d32">OIDCのImplicit FlowでClientSecretを使わずにID連携する</a></p>
+<h2 id="結論">結論</h2>
+<ul>
+<li>OAuth2.0のimplicit flowはセキュリティリスクがある</li>
+<li>OIDCのimplecit flowはOAuth2.0のimplicit flowと比較するとセキュリティリスクが少ない</li>
+<li>ソーシャルログインを実現する場合、要件によってはOIDCのimplecit flowを使用することでクライアントシークレットの管理なしで実現できる</li>
+<li>その場合はアクセストークンを発行してリソース取得エンドポイントを叩くのではなく、IDTokenに含まれる情報を使用する</li>
+</ul>
+<h2 id="oidcとは">OIDCとは</h2>
+<p>現代のウェブアプリケーションでは、ユーザーが他のサービスを通じて自身を認証する機能が実装されていることがあり、アカウント管理の煩雑さを解消し、開発者にとってはセキュリティのリスクや認証機能の実装の手間の削減を実現できます。このプロセスは「ソーシャルログイン」としてよく知られています。</p>
+<p>OIDCはOAuth2.0という認可プロトコルを基盤とした認証の仕組みで、クライアントがエンドユーザーの同意を通じて、エンドユーザーの情報を安全に取得するための仕組みです。</p>
+<h2 id="oidcのフロー">OIDCのフロー</h2>
+<p>参考: <a href="https://qiita.com/TakahikoKawasaki/items/4ee9b55db9f7ef352b47">OpenID Connect 全フロー解説</a></p>
+<p>OIDCのフローは大きく以下のステップで構成されます。</p>
+<ol>
+<li>
+<p>認証認可リクエスト: クライアントはユーザーをOpenIDプロバイダー（例えばGoogle）の認可サーバーにリダイレクトします。この時、クライアントはリクエストにスコープopenidを含めます。</p>
+</li>
+<li>
+<p>ユーザー認証: ユーザーはOpenIDプロバイダーで自身のアイデンティティを認証します。成功すると、ユーザーはクライアントにリダイレクトされます。</p>
+</li>
+<li>
+<p>認可レスポンス: リダイレクト時に、認可サーバーはcodeという認可コードをクライアントに渡します。</p>
+</li>
+<li>
+<p>トークンリクエスト: クライアントはこの認可コードを使い、認可サーバーにアクセストークンとIDトークンを要求します。</p>
+</li>
+<li>
+<p>トークンレスポンス: 認可サーバーはアクセストークンとIDトークンをクライアントに返します。</p>
+</li>
+</ol>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc6749">RFC6749</a>に定義されているOAuth2.0の認可コードフローと同じフローになります。
+このフローは、<code>response_type=code</code>を指定した場合に実行されるフローとなります。
+ただし、<code>scope</code>に<code>openid</code>を含めた場合のみIDトークンが発行されます。</p>
+<p>OIDCはIDトークンを発行するためのフローともいえると認識しているので基本的には<code>scope</code>に<code>openid</code>を含めることになると思います。</p>
+<h2 id="implecit-flowについて">implecit flowについて</h2>
+<p>OAuth2.0にもimplecit flowが存在し、セキュリティ的なリスクがあって推奨されていないことは知っていたのですが、OIDCにもimplecit flowがあることを知らず、明確に違いを認識できていませんでした。
+まずはOAuth2.0のimplecit flowについての復習から始めます。</p>
+<h2 id="oauth20のimplecit-flow">OAuth2.0のimplecit flow</h2>
+<p>参考: <a href="https://qiita.com/TakahikoKawasaki/items/200951e5b5929f840a1f#2-%E3%82%A4%E3%83%B3%E3%83%97%E3%83%AA%E3%82%B7%E3%83%83%E3%83%88%E3%83%95%E3%83%AD%E3%83%BC">OAuth 2.0 全フローの図解と動画</a></p>
+<p>認可コードフローとは違い、認可エンドポイントにリクエストを投げ、応答として直接アクセストークンを受け取るフローです。</p>
+<p>元々はJavaScriptを用いたブラウザベースのクライアント向けに設計されました。</p>
+<p>フローの流れとしては以下のようになります。</p>
+<ol>
+<li>ユーザーがクライアントを認可すると、クライアントはリダイレクトURIにアクセストークンを含むリダイレクトレスポンスを受け取ります。</li>
+<li>クライアントはリダイレクトレスポンスからアクセストークンを抽出し、そのトークンを使用してリソースサーバーからリソースを取得します。</li>
+</ol>
+<p>参考: <a href="https://datatracker.ietf.org/doc/html/rfc6749#section-4.2">OAuth 2.0 Implicit Grant Flow</a></p>
+<p>ただ、このフローは設計上の脆弱性を持っています。
+この脆弱性については以下の記事が詳しいです。</p>
+<p>参考: <a href="https://ritou.hatenablog.com/entry/20120206/1328484575">OAuth 2.0 Implicit Flowをユーザー認証に利用する際のリスクと対策方法について #idcon</a></p>
+<p>参考: <a href="https://tech-lab.sios.jp/archives/13002">「単なるOAUTH 2.0を認証に使うと、車が通れるほどのどでかいセキュリティー・ホールができる」について</a></p>
+<p>なお、RFCにおいても<a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-14">現在のセキュリティベストプラクティスをまとめた文書</a>が発表されていて、原則認可コードフローの利用を推奨しています。また、PKCEを組み合わせて使用することが推奨されています。</p>
+<h2 id="oidcのimplecit-flow">OIDCのimplecit flow</h2>
+<p>OpenID Connectのimplecit flowはOAuth2.0のimplecit flowをベースにしています。そのため、同様のセキュリティリスクを抱えています。</p>
+<p>ただし、OIDCのimplecit flowはOAuth2.0のimplecit flowとは異なり、IDトークンを発行するフローであり、このIDトークンにデジタル署名が含まれているため、クライアントはトークンが信頼できる発行者から発行され、改竄されていないことを確認できます。</p>
+<p>ただし、OAuth 2.0のimplecit flowと同様に、IDトークンが直接ブラウザに渡されるため、トークンがブラウザの履歴やログ、HTTPリファラに記録される可能性は残っていますが、response_type=id_tokenを指定した場合はアクセストークンではなくID Tokenのみが記録されるため、OAuth 2.0のimplecit flowの問題に該当しないと思っています。</p>
+<p>ただし、OIDCのセキュリティの利点を活用するためにはIDトークンの署名を検証することが大切です。</p>
+<p>この署名の検討がOAuth2.0と大きく異なるセキュリティにおける重要なポイントです。</p>
+<h2 id="idトークンについて">IDトークンについて</h2>
+<p>参考: <a href="https://qiita.com/TakahikoKawasaki/items/8f0e422c7edd2d220e06">IDトークンが分かれば OpenID Connect が分かる</a></p>
+<p>参考: <a href="https://openid.net/specs/openid-connect-core-1_0.html#IDToken">OpenID Connect Core 1.0 incorporating errata set 1</a></p>
+<p>参考: <a href="https://datatracker.ietf.org/doc/html/rfc7519">JSON Web Token (JWT)</a></p>
+<p>IDトークンはJWT形式で発行されます。このJWTには以下のようなクレーム(名前と値のペア)が含まれます。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>クレーム</th><th>説明</th></tr></thead><tbody><tr><td>iss</td><td>トークンの発行者。これはトークンが誰から発行されたかを識別するためのもの。</td></tr><tr><td>sub</td><td>主題（Subject）。これはトークンが誰についてのものであるかを識別するためのもので、通常はユーザーの一意の識別子。</td></tr><tr><td>aud</td><td>オーディエンス（Audience）。トークンの受け取り手を指定します。トークンはこのオーディエンスに対してのみ有効。</td></tr><tr><td>exp</td><td>有効期限（Expiration）。トークンの有効期限(UNIX時間)</td></tr><tr><td>iat</td><td>発行時刻（Issued At）。トークンが発行時刻(UNIX時間)</td></tr><tr><td>auth_time</td><td>認証時刻（Auth Time）。ユーザーが最後に認証された時刻(UNIX時間)</td></tr><tr><td>nonce</td><td>リプレイ攻撃を防止するための文字列。リクエスト時にクライアントが送信し、IDトークンの発行時にそのまま返される。</td></tr><tr><td>acr</td><td>認証コンテクストクラス参照（Authentication Context Class Reference）。ユーザーの認証がどのレベルで行われたかを示すもの。</td></tr><tr><td>amr</td><td>認証方法参照（Authentication Methods References）。ユーザー認証に使用されたメソッド</td></tr><tr><td>azp</td><td>承認済みパーティ（Authorized party）。トークンが発行されたクライアント</td></tr></tbody></table>
+<p>これらはあくまでOIDCで定義された標準的なクレームなので、IDトークンはこれらに加えてカスタムクレームを持つこともできます。</p>
+<h2 id="ソーシャルログインの実装方針">ソーシャルログインの実装方針</h2>
+<p>今回の記事の目的であるクライアントシークレットの管理なしでログイン機能を実施するには、先述したIDトークンに含まれる情報を使用します。</p>
+<p>IDトークンに含まれる情報は、ユーザーの識別子やメールアドレスなどの情報が含まれているため、これを使用してユーザーを識別することができます。</p>
+<p>ログインのみの実装であれば発行者、ユーザーの識別子、クライアントの情報があれば実装できるため、クライアントシークレットの管理なしで実装できます。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>OAuth2.0のimplicit flowはセキュリティリスクがある</li>
+<li>OIDCのimplecit flowはOAuth2.0のimplicit flowと比較するとアクセストークンではなくIDトークンが発行され、トークン自体の検証ができ、セキュリティリスクが少ない</li>
+<li>ソーシャルログインを実現する場合、要件によってはOIDCのimplecit flowを使用することでクライアントシークレットの管理なしで実現できる</li>
+<li>その場合はアクセストークンを発行してリソース取得エンドポイントを叩くのではなく、IDTokenに含まれる情報を使用する</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>以前記事にしたりしてわかった気になっていた認証認可周りについて改めて調査しなおすいい機会になりました。
+ただ闇雲に仕様を追うことだけでなく、要件を意識することの大切さを改めて感じた次第です。
+こうした調査を通して、自分の知識の不足を感じることが多々ありますが、できる限り信頼のおける情報元を探し、こうしてアウトプットしていくことをこれからも継続していきたいと思います!</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
+    </main>
+  </body></html>
