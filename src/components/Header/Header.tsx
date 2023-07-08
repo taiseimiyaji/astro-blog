@@ -9,7 +9,9 @@ export default function Header() {
                 <a href="/">
                     <div> Blog</div>
                 </a>
-                <div>Activity</div>
+                <a href="/activity">
+                    <div>Activity</div>
+                </a>
                 <a href="/profile">
                     <div>Profile</div>
                 </a>
