@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>LaravelにおけるRepositoryについて再考してみる</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="
+## はじめに
+
+ここ最近、ツイッター上でLaravelにおいてのRepositoryの実装についての記事や意見をいくつか見かけました。  
+それらの記事や意見の内容を整理しつつ、自分なりにLaravelにおけるRepositoryの実装">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head>
+  <!-- Google tag (gtag.js) -->
+    
+    
+  <body>
+    <main>
+      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
+      <div class="content">
+        <div class="date">2023/07/21</div>
+        <h1>LaravelにおけるRepositoryについて再考してみる</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>ここ最近、ツイッター上でLaravelにおいてのRepositoryの実装についての記事や意見をいくつか見かけました。<br>
+それらの記事や意見の内容を整理しつつ、自分なりにLaravelにおけるRepositoryの実装について再考してみたいと思います。</p>
+<h2 id="repositoryとは">Repositoryとは</h2>
+<p>Repositoryは「エリック・エヴァンスのドメイン駆動設計」において紹介されているモデル駆動におけるクラスの一つです。</p>
+<p>概要としては、ドメインモデルを永続化する処理を抽象化するために存在します。<code>リポジトリ</code>は直訳で保管庫を意味します。</p>
+<p>今回は最初にコード例を示した上で、Repositoryの実装について考えていきます。</p>
+<p>参考: <a href="https://zenn.dev/kohii/articles/e4f325ed011db8">https://zenn.dev/kohii/articles/e4f325ed011db8</a></p>
+<h2 id="laravelでrepositoryを実装してみる">LaravelでRepositoryを実装してみる</h2>
+<h3 id="設計">設計</h3>
+<p>今回は、ユーザーを管理する一連の処理を題材にRepositoryを使って実装してみます。</p>
+<p>クラスは下記のように作成します</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ユーザー(User)</span></span>
+<span class="line"><span style="color: #c9d1d9">- ID(Id)</span></span>
+<span class="line"><span style="color: #c9d1d9">- 名前(Name)</span></span>
+<span class="line"><span style="color: #c9d1d9">- メールアドレス(Email)</span></span></code></pre>
+<p>永続化処理をRepositoryで抽象化し、具象としては以下のようなクラスを作成します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">- UserMySQLRepository</span></span>
+<span class="line"><span style="color: #c9d1d9">- UserSQLiteRepository</span></span></code></pre>
+<h3 id="実装">実装</h3>
+<p>Userクラス</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">namespace</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">user</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #8B949E">/**</span></span>
+<span class="line"><span style="color: #8B949E"> * ユーザーを表現するクラス.</span></span>
+<span class="line"><span style="color: #8B949E"> * DDDの文脈におけるエンティティ.</span></span>
+<span class="line"><span style="color: #8B949E"> */</span></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">User</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $id;</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $name;</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $email;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $id,</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $name,</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $email</span></span>
+<span class="line"><span style="color: #C9D1D9">    ) {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">id </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $id;</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">name </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $name;</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">email </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $email;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">getId</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">id;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">getName</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">name;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">getEmail</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">email;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"></span></code></pre>
+<p>今回はLaravelのORMであるEloquentを使って永続化処理を実装してみます。</p>
+<p>Repositoryを表現するためのInterfaceを作成します。</p>
+<p>このインターフェースを持つものはRepository、つまり永続化処理を抽象化したものであるということがわかります。</p>
+<p>簡略化のために、今回はfindByIdとsaveのみを定義します。</p>
+<p>UserRepositoryInterface</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">namespace</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">user</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">interface</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">UserRepositoryInterface</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">findById</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">int</span><span style="color: #C9D1D9"> $id)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">save</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9"> $user)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>具体的なRepositoryの実装です。</p>
+<p>UserMySqlRepositoryクラスとUserSqliteRepositoryクラスを作成します。</p>
+<p>UserMySqlRepositoryクラス</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">namespace</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">user</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">UserMySqlRepository</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">implements</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserRepositoryInterface</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">protected</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\App\Models\User</span><span style="color: #C9D1D9"> $UserModel;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $connection;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">\App\Models\User</span><span style="color: #C9D1D9"> $UserModel, $connection </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'mysql'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">UserModel </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $UserModel;</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">connection </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $connection;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">findById</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">int</span><span style="color: #C9D1D9"> $id)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        $data </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">UserModel</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">on</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">connection)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">find</span><span style="color: #C9D1D9">($id);</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9">(</span></span>
+<span class="line"><span style="color: #C9D1D9">            $data</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getAttribute</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'id'</span><span style="color: #C9D1D9">),</span></span>
+<span class="line"><span style="color: #C9D1D9">            $data</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getAttribute</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'name'</span><span style="color: #C9D1D9">),</span></span>
+<span class="line"><span style="color: #C9D1D9">            $data</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getAttribute</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'email'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">        );</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">save</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9"> $user)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">UserModel</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">on</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">connection)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">updateOrCreate</span><span style="color: #C9D1D9">(</span></span>
+<span class="line"><span style="color: #C9D1D9">            [</span><span style="color: #A5D6FF">'id'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $user</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getId</span><span style="color: #C9D1D9">()],</span></span>
+<span class="line"><span style="color: #C9D1D9">            [</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'name'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $user</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getName</span><span style="color: #C9D1D9">(),</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'email'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $user</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getEmail</span><span style="color: #C9D1D9">(),</span></span>
+<span class="line"><span style="color: #C9D1D9">            ]</span></span>
+<span class="line"><span style="color: #C9D1D9">        );</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>UserSqliteRepositoryクラス</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">namespace</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">user</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">UserSqliteRepository</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">implements</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserRepositoryInterface</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">protected</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">\App\Models\User</span><span style="color: #C9D1D9"> $UserModel;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $connection;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">\App\Models\User</span><span style="color: #C9D1D9"> $UserModel, $connection </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'sqlite'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">UserModel </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $UserModel;</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">connection </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $connection;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">findById</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">int</span><span style="color: #C9D1D9"> $id)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        $data </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">UserModel</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">on</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">connection)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">find</span><span style="color: #C9D1D9">($id);</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9">(</span></span>
+<span class="line"><span style="color: #C9D1D9">            $data</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getAttribute</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'id'</span><span style="color: #C9D1D9">),</span></span>
+<span class="line"><span style="color: #C9D1D9">            $data</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getAttribute</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'name'</span><span style="color: #C9D1D9">),</span></span>
+<span class="line"><span style="color: #C9D1D9">            $data</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getAttribute</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'email'</span><span style="color: #C9D1D9">)</span></span>
+<span class="line"><span style="color: #C9D1D9">        );</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">save</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9"> $user)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">UserModel</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">on</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">connection)</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">updateOrCreate</span><span style="color: #C9D1D9">(</span></span>
+<span class="line"><span style="color: #C9D1D9">            [</span><span style="color: #A5D6FF">'id'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $user</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getId</span><span style="color: #C9D1D9">()],</span></span>
+<span class="line"><span style="color: #C9D1D9">            [</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'name'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $user</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getName</span><span style="color: #C9D1D9">(),</span></span>
+<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'email'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $user</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getEmail</span><span style="color: #C9D1D9">(),</span></span>
+<span class="line"><span style="color: #C9D1D9">            ]</span></span>
+<span class="line"><span style="color: #C9D1D9">        );</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>Repositoryはアプリケーションサービスと呼ばれるクラスから呼び出されます。</p>
+<p>アプリケーションの要求に応じてサービスクラスは分割することがベターだと考えているのでここでは2つに分割します。</p>
+<p>コントローラーについては今回は省略しますが、サービス同様に1コントローラー1メソッドとなるよう分割することがベターだと考えています。</p>
+<p>CreateUserServiceクラス</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">namespace</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">user</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">CreateUserService</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserRepositoryInterface</span><span style="color: #C9D1D9"> $userRepository;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">UserRepositoryInterface</span><span style="color: #C9D1D9"> $userRepository)</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userRepository </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $userRepository;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">process</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9"> $user)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userRepository</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">save</span><span style="color: #C9D1D9">($user);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>GetUserServiceクラス</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">namespace</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">user</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">GetUserService</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserRepositoryInterface</span><span style="color: #C9D1D9"> $userRepository;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">UserRepositoryInterface</span><span style="color: #C9D1D9"> $userRepository)</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userRepository </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $userRepository;</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">process</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">int</span><span style="color: #C9D1D9"> $id)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userRepository</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">findById</span><span style="color: #C9D1D9">($id);</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<h2 id="repositoryの定義を再確認">Repositoryの定義を再確認</h2>
+<p>原著である「エリック・エヴァンスのドメイン駆動設計」から、Repositoryの意味するところを引用し、確認します。</p>
+<blockquote>
+<p>集約ルート以外のオブジェクトにグローバルなアクセスを提供してしまうと、重要な区別が台無しになる。データベースクエリを自由に行うと、実はドメインオブジェクトと集約のカプセル化に違反しかねないのだ。技術的なインフラストラクチャやデータベースアクセスの仕組みを露呈させてしまうと、クライアントが複雑になり、モデル駆動設計が不明瞭になってしまう。</p>
+</blockquote>
+<p>Eric Evans. エリック・エヴァンスのドメイン駆動設計 (Kindle の位置No.3526-3530). Kindle 版.</p>
+<blockquote>
+<p>実際のストレージや問い合わせの技術をカプセル化すること。実際に直接的なアクセスを必要とする集約ルートに対してのみ、リポジトリを提供すること。クライアントをモデルに集中させ、あらゆるオブジェクトの格納とアクセスをリポジトリに委譲すること</p>
+</blockquote>
+<p>Eric Evans. エリック・エヴァンスのドメイン駆動設計 (Kindle の位置No.3561-3563). Kindle 版.</p>
+<p>といった記載があります。このあたりから読み取れることは、あくまでRepositoryはDDDにおける集約の単位で永続化する際に抽象化のために用いられることがわかります。</p>
+<h2 id="アンチパターンを考えてみる">アンチパターンを考えてみる</h2>
+<h2 id="repositoryにeloquent-modelを渡してしまう">RepositoryにEloquent Modelを渡してしまう</h2>
+<p>今回記事を書くに当たってTwitterで散見されたアンチパターンに、以下のようにEloquent Modelを使用しているものがありました。</p>
+<p>ここで引数に渡しているUserクラスはエンティティではなく、Eloquent ModelのUserであることに注意してください。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">&#x3C;?</span><span style="color: #79C0FF">php</span></span>
+<span class="line"><span style="color: #FF7B72">declare</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">strict_types</span><span style="color: #FF7B72">=</span><span style="color: #79C0FF">1</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">namespace</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">user</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">App\Models\User</span><span style="color: #C9D1D9">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">BadUserRepository</span></span>
+<span class="line"><span style="color: #C9D1D9">{</span></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">save</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9"> $user)</span></span>
+<span class="line"><span style="color: #C9D1D9">    {</span></span>
+<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> $user</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">save</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// その他のメソッド...</span></span>
+<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<p>このような実装は原著の意図するRepositoryとは異なります。</p>
+<p>また、Eloquentという具体的なデータアクセス手段が外部に漏洩しているのでRepositoryである意味がありません。無駄なクラス生成とロジックの分散を行っているだけとなってしまいます。</p>
+<p>どうしてこのような無駄なRepositoryを作成してしまうのかという原因を考えてみたんですが、そもそも「Repositoryパターン」という言葉が独り歩きしている印象を受けます。</p>
+<p>先程確認したRepositoryの説明から、私は以下のように解釈しています。</p>
+<ol>
+<li>モデル駆動という考え方から、ドメインモデルをクラスの形で表現する</li>
+<li>ドメインモデルは、複数の概念をまとめた「集約」として扱われることもある</li>
+<li>ドメインモデルを表現したクラスはEntityと呼ばれ、各パラメータはValueObjectパターンで表現されることもある</li>
+<li>このドメインモデルの永続化を抽象化するためのクラスがRepositoryである</li>
+<li>Repositoryは永続化や再構築を行うが、扱うのはすべて「集約」単位である。</li>
+</ol>
+<p>今回のアンチパターンは、RepositoryのInterfaceの時点でEloquentを使用しており、集約ではない上に、ORMというデータアクセスに関する知識をRepository外部に漏洩している点が問題です。</p>
+<h3 id="ではeloquent-modelの存在意義は">ではEloquent Modelの存在意義は?</h3>
+<p>Laravelを採用する上でEloquentというのは非常に大きなメリットを持っています。</p>
+<p>RailsのActiveRecordと同様に、データベースのテーブルとオブジェクトをマッピングすることができます。</p>
+<p>ただ、このパターンはDDDの思想とは少し異なります。レイヤードアーキテクチャやDDDを採用する上で、データアクセスの知識をカプセル化する必要があるため、Eloquentのメリットを最大限に活かすことは難しくなってきます。</p>
+<p>個人的に、Eloquentのメリットが活用できるのは、以下のような場合だと思っています。</p>
+<ol>
+<li>開発効率を重視し、レイヤードアーキテクチャやDDDを採用しない場合</li>
+<li>ドメインモデルが実際のDBのテーブルと全く同じ構成であり、「集約」について意識しない場合</li>
+</ol>
+<p>プロダクトの成長に伴って、メンテナンス性を意識し始めると、Eloquentのメリットを享受することは難しくなってきます。</p>
+<p>resourceと完全に一致する構成で単純なCRUDのみを行う場合は、Eloquentを採用することで開発効率を上げることができると思いますが、Railsと同様にControllerにすべてを記載し、レイヤー分けしないメリットのほうが大きいと思います。</p>
+<h3 id="アンチパターンを踏みがちなケース">アンチパターンを踏みがちなケース</h3>
+<p>ここからは完全に個人的な妄想と想像です。(ここまでも)</p>
+<p>このアンチパターンを踏む思考は以下のようなものが挙げられます。</p>
+<ul>
+<li>レガシーなシステムを改善しないといけないので巷で噂の「Repositoryパターン」を採用してみる</li>
+<li>DDD? レイヤードアーキテクチャ? そんなものは知らないけど、Eloquentを使っているから大丈夫だろう</li>
+</ul>
+<p>そもそも、「Repositoryパターン」ってなんなの？というところから疑問に感じています。<br>
+あくまでRepositoryはDDDという大きな文脈に登場する役割の一つであって、GoFのデザインパターンのような特定のデザインパターンではないので、単体で活用することのできないものだと思っています。<br>
+大体ネットで見かける危ない匂いのする「Repository」は「Repositoryパターン」を銀の弾丸だと盲信していて、原著やDDDの文脈に触れていない記事が多いような気がします。</p>
+<p>しっかりとモデルについて考えてクラスにした上で、そのモデルを取り回す際にRepositoryを活用するというのが、私の理解です。</p>
+<h3 id="laravelのコードの改善案">Laravelのコードの改善案</h3>
+<p>Controllerに処理が全て詰め込まれているようなコードを改善するために、Repositoryから導入するのは良くないというのがここまでの主張ですが、どのような段階を踏んで改善していくのが良いのかを考えてみます。</p>
+<p>第一段階は「UseCase」だけを取り入れることです。</p>
+<p>参考: <a href="https://zenn.dev/mpyw/articles/ce7d09eb6d8117">https://zenn.dev/mpyw/articles/ce7d09eb6d8117</a></p>
+<p>この段階では、Eloquentを積極的に活用するためにあえて分割する粒度を大きくしています。</p>
+<p>第二段階はEloquentを捨て、DDDとレイヤードアーキテクチャにガッツリ寄せることです。</p>
+<p>第一段階から飛躍していますが、やむを得ません。Laravelのお作法自体がレイヤードアーキテクチャやDDDといった設計手法とは異なっているので、そのままではなかなか改善できません。</p>
+<p>この段階ではEloquent Modelを捨て、ファサードやヘルパーも捨てましょう。</p>
+<p>参考: <a href="https://blog.ytake.jp.net/entry/2015/12/16/011812">https://blog.ytake.jp.net/entry/2015/12/16/011812</a></p>
+<p>要件が複雑なプロジェクト?寿命が長いプロダクト?そんな場合は覚悟を決めて第二段階を採用しましょう。</p>
+<p>Eloquentを採用できないの?じゃあ、Laravelを使わないほうが良いのでは？という話になってしまいますが、採用されている数の多さやそれに伴うエンジニアの多さなどから選定されることも多いと思います。今回は既存プロジェクトの改善の話なのでLaravelプロジェクトを想定しています。</p>
+<p><del>立ち上げ段階でみんなちゃんと設計できて扱えるならSymfony + Doctrineでいいんじゃ</del></p>
+<h2 id="余談-repositoryにeloquent-modelをdiするかどうか">【余談】 RepositoryにEloquent ModelをDIするかどうか</h2>
+<p>参考: <a href="https://qiita.com/fuwasegu/items/f778a1067c941dc8baea">https://qiita.com/fuwasegu/items/f778a1067c941dc8baea</a></p>
+<p>RepositoryにEloquentModelをDIするかどうかについては、いくつかの意見があります。</p>
+<p>個人的には、Repositoryの中にカプセル化できるのであれば、EloquentModelの採用自体には問題はないと思っています。</p>
+<p>ただし、参考記事にあるようにActiveRecordの思想のメリットを十分に享受できるとは言えず、たとえばテーブル名や接続といった一部の情報を抽象化するためにEloquentを使用することになります。</p>
+<p>多少もったいない感じはしますが、ここまで述べたDDDの各種パターンを守った上で、Eloquentを採用することが設計上大きな障害に直結することは無いと思っています。</p>
+<h2 id="所感">所感</h2>
+<p>いいとされている設計手法には、きちんと目的や根拠があり、一種ルールがあります。</p>
+<p>この「ルール」は、例えばレイヤー分けであったり、DDDのパターンであったりするんですが、基本的には「SOLID原則」や「カプセル化」のようなオブジェクト指向プログラミングにおける原則を守ることが重要だと思っています。</p>
+<p>ルールを守ったうえで細部をどう実装するかについては好みの部分が出てきますが、新しい設計思想を採用する場合には、その思想の根幹にあるルールを理解しておくことが重要です。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://www.shoeisha.co.jp/book/detail/9784798126708">https://www.shoeisha.co.jp/book/detail/9784798126708</a><br>
+<a href="https://www.ritolab.com/posts/185">https://www.ritolab.com/posts/185</a><br>
+<a href="https://zenn.dev/kohii/articles/e4f325ed011db8">https://zenn.dev/kohii/articles/e4f325ed011db8</a><br>
+<a href="https://zenn.dev/mpyw/articles/ce7d09eb6d8117">https://zenn.dev/mpyw/articles/ce7d09eb6d8117</a><br>
+<a href="https://qiita.com/fuwasegu/items/f778a1067c941dc8baea">https://qiita.com/fuwasegu/items/f778a1067c941dc8baea</a><br>
+<a href="https://blog.ytake.jp.net/entry/2015/12/16/011812">https://blog.ytake.jp.net/entry/2015/12/16/011812</a></p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
+    </main>
+  </body></html>
