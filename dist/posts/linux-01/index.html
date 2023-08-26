@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>linuxの操作を復習する</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="
+## はじめに
+
+WEBエンジニアにとってLinuxの操作は避けては通れない基本操作の一つです。  
+情報系の学校を卒業していたり、新卒でエンジニアになった場合は研修等で身につける機会があると思いますが、私のように専門の違う学校を卒業し、">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head>
+  <!-- Google tag (gtag.js) -->
+    
+    
+  <body>
+    <main>
+      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
+      <div class="content">
+        <div class="date">2023/08/25</div>
+        <h1>linuxの操作を復習する</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>WEBエンジニアにとってLinuxの操作は避けては通れない基本操作の一つです。<br>
+情報系の学校を卒業していたり、新卒でエンジニアになった場合は研修等で身につける機会があると思いますが、私のように専門の違う学校を卒業し、他業種からの転職でエンジニアになった場合は実務の中で覚えていく場合も多いかと思います。<br>
+今回は、休暇中に改めてLinuxについて学習してみたのでその内容を学習メモとして残しておきたいと思います。</p>
+<h2 id="linux環境の準備">Linux環境の準備</h2>
+<p>まずはLinux操作を手を動かしながら覚えていくために環境を準備します。</p>
+<p>この段階で必要となる知識として、ディストリビューションというものがあります。</p>
+<p>本来、<code>Linux</code>という単語は<code>Linuxカーネル</code>を指す言葉です。この<code>Linuxカーネル</code>は、OSの中核を担うもので、コンピュータのハードウェア制御を行うソフトウェアを指します。ユーザーが使用するツールやアプリケーションはここには含まれません。ただ、これでは不便なので基本的なコマンド群やアプリケーションなどを含めて、ユーザーがそのまま利用できるようにパッケージされたものが提供されており、これを広義の<code>Linux</code>と呼びます。この広義の<code>Linux</code>を<code>ディストリビューション</code>と呼びます。</p>
+<p><code>ディストリビューション</code>には、大きく分けて2種類の系統があり、Red Hat系とDebian系と呼ばれます。</p>
+<p>今回は環境を汚さずに安全にいろんなコマンドを実行したいため、Dockerを使用してDebian系のLinuxディストリビューションを使用します。</p>
+<p>公式で用意されているイメージをそのまま使用するため、compose.yamlファイルを作成します。</p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">version: </span><span style="color: #A5D6FF">'3'</span></span>
+<span class="line"><span style="color: #C9D1D9">services:</span></span>
+<span class="line"><span style="color: #C9D1D9">  debian-bullseye:</span></span>
+<span class="line"><span style="color: #C9D1D9">    container_name: bullseye</span></span>
+<span class="line"><span style="color: #C9D1D9">    image: debian:bullseye</span></span>
+<span class="line"><span style="color: #C9D1D9">    volumes:</span></span>
+<span class="line"><span style="color: #C9D1D9">      - ./data:/data</span></span>
+<span class="line"><span style="color: #C9D1D9">    command: tail -f /dev/null</span></span></code></pre>
+<p><code>bullseye</code>というのは、Debianの各バージョンにつけられている開発用コード名で、「トイストーリー」の登場人物の名前に基づいています。</p>
+<h2 id="シェルとは">シェルとは</h2>
+<p>業務を行っていると、シャルという単語をよく耳にします。<br>
+Linuxを操作する際には基本的にシェルを操作することになるのですが、改めて復習してみます。</p>
+<p>WindowsやMac OSの場合はマウスを使用してさまざまな操作を行いますが、Linuxの場合は基本的にキーボードを用いて操作を行います。</p>
+<p>このときにユーザーとLinux OSの橋渡しをしてくれるのがシェルです。</p>
+<p>Linuxカーネルは直接人間が操作できるわけではないので、シェルというカーネルのインターフェースとなるソフトウェアを用いて操作します。</p>
+<p>どうしてLinuxカーネルとシェルが分かれているかについては、参考文献に以下のような記載があります。</p>
+<blockquote>
+<ul>
+<li>Linuxカーネルには手を入れずに、シェルだけを自分好みのものに変更することができる</li>
+<li>Linux以外のOS（FreeBSDやNetBSD、Solarisなど）を利用する際も、シェルが移植されていれば操作を同様に行うことができる</li>
+<li>シェルがエラーや高負荷状態に
+なってクラッシュしたとしても、OS本体であるLinuxカーネルへの影響を最小限に抑えることができる<br>
+三宅 英明,大角 祐介. 新しいLinuxの教科書 (Japanese Edition) (p.64). Kindle 版.</li>
+</ul>
+</blockquote>
+<p>このような設計にも「1つのプログラムには1つのことだけをやらせる」UNIX哲学の一端を感じることができます。</p>
+<p>今回は基本的にbashを前提として操作を進めます。</p>
+<p>先程のcompose.yamlを用意して、<code>docker compose up -d</code>を実行し、<code>docker compose exec -it debian-bullseye bash</code>でbashを立ち上げます。</p>
+<h2 id="コマンドラインの操作">コマンドラインの操作</h2>
+<p>コマンドは、プロンプト記号<code>$</code>の後ろに入力します。このとき、<code>$</code> ではなく<code>#</code>の場合はルート権限をもつスーパーユーザーとして実行していることを意味します。
+実際の命令文の前に、コマンドラインの操作から復習します。</p>
+<h3 id="カーソルの移動">カーソルの移動</h3>
+<p>コマンドをタイプミスしたり、直前に入力したコマンドを編集したい場合に使用するコマンドをいくつか挙げます。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>コマンド</th><th>操作内容</th><th>覚え方</th></tr></thead><tbody><tr><td>ctrl + b</td><td>一文字戻る</td><td>Bは「Backward」</td></tr><tr><td>ctrl + f</td><td>一文字進む</td><td>Fは「Forward」</td></tr><tr><td>ctrl + a</td><td>行頭に移動</td><td>Aは「Ahead」</td></tr><tr><td>ctrl + e</td><td>行末に移動</td><td>Eは「End」</td></tr></tbody></table>
+<p>もちろん矢印でも操作できます。ホームポジションを崩さずに入力したい場合はこれらのコマンドを使用するようにしましょう。</p>
+<h3 id="文字の削除">文字の削除</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>コマンド</th><th>操作内容</th></tr></thead><tbody><tr><td>BackSpace、またctrl + h</td><td>カーソルの一つ前の一文字削除</td></tr><tr><td>Delete、またはctrl + d</td><td>カーソルの一つ後ろの一文字削除</td></tr><tr><td>ctrl + w</td><td>スペース区切りでカーソルの一つ前の単語を削除</td></tr></tbody></table>
+<h3 id="カットとヤンク">カットとヤンク</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>コマンド</th><th>操作内容</th></tr></thead><tbody><tr><td>ctrl + k</td><td>カーソル位置から行末までを削除する</td></tr><tr><td>ctrl + u</td><td>カーソル位置から行頭までを削除する</td></tr><tr><td>ctrl + y</td><td>最後に削除した内容を挿入する</td></tr></tbody></table>
+<p><code>ctrl + k</code>や<code>ctrl + u</code>での削除はシェルに内容が記録されている、いわゆる<code>切り取り</code>操作であるため、<code>ctrl + y</code>で貼り付けることができ、この操作を<code>ペースト</code>ではなく<code>ヤンク</code>といいます。</p>
+<h3 id="その他">その他</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>コマンド</th><th>操作内容</th></tr></thead><tbody><tr><td>tab</td><td>入力途中のコマンドの補完</td></tr><tr><td>ctrl + l</td><td>画面をクリアする</td></tr><tr><td>ctrl + c</td><td>現在のコマンドを中断する</td></tr></tbody></table>
+<h3 id="ヒストリー">ヒストリー</h3>
+<p>Linuxを使用していると、以前に実行したコマンドを再度実行したい、あるいはコマンドを少しだけ編集して再度実行したいというケースがあります。</p>
+<p>bashは、一度入力したコマンドラインの内容を自動的に記録しています。</p>
+<p>この履歴を使用してコマンドを入力する場合に以下のような操作を覚えておくと便利です</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>コマンド</th><th>操作内容</th></tr></thead><tbody><tr><td>ctrl + p、または↑キー</td><td>直前のコマンドを表示する</td></tr><tr><td>ctrl + n、または↓キー</td><td>直後のコマンドを表示する</td></tr></tbody></table>
+<p>以下は検索に関連する操作です。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>コマンド</th><th>操作内容</th></tr></thead><tbody><tr><td>ctrl + r</td><td>コマンドの履歴を検索する</td></tr><tr><td>文字の入力</td><td>検索語を追加して検索</td></tr><tr><td>Enter</td><td>現在の検索結果をそのまま実行</td></tr><tr><td>Esc</td><td>現在の検索結果を表示したまま、コマンドラインに戻る</td></tr><tr><td>ctrl + g</td><td>検索を終了する</td></tr></tbody></table>
+<h2 id="ファイル操作">ファイル操作</h2>
+<p>ここからは、Linux上でのファイルやディレクトリの操作について復習します。<br>
+ちなみにカレントディレクトリとは、現在自分が位置しているディレクトリのことです。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>コマンド</th><th>機能</th></tr></thead><tbody><tr><td>pwd</td><td>カレントディレクトリを表示する</td></tr><tr><td>cd</td><td>カレントディレクトリを変更する</td></tr><tr><td>ls</td><td>ディレクトリ内のファイルを変更する</td></tr></tbody></table>
+<h3 id="linuxにおける各ディレクトリの役割">Linuxにおける各ディレクトリの役割</h3>
+<p>上記のコマンドを使用するとLinuxにはいろんなディレクトリがあることがわかりますが、重要なものについてまとめてみます。</p>
+<p>Linuxのディレクトリ構成は、FHS（Filesystem Hierarchy Standard）という規格に基づいています。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>ディレクトリ</th><th>役割</th></tr></thead><tbody><tr><td>/bin</td><td>Linuxシステムの動作に最低限必要な基本的なコマンドが格納されている</td></tr><tr><td>/dev</td><td>キーボードなどのハードウェアをファイルとして扱えるように用意された特殊なデバイスファイルを格納されている</td></tr><tr><td>/etc</td><td>システム全体の設定ファイルが格納されている</td></tr><tr><td>/home</td><td>ユーザーのホームディレクトリが格納されている</td></tr><tr><td>/sbin</td><td>/binと似ているが、管理者ユーザー向けのコマンドが格納されている</td></tr><tr><td>/tmp</td><td>一時的なファイルが格納されている。ディストリビューションの多くは定期的にフォルダ内のファイルを削除するため、永続的な保存先として利用するべきではない</td></tr><tr><td>/usr</td><td>ユーザーが利用するアプリケーションやライブラリが格納されている</td></tr><tr><td>/var</td><td>ログファイルやメールのデータなど、システムの稼働中に変化するデータが格納されている</td></tr></tbody></table>
+<h3 id="ディレクトリに関連する記号">ディレクトリに関連する記号</h3>
+<p>Linuxには、いくつかディレクトリに関連する特殊な記号があります。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>記号</th><th>内容</th></tr></thead><tbody><tr><td>.</td><td>カレントディレクトリ</td></tr><tr><td>..</td><td>親ディレクトリ</td></tr><tr><td>~</td><td>ユーザーのホームディレクトリに置き換えられる(チルダ展開)</td></tr><tr><td>-</td><td>直前のディレクトリに置き換えられる(ハイフン展開)</td></tr><tr><td>*</td><td>任意の文字列に置き換えられる(ワイルドカード)</td></tr><tr><td>?</td><td>任意の一文字に置き換えられる(ワイルドカード)</td></tr></tbody></table>
+<h2 id="まとめ">まとめ</h2>
+<p>今回は、Linuxの基本的な操作について復習してみました。<br>
+ディストリビューションやシェルといった単語を改めて確認したり、コマンドラインでの操作や検索についても知らないことがまだまだあったので実務でも使用できそうな知識を多く学習できたかなと思います。<br>
+次回は具体的なコマンドについて調査してみたいと思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
+    </main>
+  </body></html>
