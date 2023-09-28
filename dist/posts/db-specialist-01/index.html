@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>DB基礎 正規化と関係演算</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="
+## はじめに
+
+今回は実施まであと10日に迫ったIPAのDBスペシャリスト試験への対策としてDBの基礎的な部分の復習をしていきます。  
+本業に加えて副業、個人開発等も行いながらのため対策の時間をなかなか捻出できていませんが、受験申し込">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head>
+  <!-- Google tag (gtag.js) -->
+    
+    
+  <body>
+    <main>
+      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
+      <div class="content">
+        <div class="date">2023/09/28</div>
+        <h1>DB基礎 正規化と関係演算</h1>
+        <div class="post">
+          <h2 id="はじめに">はじめに</h2>
+<p>今回は実施まであと10日に迫ったIPAのDBスペシャリスト試験への対策としてDBの基礎的な部分の復習をしていきます。<br>
+本業に加えて副業、個人開発等も行いながらのため対策の時間をなかなか捻出できていませんが、受験申し込みはしたので試験当日はしっかり受験会場には行きたいと思います。</p>
+<h3 id="rdb関係データベースの基本概念の簡単な紹介">RDB（関係データベース）の基本概念の簡単な紹介</h3>
+<p>関係データベース（RDB: Relational Database）は、関係モデルに基づいてデータを管理するデータベースです。このモデルでは、データはテーブル（関係）の形で格納され、テーブルは行（タプル）と列（アトリビュート）によって構成されます。各行はユニークなキー（主キー）によって識別され、列はテーブル内の個々のデータ項目を表します。また、テーブル間の関連性は外部キーによって表現されます。</p>
+<p>より噛み砕いて説明するとテーブルは、エクセルでいうところのシートのようなもので、行と列でデータが整理されています。行は、各々のデータを意味し、列はデータの属性を示します。例えば、人の名前と年齢があれば、「名前」と「年齢」が列となります。</p>
+<h3 id="正規化と関係演算について">正規化と関係演算について</h3>
+<ul>
+<li>
+<p>正規化
+「正規化」は、データベースを作るときのルールの一つです。これは、データをきれいに、効率よく整理するためのものです。正規化の目的は、データの重複をなくして、データの整理や管理をしやすくすることです。重複を避けることで、データが変わった時に、他のデータと矛盾しないようにします。</p>
+</li>
+<li>
+<p>関係演算
+「関係演算」とは、RDBの中のデータを取り出したり、新しいデータを作ったり、データを組み合わせたりする方法のことです。これを使えば、たくさんのデータの中から、欲しいデータを見つけ出すことができます。データベースの言葉で、これを行うことを「クエリ」といいます。</p>
+</li>
+</ul>
+<h2 id="関係データベースの基礎">関係データベースの基礎</h2>
+<h3 id="テーブル">テーブル</h3>
+<p>RDBにおいて、データは「テーブル」と呼ばれる格子状の表の中に入れられます。一つのテーブルは、ある特定のテーマやカテゴリのデータを保持します。例えば、顧客情報を持つ「顧客テーブル」があるとしましょう。</p>
+<h3 id="行タプル">行（タプル）</h3>
+<p>テーブルの中の一つ一つの「行」は、ひとまとまりのデータを表します。たとえば、「顧客テーブル」の一行は、一人の顧客の情報を表します。</p>
+<h3 id="列アトリビュート">列（アトリビュート）</h3>
+<p>「列」は、データの性質や特徴を表します。たとえば、「顧客テーブル」の列には、「顧客ID」、「名前」、「電話番号」などがあります。</p>
+<h3 id="キー主キー外部キーの概念">キー（主キー、外部キー）の概念</h3>
+<ul>
+<li>主キー</li>
+</ul>
+<p>主キーは、テーブルの中の各行をユニークに特定できるデータのことです。例えば、「顧客ID」が主キーになります。主キーの値は、テーブル内で重複してはいけません。<br>
+RailsやLaravelでは、主キーはデフォルトで「id」という名前の列になります。しかし、主キーは「id」に限られるものではありません。<br>
+また、これらのフレームワークではデフォルトでは連番で主キーが割り振られますが、主キーは一意であれば構わないので連番である必要はありません。<br>
+たとえば、uuidなどを使ってランダムな文字列を主キーにすることもできます。</p>
+<ul>
+<li>外部キー</li>
+</ul>
+<p>外部キーは、別のテーブルの主キーを参照する列のことを言います。外部キーを使うと、異なるテーブル間でデータを関連付けることができます。例えば、注文テーブルが顧客テーブルを参照することで、どの顧客がどの商品を注文したかが分かります。</p>
+<p>これにより、「注文テーブル」の「顧客ID」列の値は、「顧客テーブル」の「顧客ID」列に存在する値でなければなりません。これが外部キーの基本的なルールです。</p>
+<p>多くのDBMSでは、外部キー制約を設定することができます。
+外部キー制約とは、関連するテーブル間でのデータの正確性を保証するための制約です。</p>
+<p>外部キー制約の具体的な役割:</p>
+<ol>
+<li>
+<p>整合性の確保:
+外部キーに設定されている列のデータは、参照先のテーブルの主キーに存在する値でなければなりません。これにより、間違ったデータや存在しないデータが入力されるのを防ぎます。</p>
+</li>
+<li>
+<p>参照制約:
+参照されている主キーのデータが削除されると、それに紐づく外部キーのデータも影響を受けます。具体的には、データを削除できなくなるか、紐づくデータも一緒に削除されます。これも設定によります。</p>
+</li>
+<li>
+<p>一貫性の維持:
+外部キー制約により、テーブル間のデータの一貫性が維持されます。これによって、データの信頼性が高まり、データの管理が容易になります。</p>
+</li>
+</ol>
+<p>これらの基本概念を理解することで、データベースがどのようにデータを管理しているのかが見えてきます。そして、これらの概念を用いてデータを効率よく扱うことができるようになります。</p>
+<h2 id="正規化の基礎"><strong>正規化の基礎</strong></h2>
+<p><a href="https://ja.wikipedia.org/wiki/%E9%96%A2%E4%BF%82%E3%81%AE%E6%AD%A3%E8%A6%8F%E5%8C%96">wikipedia</a>
+の説明も十分わかりやすいですが、具体例を考えながら、噛み砕いて理解してみます。</p>
+<h3 id="正規化の目的">正規化の目的</h3>
+<p>正規化は、データベース設計のステップの一つで、データの重複を避け、データの整合性を保つために行います。これによって、データの追加、更新、削除が効率的になり、データベースの性能が向上します。</p>
+<ol>
+<li>
+<p>データの重複の排除：
+正規化を通じて、テーブル間でのデータの重複や冗長性を排除します。これによって、データの一貫性と正確性が向上します。</p>
+</li>
+<li>
+<p>データの整合性の保持：
+正規化によって、データの追加、更新、削除の際の不整合リスクが低減します。これによって、データの整合性が維持されます。</p>
+</li>
+<li>
+<p>効率的なデータアクセス：
+適切に正規化されたデータベースは、不要なデータの重複を避けることができ、データの検索や更新の効率が向上します。</p>
+</li>
+<li>
+<p>拡張性と柔軟性の向上：
+正規化されたデータベースは、新しいデータタイプやテーブルの追加が容易になります。</p>
+</li>
+</ol>
+<h4 id="正規化のプロセスと正規形">正規化のプロセスと正規形</h4>
+<p>正規化のプロセスでは、データベースをいくつかの「正規形」に分けます。ここでは、第一正規形から第三正規形までを紹介します。</p>
+<ul>
+<li><strong>第一正規形</strong></li>
+</ul>
+<p>各列が原子的な（分割できない）値を持ち、全てのエントリがユニークである状態です。</p>
+<ul>
+<li><strong>第二正規形 (2NF):</strong></li>
+</ul>
+<p>1NFを満たし、部分関数従属が存在しない状態です。これは、各情報がその行の主キーにのみ依存する状態です。</p>
+<ul>
+<li><strong>第三正規形 (3NF):</strong></li>
+</ul>
+<p>2NFを満たし、推移的関数従属が存在しない状態です。これは、非キー属性が他の非キー属性に依存しない状態です。</p>
+<h4 id="正規化の例">正規化の例</h4>
+<p>例として、以下のような「顧客注文テーブル」があります。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>顧客ID</th><th>顧客名</th><th>注文ID</th><th>商品名</th></tr></thead><tbody><tr><td>1</td><td>田中</td><td>A1</td><td>パソコン</td></tr><tr><td>1</td><td>田中</td><td>A2</td><td>椅子</td></tr><tr><td>2</td><td>鈴木</td><td>A3</td><td>テーブル</td></tr></tbody></table>
+<p>このテーブルを正規化すると下記のようになります。
+なお、正規化のことを「normal form」と呼ぶこともあります。</p>
+<ul>
+<li><strong>第一正規形 (1NF):</strong></li>
+</ul>
+<p>各列が原子的な値を持つように、「商品名」を分けます。しかし、この例では既に1NFを満たしています。</p>
+<ul>
+<li><strong>第二正規形 (2NF):</strong></li>
+</ul>
+<p>部分関数従属を取り除くため、「顧客テーブル」と「注文テーブル」に分割します。</p>
+<p>部分関数従属とは、主キーの一部のみに依存する関数従属のことです。例えば、以下のテーブルでは、主キーである「顧客ID」と「注文ID」の一部である「顧客ID」にのみ依存する「顧客名」が部分関数従属です。</p>
+<p>顧客テーブル:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>顧客ID</th><th>顧客名</th></tr></thead><tbody><tr><td>1</td><td>田中</td></tr><tr><td>2</td><td>鈴木</td></tr></tbody></table>
+<p>注文テーブル:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>注文ID</th><th>顧客ID</th><th>商品名</th></tr></thead><tbody><tr><td>A1</td><td>1</td><td>パソコン</td></tr><tr><td>A2</td><td>1</td><td>椅子</td></tr><tr><td>A3</td><td>2</td><td>テーブル</td></tr></tbody></table>
+<ul>
+<li><strong>第三正規形 (3NF):</strong></li>
+</ul>
+<p>この例では2NFの段階で推移的関数従属は存在しないため、3NFも満たしています。</p>
+<p>この例では、第二正規形と第三正規系の区別がわかりづらいので、違う例を考えてみます。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>学生ID</th><th>学科</th><th>学科の教授</th></tr></thead><tbody><tr><td>1</td><td>コンピュータ</td><td>田中</td></tr><tr><td>2</td><td>数学</td><td>鈴木</td></tr><tr><td>3</td><td>コンピュータ</td><td>田中</td></tr></tbody></table>
+<p>このテーブルでは、「学科の教授」は「学科」に依存しています。また、「学科」は「学生ID」に依存しています。従って、「学科の教授」は「学生ID」に推移的関数従属しています。これは3NFに違反しています。</p>
+<p>このテーブルを3NFに正規化するためには、「学科」テーブルと「学生」テーブルに分割することが一つの解決策です。
+学生テーブル:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>学生ID</th><th>学科</th></tr></thead><tbody><tr><td>1</td><td>コンピュータ</td></tr><tr><td>2</td><td>数学</td></tr><tr><td>3</td><td>コンピュータ</td></tr></tbody></table>
+<p>学科テーブル:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>学科</th><th>学科の教授</th></tr></thead><tbody><tr><td>コンピュータ</td><td>田中</td></tr><tr><td>数学</td><td>鈴木</td></tr></tbody></table>
+<p>これで、「学科の教授」の推移的関数従属が解消され、テーブルが第三正規形を満たします。</p>
+<p>このように正規化を行うことで、データの重複を避け、データの整合性が保たれます。これにより、データの管理が容易になり、データベースの性能も向上します。</p>
+<h3 id="以降の正規化について">以降の正規化について</h3>
+<p>ちなみに、第4正規形や第5正規形も存在しますが、これらはあまり一般的ではないようで、業務上必要になることは多くありません。<br>
+過去問をいくつか解いてみたところ、第3正規形までの問題は出題頻度がとても高いです。</p>
+<p>頻度は高くないですが第4正規形に関連する知識を問われるものは下記のような問題がありました。</p>
+<blockquote>
+<p>関係モデルにおいて，情報無損失分解ができ，かつ，関数従属性保存が成り立つ変換が必ず存在するものはどれか。ここで，情報無損失分解とは自然結合によって元の関係が必ず得られる分解をいう。</p>
+</blockquote>
+<p><strong>情報無損失分解</strong> とは、分解された部分同士の自然結合によって元の関係を過不足なく復元できる性質、関数従属性保存とは、その名の通り分解後の部分が元の関係に存在した関数従属性を保っている性質をいいます。</p>
+<p>正規化はデータの更新時異常を解消するために「第1正規形」→「第2正規形」→「第3正規形」→「ボイスコッド正規形」→「第4正規形」→「第5正規形」という順序で関係を情報無損失分解していきますが、このうち元の関係の関数従属性を保ったまま分解可能なのは第3正規形までです。</p>
+<h2 id="関係演算"><strong>関係演算</strong></h2>
+<h3 id="関係演算の基礎"><strong>関係演算の基礎</strong></h3>
+<p>関係演算は、データベースから情報を取り出したり、複数のテーブルを組み合わせたりする際に行う基本的な操作です。ここでは、主に「選択」、「射影」、「結合」という3つの基本演算について、具体的なテーブルとSQLクエリを用いて説明します。</p>
+<p>例:</p>
+<ol>
+<li>
+<p><strong>顧客テーブル</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>顧客ID</th><th>顧客名</th></tr></thead><tbody><tr><td>1</td><td>田中</td></tr><tr><td>2</td><td>鈴木</td></tr></tbody></table>
+</li>
+<li>
+<p><strong>注文テーブル</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>注文ID</th><th>顧客ID</th><th>商品名</th></tr></thead><tbody><tr><td>A1</td><td>1</td><td>パソコン</td></tr><tr><td>A2</td><td>1</td><td>椅子</td></tr><tr><td>A3</td><td>2</td><td>テーブル</td></tr></tbody></table>
+</li>
+</ol>
+<h3 id="1-選択selection">1. <strong>選択（Selection）</strong></h3>
+<ul>
+<li><strong>説明:</strong> 選択は、テーブルの中から特定の条件を満たす行を抜き出す操作です。SQL文におけるWHERE句に相当します。</li>
+<li><strong>SQLクエリ:</strong> <code>SELECT * FROM テーブル名 WHERE 条件;</code></li>
+</ul>
+<p><strong>例:</strong></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">-- 顧客名が「田中」の行を抜き出します。</span></span>
+<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 顧客 </span><span style="color: #FF7B72">WHERE</span><span style="color: #C9D1D9"> 顧客名 </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'田中'</span><span style="color: #C9D1D9">;</span></span></code></pre>
+<p>このクエリによって以下のような結果が得られます。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>顧客ID</th><th>顧客名</th></tr></thead><tbody><tr><td>1</td><td>田中</td></tr></tbody></table>
+<h3 id="2-射影projection">2. <strong>射影（Projection）</strong></h3>
+<ul>
+<li><strong>説明:</strong> 射影は、テーブルの中から特定の列を抜き出す操作です。SQL文におけるSELECT句に相当します。</li>
+<li><strong>SQLクエリ:</strong> <code>SELECT 列名 FROM テーブル名;</code></li>
+</ul>
+<p><strong>例:</strong></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">-- 顧客テーブルから「顧客名」の列だけを抜き出します。</span></span>
+<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> 顧客名 </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 顧客;</span></span></code></pre>
+<p>このクエリによって以下のような結果が得られます。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>顧客名</th></tr></thead><tbody><tr><td>田中</td></tr><tr><td>鈴木</td></tr></tbody></table>
+<h3 id="3-結合join">3. <strong>結合（Join）</strong></h3>
+<ul>
+<li><strong>説明:</strong> 結合は、異なるテーブルを共通の列に基づいて組み合わせる操作です。</li>
+<li><strong>SQLクエリ:</strong> <code>SELECT * FROM テーブル1 JOIN テーブル2 ON テーブル1.列名 = テーブル2.列名;</code></li>
+</ul>
+<p><strong>例:</strong></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">-- 顧客テーブルと注文テーブルを「顧客ID」で結合します。</span></span>
+<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 顧客 </span><span style="color: #FF7B72">JOIN</span><span style="color: #C9D1D9"> 注文 </span><span style="color: #FF7B72">ON</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">顧客</span><span style="color: #C9D1D9">.</span><span style="color: #79C0FF">顧客ID</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">注文</span><span style="color: #C9D1D9">.</span><span style="color: #79C0FF">顧客ID</span><span style="color: #C9D1D9">;</span></span></code></pre>
+<p>このクエリによって以下のような結果が得られます。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>顧客ID</th><th>顧客名</th><th>注文ID</th><th>商品名</th></tr></thead><tbody><tr><td>1</td><td>田中</td><td>A1</td><td>パソコン</td></tr><tr><td>1</td><td>田中</td><td>A2</td><td>椅子</td></tr><tr><td>2</td><td>鈴木</td><td>A3</td><td>テーブル</td></tr></tbody></table>
+<p>業務においては対応するSQLが最初に頭に浮かびますが、<code>射影</code>のような日本語での操作とパッと思いつかないものもあります。</p>
+<h3 id="その他の関係演算">その他の関係演算</h3>
+<p>ここまで紹介した演算はDB独自のものですが、他にも集合演算のような基本的な演算があります。</p>
+<h3 id="1-和union">1. 和（UNION）</h3>
+<p>論理和(OR)、和集合を求める演算子です。</p>
+<p>簡単にいうとどちらかに含まれるものを取り出す演算子です。ただし、重複するものは取り除かれます。</p>
+<p>和集合を求めるためには、両方のテーブルの列の数とデータ型が同じである必要があります。</p>
+<p>SQLでは、UNION句が該当します。</p>
+<p><strong>例:</strong>
+テーブル1:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>商品ID</th><th>商品名</th></tr></thead><tbody><tr><td>1</td><td>パソコン</td></tr><tr><td>2</td><td>椅子</td></tr></tbody></table>
+<p>テーブル2:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>商品ID</th><th>商品名</th></tr></thead><tbody><tr><td>2</td><td>椅子</td></tr><tr><td>3</td><td>テーブル</td></tr></tbody></table>
+<p>これらのテーブルに対してUNIONを実行すると、以下のようなテーブルが得られます。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>商品ID</th><th>商品名</th></tr></thead><tbody><tr><td>1</td><td>パソコン</td></tr><tr><td>2</td><td>椅子</td></tr><tr><td>3</td><td>テーブル</td></tr></tbody></table>
+<p><strong>SQLクエリの例:</strong></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> テーブル1</span></span>
+<span class="line"><span style="color: #FF7B72">UNION</span></span>
+<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> テーブル2;</span></span></code></pre>
+<h3 id="2-積intersect">2. 積（INTERSECT）</h3>
+<p>論理積(AND)とは、積集合を求める演算子です。</p>
+<p>両方のテーブルに共通する行を取り出す演算子です。</p>
+<p>積演算の結果は以下のようなテーブルになります。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>商品ID</th><th>商品名</th></tr></thead><tbody><tr><td>2</td><td>椅子</td></tr></tbody></table>
+<p><strong>SQLクエリの例:</strong></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> テーブル1</span></span>
+<span class="line"><span style="color: #FF7B72">INTERSECT</span></span>
+<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> テーブル2;</span></span></code></pre>
+<h3 id="3-差except">3. 差（EXCEPT）</h3>
+<p>差集合を求める演算子で、片方のテーブルに含まれ、もう一方のテーブルには含まれない行を取り出します。</p>
+<p>SQLでは、EXCEPT句が該当します。</p>
+<p>差演算の結果は以下のようなテーブルになります。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>商品ID</th><th>商品名</th></tr></thead><tbody><tr><td>1</td><td>パソコン</td></tr></tbody></table>
+<p><strong>SQLクエリの例:</strong></p>
+<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 商品テーブル1</span></span>
+<span class="line"><span style="color: #FF7B72">EXCEPT</span></span>
+<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 商品テーブル2;</span></span></code></pre>
+<h3 id="4-商division">4. 商（DIVISION）</h3>
+<p>商を求める際の基本的な考え方は、一方のテーブルの全ての要素がもう一方のテーブルに存在する時、その要素を取り出します。
+ただし、SQL標準には直接的な商演算のサポートは含まれておらず、商演算を行うためには、他の基本演算を組み合わせる必要がありますので省略します。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://www.db-siken.com/">データベーススペシャリストドットコム</a></p>
+<h2 id="所感">所感</h2>
+<p>これまでも基本情報や応用情報といったIPAの試験を受けてきましたが、今回のDBスペシャリスト試験はこれまでの試験と比べても難易度が高いと言われています。</p>
+<p>ただ、基本的な対策はやっぱり過去問になると思うので、残り時間は少ないですが、演習中心に対策を進めていきたいと思います。</p>
+        </div>
+      </div>
+      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
+    </main>
+  </body></html>
