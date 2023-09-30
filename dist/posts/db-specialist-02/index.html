@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="ja"><head><title>DB基礎 物理設計周り</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回は、DBスペシャリスト試験への対策として、物理設計周りの基礎的な用語についてまとめていきます。
+
+## WALプロトコル
+
+WALプロトコルは、Write Ahead Logの略で、データベースのトランザクション処理"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/09/30</div><h1>DB基礎 物理設計周り</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>今回は、DBスペシャリスト試験への対策として、物理設計周りの基礎的な用語についてまとめていきます。</p>
+<h2 id="walプロトコル">WALプロトコル</h2>
+<p>WALプロトコルは、Write Ahead Logの略で、データベースのトランザクション処理において、データの更新前にログを書き込むことを指します。</p>
+<p>基本的な動作は以下の2点です。</p>
+<ul>
+<li>データベースの更新は、まずその操作をログに書き込む(更新前ログ)</li>
+<li>トランザクションはコミットを行う前に、該当するすべてのデータベース更新情報をログに書き込む(更新後ログ)</li>
+</ul>
+<p>以前<a href="https://www.lyricrime.com/posts/database-fundation/">ブログ</a>にまとめたこともありますが、過去問に取り組む中でかなり頻出する知識なので改めてまとめておきます。</p>
+<p>トランザクションは、COMMITもしくはROLLBACKが実行されたときに終了します。 しかし、多くのDBMSの内部処理ではデータファイルへ変更を反映する前に、トランザクションの終了をユーザに通知します。 ということは、COMMIT後のデータファイルへの反映前のタイミングで障害が発生した場合への対策として、WALプロトコルが用いられます。</p>
+<h2 id="バックアップとリカバリの手法">バックアップとリカバリの手法</h2>
+<p>データベースのバックアップとリカバリは、データの安全性と整合性を確保するために不可欠です。</p>
+<p>言葉の定義としては以下のようになります。</p>
+<p>バックアップ：重要なデータベースのコピーを作成し、保存するプロセスです。これにより、データ損失や障害発生時に元の状態に復元できます。
+リカバリ：バックアップからデータベースを復元するプロセスです。これは、システムの障害やデータの破損、紛失時に行われます。</p>
+<h3 id="1-バックアップのタイプ-ホットバックアップとコールドバックアップ">1. バックアップのタイプ: ホットバックアップとコールドバックアップ</h3>
+<p>バックアップの方法は主に、システムが稼働中か停止中かによって、ホットバックアップとコールドバックアップに分けられます。</p>
+<h4 id="11-ホットバックアップ">1.1 ホットバックアップ</h4>
+<ul>
+<li>
+<p><strong>定義</strong>: システムが稼働中に、無停止でバックアップを作成できる手法です。</p>
+</li>
+<li>
+<p><strong>特徴</strong>:</p>
+<ul>
+<li>トランザクションの仕組みを利用してバックアップを作成。(mysqldumpでInnoDBテーブルをバックアップする等)</li>
+<li>ロックを利用してバックアップを作成。(mysqldumpでMyISAMテーブルをバックアップする等)</li>
+<li>OSやHWのスナップショット機能も利用可能。</li>
+<li>独自の方法でバックアップを作成するケースもあります。</li>
+</ul>
+</li>
+</ul>
+<h4 id="12-コールドバックアップ">1.2 コールドバックアップ</h4>
+<ul>
+<li><strong>定義</strong>: システムが停止状態でバックアップを作成する手法です。</li>
+<li><strong>特徴</strong>: ディレクトリ以下のディレクトリとファイルをすべてコピーする。</li>
+</ul>
+<h3 id="脱線-mysqlとinnodbとmyisamの関係性">脱線 MySQLとInnoDBとMyISAMの関係性</h3>
+<p>MySQLに関連する情報を調べているとよく目にするInnoDBとMyISAMという単語について、簡単にまとめておきます。</p>
+<p>MySQLは、ウェブアプリケーションを中心に広く使用されているオープンソースのリレーショナルデータベース管理システム（RDBMS）です。MySQLは複数のストレージエンジンをサポートしています。これらのストレージエンジンの中で、InnoDBとMyISAMが最も知られています。</p>
+<h3 id="innodb">InnoDB</h3>
+<ul>
+<li><strong>主な機能：</strong> トランザクション（一連の操作の単位）をサポートし、ACID特性を満たします。これにより、データの安全性と整合性が確保されます。</li>
+<li><strong>特徴：</strong> 外部キー制約と行レベルのロッキングをサポート。これにより、データベースのパフォーマンスと同時実行性が向上します。</li>
+<li><strong>向いているケース：</strong> 高度なデータ整合性が求められるアプリケーション。</li>
+</ul>
+<p>詳細はMySQLの公式ドキュメントの<a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-introduction.html">InnoDBの紹介</a>を参照してください。</p>
+<h3 id="myisam">MyISAM</h3>
+<ul>
+<li><strong>主な用途：</strong> シンプルな読み取り専用または読み取りが多いワークロードに適しています。</li>
+<li><strong>特徴：</strong> フルテキスト検索が可能。ただし、トランザクションはサポートしていません。</li>
+<li><strong>向いているケース：</strong> 読み取りが主な操作となるアプリケーションや、トランザクションの整合性が重要でないシステム。</li>
+</ul>
+<p>詳細はMySQLの公式ドキュメントの<a href="https://dev.mysql.com/doc/refman/8.0/en/myisam-storage-engine.html">MyISAMの紹介</a>を参照してください。<br>
+はじめにロックを用いてバックアップを行う際に<code>mysqldumpでMyISAMテーブルをバックアップする等</code>を例として書いたのはトランザクションのサポートがなく、ロックの仕組みを利用してバックアップを作成する必要があるためです。</p>
+<h3 id="mysqldump">mysqldump</h3>
+<p>バックアップ際に登場したmysqldumpというのは、MySQLデータベースのバックアップを作成ためのコマンドラインツールです。これを使用すると、データベースの内容をテキストファイルにエクスポートできます。このテキストファイルを利用して、データの復元や移行が可能です。</p>
+<p>mysqldumpの使用方法やオプションについては、MySQLの公式ドキュメントの<a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html">mysqldump — データベースバックアップツール</a>を参照してください。</p>
+<h3 id="2-バックアップの形式-論理バックアップと物理バックアップ">2. バックアップの形式: 論理バックアップと物理バックアップ</h3>
+<p>バックアップは、データの内容や形式によって、論理バックアップと物理バックアップに分類されます。</p>
+<h3 id="21-論理バックアップ">2.1 論理バックアップ</h3>
+<h4 id="定義">定義</h4>
+<p>論理バックアップは、データベースからデータだけを抜き出して作成するバックアップです。このバックアップ手法は、特定のデータや構造を抽出し、SQLコマンドとしてエクスポートします。</p>
+<p>SQLコマンドとしてエクスポートとは、</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">CREATE</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">TABLE</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">example_table</span><span style="color: #E1E4E8"> (</span></span>
+<span class="line"><span style="color: #E1E4E8">    id </span><span style="color: #F97583">INT</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">PRIMARY KEY</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">name</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">VARCHAR</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">255</span><span style="color: #E1E4E8">)</span></span>
+<span class="line"><span style="color: #E1E4E8">);</span></span></code></pre>
+<p>のようなCREATE TABLE文であったり、INSERT, UPDATE文のような形式でエクスポートすることを指します。</p>
+<h4 id="利点">利点</h4>
+<ol>
+<li>
+<p><strong>編集可能性</strong>:
+論理バックアップファイルはテキストファイルであるため、必要に応じて編集可能です。これにより、バックアップから特定のデータのみをリストアすることができます。</p>
+</li>
+<li>
+<p><strong>移植性</strong>:
+論理バックアップは、他のDBMSへの移植が容易です。これにより、データベース間でのデータ移動やマイグレーションがスムーズに行えます。</p>
+</li>
+</ol>
+<h4 id="欠点">欠点</h4>
+<ol>
+<li>
+<p><strong>ファイルサイズ</strong>:
+物理バックアップに比べ、論理バックアップのファイルサイズが大きくなる可能性があります。</p>
+</li>
+<li>
+<p><strong>時間コスト</strong>:
+バイナリーテキスト変換が入るため、バックアップとリストアに時間を要することがあります。</p>
+</li>
+</ol>
+<h3 id="22-物理バックアップ">2.2 物理バックアップ</h3>
+<h4 id="定義-1">定義</h4>
+<p>物理バックアップは、データベースの物理的なファイルを直接コピーするバックアップ手法です。この方法は、データベースファイル、テーブルスペース、ログファイルなどを含みます。</p>
+<h4 id="利点-1">利点</h4>
+<ol>
+<li>
+<p><strong>サイズと速度</strong>:
+物理バックアップは、データベースの物理的なファイルをコピーするため、バックアップ、リストアの速度が速く、最小限のサイズで作成可能です。</p>
+</li>
+<li>
+<p><strong>完全性</strong>:
+物理バックアップはデータベースの完全なコピーを提供するため、データベースの完全なリカバリが可能です。</p>
+</li>
+</ol>
+<h4 id="欠点-1">欠点</h4>
+<ol>
+<li>
+<p><strong>互換性</strong>:
+異なるデータベース管理システム間、または異なるバージョン間での互換性がない場合があります。</p>
+</li>
+<li>
+<p><strong>柔軟性の欠如</strong>:
+物理バックアップは、個々のテーブルやデータのリストアが困難であることがあります。全体のリストアが必要となる場合があります。</p>
+</li>
+</ol>
+<h3 id="実践的な例">実践的な例</h3>
+<ul>
+<li><strong>論理バックアップ</strong>: <code>mysqldump</code>ユーティリティは、MySQLデータベースの論理バックアップを作成するためのツールです。これを使用することで、SQLコマンドとしてのバックアップを作成できます。</li>
+<li><strong>物理バックアップ</strong>: <code>mysqlbackup</code>コマンド（MySQL Enterprise Backupの一部）を使用して、MySQLデータベースの物理バックアップを作成できます。</li>
+</ul>
+<p>詳細な情報や手順については、<a href="https:%CF%89//dev.mysql.com/doc/">MySQLの公式ドキュメント</a>を参照してください。</p>
+<h3 id="3-増分バックアップと差分バックアップ">3. 増分バックアップと差分バックアップ</h3>
+<p>データの保全と迅速なリストアのために、バックアップ戦略として増分バックアップと差分バックアップが存在します。これらの方法は、データ量の増加とストレージコストの増大に対処するために用いられます。</p>
+<h4 id="31-増分バックアップ">3.1 増分バックアップ</h4>
+<ul>
+<li><strong>定義</strong>: 増分バックアップは、前回のバックアップ（増分もしくは完全バックアップ）以降に変更、追加、削除されたデータのみをバックアップする。</li>
+<li><strong>利点</strong>:
+<ul>
+<li>ストレージ使用量が少ない。</li>
+<li>バックアップの作成時間が短い。</li>
+</ul>
+</li>
+<li><strong>欠点</strong>:
+<ul>
+<li>リストアの際に、全ての増分バックアップファイルと最後の完全バックアップが必要。</li>
+<li>多くのバックアップセットが関与するため、リストアの時間と複雑性が増加する可能性がある。</li>
+</ul>
+</li>
+</ul>
+<h4 id="32-差分バックアップ">3.2 差分バックアップ</h4>
+<ul>
+<li><strong>定義</strong>: 差分バックアップは、最後に作成された完全バックアップ以降に変更された全てのデータをバックアップする。</li>
+<li><strong>利点</strong>:
+<ul>
+<li>リストアが簡単で、リストア時間が短縮される。差分バックアップと最後の完全バックアップのみが必要。</li>
+<li>完全バックアップよりも迅速に作成できる。</li>
+</ul>
+</li>
+<li><strong>欠点</strong>:
+<ul>
+<li>増分バックアップに比べて、ストレージ使用量が多くなる可能性がある。</li>
+<li>毎日の差分バックアップが完全バックアップに近づくにつれて、バックアップの作成時間が長くなる。</li>
+</ul>
+</li>
+</ul>
+<h4 id="33-フルバックアップ">3.3 フルバックアップ</h4>
+<ul>
+<li><strong>定義</strong>: フルバックアップは、指定されたデータソースの全てのデータをコピーするバックアップ方法です。</li>
+<li><strong>利点</strong>:
+<ul>
+<li>リストアが簡単で、他の任意のバックアップなしでリストアできる。</li>
+<li>バックアップデータの整合性が高い。</li>
+</ul>
+</li>
+<li><strong>欠点</strong>:
+<ul>
+<li>他のバックアップ方法に比べて、ストレージ使用量が多い。
+<ul>
+<li>バックアップの作成に時間がかかる可能性がある。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考">参考</h2>
+<p><a href="https://downloads.mysql.com/presentations/20150623_01_MySQL_Backup_for_Beginners.pdf">MySQL入門(バックアップ編)</a></p>
+<h2 id="所感">所感</h2>
+<p>バックアップ等の仕組みについては障害が発生してからでは遅いので、事前にしっかりと知識をつけておく必要があると感じました。
+重要な知識だからこそ、過去問でも頻出するのだと思います.</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
