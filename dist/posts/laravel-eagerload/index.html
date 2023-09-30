@@ -1,29 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>LaravelのEagerLoadについて</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>LaravelのEagerLoadについて</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## EagerLoadとは
 
 - 「Eager」は「熱心」という意味
 - ORMにおけるN+1問題を解決するために使用される
 - 先に取得したModelに対して事前にリレーションを取得する仕組み
-- Eloquentの場合はプロパティと">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2022/10/23</div>
-        <h1>LaravelのEagerLoadについて</h1>
-        <div class="post">
-          <h2 id="eagerloadとは">EagerLoadとは</h2>
+- Eloquentの場合はプロパティと"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/10/23</div><h1>LaravelのEagerLoadについて</h1><div class="post"><h2 id="eagerloadとは">EagerLoadとは</h2>
 <ul>
 <li>「Eager」は「熱心」という意味</li>
 <li>ORMにおけるN+1問題を解決するために使用される</li>
@@ -35,28 +18,28 @@
 <h3 id="n--1問題とは">N + 1問題とは</h3>
 <p>ORMによるリレーションを扱う際には <code>N + 1問題</code>が発生することがあります。
 EagerLoadはその解決策ですがまずは<code>N + 1問題</code>について公式の例を確認します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">&#x3C;?php</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">namespace App;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">use Illuminate\Database\Eloquent\Model;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">class Book extends Model</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * この本を書いた著者を取得</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function author()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $this->belongsTo('App\Author');</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::all(); // 1. すべての本を取得</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">// 2. 著者をそれぞれの本について取得</span></span>
-<span class="line"><span style="color: #c9d1d9">foreach ($books as $book) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    echo $book->author->name;</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">&#x3C;?php</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">namespace App;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">use Illuminate\Database\Eloquent\Model;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">class Book extends Model</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * この本を書いた著者を取得</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function author()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $this->belongsTo('App\Author');</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$books = App\Book::all(); // 1. すべての本を取得</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">// 2. 著者をそれぞれの本について取得</span></span>
+<span class="line"><span style="color: #e1e4e8">foreach ($books as $book) {</span></span>
+<span class="line"><span style="color: #e1e4e8">    echo $book->author->name;</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>上記ループでは</p>
 <ol>
 <li>まずテーブルからすべての本を取得するために1回クエリが発行される。</li>
@@ -67,65 +50,65 @@ EagerLoadはその解決策ですがまずは<code>N + 1問題</code>につい�
 Eloquentは、<strong>リレーションにアクセスする度にクエリを発行する</strong>という仕組みです。
 このクエリの発行回数を抑えるために、事前にリレーション情報を含めた状態の親モデルを取得するEagerLoadという仕組みを使用する事ができます。</p>
 <h3 id="eagerload">EagerLoad</h3>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::with('author')->get();</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">foreach ($books as $book) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    echo $book->author->name;</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$books = App\Book::with('author')->get();</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">foreach ($books as $book) {</span></span>
+<span class="line"><span style="color: #e1e4e8">    echo $book->author->name;</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>上記のように<code>with</code>メソッドを使用することでクエリの発行回数を抑える事ができます。
 発行されるクエリは以下のようになります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">select  * from books</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">select * from authors where id in (1,2,3,4,5,...)</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">select  * from books</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">select * from authors where id in (1,2,3,4,5,...)</span></span></code></pre>
 <p>複数のリレーションに対するEagerLoad</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::with(['author', 'publisher'])->get();</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$books = App\Book::with(['author', 'publisher'])->get();</span></span></code></pre>
 <p>ネストしたリレーションに対するEagerLoad</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::with('author.contacts')->get();</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$books = App\Book::with('author.contacts')->get();</span></span></code></pre>
 <p>特定カラムに対してのEagerLoad</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$users = App\Book::with('author:id,name')->get();</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$users = App\Book::with('author:id,name')->get();</span></span></code></pre>
 <p>EagerLoad時に制約を追加する</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$users = App\User::with(['posts' => function ($query) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    $query->where('title', 'like', '%first%');</span></span>
-<span class="line"><span style="color: #c9d1d9">}])->get();</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$users = App\User::with(['posts' => function ($query) {</span></span>
+<span class="line"><span style="color: #e1e4e8">    $query->where('title', 'like', '%first%');</span></span>
+<span class="line"><span style="color: #e1e4e8">}])->get();</span></span></code></pre>
 <p>遅延EagerLoading
 すでに親のモデルを取得したあとにリレーションをEagerLoadしたい場合に利用します。<br>
 どのリレーションをロードするか動的に決定したい場合に便利です。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$books = App\Book::all();</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">if ($someCondition) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    $books->load('author', 'publisher');</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$books = App\Book::all();</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">if ($someCondition) {</span></span>
+<span class="line"><span style="color: #e1e4e8">    $books->load('author', 'publisher');</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p><code>loadMissing</code>メソッドを使用すると、リレーションをまだロードしていない場合のみロードする事が可能です。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">public function format(Book $book)</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    $book->loadMissing('author');</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    return [</span></span>
-<span class="line"><span style="color: #c9d1d9">        'name' => $book->name,</span></span>
-<span class="line"><span style="color: #c9d1d9">        'author' => $book->author->name</span></span>
-<span class="line"><span style="color: #c9d1d9">    ];</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">public function format(Book $book)</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    $book->loadMissing('author');</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    return [</span></span>
+<span class="line"><span style="color: #e1e4e8">        'name' => $book->name,</span></span>
+<span class="line"><span style="color: #e1e4e8">        'author' => $book->author->name</span></span>
+<span class="line"><span style="color: #e1e4e8">    ];</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <h2 id="eloquentにおける動的プロパティについて">Eloquentにおける動的プロパティについて</h2>
 <p>例えば以下のような1対多野リレーションがあったとします。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">&#x3C;?php</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">namespace App;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">use Illuminate\Database\Eloquent\Model;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">class Post extends Model</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * ブログポストのコメントを取得</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function comments()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $this->hasMany('App\Comment');</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">&#x3C;?php</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">namespace App;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">use Illuminate\Database\Eloquent\Model;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">class Post extends Model</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * ブログポストのコメントを取得</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function comments()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $this->hasMany('App\Comment');</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>この場合に</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$post = Post::find(1);</span></span>
-<span class="line"><span style="color: #c9d1d9">$comments = $post->comments;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$post = Post::find(1);</span></span>
+<span class="line"><span style="color: #e1e4e8">$comments = $post->comments;</span></span></code></pre>
 <p>のように取得すると思います。<br>
 これは<code>comments()</code>メソッドではなく<code>comments</code>という動的プロパティを返しているという点に注意が必要です。<br>
 <code>comments</code>は<code>Comment</code>モデルのインスタンスのコレクションを返します。</p>
@@ -152,9 +135,4 @@ Eloquentを利用する際には仕組みを理解しておくことで実行時
 <p><a href="https://katsusand.dev/posts/laravel-eager-load/">https://katsusand.dev/posts/laravel-eager-load/</a><br>
 <a href="https://readouble.com/laravel/7.x/ja/eloquent-relationships.html#eager-loading">https://readouble.com/laravel/7.x/ja/eloquent-relationships.html#eager-loading</a><br>
 <a href="https://qiita.com/179Bell/items/7b4f991816f63946e738">https://qiita.com/179Bell/items/7b4f991816f63946e738</a><br>
-<a href="https://qiita.com/mpyw/items/ed058e2d679a672c3ba7">https://qiita.com/mpyw/items/ed058e2d679a672c3ba7</a></p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+<a href="https://qiita.com/mpyw/items/ed058e2d679a672c3ba7">https://qiita.com/mpyw/items/ed058e2d679a672c3ba7</a></p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

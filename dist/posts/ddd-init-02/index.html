@@ -1,28 +1,11 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 
 ## はじめに
 
 [前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/11/26/181405)にて、ドメイン駆動設計への入門として、ドメインオブジェクトを紹介しました。
-今">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2022/11/30</div>
-        <h1>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</h1>
-        <div class="post">
-          <h2 id="はじめに">はじめに</h2>
+今"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/11/30</div><h1>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</h1><div class="post"><h2 id="はじめに">はじめに</h2>
 <p><a href="https://taisei-miyaji.hatenadiary.com/entry/2022/11/26/181405">前回の記事</a>にて、ドメイン駆動設計への入門として、ドメインオブジェクトを紹介しました。
 今回は実際にドメインオブジェクトを利用してユースケースを組み立てていきます。<br>
 そのためのステップとして、先にいくつか便利なパターンを紹介しておきます。</p>
@@ -52,72 +35,72 @@
 データストアといえばMySQLなどのRDBを想像するかもしれませんが、他のDBMSに変わったり、単純にファイルに保存したり、スプレッドシートのようなサービスに保存したりと保存先はいろいろ考えられます。保存先が変更となった場合でもドメインコードに変更がないように、つまり永続化に関連する処理にドメインコードが依存しないように隠蔽します。</p>
 <p>では具体的にリポジトリがどういう処理を担うのか、インターフェースから考えてみます。
 今回は例として、<a href="https://taisei-miyaji.hatenadiary.com/entry/2022/11/26/181405">前回の記事</a>同様システムを利用するユーザーというドメインについて考えてみます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">interface RepositoryInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * 再構築を担う処理</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function findById(UserIdentifier $id): User;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * 永続化を担う処理</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function save(User $user): void;</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">interface RepositoryInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * 再構築を担う処理</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function findById(UserIdentifier $id): User;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * 永続化を担う処理</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function save(User $user): void;</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span></code></pre>
 <p>ここで永続化したいユーザーのエンティティは以下のようなものを想定しています。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class User</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    // UserIdentifierというValueObjectを保持するためのプロパティ</span></span>
-<span class="line"><span style="color: #c9d1d9">    private UserIdentifier $id;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    // UserNameというValueObjectを保持するためのプロパティ</span></span>
-<span class="line"><span style="color: #c9d1d9">    private UserName $name;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(</span></span>
-<span class="line"><span style="color: #c9d1d9">        UserIdentifier $id,</span></span>
-<span class="line"><span style="color: #c9d1d9">        UserName $name</span></span>
-<span class="line"><span style="color: #c9d1d9">    ){</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->id = $id;</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->name = $name;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function id(): UserIdentifier</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $this->id;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function name(): UserName</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $this->name;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class User</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    // UserIdentifierというValueObjectを保持するためのプロパティ</span></span>
+<span class="line"><span style="color: #e1e4e8">    private UserIdentifier $id;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    // UserNameというValueObjectを保持するためのプロパティ</span></span>
+<span class="line"><span style="color: #e1e4e8">    private UserName $name;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(</span></span>
+<span class="line"><span style="color: #e1e4e8">        UserIdentifier $id,</span></span>
+<span class="line"><span style="color: #e1e4e8">        UserName $name</span></span>
+<span class="line"><span style="color: #e1e4e8">    ){</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->id = $id;</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->name = $name;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function id(): UserIdentifier</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $this->id;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function name(): UserName</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $this->name;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>続いて、Repositoryを利用する側を考えてみます。<br>
 今回はユーザー情報の更新について考えてみます。<br>
 例えば、下記のコードでユーザー名を変更します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class UpdateUser</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    private RepositoryInterface $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    // Laravelのサービスコンテナを用いたDIを行う。</span></span>
-<span class="line"><span style="color: #c9d1d9">    // 今回の説明において重要な箇所ではないのでDIに馴染みが無い方は一旦読み飛ばしても構いません。</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(RepositoryInterface $repository)</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->repository = $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function process(UserIdentifier $id, UserName $name): User</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        // データストアからインスタンスの再構築を行う。</span></span>
-<span class="line"><span style="color: #c9d1d9">        $user = $this->repository->findById();</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">        // エンティティのもつ名前変更の振る舞いを呼び出して名前を変更する。</span></span>
-<span class="line"><span style="color: #c9d1d9">        $user->changeName($name);</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">        // データストアへの永続化を行う。</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->repository->save($user);</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class UpdateUser</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    private RepositoryInterface $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    // Laravelのサービスコンテナを用いたDIを行う。</span></span>
+<span class="line"><span style="color: #e1e4e8">    // 今回の説明において重要な箇所ではないのでDIに馴染みが無い方は一旦読み飛ばしても構いません。</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(RepositoryInterface $repository)</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->repository = $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function process(UserIdentifier $id, UserName $name): User</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        // データストアからインスタンスの再構築を行う。</span></span>
+<span class="line"><span style="color: #e1e4e8">        $user = $this->repository->findById();</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">        // エンティティのもつ名前変更の振る舞いを呼び出して名前を変更する。</span></span>
+<span class="line"><span style="color: #e1e4e8">        $user->changeName($name);</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">        // データストアへの永続化を行う。</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->repository->save($user);</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>UserIdentifier,UserNameは必要なバリデーションを実装した、値の性質を持ったValueObjectです。<br>
 Userエンティティは名前を変更するための振る舞い「changeName」を持っています。<br>
 Repositoryには再構築のための振る舞い「findById」と永続化のための振る舞い「save」を定義します。</p>
@@ -125,46 +108,46 @@ Repositoryには再構築のための振る舞い「findById」と永続化の�
 <p>ドメインのコードにDBアクセスに関連するコードが氾濫しないことを確認できたので具体的なDBに対する操作はどう書くのか考えてみます。</p>
 <p>今回はLaravelのORMであるEloquentを例にしますが、ORMがなんであれ、接続先DBがなんであろうと永続化と再構築という処理がドメインコードから隠蔽されていれば問題ないです。</p>
 <p>以下サンプルではLaravelのEloquentモデルとして<code>User</code>を使用し、同じ<code>User</code>という名前でエンティティを作成しているため違いに注意してください。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Repository extends RepositoryInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * Eloquentモデル</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    private \App\Models\User $user;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(\App\Models\User $user)</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->user = $user;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * IDに紐づくデータをUserエンティティに詰めて返す。</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function findById(UserIdentifier $id): User</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $query = $this->user->newQuery()</span></span>
-<span class="line"><span style="color: #c9d1d9">            ->where('id', '=', (string)$id)</span></span>
-<span class="line"><span style="color: #c9d1d9">            ->first();</span></span>
-<span class="line"><span style="color: #c9d1d9">        return new User(</span></span>
-<span class="line"><span style="color: #c9d1d9">            new UserIdentifier($query->getAttribute('id')),</span></span>
-<span class="line"><span style="color: #c9d1d9">            new UserName($query->getAttribute('name'))</span></span>
-<span class="line"><span style="color: #c9d1d9">        );</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * エンティティを永続化する。</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function save(User $user): void</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $query = $this->user</span></span>
-<span class="line"><span style="color: #c9d1d9">            ->fill([</span></span>
-<span class="line"><span style="color: #c9d1d9">                'id' => (string)$user->id(),</span></span>
-<span class="line"><span style="color: #c9d1d9">                'name' => (string)$user->name()</span></span>
-<span class="line"><span style="color: #c9d1d9">            ])</span></span>
-<span class="line"><span style="color: #c9d1d9">            ->save();</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class Repository extends RepositoryInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * Eloquentモデル</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    private \App\Models\User $user;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(\App\Models\User $user)</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->user = $user;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * IDに紐づくデータをUserエンティティに詰めて返す。</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function findById(UserIdentifier $id): User</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $query = $this->user->newQuery()</span></span>
+<span class="line"><span style="color: #e1e4e8">            ->where('id', '=', (string)$id)</span></span>
+<span class="line"><span style="color: #e1e4e8">            ->first();</span></span>
+<span class="line"><span style="color: #e1e4e8">        return new User(</span></span>
+<span class="line"><span style="color: #e1e4e8">            new UserIdentifier($query->getAttribute('id')),</span></span>
+<span class="line"><span style="color: #e1e4e8">            new UserName($query->getAttribute('name'))</span></span>
+<span class="line"><span style="color: #e1e4e8">        );</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * エンティティを永続化する。</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function save(User $user): void</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $query = $this->user</span></span>
+<span class="line"><span style="color: #e1e4e8">            ->fill([</span></span>
+<span class="line"><span style="color: #e1e4e8">                'id' => (string)$user->id(),</span></span>
+<span class="line"><span style="color: #e1e4e8">                'name' => (string)$user->name()</span></span>
+<span class="line"><span style="color: #e1e4e8">            ])</span></span>
+<span class="line"><span style="color: #e1e4e8">            ->save();</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>このような形で、利用するフレームワークの機能を使用したりしてDBへのアクセスロジックをRepository内に記載します。<br>
 重要なのはフレームワークの機能やDBアクセスの複雑なロジックをドメインを表現している層に漏洩させないことです。<br>
 開発初期にDBがまだ選定されていない場合や運用中に変更となった場合でもその変更はドメインロジックには影響しなくなります。<br>
@@ -176,27 +159,27 @@ Repositoryには再構築のための振る舞い「findById」と永続化の�
 <p>これまでと同じくユーザーというドメインモデルについて考えます。ユーザーエンティティの生成処理を担う<code>UserFactory</code>のもつ振る舞いを考えてみます。<br>
 ユーザーエンティティにはIDを持ちますがこのIDの採番処理はドメインを操作する上では直接関係なく、生成時に行う処理なのでFactoryでもつようにしてみましょう。</p>
 <p>インターフェースは以下のようユーザーエンティティの作成処理を定義しておきます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">interface UserFactoryInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function createUser(UserName $name): User</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">interface UserFactoryInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function createUser(UserName $name): User</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span></code></pre>
 <p>今回はIDの採番に<a href="https://github.com/ulid/spec">ULID</a>形式を採用します。
 IDの生成にはLaravelに含まれるSymfonyというライブラリを使用します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">use Symfony\Component\Uid\Ulid;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">class UserFactory implements UserFactoryInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function createUser(UserName $name): User</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $id = Ulid::generate();</span></span>
-<span class="line"><span style="color: #c9d1d9">        $user = new User(</span></span>
-<span class="line"><span style="color: #c9d1d9">            $id,</span></span>
-<span class="line"><span style="color: #c9d1d9">            $name</span></span>
-<span class="line"><span style="color: #c9d1d9">        );</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">use Symfony\Component\Uid\Ulid;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">class UserFactory implements UserFactoryInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function createUser(UserName $name): User</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $id = Ulid::generate();</span></span>
+<span class="line"><span style="color: #e1e4e8">        $user = new User(</span></span>
+<span class="line"><span style="color: #e1e4e8">            $id,</span></span>
+<span class="line"><span style="color: #e1e4e8">            $name</span></span>
+<span class="line"><span style="color: #e1e4e8">        );</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>今回はフレームワークの機能に頼ったのでシンプルな処理になりましたが、他にもエンティティの生成時に発生する処理をFactoryに隠蔽できます。<br>
 例えばエンティティの生成時刻をエンティティ自身がもつような場合、現在時刻を取得してエンティティに設定するのはFactoryに書くべきです。</p>
 <p>RepositoryのときはDBに依存しないように処理を記載しました。Factoryを採用することでIDの採番や作成時刻等をDBに依存せずに記述できます。
@@ -221,52 +204,52 @@ IDの生成にはLaravelに含まれるSymfonyというライブラリを使用�
 <p>例えば、ユーザーの重複チェックです。<br>
 ユーザーエンティティが重複チェックを行うという振る舞いを持つ場合、重複の有無を自身に対して問い合わせることは不自然です。値の重複チェックは値を利用した別のオブジェクトが持つほうが自然になります。</p>
 <p>この際に利用するのがドメインサービスになります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">interface UserServiceInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * 重複をチェックする処理</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function isExists(User $user): bool</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">interface UserServiceInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * 重複をチェックする処理</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function isExists(User $user): bool</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>具体的な処理については割愛しますが、重複の確認を<code>UserService</code>というドメインサービス内で行います。
 このサービスを用いてユーザーの作成処理を書いてみます。また、先述したFactoryやRepositoryも使用してみましょう。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class CreateUser</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    private UserRepositoryInterface $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    private UserFactoryInterface $factory;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    private UserServiceInterface $service;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    // Laravelのサービスコンテナを用いたDIを行う。</span></span>
-<span class="line"><span style="color: #c9d1d9">    // 今回の説明において重要な箇所ではないのでDIに馴染みが無い方は一旦読み飛ばしても構いません。</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(</span></span>
-<span class="line"><span style="color: #c9d1d9">        UserRepositoryInterface $repository,</span></span>
-<span class="line"><span style="color: #c9d1d9">        UserFactoryInterface $factory,</span></span>
-<span class="line"><span style="color: #c9d1d9">        UserServiceInterface $service</span></span>
-<span class="line"><span style="color: #c9d1d9">        )</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->repository = $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->factory = $factory;</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->service = $service;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function process(UserName $name): User</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        // IDはFactoryにて生成されるためユーザー名を渡すとエンティティが返される。</span></span>
-<span class="line"><span style="color: #c9d1d9">        $user = $this->factory->createUser($name);</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">        // ドメインサービスを用いて例外チェックを行い、重複している場合は例外をスローする。</span></span>
-<span class="line"><span style="color: #c9d1d9">        if(!$this->service->isExists())</span></span>
-<span class="line"><span style="color: #c9d1d9">        {</span></span>
-<span class="line"><span style="color: #c9d1d9">            throw new NotFoundException();</span></span>
-<span class="line"><span style="color: #c9d1d9">        }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">        // データストアへの永続化を行う。</span></span>
-<span class="line"><span style="color: #c9d1d9">        $repository->save($user);</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class CreateUser</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    private UserRepositoryInterface $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    private UserFactoryInterface $factory;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    private UserServiceInterface $service;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    // Laravelのサービスコンテナを用いたDIを行う。</span></span>
+<span class="line"><span style="color: #e1e4e8">    // 今回の説明において重要な箇所ではないのでDIに馴染みが無い方は一旦読み飛ばしても構いません。</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(</span></span>
+<span class="line"><span style="color: #e1e4e8">        UserRepositoryInterface $repository,</span></span>
+<span class="line"><span style="color: #e1e4e8">        UserFactoryInterface $factory,</span></span>
+<span class="line"><span style="color: #e1e4e8">        UserServiceInterface $service</span></span>
+<span class="line"><span style="color: #e1e4e8">        )</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->repository = $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->factory = $factory;</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->service = $service;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function process(UserName $name): User</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        // IDはFactoryにて生成されるためユーザー名を渡すとエンティティが返される。</span></span>
+<span class="line"><span style="color: #e1e4e8">        $user = $this->factory->createUser($name);</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">        // ドメインサービスを用いて例外チェックを行い、重複している場合は例外をスローする。</span></span>
+<span class="line"><span style="color: #e1e4e8">        if(!$this->service->isExists())</span></span>
+<span class="line"><span style="color: #e1e4e8">        {</span></span>
+<span class="line"><span style="color: #e1e4e8">            throw new NotFoundException();</span></span>
+<span class="line"><span style="color: #e1e4e8">        }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">        // データストアへの永続化を行う。</span></span>
+<span class="line"><span style="color: #e1e4e8">        $repository->save($user);</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>ドメインモデルを実装する際にはドメインオブジェクトに実装すると不自然になる振る舞いが必ず存在します。<br>
 これは特に複数のドメインオブジェクトを横断するような操作に多く見られます。<br>
 そんなときにはドメインサービスの利用を検討してください。</p>
@@ -280,43 +263,43 @@ ValueObjectやエンティティといったドメインオブジェクトは「
 ドメインオブジェクトを目的に沿って操作する必要があり、それはまさしく利用者の目的を達成するための「アプリケーション」といえます。</p>
 <p>先程から例に上げているユーザー機能においては、「ユーザーを作成する」、「ユーザー情報を更新する」、「ユーザーを削除する」等がユースケースにあたります。<br>
 先程紹介した以下のコードはまさしくアプリケーションサービスそのものです。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class CreateUser</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    private UserRepositoryInterface $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    private UserFactoryInterface $factory;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    private UserServiceInterface $service;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    // Laravelのサービスコンテナを用いたDIを行う。</span></span>
-<span class="line"><span style="color: #c9d1d9">    // 今回の説明において重要な箇所ではないのでDIに馴染みが無い方は一旦読み飛ばしても構いません。</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(</span></span>
-<span class="line"><span style="color: #c9d1d9">        UserRepositoryInterface $repository,</span></span>
-<span class="line"><span style="color: #c9d1d9">        UserFactoryInterface $factory,</span></span>
-<span class="line"><span style="color: #c9d1d9">        UserServiceInterface $service</span></span>
-<span class="line"><span style="color: #c9d1d9">        )</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->repository = $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->factory = $factory;</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->service = $service;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function process(UserName $name): User</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        // IDはFactoryにて生成されるためユーザー名を渡すとエンティティが返される。</span></span>
-<span class="line"><span style="color: #c9d1d9">        $user = $this->factory->createUser($name);</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">        // ドメインサービスを用いて例外チェックを行い、重複している場合は例外をスローする。</span></span>
-<span class="line"><span style="color: #c9d1d9">        if(!$this->service->isExists())</span></span>
-<span class="line"><span style="color: #c9d1d9">        {</span></span>
-<span class="line"><span style="color: #c9d1d9">            throw new NotFoundException();</span></span>
-<span class="line"><span style="color: #c9d1d9">        }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">        // データストアへの永続化を行う。</span></span>
-<span class="line"><span style="color: #c9d1d9">        $repository->save($user);</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class CreateUser</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    private UserRepositoryInterface $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    private UserFactoryInterface $factory;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    private UserServiceInterface $service;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    // Laravelのサービスコンテナを用いたDIを行う。</span></span>
+<span class="line"><span style="color: #e1e4e8">    // 今回の説明において重要な箇所ではないのでDIに馴染みが無い方は一旦読み飛ばしても構いません。</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(</span></span>
+<span class="line"><span style="color: #e1e4e8">        UserRepositoryInterface $repository,</span></span>
+<span class="line"><span style="color: #e1e4e8">        UserFactoryInterface $factory,</span></span>
+<span class="line"><span style="color: #e1e4e8">        UserServiceInterface $service</span></span>
+<span class="line"><span style="color: #e1e4e8">        )</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->repository = $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->factory = $factory;</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->service = $service;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function process(UserName $name): User</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        // IDはFactoryにて生成されるためユーザー名を渡すとエンティティが返される。</span></span>
+<span class="line"><span style="color: #e1e4e8">        $user = $this->factory->createUser($name);</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">        // ドメインサービスを用いて例外チェックを行い、重複している場合は例外をスローする。</span></span>
+<span class="line"><span style="color: #e1e4e8">        if(!$this->service->isExists())</span></span>
+<span class="line"><span style="color: #e1e4e8">        {</span></span>
+<span class="line"><span style="color: #e1e4e8">            throw new NotFoundException();</span></span>
+<span class="line"><span style="color: #e1e4e8">        }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">        // データストアへの永続化を行う。</span></span>
+<span class="line"><span style="color: #e1e4e8">        $repository->save($user);</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>ドメインサービスとアプリケーションサービスは対象となる領域が「ドメイン」なのか「利用者の目的を達成すること」なのかという点が異なる以外は本質的には同じものです。ただし、その領域をきちんと分け、ドメインのルールがアプリケーションサービスに流出しないように実装することでドメインの変更をドメインオブジェクトのみに反映すれば良くなります。変更容易性の確保のためにも意識して振る舞いを実装しましょう。</p>
 <h2 id="まとめ">まとめ</h2>
 <p><strong>Repository</strong> … データアクセスに関するロジックをまとめるためのパターン<br>
@@ -329,9 +312,4 @@ ValueObjectやエンティティといったドメインオブジェクトは「
 より詳しいパターンの説明や抱くであろう疑問の多くは書籍で解説されている部分も多くありますのでよければ参考にしてください。</p>
 <p>書籍のない内容に沿っていますが、自分なりの解釈がほとんどです。まだまだ理解しきれていない部分もありますが、こうしてアウトプットすることと日々の業務に向き合っていくことで引き続き設計について身につけて行ければと思います。</p>
 <p>実際の業務ではクリーンアーキテクチャという考え方とドメイン駆動設計の要素をハイブリットして取り入れていますが、改めてドメイン駆動設計における考え方を整理しておくことと、目的を再認識できるいい記事になったなと感じています。</p>
-<p>次回は今回の記事では紹介しきれなかった部分をTips的に紹介しようと思っています。</p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+<p>次回は今回の記事では紹介しきれなかった部分をTips的に紹介しようと思っています。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

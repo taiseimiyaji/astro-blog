@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>できる限りドキュメントメンテナンスコストを下げたい [Doxygen] [phpDocumentor]</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>できる限りドキュメントメンテナンスコストを下げたい [Doxygen] [phpDocumentor]</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## はじめに(長めの前置き)
 大前提として、「コードは必ず変更される」ことはエンジニアであれば理解されていると思います。   
 経験上、コードを書いて1回切りの「作り捨て」にすることはまずありません。   
-自分が変更するかもしれません">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2022/05/13</div>
-        <h1>できる限りドキュメントメンテナンスコストを下げたい [Doxygen] [phpDocumentor]</h1>
-        <div class="post">
-          <h2 id="はじめに長めの前置き">はじめに(長めの前置き)</h2>
+自分が変更するかもしれません"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/05/13</div><h1>できる限りドキュメントメンテナンスコストを下げたい [Doxygen] [phpDocumentor]</h1><div class="post"><h2 id="はじめに長めの前置き">はじめに(長めの前置き)</h2>
 <p>大前提として、「コードは必ず変更される」ことはエンジニアであれば理解されていると思います。<br>
 経験上、コードを書いて1回切りの「作り捨て」にすることはまずありません。<br>
 自分が変更するかもしれませんし、他人が変更することもあるでしょう。<br>
@@ -45,11 +28,11 @@
 <p>公式リンク <a href="http://www.doxygen.jp/">http://www.doxygen.jp/</a></p>
 <p>今回はDockerを用いたチーム開発を前提として環境構築してみます。</p>
 <p>Docker Hubから<code>hytssk/doxygen</code>というイメージをpullしてきます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">docker pull hytssk/doxygen</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">docker pull hytssk/doxygen</span></span></code></pre>
 <h3 id="doxyfileの作成">Doxyfileの作成</h3>
 <p>Doxygenは<code>Doxyfile</code>という設定ファイルを使用します。
 下記コマンドを実行して生成します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">docker run --rm -v "${PWD}":/src hytssk/doxygen -g</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">docker run --rm -v "${PWD}":/src hytssk/doxygen -g</span></span></code></pre>
 <p>内容の編集については公式ドキュメントを参照してください。(コメントを読むだけでもある程度わかります。)</p>
 <p>参考サイト:</p>
 <p><a href="http://www.doxygen.jp/config.html">http://www.doxygen.jp/config.html</a></p>
@@ -57,19 +40,19 @@
 <h3 id="動作確認用変更箇所">動作確認用変更箇所</h3>
 <p>僕が動作確認した際に変更した箇所をメモしておきます。
 もっと変えた方がいい箇所があるかもしれないです。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">OUTPUT_LANGUAGE = Japanese</span></span>
-<span class="line"><span style="color: #c9d1d9">EXTRACT_ALL            = YES</span></span>
-<span class="line"><span style="color: #c9d1d9">WARN_LOGFILE           = "ログファイル名.txt"</span></span>
-<span class="line"><span style="color: #c9d1d9">INPUT                  = ソースコードのパス</span></span>
-<span class="line"><span style="color: #c9d1d9">RECURSIVE              = YES</span></span>
-<span class="line"><span style="color: #c9d1d9">SOURCE_BROWSER         = YES</span></span>
-<span class="line"><span style="color: #c9d1d9">GENERATE_LATEX         = NO</span></span>
-<span class="line"><span style="color: #c9d1d9">CALL_GRAPH             = YES</span></span>
-<span class="line"><span style="color: #c9d1d9">CALLER_GRAPH           = YES</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">OUTPUT_LANGUAGE = Japanese</span></span>
+<span class="line"><span style="color: #e1e4e8">EXTRACT_ALL            = YES</span></span>
+<span class="line"><span style="color: #e1e4e8">WARN_LOGFILE           = "ログファイル名.txt"</span></span>
+<span class="line"><span style="color: #e1e4e8">INPUT                  = ソースコードのパス</span></span>
+<span class="line"><span style="color: #e1e4e8">RECURSIVE              = YES</span></span>
+<span class="line"><span style="color: #e1e4e8">SOURCE_BROWSER         = YES</span></span>
+<span class="line"><span style="color: #e1e4e8">GENERATE_LATEX         = NO</span></span>
+<span class="line"><span style="color: #e1e4e8">CALL_GRAPH             = YES</span></span>
+<span class="line"><span style="color: #e1e4e8">CALLER_GRAPH           = YES</span></span></code></pre>
 <h3 id="ドキュメント化">ドキュメント化</h3>
 <p>ソースコードにDoxygen用のコメントを記載した上で使用します。
 以下コマンドを実行することでドキュメントが生成されます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">docker run --rm -v "${PWD}":/src hytssk/doxygen Doxyfile</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">docker run --rm -v "${PWD}":/src hytssk/doxygen Doxyfile</span></span></code></pre>
 <h2 id="phpdocumentor">phpDocumentor</h2>
 <h3 id="phpdocumentorとは">phpDocumentorとは</h3>
 <p>Doxygenと同じくソースコードからドキュメントを生成するツールです。</p>
@@ -82,14 +65,14 @@
 <p><a href="http://blog.livedoor.jp/haruchaco/archives/1340012.html">http://blog.livedoor.jp/haruchaco/archives/1340012.html</a></p>
 <h3 id="実行">実行</h3>
 <p>まずはDoxygenの時と同じくDocker hubからpullします。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">docker pull phpdoc/phpdoc</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">docker pull phpdoc/phpdoc</span></span></code></pre>
 <p>ドキュメント生成</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">docker run --rm -v $(pwd):/data phpdoc/phpdoc -d [ソースコードのディレクトリ] -t [出力先のディレクトリ] </span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">docker run --rm -v $(pwd):/data phpdoc/phpdoc -d [ソースコードのディレクトリ] -t [出力先のディレクトリ] </span></span></code></pre>
 <p>以下のオプションを使用することでクラス図などの図が出力されます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">--setting=graphs.enabled=true</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">--setting=graphs.enabled=true</span></span></code></pre>
 <p>以下のオプションを使用すると出力形式を変更できます。
 他にも種類があるようなので公式を参照してください。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">--template="clean"</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">--template="clean"</span></span></code></pre>
 <h2 id="比較">比較</h2>
 <h3 id="インストールの容易さ">インストールの容易さ</h3>
 <p>phpdocumentorの方がインストールが簡単だという意見を見かけました。<br>
@@ -114,9 +97,4 @@ DoxygenはPHPへの対応が少し弱いのでこの部分でphpDocumentorを選
 今回紹介したツールを使用すればさほど手間なくドキュメントを作成することができます。</p>
 <p>チーム開発の場合は個人の力量に差があることが多く、その差を埋める手助けになればと思います。<br>
 また、上級者から初学者への説明の際の資料としても有用だと思いました。</p>
-<p>個人的にはこういうめんどくさいなあと感じたことを自動化する瞬間が一番エンジニアであることを実感します。</p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+<p>個人的にはこういうめんどくさいなあと感じたことを自動化する瞬間が一番エンジニアであることを実感します。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

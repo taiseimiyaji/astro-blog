@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>ユニットテストについて考えてみる。PHPUnitでモックを使用して小さいユニットテストを書く。</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="# クリーンアーキテクチャにおけるユニットテスト
+<!DOCTYPE html><html lang="ja"><head><title>ユニットテストについて考えてみる。PHPUnitでモックを使用して小さいユニットテストを書く。</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="# クリーンアーキテクチャにおけるユニットテスト
 
 ## はじめに
 前回の記事でユニットテストに関する知識を調査したのでよければ参照してください。
@@ -12,20 +6,9 @@
 ## 今回の目的
 
 - テスト駆動開発しやすい設計について考えること   
-- クリーンア">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2022/07/15</div>
-        <h1>ユニットテストについて考えてみる。PHPUnitでモックを使用して小さいユニットテストを書く。</h1>
-        <div class="post">
-          <h1 id="クリーンアーキテクチャにおけるユニットテスト">クリーンアーキテクチャにおけるユニットテスト</h1>
+- クリーンア"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/07/15</div><h1>ユニットテストについて考えてみる。PHPUnitでモックを使用して小さいユニットテストを書く。</h1><div class="post"><h1 id="クリーンアーキテクチャにおけるユニットテスト">クリーンアーキテクチャにおけるユニットテスト</h1>
 <h2 id="はじめに">はじめに</h2>
 <p>前回の記事でユニットテストに関する知識を調査したのでよければ参照してください。</p>
 <h2 id="今回の目的">今回の目的</h2>
@@ -52,30 +35,30 @@
 <h3 id="テストコードを仕様書にできる">テストコードを仕様書にできる</h3>
 <p>たとえばテスト対象以外を意識してテストを書く場合、以下のような形になります。</p>
 <p>テストケース</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">testUseCase</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    $entity </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Entity</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #A5D6FF">'testData'</span></span>
-<span class="line"><span style="color: #C9D1D9">    );</span></span>
-<span class="line"><span style="color: #C9D1D9">    $id </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'testId'</span></span>
-<span class="line"><span style="color: #C9D1D9">    $repository </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">app</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">make</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">RepositoryInterface</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">);</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// あらかじめDBに保存しておく必要がある</span></span>
-<span class="line"><span style="color: #C9D1D9">    $repository</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">save</span><span style="color: #C9D1D9">($entity);</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">testUseCase</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    $entity </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Entity</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #9ECBFF">'testData'</span></span>
+<span class="line"><span style="color: #E1E4E8">    );</span></span>
+<span class="line"><span style="color: #E1E4E8">    $id </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'testId'</span></span>
+<span class="line"><span style="color: #E1E4E8">    $repository </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">app</span><span style="color: #F97583">-></span><span style="color: #B392F0">make</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">RepositoryInterface</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// あらかじめDBに保存しておく必要がある</span></span>
+<span class="line"><span style="color: #E1E4E8">    $repository</span><span style="color: #F97583">-></span><span style="color: #B392F0">save</span><span style="color: #E1E4E8">($entity);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">//テスト対象関数の呼び出し</span></span>
-<span class="line"><span style="color: #C9D1D9">    $useCase</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">process</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">//テスト対象関数の呼び出し</span></span>
+<span class="line"><span style="color: #E1E4E8">    $useCase</span><span style="color: #F97583">-></span><span style="color: #B392F0">process</span><span style="color: #E1E4E8">();</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    $repository</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">delete</span><span style="color: #C9D1D9">($id); </span><span style="color: #8B949E">// テストに使用したデータを削除する</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">    $repository</span><span style="color: #F97583">-></span><span style="color: #B392F0">delete</span><span style="color: #E1E4E8">($id); </span><span style="color: #6A737D">// テストに使用したデータを削除する</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>Repositoryクラス</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">Repository</span><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">findById</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Id</span><span style="color: #C9D1D9"> $id){</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #8B949E">// $idを使ってEntityを取得してくる処理</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">funciton</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">save</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Entity</span><span style="color: #C9D1D9"> $entity){</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #8B949E">// 渡されたEntityを保存する処理</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">Repository</span><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">findById</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">Id</span><span style="color: #E1E4E8"> $id){</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #6A737D">// $idを使ってEntityを取得してくる処理</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">funciton</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">save</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">Entity</span><span style="color: #E1E4E8"> $entity){</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #6A737D">// 渡されたEntityを保存する処理</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>これではテストの前提条件がテスト用のドライバの外部に漏洩します。<br>
 こうなっていればまだマシでseederを利用してテストを書いたりできます。<br>
 また、delete関数が実装されていない場合もありますし大抵論理削除だと思うので直接DBを操作する必要が出てくるかもしれません。<br>
@@ -86,15 +69,15 @@
 するとテストコードで仕様を表現でき、仕様書によくある実装との乖離も起こさないようにできます。<br>
 テストが通らないとリリースされませんから。<br>
 イメージはこんな感じ</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">testUseCase</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    $expected </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'hoge'</span><span style="color: #C9D1D9">; </span><span style="color: #8B949E">// 期待値を用意</span></span>
-<span class="line"><span style="color: #C9D1D9">    $input </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'input'</span><span style="color: #C9D1D9">; </span><span style="color: #8B949E">// 入力値を用意</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">testUseCase</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    $expected </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'hoge'</span><span style="color: #E1E4E8">; </span><span style="color: #6A737D">// 期待値を用意</span></span>
+<span class="line"><span style="color: #E1E4E8">    $input </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'input'</span><span style="color: #E1E4E8">; </span><span style="color: #6A737D">// 入力値を用意</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    $output </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $useCase</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">process</span><span style="color: #C9D1D9">($input); </span><span style="color: #8B949E">// テスト対象クラスの呼び出し</span></span>
+<span class="line"><span style="color: #E1E4E8">    $output </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $useCase</span><span style="color: #F97583">-></span><span style="color: #B392F0">process</span><span style="color: #E1E4E8">($input); </span><span style="color: #6A737D">// テスト対象クラスの呼び出し</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">assertSame</span><span style="color: #C9D1D9">($expected, $output); </span><span style="color: #8B949E">// 実行結果の確認</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">assertSame</span><span style="color: #E1E4E8">($expected, $output); </span><span style="color: #6A737D">// 実行結果の確認</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>ただ、先ほどのRepositoryの例のようにインプットはidを渡すが、実質的にはRepositoryから取得するEntityがインプットとなるような処理が考えられます。<br>
 そこで登場するのがモックです。DBにアクセスすることなくインプットをテストケースに書く方法をこの後考えていきます。</p>
 <h3 id="テストの実行時間の問題を解決する">テストの実行時間の問題を解決する</h3>
@@ -112,32 +95,32 @@
 <p>ここではUseCaseについて確認します。
 簡単な例をPHPUnit、Mockeryといったテスティングフレームワークを用いて書いてみます。</p>
 <p>今回の例では、Repositoryから、<code>findById</code>という関数でEntityを取得する部分をMockとします。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">testUseCase</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// Repositoryから返してほしいEntityを準備します。</span></span>
-<span class="line"><span style="color: #C9D1D9">    $entity </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Entity</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #A5D6FF">'testData'</span></span>
-<span class="line"><span style="color: #C9D1D9">    );</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">testUseCase</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// Repositoryから返してほしいEntityを準備します。</span></span>
+<span class="line"><span style="color: #E1E4E8">    $entity </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Entity</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #9ECBFF">'testData'</span></span>
+<span class="line"><span style="color: #E1E4E8">    );</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// RepositoryのMockを生成します。</span></span>
-<span class="line"><span style="color: #C9D1D9">    $repositoryMock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Repository</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">, </span><span style="color: #79C0FF">RepositoryInterface</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// RepositoryのMockを生成します。</span></span>
+<span class="line"><span style="color: #E1E4E8">    $repositoryMock </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">mock</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">Repository</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">RepositoryInterface</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// Repositoryの振る舞いを設定します。</span></span>
-<span class="line"><span style="color: #C9D1D9">    $repositoryMock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'findById'</span><span style="color: #C9D1D9">) </span><span style="color: #8B949E">// findById関数が呼ばれた時の振る舞いを設定します。</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">once</span><span style="color: #C9D1D9">() </span><span style="color: #8B949E">// 呼び出し回数の設定</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">andReturn</span><span style="color: #C9D1D9">($entity); </span><span style="color: #8B949E">// 返り値を指定できます。ここでは先ほど用意したEntityクラスのインスタンスを返します。</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// Repositoryの振る舞いを設定します。</span></span>
+<span class="line"><span style="color: #E1E4E8">    $repositoryMock</span><span style="color: #F97583">-></span><span style="color: #B392F0">shouldReceive</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'findById'</span><span style="color: #E1E4E8">) </span><span style="color: #6A737D">// findById関数が呼ばれた時の振る舞いを設定します。</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">-></span><span style="color: #B392F0">once</span><span style="color: #E1E4E8">() </span><span style="color: #6A737D">// 呼び出し回数の設定</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">-></span><span style="color: #B392F0">andReturn</span><span style="color: #E1E4E8">($entity); </span><span style="color: #6A737D">// 返り値を指定できます。ここでは先ほど用意したEntityクラスのインスタンスを返します。</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// Repositoryに$repositoryMockをDIします。</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">app</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">instance</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">RepositoryInterface</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">, </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">repositoryMock);</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// Repositoryに$repositoryMockをDIします。</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">app</span><span style="color: #F97583">-></span><span style="color: #B392F0">instance</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">RepositoryInterface</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">repositoryMock);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// RepositoryのDI後にUseCaseもDIします。</span></span>
-<span class="line"><span style="color: #C9D1D9">    $useCase </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">app</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">make</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">UseCaseInterface</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// RepositoryのDI後にUseCaseもDIします。</span></span>
+<span class="line"><span style="color: #E1E4E8">    $useCase </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">app</span><span style="color: #F97583">-></span><span style="color: #B392F0">make</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">UseCaseInterface</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">//テスト対象関数の呼び出し</span></span>
-<span class="line"><span style="color: #C9D1D9">    $useCase</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">process</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">//テスト対象関数の呼び出し</span></span>
+<span class="line"><span style="color: #E1E4E8">    $useCase</span><span style="color: #F97583">-></span><span style="color: #B392F0">process</span><span style="color: #E1E4E8">();</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// この後何かしら処理の結果をassertします。</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// この後何かしら処理の結果をassertします。</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>processの中でRepositoryクラスの<code>findById</code>メソッドを使用した場合に返ってくる値をテストケースから指定できました。<br>
 また、<code>findById</code>クラスの呼び出しが1回ではない場合にエラーを吐いてくれるようにもなりました。</p>
 <p>こうすることでRepositoryのテストではDBへのアクセスを担保し、UseCaseでは適切にRepositoryに値が渡っていることをテストを分けて担保できます。<br>
@@ -150,11 +133,11 @@
 テストで担保したい動作はあくまで振る舞いなので抽象に対して書きます。<br>
 つまり、テストを具象クラスに依存させないように書くことができるということです。<br>
 Laravelのサービスプロバイダを利用して下記の部分で実現しています。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">// Repositoryに$repositoryMockをDIします。</span></span>
-<span class="line"><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">app</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">instance</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">RepositoryInterface</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">, </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">repositoryMock);</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #6A737D">// Repositoryに$repositoryMockをDIします。</span></span>
+<span class="line"><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">app</span><span style="color: #F97583">-></span><span style="color: #B392F0">instance</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">RepositoryInterface</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">repositoryMock);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #8B949E">// RepositoryのDI後にUseCaseもDIします。</span></span>
-<span class="line"><span style="color: #C9D1D9">$useCase </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">app</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">make</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">UseCaseInterface</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">);</span></span></code></pre>
+<span class="line"><span style="color: #6A737D">// RepositoryのDI後にUseCaseもDIします。</span></span>
+<span class="line"><span style="color: #E1E4E8">$useCase </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">app</span><span style="color: #F97583">-></span><span style="color: #B392F0">make</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">UseCaseInterface</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span></code></pre>
 <p>これができると、同じ<code>UseCaseInterface</code>を実装した別のUseCaseに対してもコードを変えずにテストを行うことができます。<br>
 サービスプロバイダで切り替えるようにするだけですね。</p>
 <h3 id="コードを書く順番を変えられる">コードを書く順番を変えられる</h3>
@@ -180,11 +163,11 @@ Laravelのサービスプロバイダを利用して下記の部分で実現し�
 <p>テスト駆動開発という開発手法があります。<br>
 この時のテストはバグを検出するためのものではなく、開発における動作目標という意味合いが強いです。<br>
 つまり正常に実装することを目標として、</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">テストを書く</span></span>
-<span class="line"><span style="color: #c9d1d9">↓</span></span>
-<span class="line"><span style="color: #c9d1d9">テストが通るようにコードを書く(汚くてもテストさえ通れば良い)</span></span>
-<span class="line"><span style="color: #c9d1d9">↓</span></span>
-<span class="line"><span style="color: #c9d1d9">テストが通る状態を維持しながらコードを綺麗にする</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">テストを書く</span></span>
+<span class="line"><span style="color: #e1e4e8">↓</span></span>
+<span class="line"><span style="color: #e1e4e8">テストが通るようにコードを書く(汚くてもテストさえ通れば良い)</span></span>
+<span class="line"><span style="color: #e1e4e8">↓</span></span>
+<span class="line"><span style="color: #e1e4e8">テストが通る状態を維持しながらコードを綺麗にする</span></span></code></pre>
 <p>のサイクルを回して開発を行います。<br>
 C0カバレッジ100%を目指すユニットテストと、テスト駆動開発におけるテストは別物だと認識しています。</p>
 <p>つまり、テスト駆動設計の時にまず用意するのは正常系のテストに必然的になると考えています。<br>
@@ -202,27 +185,27 @@ C0カバレッジ100%を目指すユニットテストと、テスト駆動開�
 <p>今回の例では、Repositoryから、<code>save</code>という関数でEntityを保存する部分をMockとします。
 その<code>save</code>メソッドが何らかの理由で<code>RuntimeException</code>を投げ、それをUseCaseで適切にエラーハンドリングできているかをテストします。
 <code>save</code>から投げられた<code>RuntimeException</code>を<code>EntityFailedSaveException</code>という自作例外を投げるようにハンドリングしてみます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">testUseCase</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// RepositoryのMockを生成します。</span></span>
-<span class="line"><span style="color: #C9D1D9">    $repositoryMock </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Mockery</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">mock</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Repository</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">, </span><span style="color: #79C0FF">RepositoryInterface</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">);</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">testUseCase</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// RepositoryのMockを生成します。</span></span>
+<span class="line"><span style="color: #E1E4E8">    $repositoryMock </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">mock</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">Repository</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">RepositoryInterface</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// Repositoryの振る舞いを設定します。</span></span>
-<span class="line"><span style="color: #C9D1D9">    $repositoryMock</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">shouldReceive</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'save'</span><span style="color: #C9D1D9">) </span><span style="color: #8B949E">// save関数が呼ばれた時の振る舞いを設定します。</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">once</span><span style="color: #C9D1D9">() </span><span style="color: #8B949E">// 呼び出し回数の設定</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">andThrow</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">RuntimeException</span><span style="color: #C9D1D9">()); </span><span style="color: #8B949E">//save関数が呼ばれると必ず例外を投げます。</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// Repositoryの振る舞いを設定します。</span></span>
+<span class="line"><span style="color: #E1E4E8">    $repositoryMock</span><span style="color: #F97583">-></span><span style="color: #B392F0">shouldReceive</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'save'</span><span style="color: #E1E4E8">) </span><span style="color: #6A737D">// save関数が呼ばれた時の振る舞いを設定します。</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">-></span><span style="color: #B392F0">once</span><span style="color: #E1E4E8">() </span><span style="color: #6A737D">// 呼び出し回数の設定</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">-></span><span style="color: #B392F0">andThrow</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">RuntimeException</span><span style="color: #E1E4E8">()); </span><span style="color: #6A737D">//save関数が呼ばれると必ず例外を投げます。</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// Repositoryに$repositoryMockをDIします。</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">app</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">instance</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">RepositoryInterface</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">, </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">repositoryMock);</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// Repositoryに$repositoryMockをDIします。</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">app</span><span style="color: #F97583">-></span><span style="color: #B392F0">instance</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">RepositoryInterface</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">repositoryMock);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">// RepositoryのDI後にUseCaseもDIします。</span></span>
-<span class="line"><span style="color: #C9D1D9">    $useCase </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">app</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">make</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">UseCaseInterface</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">);</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// RepositoryのDI後にUseCaseもDIします。</span></span>
+<span class="line"><span style="color: #E1E4E8">    $useCase </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">app</span><span style="color: #F97583">-></span><span style="color: #B392F0">make</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">UseCaseInterface</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #8B949E">//テスト対象関数の呼び出し</span></span>
-<span class="line"><span style="color: #C9D1D9">    $useCase</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">process</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">//テスト対象関数の呼び出し</span></span>
+<span class="line"><span style="color: #E1E4E8">    $useCase</span><span style="color: #F97583">-></span><span style="color: #B392F0">process</span><span style="color: #E1E4E8">();</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">expectException</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">EntityFailedSaveException</span><span style="color: #FF7B72">::class</span><span style="color: #C9D1D9">);</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">expectException</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">EntityFailedSaveException</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>このように<code>save</code>関数の振る舞いを決めることができます。<br>
 モック化しなかった場合、Repositoryの<code>save</code>関数にどんな値が渡された時にエラーになるか調査してテストデータを用意する必要があります。<br>
 このテストで何を担保したいのかを考えるのが重要だと思います。</p>
@@ -248,11 +231,11 @@ Entityによってはかなり記述量が増えますが、setUp等の関数を
 DBにきちんと保存できているか等のテストは統合テストとして上記とは分けて考えるべき。<br>
 統合テストがあるからといって単体テストを省略するのはよくない。</p>
 <p>テストの考え方的には</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">単体テストをクリア</span></span>
-<span class="line"><span style="color: #c9d1d9">↓</span></span>
-<span class="line"><span style="color: #c9d1d9">統合テストをクリア</span></span>
-<span class="line"><span style="color: #c9d1d9">↓</span></span>
-<span class="line"><span style="color: #c9d1d9">システムテストをクリア</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">単体テストをクリア</span></span>
+<span class="line"><span style="color: #e1e4e8">↓</span></span>
+<span class="line"><span style="color: #e1e4e8">統合テストをクリア</span></span>
+<span class="line"><span style="color: #e1e4e8">↓</span></span>
+<span class="line"><span style="color: #e1e4e8">システムテストをクリア</span></span></code></pre>
 <p>の流れにすることでテスト失敗した時にどこで失敗したかが一目瞭然になる。</p>
 <p>特にテスト駆動開発の際にいきなり統合テストを書くのは避けたい。</p>
 <p>理由は</p>
@@ -268,9 +251,4 @@ DBにきちんと保存できているか等のテストは統合テストとし
 <p>ペアプログラミング等においても、ナビゲータがテストを書き、それを通すようなコードをドライバが実装し、また役割を入れ替えて書いていくといったことがしやすくなります。これは実装順を自由に変更できるというクリーンアーキテクチャのいいところです。</p>
 <p>以前phpDocumentorについての記事を書きましたが、アジャイルの場合はできる限りの情報はコードで表現したいと考えています。<br>
 仕様書を作らない言い訳になる状態は良くないと思っていますが、仕様書がなくても困らないクオリティのテストを書くことが理想です。<br>
-個人的にユニットテストについて色々考える中で、クリーンアーキテクチャの効果を実感し理解が進みました。</p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+個人的にユニットテストについて色々考える中で、クリーンアーキテクチャの効果を実感し理解が進みました。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

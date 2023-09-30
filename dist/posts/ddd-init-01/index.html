@@ -1,28 +1,11 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 
 ## はじめに
 
 スマレジにて私が担当しているプロジェクトではドメイン駆動設計を取り入れて日々開発をしています。   
-ジョインしてからドメイン駆動設計について説明を受けたものの体系的に学べていないので書籍を一つ読みながら足りていない箇">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2022/11/26</div>
-        <h1>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</h1>
-        <div class="post">
-          <h2 id="はじめに">はじめに</h2>
+ジョインしてからドメイン駆動設計について説明を受けたものの体系的に学べていないので書籍を一つ読みながら足りていない箇"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/11/26</div><h1>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</h1><div class="post"><h2 id="はじめに">はじめに</h2>
 <p>スマレジにて私が担当しているプロジェクトではドメイン駆動設計を取り入れて日々開発をしています。<br>
 ジョインしてからドメイン駆動設計について説明を受けたものの体系的に学べていないので書籍を一つ読みながら足りていない箇所を補っていきます。<br>
 今回の記事は書籍の内容に沿っているつもりですが、多分に個人的な見解が含まれているため、書籍の著者の考えをきちんと把握したい場合はぜひ書籍を読んでみてください。
@@ -43,10 +26,10 @@
 ドメイン駆動設計とは、ドメインのモデリングによってソフトウェアの価値を高めるというアプローチの開発手法です。</p>
 <p>よく挙げられる例として、例えば日報を書くシステムを考えてみます。紙とペンがあります。
 ペンを使用して紙に文字を書いて記録するという一連の流れの中にも現実世界には非常に多くの情報があります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ペンの値段、形、重さ、インクの色</span></span>
-<span class="line"><span style="color: #c9d1d9">紙の材質、大きさ、色、形</span></span>
-<span class="line"><span style="color: #c9d1d9">日報を記入する人の名前、所属、年齢</span></span>
-<span class="line"><span style="color: #c9d1d9">日報の内容、日付、長さ...etc</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">ペンの値段、形、重さ、インクの色</span></span>
+<span class="line"><span style="color: #e1e4e8">紙の材質、大きさ、色、形</span></span>
+<span class="line"><span style="color: #e1e4e8">日報を記入する人の名前、所属、年齢</span></span>
+<span class="line"><span style="color: #e1e4e8">日報の内容、日付、長さ...etc</span></span></code></pre>
 <p>こうした無数の情報の中から、日報システムに必要な情報を定義します。</p>
 <p>例えば、</p>
 <ul>
@@ -85,29 +68,29 @@
 <p>まずは値オブジェクト(ValueObject)パターンです。<br>
 プログラミング言語にはプリミティブな値が用意されています。(例: int, string)ちなみにプリミティブには<strong>原始</strong>や<strong>初期</strong>のような意味があります。</p>
 <p>ValueObjectの例として、システムのユーザー名を例にコードで表現すると以下のようになります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class UserName</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public const MAX_LENGTH = 20;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    private string $name;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(string $name){</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->validate($name);</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->name = $name;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __toString(): string</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $this->name;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    protected function validate(string $name): void</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        if (mb_strlen($value) > self::MAX_LENGTH) {</span></span>
-<span class="line"><span style="color: #c9d1d9">            throw new InvalidArgumentException('ユーザー名は20文字以下でなければならない');</span></span>
-<span class="line"><span style="color: #c9d1d9">        }</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class UserName</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public const MAX_LENGTH = 20;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    private string $name;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(string $name){</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->validate($name);</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->name = $name;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __toString(): string</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $this->name;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    protected function validate(string $name): void</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        if (mb_strlen($value) > self::MAX_LENGTH) {</span></span>
+<span class="line"><span style="color: #e1e4e8">            throw new InvalidArgumentException('ユーザー名は20文字以下でなければならない');</span></span>
+<span class="line"><span style="color: #e1e4e8">        }</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>このようにクラスを用いてシステム固有の値を表現したものを値オブジェクト(ValueObject)とよびます。<br>
 例えば、システムにおける <strong>「ユーザー名」という値の長さ</strong>はドメインにおける知識です。
 適切なモデルをコードに落とし込む際に最適な値は必ずしもプリミティブな値であるとは限らないということになります。<br>
@@ -129,11 +112,11 @@
 <p>以下、一つずつ確認していきます。</p>
 <h3 id="値の不変性">値の不変性</h3>
 <p>「値」は不変の性質を持ちます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">private string $greet = 'こんにちは';</span></span>
-<span class="line"><span style="color: #c9d1d9">$greet = 'Hello';</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">// Helloが出力される</span></span>
-<span class="line"><span style="color: #c9d1d9">echo $greet;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">private string $greet = 'こんにちは';</span></span>
+<span class="line"><span style="color: #e1e4e8">$greet = 'Hello';</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">// Helloが出力される</span></span>
+<span class="line"><span style="color: #e1e4e8">echo $greet;</span></span></code></pre>
 <p><code>$greet</code>という変数が変更されています。どういうことでしょう。</p>
 <p>変数というのは中身を変更する際に代入をします。<br>
 代入というのは、変数の中身を変更することであり、値自体の変更ではありません。
@@ -144,37 +127,37 @@
 <p>デメリットとしては値を変更するたびにインスタンスを生成して代入をしなければならないため、パフォーマンスの面では劣ります(C言語等メモリを意識する言語を触ってみるとわかりやすいかもしれません)。が、現代の特にWeb開発においては明らかにメリットのほうが大きいはずです。</p>
 <h3 id="値は交換可能">値は交換可能</h3>
 <p>値というのは「変更」はできない不変性をもっていますが、値の変更自体は必要です。矛盾しているように聞こえますが、プログラミングにおいては私達は常に代入を用いて値の交換を行い、変更を表現しています。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">private UserName $name;</span></span>
-<span class="line"><span style="color: #c9d1d9">$name = new UserName('わたし');</span></span>
-<span class="line"><span style="color: #c9d1d9">$name = new UserName('あなた');</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">// あなたが出力される</span></span>
-<span class="line"><span style="color: #c9d1d9">echo $name;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">private UserName $name;</span></span>
+<span class="line"><span style="color: #e1e4e8">$name = new UserName('わたし');</span></span>
+<span class="line"><span style="color: #e1e4e8">$name = new UserName('あなた');</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">// あなたが出力される</span></span>
+<span class="line"><span style="color: #e1e4e8">echo $name;</span></span></code></pre>
 <p>このとき、<code>$name</code>は代入によって変更されています。つまり、どちらもUserName型の値ではありますが、インスタンスは全くの別物であり、最初に代入された値オブジェクト自体が変更されているわけではありません。</p>
 <h3 id="値は等価性によって比較される">値は等価性によって比較される</h3>
 <p>まずはプリミティブ型の値の比較について確認します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">echo (0 == 0); // true</span></span>
-<span class="line"><span style="color: #c9d1d9">echo (0 == 1); // false</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">echo (0 == 0); // true</span></span>
+<span class="line"><span style="color: #e1e4e8">echo (0 == 1); // false</span></span></code></pre>
 <p>１つ目の式の左辺の0と右辺の0は別のインスタンスですが、同じものとして扱われています。
 これは、インスタンス自身ではなく、属性によって比較されているということです。</p>
 <p>では、ValueObjectの場合にはどう表現すればよいでしょうか。
 １つ目の方法は、値の属性を取り出して比較する方法です。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">private UserName $name;</span></span>
-<span class="line"><span style="color: #c9d1d9">$name1 = new UserName('わたし');</span></span>
-<span class="line"><span style="color: #c9d1d9">$name2 = new UserName('あなた');</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">$compareResult = $name1.value == $name2.value</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">private UserName $name;</span></span>
+<span class="line"><span style="color: #e1e4e8">$name1 = new UserName('わたし');</span></span>
+<span class="line"><span style="color: #e1e4e8">$name2 = new UserName('あなた');</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">$compareResult = $name1.value == $name2.value</span></span></code></pre>
 <p>もちろん上記のコードは動作するので一見正しくみえます。
 ただ、「ValueObjectは値」なので「値の値」にアクセスしているのは不自然な記述になります。
 数値を比較する際に</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">1.value === 2.value</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">1.value === 2.value</span></span></code></pre>
 <p>という書き方をしないことからも不自然だということがわかります。</p>
 <p>どうすればいいのかというとValueObject同士が比較できるようなメソッドを用意するのが自然な記述となります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">private UserName $name;</span></span>
-<span class="line"><span style="color: #c9d1d9">$name1 = new UserName('わたし');</span></span>
-<span class="line"><span style="color: #c9d1d9">$name2 = new UserName('あなた');</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">$compareResult = $name1.equals($name2);</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">private UserName $name;</span></span>
+<span class="line"><span style="color: #e1e4e8">$name1 = new UserName('わたし');</span></span>
+<span class="line"><span style="color: #e1e4e8">$name2 = new UserName('あなた');</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">$compareResult = $name1.equals($name2);</span></span></code></pre>
 <p>この比較用メソッドを用意することの利点</p>
 <ul>
 <li>記述が自然になる</li>
@@ -205,20 +188,20 @@ ValueObjectはその属性によって識別されるオブジェクトです。
 <p>ValueObjectは不変なオブジェクトでした。変更を表現するためには代入を使用していました。<br>
 エンティティは可変なオブジェクトです。エンティティの属性は変化することが許容されています。</p>
 <p>例えば、ValueObjectの際にも例に挙げたようにユーザーという概念について考えてみます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class User</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    private string $name;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(string $name)</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->name = $name;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function changeName(string $name)</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->name = $name;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class User</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    private string $name;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(string $name)</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->name = $name;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function changeName(string $name)</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->name = $name;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>上記のように「ユーザー名を変更する」という振る舞いをエンティティに持たせることができます。<br>
 ValueObjectと違い、属性が変わったとしてもインスタンスは同じです。<br>
 このようにエンティティの属性は変更することが許容されています。</p>
@@ -237,25 +220,25 @@ ValueObjectと違い、属性が変わったとしてもインスタンスは同
 エンティティにおいて、<strong>そのエンティティをエンティティたらしめるもの</strong>は識別子です。
 つまり、エンティティのもつすべての属性が変更されようとも識別子が同じであればエンティティは同一のものとなります。</p>
 <p>この同一性の比較を行うための最も典型的な実装が、ValueObjectのときと同じく、比較用の振る舞いをもつことです。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class User</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    private string $identifier;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    private string $name;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(</span></span>
-<span class="line"><span style="color: #c9d1d9">        string $identifier,</span></span>
-<span class="line"><span style="color: #c9d1d9">        string $name)</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->identifier = $identifier;</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->name = $name;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function equals(self $user): bool</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return (string)$this->identifier === (string)$user->identifier;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class User</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    private string $identifier;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    private string $name;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(</span></span>
+<span class="line"><span style="color: #e1e4e8">        string $identifier,</span></span>
+<span class="line"><span style="color: #e1e4e8">        string $name)</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->identifier = $identifier;</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->name = $name;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function equals(self $user): bool</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return (string)$this->identifier === (string)$user->identifier;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>ValueObjectと決定的に違う点はValueObjectではすべての属性を比較の対象としていましたが、エンティティの場合は比較処理の対象が識別子のみである点です。</p>
 <h2 id="ドメインモデルから実装する際のvalueobjectとエンティティの判断基準">ドメインモデルから実装する際のValueObjectとエンティティの判断基準</h2>
 <p>ValueObjectもエンティティもドメインモデルを表現するためのドメインオブジェクトであり、非常に似通っています。<br>
@@ -301,9 +284,4 @@ ValueObjectと違い、属性が変わったとしてもインスタンスは同
 <p>今回参考にさせて頂いた書籍には他にも「集約」や「仕様」等まだまだドメイン駆動設計についての紹介がありますので一度手にとって読んで頂くことをおすすめしたいです。</p>
 <p>今回の記事がこれからドメイン駆動設計に入門しようとする人の助けになれば幸いです。</p>
 <h2 id="参考">参考</h2>
-<p><a href="https://qiita.com/little_hand_s/items/721afcbc555444663247">https://qiita.com/little_hand_s/items/721afcbc555444663247</a></p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+<p><a href="https://qiita.com/little_hand_s/items/721afcbc555444663247">https://qiita.com/little_hand_s/items/721afcbc555444663247</a></p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

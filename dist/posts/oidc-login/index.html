@@ -1,28 +1,11 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>OIDCを使用したクライアントシークレットなしでのソーシャルログイン実装について調査してみる</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>OIDCを使用したクライアントシークレットなしでのソーシャルログイン実装について調査してみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## はじめに
 
 最近OpenID Connect(OIDC)を使用したログインを実装するにあたって、implecit flowを用いる方法があることを教えてもらったので調査した結果をまとめてみます。
 
-関連するRFCや信頼できそうな記事">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2023/05/28</div>
-        <h1>OIDCを使用したクライアントシークレットなしでのソーシャルログイン実装について調査してみる</h1>
-        <div class="post">
-          <h2 id="はじめに">はじめに</h2>
+関連するRFCや信頼できそうな記事"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/05/28</div><h1>OIDCを使用したクライアントシークレットなしでのソーシャルログイン実装について調査してみる</h1><div class="post"><h2 id="はじめに">はじめに</h2>
 <p>最近OpenID Connect(OIDC)を使用したログインを実装するにあたって、implecit flowを用いる方法があることを教えてもらったので調査した結果をまとめてみます。</p>
 <p>関連するRFCや信頼できそうな記事、理解しやすい記事を含めたいと思います。</p>
 <p>参考: <a href="https://zenn.dev/ritou/articles/2796b1cc8b6d32">OIDCのImplicit FlowでClientSecretを使わずにID連携する</a></p>
@@ -154,9 +137,4 @@
 <h2 id="所感">所感</h2>
 <p>以前記事にしたりしてわかった気になっていた認証認可周りについて改めて調査しなおすいい機会になりました。
 ただ闇雲に仕様を追うことだけでなく、要件を意識することの大切さを改めて感じた次第です。
-こうした調査を通して、自分の知識の不足を感じることが多々ありますが、できる限り信頼のおける情報元を探し、こうしてアウトプットしていくことをこれからも継続していきたいと思います!</p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+こうした調査を通して、自分の知識の不足を感じることが多々ありますが、できる限り信頼のおける情報元を探し、こうしてアウトプットしていくことをこれからも継続していきたいと思います!</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

@@ -1,28 +1,11 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>OpenID Connectについて</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>OpenID Connectについて</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 
 ### はじめに
 今回はOpenID Connectについてです。   
 認証の仕組みについて理解に乏しい部分があったため、調査したいと思います。   
-今回はOpenID Connectを利用した認証の流れについて理解することを目的と">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2022/09/07</div>
-        <h1>OpenID Connectについて</h1>
-        <div class="post">
-          <h3 id="はじめに">はじめに</h3>
+今回はOpenID Connectを利用した認証の流れについて理解することを目的と"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/09/07</div><h1>OpenID Connectについて</h1><div class="post"><h3 id="はじめに">はじめに</h3>
 <p>今回はOpenID Connectについてです。<br>
 認証の仕組みについて理解に乏しい部分があったため、調査したいと思います。<br>
 今回はOpenID Connectを利用した認証の流れについて理解することを目的としています。<br>
@@ -127,30 +110,30 @@ OpenID Connectは認証のための仕組みだが、本質は<strong>IDトー�
 <a href="https://qiita.com/TakahikoKawasaki/items/8f0e422c7edd2d220e06">https://qiita.com/TakahikoKawasaki/items/8f0e422c7edd2d220e06</a></p>
 <h3 id="idトークンとは">IDトークンとは</h3>
 <p>以下で構成される文字列</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ヘッダー.ペイロード(本文).署名</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">ヘッダー.ペイロード(本文).署名</span></span></code></pre>
 <p>1つ目のピリオドまでがヘッダー、2つ目のピリオドまでがペイロード、以降が署名を表している。</p>
 <p>例</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">eyJraWQiOiIxZTlnZGs3IiwiYWxnIjoiUlMyNTYifQ.ewogImlz</span></span>
-<span class="line"><span style="color: #c9d1d9">cyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4</span></span>
-<span class="line"><span style="color: #c9d1d9">Mjg5NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAi</span></span>
-<span class="line"><span style="color: #c9d1d9">bi0wUzZfV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEz</span></span>
-<span class="line"><span style="color: #c9d1d9">MTEyODA5NzAsCiAibmFtZSI6ICJKYW5lIERvZSIsCiAiZ2l2ZW5fbmFtZSI6</span></span>
-<span class="line"><span style="color: #c9d1d9">ICJKYW5lIiwKICJmYW1pbHlfbmFtZSI6ICJEb2UiLAogImdlbmRlciI6ICJm</span></span>
-<span class="line"><span style="color: #c9d1d9">ZW1hbGUiLAogImJpcnRoZGF0ZSI6ICIwMDAwLTEwLTMxIiwKICJlbWFpbCI6</span></span>
-<span class="line"><span style="color: #c9d1d9">ICJqYW5lZG9lQGV4YW1wbGUuY29tIiwKICJwaWN0dXJlIjogImh0dHA6Ly9l</span></span>
-<span class="line"><span style="color: #c9d1d9">eGFtcGxlLmNvbS9qYW5lZG9lL21lLmpwZyIKfQ.rHQjEmBqn9Jre0OLykYNn</span></span>
-<span class="line"><span style="color: #c9d1d9">spA10Qql2rvx4FsD00jwlB0Sym4NzpgvPKsDjn_wMkHxcp6CilPcoKrWHcip</span></span>
-<span class="line"><span style="color: #c9d1d9">R2iAjzLvDNAReF97zoJqq880ZD1bwY82JDauCXELVR9O6_B0w3K-E7yM2mac</span></span>
-<span class="line"><span style="color: #c9d1d9">AAgNCUwtik6SjoSUZRcf-O5lygIyLENx882p6MtmwaL1hd6qn5RZOQ0TLrOY</span></span>
-<span class="line"><span style="color: #c9d1d9">u0532g9Exxcm-ChymrB4xLykpDj3lUivJt63eEGGN6DH5K6o33TcxkIjNrCD</span></span>
-<span class="line"><span style="color: #c9d1d9">4XB1CKKumZvCedgHHF3IAK4dVEDSUoGlH9z4pP_eWYNXvqQOjGs-rDaQzUHl</span></span>
-<span class="line"><span style="color: #c9d1d9">6cQQWNiDpWOl_lxXjQEvQ</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">eyJraWQiOiIxZTlnZGs3IiwiYWxnIjoiUlMyNTYifQ.ewogImlz</span></span>
+<span class="line"><span style="color: #e1e4e8">cyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4</span></span>
+<span class="line"><span style="color: #e1e4e8">Mjg5NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAi</span></span>
+<span class="line"><span style="color: #e1e4e8">bi0wUzZfV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEz</span></span>
+<span class="line"><span style="color: #e1e4e8">MTEyODA5NzAsCiAibmFtZSI6ICJKYW5lIERvZSIsCiAiZ2l2ZW5fbmFtZSI6</span></span>
+<span class="line"><span style="color: #e1e4e8">ICJKYW5lIiwKICJmYW1pbHlfbmFtZSI6ICJEb2UiLAogImdlbmRlciI6ICJm</span></span>
+<span class="line"><span style="color: #e1e4e8">ZW1hbGUiLAogImJpcnRoZGF0ZSI6ICIwMDAwLTEwLTMxIiwKICJlbWFpbCI6</span></span>
+<span class="line"><span style="color: #e1e4e8">ICJqYW5lZG9lQGV4YW1wbGUuY29tIiwKICJwaWN0dXJlIjogImh0dHA6Ly9l</span></span>
+<span class="line"><span style="color: #e1e4e8">eGFtcGxlLmNvbS9qYW5lZG9lL21lLmpwZyIKfQ.rHQjEmBqn9Jre0OLykYNn</span></span>
+<span class="line"><span style="color: #e1e4e8">spA10Qql2rvx4FsD00jwlB0Sym4NzpgvPKsDjn_wMkHxcp6CilPcoKrWHcip</span></span>
+<span class="line"><span style="color: #e1e4e8">R2iAjzLvDNAReF97zoJqq880ZD1bwY82JDauCXELVR9O6_B0w3K-E7yM2mac</span></span>
+<span class="line"><span style="color: #e1e4e8">AAgNCUwtik6SjoSUZRcf-O5lygIyLENx882p6MtmwaL1hd6qn5RZOQ0TLrOY</span></span>
+<span class="line"><span style="color: #e1e4e8">u0532g9Exxcm-ChymrB4xLykpDj3lUivJt63eEGGN6DH5K6o33TcxkIjNrCD</span></span>
+<span class="line"><span style="color: #e1e4e8">4XB1CKKumZvCedgHHF3IAK4dVEDSUoGlH9z4pP_eWYNXvqQOjGs-rDaQzUHl</span></span>
+<span class="line"><span style="color: #e1e4e8">6cQQWNiDpWOl_lxXjQEvQ</span></span></code></pre>
 <p>この形式は<a href="https://www.rfc-editor.org/rfc/rfc7515">RFC 7515</a>で定義されている形式らしい。<br>
 JWS(JSON Web Signature)と呼ばれる形式。
 <strong>base64url</strong>という方式でエンコードされたデータ。</p>
 <h3 id="jwejson-web-encryption">JWE(JSON Web Encryption)</h3>
 <p>また、以下のような<strong>JWE</strong>という形式のIDトークンも存在する(<a href="https://www.rfc-editor.org/rfc/rfc7516">RFC 7516</a>)</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">ヘッダー.キー.初期ベクター.暗号文.認証タグ</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">ヘッダー.キー.初期ベクター.暗号文.認証タグ</span></span></code></pre>
 <p>この形式はIDトークンを暗号化したいときに使用される。
 IDトークンの場合、4番目のフィールド、暗号文には<code>ヘッダー.ペイロード.署名</code>の形の平文を暗号化したものが入る。
 つまりJWEの中にJWSが入る形式となる。</p>
@@ -197,9 +180,4 @@ IDトークンの場合、4番目のフィールド、暗号文には<code>ヘ�
 最近のサービスでは利用していないほうが珍しい仕組みだと思うのでその内容を詳しく勉強する機会になりました。<br>
 認証と認可の違いについてもきちんと説明できるレベルまで自分の中に落とし込めた気がします。<br>
 認証処理の委譲を行うことでセキュリティリスクの低減や実装コストの低減ができます。<br>
-ただ、仕組み上OpenID ProviderへのIDとパスワードが漏洩してしまうと利用しているサービスすべてへ影響が出る点はデメリットかなとも感じましたが、それを超えるメリットがあると思います。</p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+ただ、仕組み上OpenID ProviderへのIDとパスワードが漏洩してしまうと利用しているサービスすべてへ影響が出る点はデメリットかなとも感じましたが、それを超えるメリットがあると思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
