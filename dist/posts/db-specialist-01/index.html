@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>DB基礎 正規化と関係演算</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>DB基礎 正規化と関係演算</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## はじめに
 
 今回は実施まであと10日に迫ったIPAのDBスペシャリスト試験への対策としてDBの基礎的な部分の復習をしていきます。  
-本業に加えて副業、個人開発等も行いながらのため対策の時間をなかなか捻出できていませんが、受験申し込">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2023/09/28</div>
-        <h1>DB基礎 正規化と関係演算</h1>
-        <div class="post">
-          <h2 id="はじめに">はじめに</h2>
+本業に加えて副業、個人開発等も行いながらのため対策の時間をなかなか捻出できていませんが、受験申し込"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/09/28</div><h1>DB基礎 正規化と関係演算</h1><div class="post"><h2 id="はじめに">はじめに</h2>
 <p>今回は実施まであと10日に迫ったIPAのDBスペシャリスト試験への対策としてDBの基礎的な部分の復習をしていきます。<br>
 本業に加えて副業、個人開発等も行いながらのため対策の時間をなかなか捻出できていませんが、受験申し込みはしたので試験当日はしっかり受験会場には行きたいと思います。</p>
 <h3 id="rdb関係データベースの基本概念の簡単な紹介">RDB（関係データベース）の基本概念の簡単な紹介</h3>
@@ -350,8 +333,8 @@ RailsやLaravelでは、主キーはデフォルトで「id」という名前の
 <li><strong>SQLクエリ:</strong> <code>SELECT * FROM テーブル名 WHERE 条件;</code></li>
 </ul>
 <p><strong>例:</strong></p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">-- 顧客名が「田中」の行を抜き出します。</span></span>
-<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 顧客 </span><span style="color: #FF7B72">WHERE</span><span style="color: #C9D1D9"> 顧客名 </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'田中'</span><span style="color: #C9D1D9">;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #6A737D">-- 顧客名が「田中」の行を抜き出します。</span></span>
+<span class="line"><span style="color: #F97583">SELECT</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">FROM</span><span style="color: #E1E4E8"> 顧客 </span><span style="color: #F97583">WHERE</span><span style="color: #E1E4E8"> 顧客名 </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'田中'</span><span style="color: #E1E4E8">;</span></span></code></pre>
 <p>このクエリによって以下のような結果が得られます。</p>
 
 
@@ -373,8 +356,8 @@ RailsやLaravelでは、主キーはデフォルトで「id」という名前の
 <li><strong>SQLクエリ:</strong> <code>SELECT 列名 FROM テーブル名;</code></li>
 </ul>
 <p><strong>例:</strong></p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">-- 顧客テーブルから「顧客名」の列だけを抜き出します。</span></span>
-<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> 顧客名 </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 顧客;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #6A737D">-- 顧客テーブルから「顧客名」の列だけを抜き出します。</span></span>
+<span class="line"><span style="color: #F97583">SELECT</span><span style="color: #E1E4E8"> 顧客名 </span><span style="color: #F97583">FROM</span><span style="color: #E1E4E8"> 顧客;</span></span></code></pre>
 <p>このクエリによって以下のような結果が得られます。</p>
 
 
@@ -397,8 +380,8 @@ RailsやLaravelでは、主キーはデフォルトで「id」という名前の
 <li><strong>SQLクエリ:</strong> <code>SELECT * FROM テーブル1 JOIN テーブル2 ON テーブル1.列名 = テーブル2.列名;</code></li>
 </ul>
 <p><strong>例:</strong></p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">-- 顧客テーブルと注文テーブルを「顧客ID」で結合します。</span></span>
-<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 顧客 </span><span style="color: #FF7B72">JOIN</span><span style="color: #C9D1D9"> 注文 </span><span style="color: #FF7B72">ON</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">顧客</span><span style="color: #C9D1D9">.</span><span style="color: #79C0FF">顧客ID</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">注文</span><span style="color: #C9D1D9">.</span><span style="color: #79C0FF">顧客ID</span><span style="color: #C9D1D9">;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #6A737D">-- 顧客テーブルと注文テーブルを「顧客ID」で結合します。</span></span>
+<span class="line"><span style="color: #F97583">SELECT</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">FROM</span><span style="color: #E1E4E8"> 顧客 </span><span style="color: #F97583">JOIN</span><span style="color: #E1E4E8"> 注文 </span><span style="color: #F97583">ON</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">顧客</span><span style="color: #E1E4E8">.</span><span style="color: #79B8FF">顧客ID</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">注文</span><span style="color: #E1E4E8">.</span><span style="color: #79B8FF">顧客ID</span><span style="color: #E1E4E8">;</span></span></code></pre>
 <p>このクエリによって以下のような結果が得られます。</p>
 
 
@@ -501,9 +484,9 @@ RailsやLaravelでは、主キーはデフォルトで「id」という名前の
 
 <table><thead><tr><th>商品ID</th><th>商品名</th></tr></thead><tbody><tr><td>1</td><td>パソコン</td></tr><tr><td>2</td><td>椅子</td></tr><tr><td>3</td><td>テーブル</td></tr></tbody></table>
 <p><strong>SQLクエリの例:</strong></p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> テーブル1</span></span>
-<span class="line"><span style="color: #FF7B72">UNION</span></span>
-<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> テーブル2;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">SELECT</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">FROM</span><span style="color: #E1E4E8"> テーブル1</span></span>
+<span class="line"><span style="color: #F97583">UNION</span></span>
+<span class="line"><span style="color: #F97583">SELECT</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">FROM</span><span style="color: #E1E4E8"> テーブル2;</span></span></code></pre>
 <h3 id="2-積intersect">2. 積（INTERSECT）</h3>
 <p>論理積(AND)とは、積集合を求める演算子です。</p>
 <p>両方のテーブルに共通する行を取り出す演算子です。</p>
@@ -523,9 +506,9 @@ RailsやLaravelでは、主キーはデフォルトで「id」という名前の
 
 <table><thead><tr><th>商品ID</th><th>商品名</th></tr></thead><tbody><tr><td>2</td><td>椅子</td></tr></tbody></table>
 <p><strong>SQLクエリの例:</strong></p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> テーブル1</span></span>
-<span class="line"><span style="color: #FF7B72">INTERSECT</span></span>
-<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> テーブル2;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">SELECT</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">FROM</span><span style="color: #E1E4E8"> テーブル1</span></span>
+<span class="line"><span style="color: #F97583">INTERSECT</span></span>
+<span class="line"><span style="color: #F97583">SELECT</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">FROM</span><span style="color: #E1E4E8"> テーブル2;</span></span></code></pre>
 <h3 id="3-差except">3. 差（EXCEPT）</h3>
 <p>差集合を求める演算子で、片方のテーブルに含まれ、もう一方のテーブルには含まれない行を取り出します。</p>
 <p>SQLでは、EXCEPT句が該当します。</p>
@@ -545,9 +528,9 @@ RailsやLaravelでは、主キーはデフォルトで「id」という名前の
 
 <table><thead><tr><th>商品ID</th><th>商品名</th></tr></thead><tbody><tr><td>1</td><td>パソコン</td></tr></tbody></table>
 <p><strong>SQLクエリの例:</strong></p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 商品テーブル1</span></span>
-<span class="line"><span style="color: #FF7B72">EXCEPT</span></span>
-<span class="line"><span style="color: #FF7B72">SELECT</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">*</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">FROM</span><span style="color: #C9D1D9"> 商品テーブル2;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">SELECT</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">FROM</span><span style="color: #E1E4E8"> 商品テーブル1</span></span>
+<span class="line"><span style="color: #F97583">EXCEPT</span></span>
+<span class="line"><span style="color: #F97583">SELECT</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">FROM</span><span style="color: #E1E4E8"> 商品テーブル2;</span></span></code></pre>
 <h3 id="4-商division">4. 商（DIVISION）</h3>
 <p>商を求める際の基本的な考え方は、一方のテーブルの全ての要素がもう一方のテーブルに存在する時、その要素を取り出します。
 ただし、SQL標準には直接的な商演算のサポートは含まれておらず、商演算を行うためには、他の基本演算を組み合わせる必要がありますので省略します。</p>
@@ -555,9 +538,4 @@ RailsやLaravelでは、主キーはデフォルトで「id」という名前の
 <p><a href="https://www.db-siken.com/">データベーススペシャリストドットコム</a></p>
 <h2 id="所感">所感</h2>
 <p>これまでも基本情報や応用情報といったIPAの試験を受けてきましたが、今回のDBスペシャリスト試験はこれまでの試験と比べても難易度が高いと言われています。</p>
-<p>ただ、基本的な対策はやっぱり過去問になると思うので、残り時間は少ないですが、演習中心に対策を進めていきたいと思います。</p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+<p>ただ、基本的な対策はやっぱり過去問になると思うので、残り時間は少ないですが、演習中心に対策を進めていきたいと思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
