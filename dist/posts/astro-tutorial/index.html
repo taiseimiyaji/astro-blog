@@ -1,28 +1,11 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>astroに入門してみる</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>astroに入門してみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 
 ## はじめに
 
 最近フロントエンドへの自身の理解の甘さを感じるようになってきました。  
-ここ最近TypeScriptなどフロントエンドに関係する記事をいくつか公開しましたが、そろそろ実際になにか作ってみようと感じるようになりました。">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2023/02/04</div>
-        <h1>astroに入門してみる</h1>
-        <div class="post">
-          <h2 id="はじめに">はじめに</h2>
+ここ最近TypeScriptなどフロントエンドに関係する記事をいくつか公開しましたが、そろそろ実際になにか作ってみようと感じるようになりました。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/02/04</div><h1>astroに入門してみる</h1><div class="post"><h2 id="はじめに">はじめに</h2>
 <p>最近フロントエンドへの自身の理解の甘さを感じるようになってきました。<br>
 ここ最近TypeScriptなどフロントエンドに関係する記事をいくつか公開しましたが、そろそろ実際になにか作ってみようと感じるようになりました。<br>
 そこで今回は気になっていた<code>astro</code>というフレームワークを触ってみようと思います。<br>
@@ -113,26 +96,26 @@ MDXを使用することで以下のメリットがあります。</p>
 </ul>
 <p>公式サイトから引用した例は下記の様になります。<br>
 一見MarkdownにHTMLが埋め込まれたもののように見えます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">export const Thing = () => &#x3C;>World&#x3C;/></span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">export const Thing = () => &#x3C;>World&#x3C;/></span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #79C0FF; font-style: italic"># Hello &#x3C;Thing /></span></span></code></pre>
+<span class="line"><span style="color: #79B8FF; font-weight: bold"># Hello &#x3C;Thing /></span></span></code></pre>
 <p>これがJavaScriptに変換され、下記のようになります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #8B949E">/* @jsxRuntime automatic @jsxImportSource react */</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #6A737D">/* @jsxRuntime automatic @jsxImportSource react */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FF7B72">export</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">Thing</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> () </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> &#x3C;>World&#x3C;/></span></span>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">Thing</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> () </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> &#x3C;>World&#x3C;/></span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FF7B72">export</span><span style="color: #FFA657"> </span><span style="color: #FF7B72">default</span><span style="color: #FFA657"> </span><span style="color: #FF7B72">function</span><span style="color: #FFA657"> </span><span style="color: #D2A8FF">MDXContent</span><span style="color: #FFA657">() </span><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">  </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> &#x3C;</span><span style="color: #7EE787">h1</span><span style="color: #C9D1D9">>Hello &#x3C;</span><span style="color: #7EE787">Thing</span><span style="color: #C9D1D9"> />&#x3C;/</span><span style="color: #7EE787">h1</span><span style="color: #C9D1D9">></span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">default</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">MDXContent</span><span style="color: #E1E4E8">() {</span></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> &#x3C;</span><span style="color: #85E89D">h1</span><span style="color: #E1E4E8">>Hello &#x3C;</span><span style="color: #79B8FF">Thing</span><span style="color: #E1E4E8"> />&#x3C;/</span><span style="color: #85E89D">h1</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>変換後のコードを見てみると、exportが記載されており、コンポーネントとして出力されることがわかります。</p>
 <p>下記のようなmdxコンポーネントを作成し、</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #79C0FF; font-style: italic"># Hi!</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #79B8FF; font-weight: bold"># Hi!</span></span></code></pre>
 <p>下記のようにインポートできます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">import</span><span style="color: #C9D1D9"> React </span><span style="color: #FF7B72">from</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'react'</span><span style="color: #C9D1D9">;</span></span>
-<span class="line"><span style="color: #FF7B72">import</span><span style="color: #C9D1D9"> ReactDom </span><span style="color: #FF7B72">from</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'react-dom'</span><span style="color: #C9D1D9">;</span></span>
-<span class="line"><span style="color: #FF7B72">import</span><span style="color: #C9D1D9"> Example </span><span style="color: #FF7B72">from</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'./example.mdx'</span><span style="color: #C9D1D9">;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> React </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'react'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> ReactDom </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'react-dom'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> Example </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'./example.mdx'</span><span style="color: #E1E4E8">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">ReactDom.</span><span style="color: #D2A8FF">render</span><span style="color: #C9D1D9">(&#x3C;</span><span style="color: #7EE787">Example</span><span style="color: #C9D1D9"> />, document.</span><span style="color: #D2A8FF">querySelector</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'#root'</span><span style="color: #C9D1D9">));</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">ReactDom.</span><span style="color: #B392F0">render</span><span style="color: #E1E4E8">(&#x3C;</span><span style="color: #79B8FF">Example</span><span style="color: #E1E4E8"> />, document.</span><span style="color: #B392F0">querySelector</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'#root'</span><span style="color: #E1E4E8">));</span></span></code></pre>
 <p>jsxとして出力されていますが、Reactに結合しているわけではなく、<code>Preact</code>, <code>Vue</code>, <code>Emotion</code>などでも使用できるようです。<br>
 あくまでプログラミング言語ですが、jsxを理解できればあまり学習コストは高くないように感じました。</p>
 <h2 id="astroにおけるルーティング">astroにおけるルーティング</h2>
@@ -141,15 +124,15 @@ MDXを使用することで以下のメリットがあります。</p>
 <code>src/pages</code>ディレクトリ内に<code>.md</code>ファイルもしくは<code>.mdx</code>ファイルを置くだけです。<br>
 また、サブディレクトリ配下も自動的にページルートを構築します。<br>
 また、front-matterを使用することで下書きページ扱いできたりもします。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #C9D1D9">---</span></span>
-<span class="line"><span style="color: #7EE787">title</span><span style="color: #C9D1D9">: </span><span style="color: #A5D6FF">タイトル</span></span>
-<span class="line"><span style="color: #7EE787">draft</span><span style="color: #C9D1D9">: </span><span style="color: #79C0FF">true</span></span>
-<span class="line"><span style="color: #C9D1D9">---</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">---</span></span>
+<span class="line"><span style="color: #85E89D">title</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">タイトル</span></span>
+<span class="line"><span style="color: #85E89D">draft</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">true</span></span>
+<span class="line"><span style="color: #E1E4E8">---</span></span></code></pre>
 <p>markdownファイルの結果は<code>astro.glob()</code>関数にて取得できるので、ビルドに含めないようにフィルタリングすることで下書き機能が実現できます。<br>
 <code>astro.glob()</code>については公式リファレンスを参照すると動きがわかりやすいです。<br>
 <a href="https://docs.astro.build/en/reference/api-reference/">https://docs.astro.build/en/reference/api-reference/</a></p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">posts</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">await</span><span style="color: #C9D1D9"> Astro.</span><span style="color: #D2A8FF">glob</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'../pages/post/*.md'</span><span style="color: #C9D1D9">);</span></span>
-<span class="line"><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">nonDraftPosts</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> posts.</span><span style="color: #D2A8FF">filter</span><span style="color: #C9D1D9">((</span><span style="color: #FFA657">post</span><span style="color: #C9D1D9">) </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">!</span><span style="color: #C9D1D9">post.frontmatter.draft);</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">posts</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">await</span><span style="color: #E1E4E8"> Astro.</span><span style="color: #B392F0">glob</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'../pages/post/*.md'</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">nonDraftPosts</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> posts.</span><span style="color: #B392F0">filter</span><span style="color: #E1E4E8">((</span><span style="color: #FFAB70">post</span><span style="color: #E1E4E8">) </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> </span><span style="color: #F97583">!</span><span style="color: #E1E4E8">post.frontmatter.draft);</span></span></code></pre>
 <p>また、デフォルトでShikiとPrismといったシンタックスハイライトをサポートしているのもエンジニアからすると嬉しい機能です。</p>
 <h2 id="まとめ">まとめ</h2>
 <ul>
@@ -169,9 +152,4 @@ astroを布教して社内でもエンジニアの技術発信がもっと活発
 <p>リポジトリ
 <a href="https://github.com/taiseimiyaji/astro-blog">https://github.com/taiseimiyaji/astro-blog</a></p>
 <p>デプロイ先
-<a href="https://www.lyricrime.com/">https://www.lyricrime.com/</a></p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+<a href="https://www.lyricrime.com/">https://www.lyricrime.com/</a></p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

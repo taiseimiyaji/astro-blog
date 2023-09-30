@@ -1,26 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>Dockerを雰囲気ではなく理解して使う</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>Dockerを雰囲気ではなく理解して使う</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## はじめに
 
-以前Dockerについてごく簡単に[まとめた記事](https://taisei-miyaji.hatenadiary.com/entry/2022/03/02/230306)を書きましたが、Webエンジニアになって一年">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2023/02/11</div>
-        <h1>Dockerを雰囲気ではなく理解して使う</h1>
-        <div class="post">
-          <h2 id="はじめに">はじめに</h2>
+以前Dockerについてごく簡単に[まとめた記事](https://taisei-miyaji.hatenadiary.com/entry/2022/03/02/230306)を書きましたが、Webエンジニアになって一年"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/02/11</div><h1>Dockerを雰囲気ではなく理解して使う</h1><div class="post"><h2 id="はじめに">はじめに</h2>
 <p>以前Dockerについてごく簡単に<a href="https://taisei-miyaji.hatenadiary.com/entry/2022/03/02/230306">まとめた記事</a>を書きましたが、Webエンジニアになって一年が経とうとしているので改めてDockerについてまとめようと思います。<br>
 公式ドキュメントを自分なりに解釈してまとめたいと思います。<br>
 Dockerについての入門からみていき、普段業務で使用しているコマンドの中身を理解していきます。</p>
@@ -35,7 +18,7 @@ Dockerについての入門からみていき、普段業務で使用してい�
 </ul>
 <h2 id="dockerとは">Dockerとは</h2>
 <p>公式には以下のように説明があります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">Docker はアプリケーションを開発（developing）、移動（shipping）、実行（running）するためのオープンなプラットフォームです。Docker はインフラストラクチャ 1 とアプリケーションを切り離すため、ソフトウェアを短時間で提供できます。Docker があれば、アプリケーションを管理するのと同じ方法で、あなたのインフラも管理できます。Docker 的な手法を最大限活用しますと、テストやコードのデプロイを素早くできますので、コードを書いてから、プロダクション（実行環境）で動かすまでにかかる時間を著しく軽減できます。</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">Docker はアプリケーションを開発（developing）、移動（shipping）、実行（running）するためのオープンなプラットフォームです。Docker はインフラストラクチャ 1 とアプリケーションを切り離すため、ソフトウェアを短時間で提供できます。Docker があれば、アプリケーションを管理するのと同じ方法で、あなたのインフラも管理できます。Docker 的な手法を最大限活用しますと、テストやコードのデプロイを素早くできますので、コードを書いてから、プロダクション（実行環境）で動かすまでにかかる時間を著しく軽減できます。</span></span></code></pre>
 <p>Dockerを使用することで、コンテナというものを使ってインフラをGitのようなバージョン管理ツールを用いて管理することができます。<br>
 コンテナは隔離された環境です。<br>
 ホストコンピュータ上に何がインストールされているかに関係なく、コンテナ上にアプリケーションのパッケージ化、実行が可能です。<br>
@@ -54,7 +37,7 @@ Dockerはこのコンテナという技術のライフサイクルを管理す�
 <p>といったメリットがあります。</p>
 <h2 id="同じハードウェア上で負荷の高い処理を実行">同じハードウェア上で負荷の高い処理を実行</h2>
 <p>以下公式からの引用です。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">Docker は軽量かつ高速です。ハイパーバイザ・ベースの仮想マシンに取って変わる、実用的で費用対効果の高いものです。したがってコンピュータ性能をフルに活用してビジネス目標を達成できます。Docker は高度に処理集中する環境に適しており、さらには中小規模の、より少ないリソースの中でのシステム構築にも適しています。</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">Docker は軽量かつ高速です。ハイパーバイザ・ベースの仮想マシンに取って変わる、実用的で費用対効果の高いものです。したがってコンピュータ性能をフルに活用してビジネス目標を達成できます。Docker は高度に処理集中する環境に適しており、さらには中小規模の、より少ないリソースの中でのシステム構築にも適しています。</span></span></code></pre>
 <h2 id="dockerにおける用語">Dockerにおける用語</h2>
 <p>雰囲気でDockerを使わないために、イメージとコンテナという用語についてどういうものなのかを理解する必要がありそうです。</p>
 <h3 id="イメージとは">イメージとは</h3>
@@ -77,33 +60,33 @@ Dockerはこのコンテナという技術のライフサイクルを管理す�
 <p>アプリケーションを構築するには、<code>Dockerfile</code>を使います。
 <code>Dockerfile</code>とは、コンテナイメージの作成で使う命令が書かれたスクリプトです。</p>
 <p>以下のようなファイルを用意し、<code>docker build</code>コマンドを使ってコンテナイメージを構築します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9"># syntax=docker/dockerfile:1</span></span>
-<span class="line"><span style="color: #c9d1d9">FROM node:18-alpine</span></span>
-<span class="line"><span style="color: #c9d1d9">WORKDIR /app</span></span>
-<span class="line"><span style="color: #c9d1d9">COPY ..</span></span>
-<span class="line"><span style="color: #c9d1d9">RUN yarn install --production</span></span>
-<span class="line"><span style="color: #c9d1d9">CMD ["node", "src/index.js"]</span></span>
-<span class="line"><span style="color: #c9d1d9">EXPOSE 3000</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8"># syntax=docker/dockerfile:1</span></span>
+<span class="line"><span style="color: #e1e4e8">FROM node:18-alpine</span></span>
+<span class="line"><span style="color: #e1e4e8">WORKDIR /app</span></span>
+<span class="line"><span style="color: #e1e4e8">COPY ..</span></span>
+<span class="line"><span style="color: #e1e4e8">RUN yarn install --production</span></span>
+<span class="line"><span style="color: #e1e4e8">CMD ["node", "src/index.js"]</span></span>
+<span class="line"><span style="color: #e1e4e8">EXPOSE 3000</span></span></code></pre>
 <p>内容は</p>
 <ul>
 <li>イメージのダウンロード</li>
 <li>アプリの依存関係をインストール</li>
 <li>CMD … このイメージでコンテナを起動するときにデフォルトで実行するコマンドを指定</li>
 </ul>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker build -t getting-started .</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker build -t getting-started .</span></span></code></pre>
 <p><code>-t</code>タグでイメージにタグをつけることができます。コンテナの実行時にこのイメージ名を指定できます。<br>
 最後の<code>.</code>で現在のディレクトリの<code>Dockerfile</code>を探します。</p>
 <h3 id="コンテナの起動">コンテナの起動</h3>
 <p>コンテナの起動には下記の様なコマンドを実行します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker run -dp 3000:3000 getting-started</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker run -dp 3000:3000 getting-started</span></span></code></pre>
 <p><code>-d</code>オプションでバックグラウンドで実行されます。<br>
 <code>-p</code>オプションでコンテナのポートとホスト側のポートをマッピングします。</p>
 <h2 id="コンテナの停止削除">コンテナの停止、削除</h2>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker ps</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker ps</span></span></code></pre>
 <p>コンテナのIDが出力されます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker stop &#x3C;コンテナID></span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker stop &#x3C;コンテナID></span></span></code></pre>
 <p>コンテナが停止されます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker rm  [-f] &#x3C;コンテナID></span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker rm  [-f] &#x3C;コンテナID></span></span></code></pre>
 <p>コンテナを削除します。<code>-f</code>オプションでコンテナと削除を同時に行います。</p>
 <h2 id="コンテナのデータの永続化">コンテナのデータの永続化</h2>
 <p>前提として、各コンテナではコンテナのファイルシステムに対する変更は他のコンテナからは見えません。<br>
@@ -115,24 +98,24 @@ Dockerはこのコンテナという技術のライフサイクルを管理す�
 コンテナの再起動の際にも同じディレクトリをマウントしていれば再起動後も同じファイルが見えます。</p>
 <p>ボリュームには<code>名前付きボリューム</code>と<code>バインドマウント</code>があります。<br>
 Dockerがディスク上で物理的な場所を確保するので、ボリュームの名前を覚えておくだけで利用できます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker volume create &#x3C;ボリューム名></span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker volume create &#x3C;ボリューム名></span></span></code></pre>
 <p>その後、コンテナを起動する際に<code>-v</code>フラグを追加することでボリュームをコンテナにマウントできます。<br>
 これでこのパスに生成されたすべてのファイルを保存します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker run -dp 3000:3000 -v &#x3C;ボリューム名:マウントするパス> イメージタグ名</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker run -dp 3000:3000 -v &#x3C;ボリューム名:マウントするパス> イメージタグ名</span></span></code></pre>
 <h3 id="ボリュームの実体">ボリュームの実体</h3>
 <p>公式の例では下記のように<code>docker volume inspect</code>コマンドでボリュームの詳細を見ることができます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker volume inspect todo-db</span></span>
-<span class="line"><span style="color: #c9d1d9">[</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        "CreatedAt": "2019-09-26T02:18:36Z",</span></span>
-<span class="line"><span style="color: #c9d1d9">        "Driver": "local",</span></span>
-<span class="line"><span style="color: #c9d1d9">        "Labels": {},</span></span>
-<span class="line"><span style="color: #c9d1d9">        "Mountpoint": "/var/lib/docker/volumes/todo-db/_data",</span></span>
-<span class="line"><span style="color: #c9d1d9">        "Name": "todo-db",</span></span>
-<span class="line"><span style="color: #c9d1d9">        "Options": {},</span></span>
-<span class="line"><span style="color: #c9d1d9">        "Scope": "local"</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">]</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker volume inspect todo-db</span></span>
+<span class="line"><span style="color: #e1e4e8">[</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        "CreatedAt": "2019-09-26T02:18:36Z",</span></span>
+<span class="line"><span style="color: #e1e4e8">        "Driver": "local",</span></span>
+<span class="line"><span style="color: #e1e4e8">        "Labels": {},</span></span>
+<span class="line"><span style="color: #e1e4e8">        "Mountpoint": "/var/lib/docker/volumes/todo-db/_data",</span></span>
+<span class="line"><span style="color: #e1e4e8">        "Name": "todo-db",</span></span>
+<span class="line"><span style="color: #e1e4e8">        "Options": {},</span></span>
+<span class="line"><span style="color: #e1e4e8">        "Scope": "local"</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">]</span></span></code></pre>
 <p><code>MountPoint</code>にディスク上で実際のデータが保管されます。</p>
 <h2 id="バインドマウントの使用">バインドマウントの使用</h2>
 <p>シンプルにデータを保存したい場合は名前付きボリュームが優れていますが、ホスト上でどこにマウントされるかを管理したい場合は<code>バインドマウント</code>という方法があります。</p>
@@ -158,22 +141,22 @@ Dockerがディスク上で物理的な場所を確保するので、ボリュ�
 <li>既存のコンテナに接続する</li>
 </ul>
 <p>ネットワークを作成するコマンドは下記</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker network create &#x3C;ネットワーク名></span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker network create &#x3C;ネットワーク名></span></span></code></pre>
 <p>公式のチュートリアルにあるコンテナ起動とネットワーク接続用コマンド(Apple Siliconの場合)が下記です。<br>
 <code>todo-app</code>という名前のネットワークに接続しています。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker run -d \</span></span>
-<span class="line"><span style="color: #c9d1d9">    --network todo-app --network-alias mysql \</span></span>
-<span class="line"><span style="color: #c9d1d9">    --platform "linux/amd64" \</span></span>
-<span class="line"><span style="color: #c9d1d9">    -v todo-mysql-data:/var/lib/mysql \</span></span>
-<span class="line"><span style="color: #c9d1d9">    -e MYSQL_ROOT_PASSWORD=secret \</span></span>
-<span class="line"><span style="color: #c9d1d9">    -e MYSQL_DATABASE=todos \</span></span>
-<span class="line"><span style="color: #c9d1d9">    mysql:5.7</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker run -d \</span></span>
+<span class="line"><span style="color: #e1e4e8">    --network todo-app --network-alias mysql \</span></span>
+<span class="line"><span style="color: #e1e4e8">    --platform "linux/amd64" \</span></span>
+<span class="line"><span style="color: #e1e4e8">    -v todo-mysql-data:/var/lib/mysql \</span></span>
+<span class="line"><span style="color: #e1e4e8">    -e MYSQL_ROOT_PASSWORD=secret \</span></span>
+<span class="line"><span style="color: #e1e4e8">    -e MYSQL_DATABASE=todos \</span></span>
+<span class="line"><span style="color: #e1e4e8">    mysql:5.7</span></span></code></pre>
 <p><code>--network</code>で接続するネットワークを指定しています。<br>
 <code>--network-alias</code>で<code>mysql</code>という文字列を指定しているので、IPアドレスを調べる際に使用する事ができます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ dig mysql</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ dig mysql</span></span></code></pre>
 <p><code>-v</code>はボリュームの指定、<code>-e</code>で環境変数を設定できます。</p>
 <p>データベースが実行中であることを確認するには、下記のコマンドを使用します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$ docker exec -it &#x3C;mysql-container-id> mysql -u root -p</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$ docker exec -it &#x3C;mysql-container-id> mysql -u root -p</span></span></code></pre>
 <p>これでMySQLのコンテナを作成することができました。</p>
 <h2 id="あらためてまとめ">あらためてまとめ</h2>
 <ul>
@@ -190,9 +173,4 @@ Dockerがディスク上で物理的な場所を確保するので、ボリュ�
 <p>業務で携わるたいていのプロジェクトではすでに環境構築がされている場合がほとんどかと思います。<br>
 ただ、新規プロダクトの立ち上げであったり、より効果的なインフラ構成や開発者体験を求めようとすると避けては通れないものだと思います。<br>
 個人的には個人開発で環境構築する際に自分がDockerについて全然わかっていないことを改めて認識しました。<br>
-CI/CDとの相性もよく、簡単にデプロイできる環境を構築しておくことは取れる工数の少なくなりがちな個人開発においてもとても有用なものだと思いました。</p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+CI/CDとの相性もよく、簡単にデプロイできる環境を構築しておくことは取れる工数の少なくなりがちな個人開発においてもとても有用なものだと思いました。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

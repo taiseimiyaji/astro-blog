@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>プログラミングにおける「DI」二種類の違いとは。依存性注入と依存性逆転について</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="# 依存性注入と依存性逆転について
+<!DOCTYPE html><html lang="ja"><head><title>プログラミングにおける「DI」二種類の違いとは。依存性注入と依存性逆転について</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="# 依存性注入と依存性逆転について
 
 ## はじめに
 エンジニアになって初めて人に知識を伝えるという場面がありました。  
-これまでチーム内ではたいてい自分が一番技術的に拙い部分が多かったので少しうれしくもありますが、正しくわかりやすく伝え">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2022/12/06</div>
-        <h1>プログラミングにおける「DI」二種類の違いとは。依存性注入と依存性逆転について</h1>
-        <div class="post">
-          <h1 id="依存性注入と依存性逆転について">依存性注入と依存性逆転について</h1>
+これまでチーム内ではたいてい自分が一番技術的に拙い部分が多かったので少しうれしくもありますが、正しくわかりやすく伝え"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/12/06</div><h1>プログラミングにおける「DI」二種類の違いとは。依存性注入と依存性逆転について</h1><div class="post"><h1 id="依存性注入と依存性逆転について">依存性注入と依存性逆転について</h1>
 <h2 id="はじめに">はじめに</h2>
 <p>エンジニアになって初めて人に知識を伝えるという場面がありました。<br>
 これまでチーム内ではたいてい自分が一番技術的に拙い部分が多かったので少しうれしくもありますが、正しくわかりやすく伝えるために勉強してきたことを棚卸しするとともに現時点での考えを整理していきたいと思います。</p>
@@ -64,31 +47,31 @@ JSでいうとimport、PHPでいうとuseなどを使用してモジュールを
 </blockquote>
 <p>実際にPHPで書いてみると以下のようなコードになります。C言語のような手続き型言語の場合は結構使用されているパターンだと思います。簡単に言うと部品を作ってそれをまとめ上げるイメージです。</p>
 <p>(イメージなので実際には動作しないと思いますので注意してください)</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Service</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    private Repository $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->repository = new Repository();</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function process()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $this->repository->findAll();</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">class Repository</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function findAll()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        // 具体的なDBアクセス処理</span></span>
-<span class="line"><span style="color: #c9d1d9">        $result = 'hoge';</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $result;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class Service</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    private Repository $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->repository = new Repository();</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function process()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $this->repository->findAll();</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">class Repository</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function findAll()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        // 具体的なDBアクセス処理</span></span>
+<span class="line"><span style="color: #e1e4e8">        $result = 'hoge';</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $result;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span></code></pre>
 <p>このように上位のレイヤから下位のレイヤを呼び出す形がレイヤーパターンと呼ばれていたりします。
 注目してほしいのはコンストラクタで直接newをしている部分です。このように直接newをしている場合はRepositoryという具象クラスの実装に依存してしまいます。</p>
 <p>この場合、システムの本質であるServiceがRepositoryに依存しているため安定性が低くなってしまいます。<br>
@@ -102,76 +85,76 @@ JSでいうとimport、PHPでいうとuseなどを使用してモジュールを
 オブジェクトが他のオブジェクトを利用する際、コードをはじめから結合させるのではなく、オブジェクトの実行時に呼び出して結合するようにしています。</p>
 <p>広義的には対象モジュール以外のモジュールから具象クラスが渡される場合はDIと呼びます。</p>
 <p>先程のレイヤーパターンの例でDIを使用してみます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">use Repository;</span></span>
-<span class="line"><span style="color: #c9d1d9">class Service</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    private Repository $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(Repository $repository)</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->repository = $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function process()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $this->repository->findAll();</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Repository</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function findAll()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        // 具体的なDBアクセス処理</span></span>
-<span class="line"><span style="color: #c9d1d9">        $result = 'hoge';</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $result;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">// ここで依存性を注入</span></span>
-<span class="line"><span style="color: #c9d1d9">$service = new Service(new Repository());</span></span>
-<span class="line"><span style="color: #c9d1d9">$action = new Action($service);</span></span>
-<span class="line"><span style="color: #c9d1d9">// 実行</span></span>
-<span class="line"><span style="color: #c9d1d9">$action->process();</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">use Repository;</span></span>
+<span class="line"><span style="color: #e1e4e8">class Service</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    private Repository $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(Repository $repository)</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->repository = $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function process()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $this->repository->findAll();</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class Repository</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function findAll()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        // 具体的なDBアクセス処理</span></span>
+<span class="line"><span style="color: #e1e4e8">        $result = 'hoge';</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $result;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">// ここで依存性を注入</span></span>
+<span class="line"><span style="color: #e1e4e8">$service = new Service(new Repository());</span></span>
+<span class="line"><span style="color: #e1e4e8">$action = new Action($service);</span></span>
+<span class="line"><span style="color: #e1e4e8">// 実行</span></span>
+<span class="line"><span style="color: #e1e4e8">$action->process();</span></span></code></pre>
 <p>変更点はコンストラクタにて外部からインスタンスを渡すように変更している点です。<br>
 外部から具象クラスを渡す事によってクラス単位での単体テストが可能になります。<br>
 どのクラスを使用するかは外部から決める事ができるので、モック等を使用しやすくなります。<br>
 ここでServiceのコンストラクタにはRepository型のインスタンスを渡す必要がありますが、コンストラクタで渡すように変更したため、Repositoryクラスを継承したクラスを渡すことが可能になリます。</p>
 <p>次のステップとして、Repositoryにインターフェースを実装します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">use RepositoryInterface;</span></span>
-<span class="line"><span style="color: #c9d1d9">class Service</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    private RepositoryInterface $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(RepositoryInterface $repository)</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->repository = $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function process()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $this->repository->findAll();</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">interface RepositoryInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function findAll();</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Repository implements RepositoryInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function findAll()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        // 具体的なDBアクセス処理</span></span>
-<span class="line"><span style="color: #c9d1d9">        $result = 'hoge';</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $result;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">// ここで依存性を注入</span></span>
-<span class="line"><span style="color: #c9d1d9">$service = new Service(new Repository());</span></span>
-<span class="line"><span style="color: #c9d1d9">$action = new Action($service);</span></span>
-<span class="line"><span style="color: #c9d1d9">// 実行</span></span>
-<span class="line"><span style="color: #c9d1d9">$action->process();</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">use RepositoryInterface;</span></span>
+<span class="line"><span style="color: #e1e4e8">class Service</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    private RepositoryInterface $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(RepositoryInterface $repository)</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->repository = $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function process()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $this->repository->findAll();</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">interface RepositoryInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function findAll();</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class Repository implements RepositoryInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function findAll()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        // 具体的なDBアクセス処理</span></span>
+<span class="line"><span style="color: #e1e4e8">        $result = 'hoge';</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $result;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">// ここで依存性を注入</span></span>
+<span class="line"><span style="color: #e1e4e8">$service = new Service(new Repository());</span></span>
+<span class="line"><span style="color: #e1e4e8">$action = new Action($service);</span></span>
+<span class="line"><span style="color: #e1e4e8">// 実行</span></span>
+<span class="line"><span style="color: #e1e4e8">$action->process();</span></span></code></pre>
 <p>ここでのポイントはドメイン層側にインターフェースを持つことです。<br>
 ドメイン層側というのはPHPの場合はnamespaceにおけるドメイン層を指しています。(Javaの場合はパッケージにあたるかなと思います)<br>
 明示的にドメイン層とその他の層を分けておくことをおすすめします。</p>
@@ -195,44 +178,44 @@ Laravelにおいてはサービスコンテナ、サービスプロバイダを�
 テストがしにくいなと感じた場合は設計が悪い可能性が高い、といえます。</p>
 <p>先程挙げた例のServiceをテストしてみます。<br>
 このとき、必要なのはRepositoryInterfaceのみであり、Repositoryの具体的な実装は必要ないため、Mock化することができます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">use RepositoryInterface;</span></span>
-<span class="line"><span style="color: #c9d1d9">class Service</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    private RepositoryInterface $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(RepositoryInterface $repository)</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->repository = $repository;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function process()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $this->repository->findAll();</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">interface RepositoryInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function findAll();</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class ServiceTest</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function testProcess()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        $repositoryMock = new RepositoryMock();</span></span>
-<span class="line"><span style="color: #c9d1d9">        $result = new Service($repositoryMock);</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">class RepositoryMock implements RepositoryInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function findAll()</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        // テストのための値を返す</span></span>
-<span class="line"><span style="color: #c9d1d9">        return 'test';</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">use RepositoryInterface;</span></span>
+<span class="line"><span style="color: #e1e4e8">class Service</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    private RepositoryInterface $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(RepositoryInterface $repository)</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->repository = $repository;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function process()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $this->repository->findAll();</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">interface RepositoryInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function findAll();</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class ServiceTest</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function testProcess()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        $repositoryMock = new RepositoryMock();</span></span>
+<span class="line"><span style="color: #e1e4e8">        $result = new Service($repositoryMock);</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">class RepositoryMock implements RepositoryInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function findAll()</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        // テストのための値を返す</span></span>
+<span class="line"><span style="color: #e1e4e8">        return 'test';</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <h2 id="まとめ">まとめ</h2>
 <ul>
 <li>
@@ -256,9 +239,4 @@ Laravelにおいてはサービスコンテナ、サービスプロバイダを�
 またなにか新しい考えを身に着けられれば記事にしたいと思います。</p>
 <h2 id="参考">参考</h2>
 <p><a href="https://qiita.com/okazuki/items/a0f2fb0a63ca88340ff6">https://qiita.com/okazuki/items/a0f2fb0a63ca88340ff6</a><br>
-<a href="https://zenn.dev/chida/articles/e46a66cd9d89d1">https://zenn.dev/chida/articles/e46a66cd9d89d1</a></p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+<a href="https://zenn.dev/chida/articles/e46a66cd9d89d1">https://zenn.dev/chida/articles/e46a66cd9d89d1</a></p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

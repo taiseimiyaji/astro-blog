@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## はじめに
 
 業務においてクリーンアーキテクチャを意識してコードを日々書いていますが、「これってクリーンアーキテクチャの考えに沿うためにはどう書けば良いんだろう」と悩むことがあります。  
-今回はエラーハンドリングについて、クリーンア">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2023/04/27</div>
-        <h1>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</h1>
-        <div class="post">
-          <h2 id="はじめに">はじめに</h2>
+今回はエラーハンドリングについて、クリーンア"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/04/27</div><h1>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</h1><div class="post"><h2 id="はじめに">はじめに</h2>
 <p>業務においてクリーンアーキテクチャを意識してコードを日々書いていますが、「これってクリーンアーキテクチャの考えに沿うためにはどう書けば良いんだろう」と悩むことがあります。<br>
 今回はエラーハンドリングについて、クリーンアーキテクチャに則って考えてみたいと思います。<br>
 あくまで筆者一個人のいわゆる「ぼくのかんがえたさいきょうのエラーハンドリング」なのでエラーハンドリング時の一意見として参考になれば幸いです。</p>
@@ -45,76 +28,76 @@
 <h2 id="entityentities">Entity(Entities)</h2>
 <p>まずはコアとなるドメインオブジェクト、Entityについてです。</p>
 <p>今回はユーザーを例にするのでコアとなるエンティティはユーザーを表現します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">User</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserId</span><span style="color: #C9D1D9"> $userId;</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserName</span><span style="color: #C9D1D9"> $userName;</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserEmail</span><span style="color: #C9D1D9"> $userEmail;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">User</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserId</span><span style="color: #E1E4E8"> $userId;</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserName</span><span style="color: #E1E4E8"> $userName;</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserEmail</span><span style="color: #E1E4E8"> $userEmail;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        $userId,</span></span>
-<span class="line"><span style="color: #C9D1D9">        $userName,</span></span>
-<span class="line"><span style="color: #C9D1D9">        $userEmail</span></span>
-<span class="line"><span style="color: #C9D1D9">    )</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userId </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $userId;</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userName </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $userName;</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userEmail </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $userEmail;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        $userId,</span></span>
+<span class="line"><span style="color: #E1E4E8">        $userName,</span></span>
+<span class="line"><span style="color: #E1E4E8">        $userEmail</span></span>
+<span class="line"><span style="color: #E1E4E8">    )</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userId </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $userId;</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userName </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $userName;</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userEmail </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $userEmail;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">userId</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserId</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userId;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">userId</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserId</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userId;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">userName</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserName</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userName;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">userName</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserName</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userName;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">userEmail</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserEmail</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userEmail;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">userEmail</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserEmail</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userEmail;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">toArray</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">array</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> [</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #A5D6FF">'userId'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> (</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9">)</span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userId,</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #A5D6FF">'userName'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> (</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9">)</span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userName,</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #A5D6FF">'userEmail'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> (</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9">)</span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userEmail</span></span>
-<span class="line"><span style="color: #C9D1D9">        ];</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">toArray</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">array</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> [</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #9ECBFF">'userId'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> (</span><span style="color: #F97583">string</span><span style="color: #E1E4E8">)</span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userId,</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #9ECBFF">'userName'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> (</span><span style="color: #F97583">string</span><span style="color: #E1E4E8">)</span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userName,</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #9ECBFF">'userEmail'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> (</span><span style="color: #F97583">string</span><span style="color: #E1E4E8">)</span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userEmail</span></span>
+<span class="line"><span style="color: #E1E4E8">        ];</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span>
 <span class="line"></span></code></pre>
 <p>現状はエンティティの振る舞いとして特段思いつくエラーがないので次に進みます。</p>
 <h2 id="valueobjectentities">ValueObject(Entities)</h2>
 <p>次に表現するのはValueObjectです。</p>
 <p>エンティティの例で出てきた<code>UserId</code>や<code>UserName</code>などのクラスを指します。</p>
 <p>たとえば、<code>UserName</code>の場合は以下のようなクラス定義になります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">UserName</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">const</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">MAX_LENGTH</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">20</span><span style="color: #C9D1D9">;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">UserName</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">MAX_LENGTH</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">20</span><span style="color: #E1E4E8">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $value;</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $value;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $value)</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">validate</span><span style="color: #C9D1D9">($value);</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">value </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $value;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $value)</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">validate</span><span style="color: #E1E4E8">($value);</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">value </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $value;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">validate</span><span style="color: #C9D1D9">(</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $value)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">void</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">if</span><span style="color: #C9D1D9"> ($value </span><span style="color: #FF7B72">===</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">''</span><span style="color: #C9D1D9">) {</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">InvalidArgumentException</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'UserName is required.'</span><span style="color: #C9D1D9">);</span></span>
-<span class="line"><span style="color: #C9D1D9">        }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">validate</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $value)</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> ($value </span><span style="color: #F97583">===</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">''</span><span style="color: #E1E4E8">) {</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">InvalidArgumentException</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'UserName is required.'</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">        }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">if</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">mb_strlen</span><span style="color: #C9D1D9">($value) </span><span style="color: #FF7B72">></span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">self::</span><span style="color: #79C0FF">MAX_LENGTH</span><span style="color: #C9D1D9">) {</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">InvalidArgumentException</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'UserName must be less than '</span><span style="color: #C9D1D9">);</span></span>
-<span class="line"><span style="color: #C9D1D9">        }</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">mb_strlen</span><span style="color: #E1E4E8">($value) </span><span style="color: #F97583">></span><span style="color: #E1E4E8"> </span><span style="color: #F97583">self::</span><span style="color: #79B8FF">MAX_LENGTH</span><span style="color: #E1E4E8">) {</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">InvalidArgumentException</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'UserName must be less than '</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">        }</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>上記のように、<code>UserName</code>クラスは以下の2つのバリデーションルールを持ちます。</p>
 <ol>
 <li>コンストラクタで渡された値が空文字ではないこと</li>
@@ -132,50 +115,50 @@
 <p>このクラスでは使用しているEntity,ValueObjectで発生した例外をハンドリングする必要が出てきます。</p>
 <p>ここでの解決策としてはServiceクラス特有の例外クラスを作成します。<br>
 自作例外クラスではなく共通で使用する例外クラスに引数にメッセージ等を渡して例外を生成してもいいと思いますが、個別にクラスを作ってしまうことでより表現力が増すことになります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">CreateUser</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">implements</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">CreateUserInterface</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserRepositoryInterface</span><span style="color: #C9D1D9"> $repository;</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserFactoryInterface</span><span style="color: #C9D1D9"> $factory;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">CreateUser</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">implements</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">CreateUserInterface</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserRepositoryInterface</span><span style="color: #E1E4E8"> $repository;</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserFactoryInterface</span><span style="color: #E1E4E8"> $factory;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">UserRepositoryInterface</span><span style="color: #C9D1D9"> $repository,</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">UserFactoryInterface</span><span style="color: #C9D1D9"> $factory</span></span>
-<span class="line"><span style="color: #C9D1D9">    )</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">repository </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $repository;</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">factory </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $factory;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">UserRepositoryInterface</span><span style="color: #E1E4E8"> $repository,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">UserFactoryInterface</span><span style="color: #E1E4E8"> $factory</span></span>
+<span class="line"><span style="color: #E1E4E8">    )</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">repository </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $repository;</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">factory </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $factory;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">process</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">CreateUserInputPort</span><span style="color: #C9D1D9"> $input,</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">CreateUserOutputPort</span><span style="color: #C9D1D9"> $output</span></span>
-<span class="line"><span style="color: #C9D1D9">    )</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">CreateUserOutputPort</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
-<span class="line"><span style="color: #C9D1D9">        $user </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">factory</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">            $input</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">name</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">            $input</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">email</span><span style="color: #C9D1D9">()</span></span>
-<span class="line"><span style="color: #C9D1D9">        );</span></span>
-<span class="line"><span style="color: #C9D1D9">            $repository</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">save</span><span style="color: #C9D1D9">($user);</span></span>
-<span class="line"><span style="color: #C9D1D9">        } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">Throwable</span><span style="color: #C9D1D9"> $e){</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">CreateUserFailedSaveException</span><span style="color: #C9D1D9">($e);</span></span>
-<span class="line"><span style="color: #C9D1D9">        }</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> $output</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">output</span><span style="color: #C9D1D9">($user);</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">process</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">CreateUserInputPort</span><span style="color: #E1E4E8"> $input,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">CreateUserOutputPort</span><span style="color: #E1E4E8"> $output</span></span>
+<span class="line"><span style="color: #E1E4E8">    )</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">CreateUserOutputPort</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">try</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">        $user </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">factory</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">            $input</span><span style="color: #F97583">-></span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">            $input</span><span style="color: #F97583">-></span><span style="color: #B392F0">email</span><span style="color: #E1E4E8">()</span></span>
+<span class="line"><span style="color: #E1E4E8">        );</span></span>
+<span class="line"><span style="color: #E1E4E8">            $repository</span><span style="color: #F97583">-></span><span style="color: #B392F0">save</span><span style="color: #E1E4E8">($user);</span></span>
+<span class="line"><span style="color: #E1E4E8">        } </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">Throwable</span><span style="color: #E1E4E8"> $e){</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">CreateUserFailedSaveException</span><span style="color: #E1E4E8">($e);</span></span>
+<span class="line"><span style="color: #E1E4E8">        }</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> $output</span><span style="color: #F97583">-></span><span style="color: #B392F0">output</span><span style="color: #E1E4E8">($user);</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>自作例外クラスでは、以下のようにエラーメッセージの生成や例外に関する情報を隠蔽します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">RuntimeException</span><span style="color: #C9D1D9">;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">RuntimeException</span><span style="color: #E1E4E8">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">CreateUserFailedSaveException</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">extends</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">RuntimeException</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $message </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'Failed to save when creating user.'</span><span style="color: #C9D1D9">,</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">int</span><span style="color: #C9D1D9"> $code </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">500</span><span style="color: #C9D1D9">,</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">Throwable</span><span style="color: #C9D1D9"> $previous </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">null</span></span>
-<span class="line"><span style="color: #C9D1D9">    ) {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">parent::</span><span style="color: #D2A8FF">__construct</span><span style="color: #C9D1D9">($message, $code, $previous);</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">CreateUserFailedSaveException</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">extends</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">RuntimeException</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $message </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'Failed to save when creating user.'</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">int</span><span style="color: #E1E4E8"> $code </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">500</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">Throwable</span><span style="color: #E1E4E8"> $previous </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">null</span></span>
+<span class="line"><span style="color: #E1E4E8">    ) {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">parent::</span><span style="color: #B392F0">__construct</span><span style="color: #E1E4E8">($message, $code, $previous);</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>例外クラスを作成すればこのように、例外固有のメッセージやステータスコード等を持つことができます。</p>
 <p>ここで、エラーメッセージはかっこよく英語で書いていますね(あとで困ることになりますのでActionの説明まで覚えておいてください)</p>
 <p><code>CreateUser</code>では、InputPortとOutputPortは単純なDTOとして使用しています。</p>
@@ -184,28 +167,28 @@
 <p>InputPort,OutputPortはUseCases層なのでHTTP通信であることやJSONといったWeb特有の文脈に依存させないために、ただ入力と出力のデータを受け渡すためのDTOとして実装すべきだと考えています。</p>
 <p>Web以外のアーキテクチャにおいてはOutputPortを用いてPresenterが出力の責務(および出力のためのデータ加工)を全うすることになるのかなと思います(このパターンの実装経験が無いので想像になりますが、例えばコンソールアプリケーションのように標準出力を用いる場合はWebアプリケーションと異なる形になると思います)。</p>
 <p>Factoryについては下記の様な実装になるかと思います。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Symfony\Component\Uid\Ulid</span><span style="color: #C9D1D9">;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Symfony\Component\Uid\Ulid</span><span style="color: #E1E4E8">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #8B949E">/**</span></span>
-<span class="line"><span style="color: #8B949E"> * Factoryパターンの実装です。</span></span>
-<span class="line"><span style="color: #8B949E"> *</span></span>
-<span class="line"><span style="color: #8B949E"> * エンティティを生成する流れを隠蔽します。</span></span>
-<span class="line"><span style="color: #8B949E"> * 今回の場合はIDの採番に関するロジックを隠蔽します。</span></span>
-<span class="line"><span style="color: #8B949E"> */</span></span>
-<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">UserFactory</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">implements</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserFactoryInterface</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">createUser</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">UserName</span><span style="color: #C9D1D9"> $userName,</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">UserEmail</span><span style="color: #C9D1D9"> $userEmail</span></span>
-<span class="line"><span style="color: #C9D1D9">    )</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #79C0FF">Ulid</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">generate</span><span style="color: #C9D1D9">(), </span><span style="color: #8B949E">// ここではSymfonyを用いてULIDを生成することを想定してます。</span></span>
-<span class="line"><span style="color: #C9D1D9">            $userName,</span></span>
-<span class="line"><span style="color: #C9D1D9">            $userEmail</span></span>
-<span class="line"><span style="color: #C9D1D9">        );</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #6A737D">/**</span></span>
+<span class="line"><span style="color: #6A737D"> * Factoryパターンの実装です。</span></span>
+<span class="line"><span style="color: #6A737D"> *</span></span>
+<span class="line"><span style="color: #6A737D"> * エンティティを生成する流れを隠蔽します。</span></span>
+<span class="line"><span style="color: #6A737D"> * 今回の場合はIDの採番に関するロジックを隠蔽します。</span></span>
+<span class="line"><span style="color: #6A737D"> */</span></span>
+<span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">UserFactory</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">implements</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">UserFactoryInterface</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">createUser</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">UserName</span><span style="color: #E1E4E8"> $userName,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">UserEmail</span><span style="color: #E1E4E8"> $userEmail</span></span>
+<span class="line"><span style="color: #E1E4E8">    )</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">User</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">User</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #79B8FF">Ulid</span><span style="color: #F97583">::</span><span style="color: #B392F0">generate</span><span style="color: #E1E4E8">(), </span><span style="color: #6A737D">// ここではSymfonyを用いてULIDを生成することを想定してます。</span></span>
+<span class="line"><span style="color: #E1E4E8">            $userName,</span></span>
+<span class="line"><span style="color: #E1E4E8">            $userEmail</span></span>
+<span class="line"><span style="color: #E1E4E8">        );</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>Repositoryは永続化を隠蔽しますが今回は省略します。</p>
 <h2 id="actioncontrollers--json形式でレスポンスを返すまで">Action(Controllers) ~ json形式でレスポンスを返すまで</h2>
 <p>Webのバックエンドにおいて、リクエストの内容を<code>Service</code>に受け渡す役割を担うのがこのActionになります。<br>
@@ -213,70 +196,70 @@
 そのため、この層ではHTTPExceptionとして例外を扱い、最終的にHTTPエラーレスポンスとして返します。<br>
 レスポンスの形式については<a href="https://datatracker.ietf.org/doc/html/rfc7807">RFC7807</a>で定義されているのでこれに沿う形のJSONを返してあげるのがベストプラクティスかなと思います。</p>
 <p>実装例を書いてみます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Illuminate\Support\Facades\DB</span><span style="color: #C9D1D9">;</span></span>
-<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Illuminate\Support\Facades\Response</span><span style="color: #C9D1D9">;</span></span>
-<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">InvalidArgumentException</span><span style="color: #C9D1D9">;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Illuminate\Support\Facades\DB</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Illuminate\Support\Facades\Response</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">InvalidArgumentException</span><span style="color: #E1E4E8">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">CreateUserAction</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">CreateUserInterface</span><span style="color: #C9D1D9"> $createUser;</span></span>
+<span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">CreateUserAction</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">CreateUserInterface</span><span style="color: #E1E4E8"> $createUser;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">CreateUserInterface</span><span style="color: #C9D1D9"> $createUser</span></span>
-<span class="line"><span style="color: #C9D1D9">    ) {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">createUser </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $createUser;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">CreateUserInterface</span><span style="color: #E1E4E8"> $createUser</span></span>
+<span class="line"><span style="color: #E1E4E8">    ) {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">createUser </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $createUser;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__invoke</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">CreateUserRequest</span><span style="color: #C9D1D9"> $request)</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
-<span class="line"><span style="color: #C9D1D9">                $input </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">CreateUserInput</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">                    </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserName</span><span style="color: #C9D1D9">($request</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">name</span><span style="color: #C9D1D9">()),</span></span>
-<span class="line"><span style="color: #C9D1D9">                    </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserEmail</span><span style="color: #C9D1D9">($request</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">email</span><span style="color: #C9D1D9">())</span></span>
-<span class="line"><span style="color: #C9D1D9">                );</span></span>
-<span class="line"><span style="color: #C9D1D9">            } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">InvalidArgumentException</span><span style="color: #C9D1D9"> $e){</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">BadRequestException</span><span style="color: #C9D1D9">($e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getMessage</span><span style="color: #C9D1D9">());</span></span>
-<span class="line"><span style="color: #C9D1D9">            }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__invoke</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">CreateUserRequest</span><span style="color: #E1E4E8"> $request)</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">try</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">try</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">                $input </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">CreateUserInput</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">                    </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserName</span><span style="color: #E1E4E8">($request</span><span style="color: #F97583">-></span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">()),</span></span>
+<span class="line"><span style="color: #E1E4E8">                    </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserEmail</span><span style="color: #E1E4E8">($request</span><span style="color: #F97583">-></span><span style="color: #B392F0">email</span><span style="color: #E1E4E8">())</span></span>
+<span class="line"><span style="color: #E1E4E8">                );</span></span>
+<span class="line"><span style="color: #E1E4E8">            } </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">InvalidArgumentException</span><span style="color: #E1E4E8"> $e){</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">BadRequestException</span><span style="color: #E1E4E8">($e</span><span style="color: #F97583">-></span><span style="color: #B392F0">getMessage</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"><span style="color: #E1E4E8">            }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #79C0FF">DB</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">transaction</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #79B8FF">DB</span><span style="color: #F97583">::</span><span style="color: #B392F0">transaction</span><span style="color: #E1E4E8">();</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
-<span class="line"><span style="color: #C9D1D9">                $createdUser </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">createAdminUser</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">process</span><span style="color: #C9D1D9">($input);</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #79C0FF">DB</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">commit</span><span style="color: #C9D1D9">();</span></span>
-<span class="line"><span style="color: #C9D1D9">            } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">CreateUserFailedSaveException</span><span style="color: #C9D1D9">){</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #79C0FF">DB</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">rollback</span><span style="color: #C9D1D9">();</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">InternalServerErrorException</span><span style="color: #C9D1D9">($e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getMessage</span><span style="color: #C9D1D9">());</span></span>
-<span class="line"><span style="color: #C9D1D9">            }</span></span>
-<span class="line"><span style="color: #C9D1D9">        } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">BadRequestException</span><span style="color: #C9D1D9"> $e){</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #8B949E">// JSONレスポンスの作成</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Response</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">json</span><span style="color: #C9D1D9">([</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'title'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">title</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'status'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">code</span><span style="color: #C9D1D9">()</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'detail'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">detail</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">                ]);</span></span>
-<span class="line"><span style="color: #C9D1D9">        } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">InternalServerErrorException</span><span style="color: #C9D1D9">){</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #8B949E">// Laravelの場合は500系エラーをHandler等で共通して処理したり記録したりすることができる</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Response</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">json</span><span style="color: #C9D1D9">([</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'title'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">title</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'status'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">code</span><span style="color: #C9D1D9">()</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #A5D6FF">'detail'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">detail</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">            ]);</span></span>
-<span class="line"><span style="color: #C9D1D9">        }</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Response</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">json</span><span style="color: #C9D1D9">($createdUser</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">toArray</span><span style="color: #C9D1D9">());</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">try</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">                $createdUser </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">createAdminUser</span><span style="color: #F97583">-></span><span style="color: #B392F0">process</span><span style="color: #E1E4E8">($input);</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #79B8FF">DB</span><span style="color: #F97583">::</span><span style="color: #B392F0">commit</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"><span style="color: #E1E4E8">            } </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">CreateUserFailedSaveException</span><span style="color: #E1E4E8">){</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #79B8FF">DB</span><span style="color: #F97583">::</span><span style="color: #B392F0">rollback</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">InternalServerErrorException</span><span style="color: #E1E4E8">($e</span><span style="color: #F97583">-></span><span style="color: #B392F0">getMessage</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"><span style="color: #E1E4E8">            }</span></span>
+<span class="line"><span style="color: #E1E4E8">        } </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">BadRequestException</span><span style="color: #E1E4E8"> $e){</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #6A737D">// JSONレスポンスの作成</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Response</span><span style="color: #F97583">::</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">([</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #9ECBFF">'title'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">title</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #9ECBFF">'status'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">code</span><span style="color: #E1E4E8">()</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #9ECBFF">'detail'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">detail</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">                ]);</span></span>
+<span class="line"><span style="color: #E1E4E8">        } </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">InternalServerErrorException</span><span style="color: #E1E4E8">){</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #6A737D">// Laravelの場合は500系エラーをHandler等で共通して処理したり記録したりすることができる</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Response</span><span style="color: #F97583">::</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">([</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #9ECBFF">'title'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">title</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #9ECBFF">'status'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">code</span><span style="color: #E1E4E8">()</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #9ECBFF">'detail'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">detail</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">            ]);</span></span>
+<span class="line"><span style="color: #E1E4E8">        }</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Response</span><span style="color: #F97583">::</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">($createdUser</span><span style="color: #F97583">-></span><span style="color: #B392F0">toArray</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>Action層より内側で発生した例外はエラーメッセージを持った状態でcatchできるので例えば、下記のように記載することもできます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">try</span><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #8B949E">// 処理内容</span></span>
-<span class="line"><span style="color: #C9D1D9">} </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">CreateUserFailedSaveException</span><span style="color: #C9D1D9">){</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">InternalServerErrorException</span><span style="color: #C9D1D9">($e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getMessage</span><span style="color: #C9D1D9">());</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">try</span><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #6A737D">// 処理内容</span></span>
+<span class="line"><span style="color: #E1E4E8">} </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">CreateUserFailedSaveException</span><span style="color: #E1E4E8">){</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">InternalServerErrorException</span><span style="color: #E1E4E8">($e</span><span style="color: #F97583">-></span><span style="color: #B392F0">getMessage</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>ですが、この方法では内部で発生した例外メッセージ(今回は英語で記載)をそのままJSONとして返したくない場合に対応できません。<br>
 内部のエラーメッセージを変更することは、内部実装がプレゼンテーションのための知識を持つことになるため避けたい、でも例外によってエラーメッセージを分けて表示したいといったケースです。</p>
 <p>最初の例のように、エラーメッセージの内容をActionで決めてしまうのが現状良いかなと考えています。</p>
 <p>また、全く同じことが正常系の場合にも言えます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Response</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">json</span><span style="color: #C9D1D9">($createdUser</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">toArray</span><span style="color: #C9D1D9">());</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Response</span><span style="color: #F97583">::</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">($createdUser</span><span style="color: #F97583">-></span><span style="color: #B392F0">toArray</span><span style="color: #E1E4E8">());</span></span></code></pre>
 <p>この部分ではエンティティの<code>toArray</code>メソッドの実装によって出力の形式が変わってしまいます。もちろん内容が変更された場合は出力も変更されるべきなのですが、ドメインロジックの配列に格納される順番に出力が依存してしまっているため切り離したいところです。</p>
 <p>これらの問題は、クリーンアーキテクチャにおいては依存の方向性が内側に向いているため明確な違反ではないと考えていますが、切り離したほうがより綺麗な気がします。</p>
 <p><img src="/images/clean_arch.png" alt="クリーンアーキテクチャ"></p>
@@ -285,140 +268,140 @@
 <p>より丁寧に書くのであれば、<code>Presenter</code>となる層を用意するといいかと考えています。</p>
 <p>HTTPのための例外である<code>BadRequestException</code>や<code>InternalServerErrorException</code>から生成していた処理や、エンティティが持っていた<code>toArray()</code>といったメソッドをPresenterに実装する事ができます。</p>
 <p>まずは例外処理の方から考えてみます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Response</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">json</span><span style="color: #C9D1D9">([</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #A5D6FF">'title'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">title</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #A5D6FF">'status'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">status</span><span style="color: #C9D1D9">()</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #A5D6FF">'detail'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">getMessage</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">]);</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Response</span><span style="color: #F97583">::</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">([</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">'title'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">title</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">'status'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">status</span><span style="color: #E1E4E8">()</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">'detail'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">getMessage</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">]);</span></span></code></pre>
 <p>だと例外のメッセージがそのまま外に漏洩するので</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Response</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">json</span><span style="color: #C9D1D9">([</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #A5D6FF">'title'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">title</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #A5D6FF">'status'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">status</span><span style="color: #C9D1D9">()</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #A5D6FF">'detail'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'任意のメッセージ'</span><span style="color: #C9D1D9">,</span></span>
-<span class="line"><span style="color: #C9D1D9">]);</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Response</span><span style="color: #F97583">::</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">([</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">'title'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">title</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">'status'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">status</span><span style="color: #E1E4E8">()</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">'detail'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'任意のメッセージ'</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #E1E4E8">]);</span></span></code></pre>
 <p>のようになります。ここで、タイトルやステータスは例外クラスごとに決まるはずなのでHTTPExceptionのインスタンスを生成するタイミングで<code>detail</code>を渡してしまえばいいと思います。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
-<span class="line"><span style="color: #C9D1D9">    $input </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">CreateUserInput</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserName</span><span style="color: #C9D1D9">($request</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">name</span><span style="color: #C9D1D9">()),</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserEmail</span><span style="color: #C9D1D9">($request</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">email</span><span style="color: #C9D1D9">())</span></span>
-<span class="line"><span style="color: #C9D1D9">    );</span></span>
-<span class="line"><span style="color: #C9D1D9">} </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">InvalidArgumentException</span><span style="color: #C9D1D9"> $e){</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">BadRequestException</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'不正なリクエストです.'</span><span style="color: #C9D1D9">);</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">try</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">    $input </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">CreateUserInput</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserName</span><span style="color: #E1E4E8">($request</span><span style="color: #F97583">-></span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">()),</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserEmail</span><span style="color: #E1E4E8">($request</span><span style="color: #F97583">-></span><span style="color: #B392F0">email</span><span style="color: #E1E4E8">())</span></span>
+<span class="line"><span style="color: #E1E4E8">    );</span></span>
+<span class="line"><span style="color: #E1E4E8">} </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">InvalidArgumentException</span><span style="color: #E1E4E8"> $e){</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">BadRequestException</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'不正なリクエストです.'</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>HTTP用の例外クラスの実装例</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">RuntimeException</span><span style="color: #C9D1D9">;</span></span>
-<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Throwable</span><span style="color: #C9D1D9">;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">RuntimeException</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Throwable</span><span style="color: #E1E4E8">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">BadRequestException</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">extends</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">RuntimeException</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">implements</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">HttpExceptionInterface</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $detail;</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $title;</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">int</span><span style="color: #C9D1D9"> $status;</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Throwable</span><span style="color: #C9D1D9"> $previous;</span></span>
+<span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">BadRequestException</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">extends</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">RuntimeException</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">implements</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">HttpExceptionInterface</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $detail;</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $title;</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">int</span><span style="color: #E1E4E8"> $status;</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Throwable</span><span style="color: #E1E4E8"> $previous;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $detail,</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9"> $title </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #A5D6FF">'Bad Request'</span><span style="color: #C9D1D9">,</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">int</span><span style="color: #C9D1D9"> $status </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">400</span><span style="color: #C9D1D9">,</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">Throwable</span><span style="color: #C9D1D9"> $previous</span></span>
-<span class="line"><span style="color: #C9D1D9">    ){</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">parent::</span><span style="color: #D2A8FF">__construct</span><span style="color: #C9D1D9">($title, $status, $previous);</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">detail </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $detail;</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">title </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $title;</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">status </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $status;</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">previous </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $previous;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $detail,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $title </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'Bad Request'</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">int</span><span style="color: #E1E4E8"> $status </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">400</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">Throwable</span><span style="color: #E1E4E8"> $previous</span></span>
+<span class="line"><span style="color: #E1E4E8">    ){</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">parent::</span><span style="color: #B392F0">__construct</span><span style="color: #E1E4E8">($title, $status, $previous);</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">detail </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $detail;</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">title </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $title;</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">status </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $status;</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">previous </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $previous;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">title</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">title;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">title</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">string</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">title;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">status</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">int</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">status;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">status</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">int</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">status;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">detail</span><span style="color: #C9D1D9">()</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">string</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">detail;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">detail</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">string</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">detail;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>例外クラスから最終的にjsonに変換する必要があるのでそのためにpresenterを使用します。もともとの例ではファサードを使用していて十分スッキリ書けてはいるので責務の分離が主目的になります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Illuminate\Support\Facades\Response</span><span style="color: #C9D1D9">;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Illuminate\Support\Facades\Response</span><span style="color: #E1E4E8">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">ExceptionPresenter</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">static</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">makeJsonResponse</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">HttpExceptionInterface</span><span style="color: #C9D1D9"> $e)</span><span style="color: #FF7B72">:</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">JsonResponse</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Response</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">json</span><span style="color: #C9D1D9">([</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #A5D6FF">'title'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">title</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #A5D6FF">'status'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">code</span><span style="color: #C9D1D9">()</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #A5D6FF">'detail'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> $e</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">detail</span><span style="color: #C9D1D9">(),</span></span>
-<span class="line"><span style="color: #C9D1D9">        ]);</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">ExceptionPresenter</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">static</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">makeJsonResponse</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">HttpExceptionInterface</span><span style="color: #E1E4E8"> $e)</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">JsonResponse</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Response</span><span style="color: #F97583">::</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">([</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #9ECBFF">'title'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">title</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #9ECBFF">'status'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">code</span><span style="color: #E1E4E8">()</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #9ECBFF">'detail'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> $e</span><span style="color: #F97583">-></span><span style="color: #B392F0">detail</span><span style="color: #E1E4E8">(),</span></span>
+<span class="line"><span style="color: #E1E4E8">        ]);</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>エンティティの<code>toArray()</code>がそのまま外に漏洩することを防ぐためにpresenterを使用する場合も同様です。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Illuminate\Support\Facades\Response</span><span style="color: #C9D1D9">;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Illuminate\Support\Facades\Response</span><span style="color: #E1E4E8">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">UserPresenter</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">static</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #D2A8FF">makeJsonResponse</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">User</span><span style="color: #C9D1D9"> $user); </span><span style="color: #79C0FF">JsonResponse</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Response</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">json</span><span style="color: #C9D1D9">([</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #A5D6FF">'userId'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> (</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9">)$user</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userId,</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #A5D6FF">'userName'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> (</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9">)$user</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userName,</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #A5D6FF">'userEmail'</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">=></span><span style="color: #C9D1D9"> (</span><span style="color: #FF7B72">string</span><span style="color: #C9D1D9">)$user</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">userEmail</span></span>
-<span class="line"><span style="color: #C9D1D9">        ]);</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">UserPresenter</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">static</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">makeJsonResponse</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">User</span><span style="color: #E1E4E8"> $user); </span><span style="color: #79B8FF">JsonResponse</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Response</span><span style="color: #F97583">::</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">([</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #9ECBFF">'userId'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> (</span><span style="color: #F97583">string</span><span style="color: #E1E4E8">)$user</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userId,</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #9ECBFF">'userName'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> (</span><span style="color: #F97583">string</span><span style="color: #E1E4E8">)$user</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userName,</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #9ECBFF">'userEmail'</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> (</span><span style="color: #F97583">string</span><span style="color: #E1E4E8">)$user</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userEmail</span></span>
+<span class="line"><span style="color: #E1E4E8">        ]);</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <p>以上を踏まえて最終的なActionは以下のような形になります。<br>
 ここまでやればクリーンアーキテクチャのかなりの部分をコードで表現できたんじゃないでしょうか。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Illuminate\Support\Facades\DB</span><span style="color: #C9D1D9">;</span></span>
-<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">Illuminate\Support\Facades\Response</span><span style="color: #C9D1D9">;</span></span>
-<span class="line"><span style="color: #FF7B72">use</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">InvalidArgumentException</span><span style="color: #C9D1D9">;</span></span>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Illuminate\Support\Facades\DB</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Illuminate\Support\Facades\Response</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">use</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">InvalidArgumentException</span><span style="color: #E1E4E8">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FF7B72">class</span><span style="color: #C9D1D9"> </span><span style="color: #FFA657">CreateUserAction</span></span>
-<span class="line"><span style="color: #C9D1D9">{</span></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">private</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">CreateUserInterface</span><span style="color: #C9D1D9"> $createUser;</span></span>
+<span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">CreateUserAction</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">CreateUserInterface</span><span style="color: #E1E4E8"> $createUser;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__construct</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">CreateUserInterface</span><span style="color: #C9D1D9"> $createUser</span></span>
-<span class="line"><span style="color: #C9D1D9">    ) {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">createUser </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> $createUser;</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">CreateUserInterface</span><span style="color: #E1E4E8"> $createUser</span></span>
+<span class="line"><span style="color: #E1E4E8">    ) {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">createUser </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $createUser;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">    </span><span style="color: #FF7B72">public</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">function</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">__invoke</span><span style="color: #C9D1D9">(</span><span style="color: #79C0FF">CreateUserRequest</span><span style="color: #C9D1D9"> $request)</span></span>
-<span class="line"><span style="color: #C9D1D9">    {</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
-<span class="line"><span style="color: #C9D1D9">                $input </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">CreateUserInput</span><span style="color: #C9D1D9">(</span></span>
-<span class="line"><span style="color: #C9D1D9">                    </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserName</span><span style="color: #C9D1D9">($request</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">name</span><span style="color: #C9D1D9">()),</span></span>
-<span class="line"><span style="color: #C9D1D9">                    </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserEmail</span><span style="color: #C9D1D9">($request</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">email</span><span style="color: #C9D1D9">())</span></span>
-<span class="line"><span style="color: #C9D1D9">                );</span></span>
-<span class="line"><span style="color: #C9D1D9">            } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">InvalidArgumentException</span><span style="color: #C9D1D9"> $e){</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">BadRequestException</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'不正なリクエストです.'</span><span style="color: #C9D1D9">);</span></span>
-<span class="line"><span style="color: #C9D1D9">            }</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__invoke</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">CreateUserRequest</span><span style="color: #E1E4E8"> $request)</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">try</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">try</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">                $input </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">CreateUserInput</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">                    </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserName</span><span style="color: #E1E4E8">($request</span><span style="color: #F97583">-></span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">()),</span></span>
+<span class="line"><span style="color: #E1E4E8">                    </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserEmail</span><span style="color: #E1E4E8">($request</span><span style="color: #F97583">-></span><span style="color: #B392F0">email</span><span style="color: #E1E4E8">())</span></span>
+<span class="line"><span style="color: #E1E4E8">                );</span></span>
+<span class="line"><span style="color: #E1E4E8">            } </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">InvalidArgumentException</span><span style="color: #E1E4E8"> $e){</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">BadRequestException</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'不正なリクエストです.'</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">            }</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #79C0FF">DB</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">transaction</span><span style="color: #C9D1D9">();</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #79B8FF">DB</span><span style="color: #F97583">::</span><span style="color: #B392F0">transaction</span><span style="color: #E1E4E8">();</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">try</span><span style="color: #C9D1D9"> {</span></span>
-<span class="line"><span style="color: #C9D1D9">                $createdUser </span><span style="color: #FF7B72">=</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">$this</span><span style="color: #FF7B72">-></span><span style="color: #C9D1D9">createAdminUser</span><span style="color: #FF7B72">-></span><span style="color: #D2A8FF">process</span><span style="color: #C9D1D9">($input);</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #79C0FF">DB</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">commit</span><span style="color: #C9D1D9">();</span></span>
-<span class="line"><span style="color: #C9D1D9">            } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">CreateUserFailedSaveException</span><span style="color: #C9D1D9">){</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #79C0FF">DB</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">rollback</span><span style="color: #C9D1D9">();</span></span>
-<span class="line"><span style="color: #C9D1D9">                </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #FF7B72">new</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">InternalServerErrorException</span><span style="color: #C9D1D9">(</span><span style="color: #A5D6FF">'サーバーエラーが発生しました.'</span><span style="color: #C9D1D9">);</span></span>
-<span class="line"><span style="color: #C9D1D9">            }</span></span>
-<span class="line"><span style="color: #C9D1D9">        } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">BadRequestException</span><span style="color: #C9D1D9"> $e){</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #8B949E">// JSONレスポンスの作成</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">ExceptionPresenter</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">makeJsonResponse</span><span style="color: #C9D1D9">($e);</span></span>
-<span class="line"><span style="color: #C9D1D9">        } </span><span style="color: #FF7B72">catch</span><span style="color: #C9D1D9"> (</span><span style="color: #79C0FF">InternalServerErrorException</span><span style="color: #C9D1D9">){</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #8B949E">// Laravelの場合は500系エラーをHandler等で共通して処理したり記録したりすることができる</span></span>
-<span class="line"><span style="color: #C9D1D9">            </span><span style="color: #FF7B72">throw</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">ExceptionPresenter</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">makeJsonResponse</span><span style="color: #C9D1D9">($e);</span></span>
-<span class="line"><span style="color: #C9D1D9">        }</span></span>
-<span class="line"><span style="color: #C9D1D9">        </span><span style="color: #FF7B72">return</span><span style="color: #C9D1D9"> </span><span style="color: #79C0FF">UserPresenter</span><span style="color: #FF7B72">::</span><span style="color: #D2A8FF">makeJsonResponse</span><span style="color: #C9D1D9">($createdUser);</span></span>
-<span class="line"><span style="color: #C9D1D9">    }</span></span>
-<span class="line"><span style="color: #C9D1D9">}</span></span></code></pre>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">try</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">                $createdUser </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">createAdminUser</span><span style="color: #F97583">-></span><span style="color: #B392F0">process</span><span style="color: #E1E4E8">($input);</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #79B8FF">DB</span><span style="color: #F97583">::</span><span style="color: #B392F0">commit</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"><span style="color: #E1E4E8">            } </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">CreateUserFailedSaveException</span><span style="color: #E1E4E8">){</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #79B8FF">DB</span><span style="color: #F97583">::</span><span style="color: #B392F0">rollback</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">InternalServerErrorException</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'サーバーエラーが発生しました.'</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">            }</span></span>
+<span class="line"><span style="color: #E1E4E8">        } </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">BadRequestException</span><span style="color: #E1E4E8"> $e){</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #6A737D">// JSONレスポンスの作成</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">ExceptionPresenter</span><span style="color: #F97583">::</span><span style="color: #B392F0">makeJsonResponse</span><span style="color: #E1E4E8">($e);</span></span>
+<span class="line"><span style="color: #E1E4E8">        } </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">InternalServerErrorException</span><span style="color: #E1E4E8">){</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #6A737D">// Laravelの場合は500系エラーをHandler等で共通して処理したり記録したりすることができる</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">throw</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">ExceptionPresenter</span><span style="color: #F97583">::</span><span style="color: #B392F0">makeJsonResponse</span><span style="color: #E1E4E8">($e);</span></span>
+<span class="line"><span style="color: #E1E4E8">        }</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserPresenter</span><span style="color: #F97583">::</span><span style="color: #B392F0">makeJsonResponse</span><span style="color: #E1E4E8">($createdUser);</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
 <h2 id="バリデーションについて">バリデーションについて</h2>
 <p>Webアプリケーションを構築する際に、フレームワークで投げられる例外から、クリーンアーキテクチャ、ドメイン駆動設計に基づいて分割された様々なオブジェクトから例外がスローされます。</p>
 <p>これについての私の意見は以下のブログの内容とほぼ同じであるため、説明を譲ります。</p>
@@ -441,9 +424,4 @@
 <h2 id="所感">所感</h2>
 <p>普段業務でクリーンアーキテクチャを意識しながらコードを書いていても実装するたびに新しい疑問が湧いてきてどうすれば良いんだろう?と手が止まってしまうことが多々あります。<br>
 今回はエラーハンドリングに関しての現時点の考えをまとめることができたので自身の考えの変化をwatchしてみたいと思います。<br>
-今後もフレームワークのキャッチアップや手を動かして何かを作っていく中で自分なりに考えがまとまったら定期的にアウトプットしたいと思います。</p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+今後もフレームワークのキャッチアップや手を動かして何かを作っていく中で自分なりに考えがまとまったら定期的にアウトプットしたいと思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

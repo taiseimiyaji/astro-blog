@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>クリーンアーキテクチャのUseCaseにおけるInput,Outputについて</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>クリーンアーキテクチャのUseCaseにおけるInput,Outputについて</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 
 ## はじめに
 クリーンアーキテクチャにやっとの思いでなれ始めているこの頃ですが、日頃業務で実装をしていくにあたって疑問に感じることがあります。   
-とはいえ大抵のドメインでは既存の実装に倣ってしまうこともあるんですが、自分の感じた疑">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2022/10/16</div>
-        <h1>クリーンアーキテクチャのUseCaseにおけるInput,Outputについて</h1>
-        <div class="post">
-          <h2 id="はじめに">はじめに</h2>
+とはいえ大抵のドメインでは既存の実装に倣ってしまうこともあるんですが、自分の感じた疑"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/10/16</div><h1>クリーンアーキテクチャのUseCaseにおけるInput,Outputについて</h1><div class="post"><h2 id="はじめに">はじめに</h2>
 <p>クリーンアーキテクチャにやっとの思いでなれ始めているこの頃ですが、日頃業務で実装をしていくにあたって疑問に感じることがあります。<br>
 とはいえ大抵のドメインでは既存の実装に倣ってしまうこともあるんですが、自分の感じた疑問については自分の中で答えを出していきたい性格なのでこの機会にできるだけ言語化しておきたいと思います。<br>
 クリーンアーキテクチャについては以前ブログ記事にもしたので良ければ参考にしてください。<br>
@@ -31,118 +14,118 @@
 <p>Action(Controller)、UseCaseの実装時におけるInput,Outputについて実装の正解を自分なりに考えてみる。</p>
 <h2 id="導入">導入</h2>
 <p>まずはいつものボブおじさんの図をもう一度確認しておきます。
-<img src="images/8dbc4e9ea504ae68caeebf7261788baa807accda93f08a9ea19197b22ac05696.png" alt="picture 1"></p>
+<img src="/images/8dbc4e9ea504ae68caeebf7261788baa807accda93f08a9ea19197b22ac05696.png" alt="picture 1"></p>
 <h2 id="actionusecaseの実装例">Action,UseCaseの実装例</h2>
 <p>Laravelを例にActionとUseCaseの実装例を書いてみます。
 あくまで雰囲気なので実際に動作しない可能性があります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">/**</span></span>
-<span class="line"><span style="color: #c9d1d9"> * Action</span></span>
-<span class="line"><span style="color: #c9d1d9"> */</span></span>
-<span class="line"><span style="color: #c9d1d9">class Action implements Controller</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * ユースケース</span></span>
-<span class="line"><span style="color: #c9d1d9">     *</span></span>
-<span class="line"><span style="color: #c9d1d9">     * @var UseCaseInterface</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    Private UseCaseInterface $useCase;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    /**</span></span>
-<span class="line"><span style="color: #c9d1d9">     * コンストラクタ</span></span>
-<span class="line"><span style="color: #c9d1d9">     *</span></span>
-<span class="line"><span style="color: #c9d1d9">     * ユースケースをコンストラクタでインジェクション</span></span>
-<span class="line"><span style="color: #c9d1d9">     */</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __construct(</span></span>
-<span class="line"><span style="color: #c9d1d9">        UseCaseInterface $useCase</span></span>
-<span class="line"><span style="color: #c9d1d9">    ){</span></span>
-<span class="line"><span style="color: #c9d1d9">        $this->useCase = $useCase</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function __invoke(Request $request)</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        try{</span></span>
-<span class="line"><span style="color: #c9d1d9">            // 1. RequestからInputへ詰め替える</span></span>
-<span class="line"><span style="color: #c9d1d9">            $input = new Input(</span></span>
-<span class="line"><span style="color: #c9d1d9">                $request->param1(),</span></span>
-<span class="line"><span style="color: #c9d1d9">                $request->param2(),</span></span>
-<span class="line"><span style="color: #c9d1d9">                $request->param3()</span></span>
-<span class="line"><span style="color: #c9d1d9">            )</span></span>
-<span class="line"><span style="color: #c9d1d9">            $output = new Output();</span></span>
-<span class="line"><span style="color: #c9d1d9">            DB::beginTransaction();</span></span>
-<span class="line"><span style="color: #c9d1d9">            try{</span></span>
-<span class="line"><span style="color: #c9d1d9">                // 2. ユースケースを実行する</span></span>
-<span class="line"><span style="color: #c9d1d9">                $this->useCase->process($input, $output);</span></span>
-<span class="line"><span style="color: #c9d1d9">                DB::commit();</span></span>
-<span class="line"><span style="color: #c9d1d9">            } catch(UseCaseException $e){</span></span>
-<span class="line"><span style="color: #c9d1d9">                DB::rollBack();</span></span>
-<span class="line"><span style="color: #c9d1d9">                throw new InternalServerErrorException();</span></span>
-<span class="line"><span style="color: #c9d1d9">            }</span></span>
-<span class="line"><span style="color: #c9d1d9">        } catch(InvalidArgumentException $e){</span></span>
-<span class="line"><span style="color: #c9d1d9">            throw new BadRequestException();</span></span>
-<span class="line"><span style="color: #c9d1d9">        } catch(InternalServerErrorException $e){</span></span>
-<span class="line"><span style="color: #c9d1d9">            throw $e;</span></span>
-<span class="line"><span style="color: #c9d1d9">        }</span></span>
-<span class="line"><span style="color: #c9d1d9">        return $output->response();  // outputをレスポンスの形式に合わせる</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">class UseCase</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function process(InputPort $input, OutputPort $output): void</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        // ユースケースの処理</span></span>
-<span class="line"><span style="color: #c9d1d9">        $param1 = $input->param1(); // ユースケースで使用する値はInputPortから取り出す</span></span>
-<span class="line"><span style="color: #c9d1d9">        $output->output($result); // 処理結果はOutputPortにわたす。</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">/**</span></span>
+<span class="line"><span style="color: #e1e4e8"> * Action</span></span>
+<span class="line"><span style="color: #e1e4e8"> */</span></span>
+<span class="line"><span style="color: #e1e4e8">class Action implements Controller</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * ユースケース</span></span>
+<span class="line"><span style="color: #e1e4e8">     *</span></span>
+<span class="line"><span style="color: #e1e4e8">     * @var UseCaseInterface</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    Private UseCaseInterface $useCase;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    /**</span></span>
+<span class="line"><span style="color: #e1e4e8">     * コンストラクタ</span></span>
+<span class="line"><span style="color: #e1e4e8">     *</span></span>
+<span class="line"><span style="color: #e1e4e8">     * ユースケースをコンストラクタでインジェクション</span></span>
+<span class="line"><span style="color: #e1e4e8">     */</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __construct(</span></span>
+<span class="line"><span style="color: #e1e4e8">        UseCaseInterface $useCase</span></span>
+<span class="line"><span style="color: #e1e4e8">    ){</span></span>
+<span class="line"><span style="color: #e1e4e8">        $this->useCase = $useCase</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function __invoke(Request $request)</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        try{</span></span>
+<span class="line"><span style="color: #e1e4e8">            // 1. RequestからInputへ詰め替える</span></span>
+<span class="line"><span style="color: #e1e4e8">            $input = new Input(</span></span>
+<span class="line"><span style="color: #e1e4e8">                $request->param1(),</span></span>
+<span class="line"><span style="color: #e1e4e8">                $request->param2(),</span></span>
+<span class="line"><span style="color: #e1e4e8">                $request->param3()</span></span>
+<span class="line"><span style="color: #e1e4e8">            )</span></span>
+<span class="line"><span style="color: #e1e4e8">            $output = new Output();</span></span>
+<span class="line"><span style="color: #e1e4e8">            DB::beginTransaction();</span></span>
+<span class="line"><span style="color: #e1e4e8">            try{</span></span>
+<span class="line"><span style="color: #e1e4e8">                // 2. ユースケースを実行する</span></span>
+<span class="line"><span style="color: #e1e4e8">                $this->useCase->process($input, $output);</span></span>
+<span class="line"><span style="color: #e1e4e8">                DB::commit();</span></span>
+<span class="line"><span style="color: #e1e4e8">            } catch(UseCaseException $e){</span></span>
+<span class="line"><span style="color: #e1e4e8">                DB::rollBack();</span></span>
+<span class="line"><span style="color: #e1e4e8">                throw new InternalServerErrorException();</span></span>
+<span class="line"><span style="color: #e1e4e8">            }</span></span>
+<span class="line"><span style="color: #e1e4e8">        } catch(InvalidArgumentException $e){</span></span>
+<span class="line"><span style="color: #e1e4e8">            throw new BadRequestException();</span></span>
+<span class="line"><span style="color: #e1e4e8">        } catch(InternalServerErrorException $e){</span></span>
+<span class="line"><span style="color: #e1e4e8">            throw $e;</span></span>
+<span class="line"><span style="color: #e1e4e8">        }</span></span>
+<span class="line"><span style="color: #e1e4e8">        return $output->response();  // outputをレスポンスの形式に合わせる</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">class UseCase</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function process(InputPort $input, OutputPort $output): void</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        // ユースケースの処理</span></span>
+<span class="line"><span style="color: #e1e4e8">        $param1 = $input->param1(); // ユースケースで使用する値はInputPortから取り出す</span></span>
+<span class="line"><span style="color: #e1e4e8">        $output->output($result); // 処理結果はOutputPortにわたす。</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span></code></pre>
 <h2 id="疑問1-valueobjectの利用タイミング">疑問1. ValueObjectの利用タイミング</h2>
 <p>まず、上記の例ではRequest内でValueObjectをnewしています。
 Requestは下記の様な形になります。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">class Request extends FormRequest</span></span>
-<span class="line"><span style="color: #c9d1d9">{</span></span>
-<span class="line"><span style="color: #c9d1d9">    public function authorize(): bool</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return true;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function rules(): array</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        // バリデーション</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">    public function param1(): string</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return new ValueObject1($this->get('param1', ''));</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">    </span></span>
-<span class="line"><span style="color: #c9d1d9">    public function param2(): string</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return new ValueObject2($this->get('param1', ''));</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">    </span></span>
-<span class="line"><span style="color: #c9d1d9">    public function param3(): string</span></span>
-<span class="line"><span style="color: #c9d1d9">    {</span></span>
-<span class="line"><span style="color: #c9d1d9">        return new ValueObject3($this->get('param1', ''));</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">class Request extends FormRequest</span></span>
+<span class="line"><span style="color: #e1e4e8">{</span></span>
+<span class="line"><span style="color: #e1e4e8">    public function authorize(): bool</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return true;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function rules(): array</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        // バリデーション</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">    public function param1(): string</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return new ValueObject1($this->get('param1', ''));</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">    </span></span>
+<span class="line"><span style="color: #e1e4e8">    public function param2(): string</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return new ValueObject2($this->get('param1', ''));</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">    </span></span>
+<span class="line"><span style="color: #e1e4e8">    public function param3(): string</span></span>
+<span class="line"><span style="color: #e1e4e8">    {</span></span>
+<span class="line"><span style="color: #e1e4e8">        return new ValueObject3($this->get('param1', ''));</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>リクエスト内でインスタンスの生成を行います。
 そのため、Controllerでは以下のように詰め替えます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">// 1. RequestからInputへ詰め替える</span></span>
-<span class="line"><span style="color: #c9d1d9">$input = new Input(</span></span>
-<span class="line"><span style="color: #c9d1d9">    $request->param1(),</span></span>
-<span class="line"><span style="color: #c9d1d9">    $request->param2(),</span></span>
-<span class="line"><span style="color: #c9d1d9">    $request->param3()</span></span>
-<span class="line"><span style="color: #c9d1d9">)</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">// 1. RequestからInputへ詰め替える</span></span>
+<span class="line"><span style="color: #e1e4e8">$input = new Input(</span></span>
+<span class="line"><span style="color: #e1e4e8">    $request->param1(),</span></span>
+<span class="line"><span style="color: #e1e4e8">    $request->param2(),</span></span>
+<span class="line"><span style="color: #e1e4e8">    $request->param3()</span></span>
+<span class="line"><span style="color: #e1e4e8">)</span></span></code></pre>
 <p>ですが、Controllerで直接newすることもできます。
 この場合はRequestではプリミティブ型の状態で返します。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">$input = new Input(</span></span>
-<span class="line"><span style="color: #c9d1d9">    new ValueObject1($request->param1()),</span></span>
-<span class="line"><span style="color: #c9d1d9">    new ValueObject2($request->param1()),</span></span>
-<span class="line"><span style="color: #c9d1d9">    new ValueObject1($request->param1()),</span></span>
-<span class="line"><span style="color: #c9d1d9">)</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">$input = new Input(</span></span>
+<span class="line"><span style="color: #e1e4e8">    new ValueObject1($request->param1()),</span></span>
+<span class="line"><span style="color: #e1e4e8">    new ValueObject2($request->param1()),</span></span>
+<span class="line"><span style="color: #e1e4e8">    new ValueObject1($request->param1()),</span></span>
+<span class="line"><span style="color: #e1e4e8">)</span></span></code></pre>
 <p>実装しているときにふとどちらの書き方がいいかなと悩むことがありました。</p>
 <h3 id="エラーハンドリングについて">エラーハンドリングについて</h3>
 <p>ValueObject内で投げられるエラーハンドリングについて考えてみます。<br>
@@ -181,9 +164,4 @@ UseCaseから直接返り値を返さない理由が気になったので調査�
 <h2 id="所感">所感</h2>
 <p>今回は普段実装するうえで感じた疑問について調べてみました。<br>
 とはいえソフトウェアエンジニアリングは経験則からベストプラクティスを学ぶ分野だと思っています。<br>
-思考停止することなく常に疑問を持って、その疑問を置き去りにしないように取り組み続けていきたいと思います。</p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+思考停止することなく常に疑問を持って、その疑問を置き去りにしないように取り組み続けていきたいと思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

@@ -1,29 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <title>JavaScriptの基本の復習</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="
+<!DOCTYPE html><html lang="ja"><head><title>JavaScriptの基本の復習</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 # 
 
 ## はじめに
 https://gihyo.jp/book/2016/978-4-7741-8411-1
 
-本を読んだ感想や内容の簡単なまとめを書きます。丸写しではなくあくまでも自分用のメモなので細かい箇所については書籍をご確認く">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><link rel="stylesheet" href="/_astro/activity.60e3b176.css" /><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head>
-  <!-- Google tag (gtag.js) -->
-    
-    
-  <body>
-    <main>
-      <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div>
-      <div class="content">
-        <div class="date">2022/10/08</div>
-        <h1>JavaScriptの基本の復習</h1>
-        <div class="post">
-          <h1 id=""></h1>
+本を読んだ感想や内容の簡単なまとめを書きます。丸写しではなくあくまでも自分用のメモなので細かい箇所については書籍をご確認く"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/10/08</div><h1>JavaScriptの基本の復習</h1><div class="post"><h1 id=""></h1>
 <h2 id="はじめに">はじめに</h2>
 <p><a href="https://gihyo.jp/book/2016/978-4-7741-8411-1">https://gihyo.jp/book/2016/978-4-7741-8411-1</a></p>
 <p>本を読んだ感想や内容の簡単なまとめを書きます。丸写しではなくあくまでも自分用のメモなので細かい箇所については書籍をご確認ください。
@@ -34,7 +17,7 @@ JavaScriptを業務で使用しているものの、必要となったときに�
 そのなかで参考になった箇所について自分の感想や調べたことを元にまとめたいと思います。</p>
 <h2 id="javascriptの基本">JavaScriptの基本</h2>
 <h2 id="変数の定義にはvarletconst">変数の定義にはvar?let?const?</h2>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">var message;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">var message;</span></span></code></pre>
 <p>初期値を設定しなかった場合は、JavaScriptはデフォルトで未定義(undefined)という特別な値を変数に割り当てる。<br>
 ちなみにJavaScriptの仕様上、変数の宣言は必須ではないですが、宣言する方が望ましいです。<br>
 理由は、スコープの違いです。
@@ -126,10 +109,10 @@ JavaScriptを業務で使用しているものの、必要となったときに�
 </li>
 </ul>
 <p>例)</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let name = '鈴木';</span></span>
-<span class="line"><span style="color: #c9d1d9">let str = 'こんにちは、${name}さん。</span></span>
-<span class="line"><span style="color: #c9d1d9">今日もいい天気ですね'</span></span>
-<span class="line"><span style="color: #c9d1d9">console.log(str);</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">let name = '鈴木';</span></span>
+<span class="line"><span style="color: #e1e4e8">let str = 'こんにちは、${name}さん。</span></span>
+<span class="line"><span style="color: #e1e4e8">今日もいい天気ですね'</span></span>
+<span class="line"><span style="color: #e1e4e8">console.log(str);</span></span></code></pre>
 <p>これにより、エスケープシーケンスを使用せずとも改行を表現できるようになり、<code>${変数名}</code>の形式で変数の値を文字列に埋め込むことができます。
 従来は「+」演算子で連結していましたが、よりシンプルに書けるようになります。</p>
 <h3 id="配列">配列</h3>
@@ -160,23 +143,23 @@ JavaScriptを業務で使用しているものの、必要となったときに�
 <code>undefined</code>との違いは「空である」という状態を表すための値です。</p>
 <h3 id="分割代入">分割代入</h3>
 <p>従来</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let data = [56, 40, 26, 82, 19, 17, 73, 99];</span></span>
-<span class="line"><span style="color: #c9d1d9">let x0 = data[0];</span></span>
-<span class="line"><span style="color: #c9d1d9">let x1 = data[1];</span></span>
-<span class="line"><span style="color: #c9d1d9">let x2 = data[2];</span></span>
-<span class="line"><span style="color: #c9d1d9">//...列挙する必要がある</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">let data = [56, 40, 26, 82, 19, 17, 73, 99];</span></span>
+<span class="line"><span style="color: #e1e4e8">let x0 = data[0];</span></span>
+<span class="line"><span style="color: #e1e4e8">let x1 = data[1];</span></span>
+<span class="line"><span style="color: #e1e4e8">let x2 = data[2];</span></span>
+<span class="line"><span style="color: #e1e4e8">//...列挙する必要がある</span></span></code></pre>
 <p>分割代入を用いた場合</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let data = [56, 40, 26, 82, 19, 17, 73, 99];</span></span>
-<span class="line"><span style="color: #c9d1d9">let [x0, x1, x2, x3, x4, x5, x6, x7] = data;</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">let data = [56, 40, 26, 82, 19, 17, 73, 99];</span></span>
+<span class="line"><span style="color: #e1e4e8">let [x0, x1, x2, x3, x4, x5, x6, x7] = data;</span></span></code></pre>
 <p>右辺の配列を個々の要素に分解して変数に代入することができます。</p>
 <h3 id="変数の別名指定">変数の別名指定</h3>
 <p><code>変数名:別名</code>という形式でプロパティとは異なる名前の変数に値を割り当てることができます。</p>
 <p>例)</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let book = { title: '題名', publish: '出版社' };</span></span>
-<span class="line"><span style="color: #c9d1d9">let { title: name, publish: company } = book;</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">console.log(name);    // 結果: 題名</span></span>
-<span class="line"><span style="color: #c9d1d9">console.log(company);    //結果: 出版社</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">let book = { title: '題名', publish: '出版社' };</span></span>
+<span class="line"><span style="color: #e1e4e8">let { title: name, publish: company } = book;</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">console.log(name);    // 結果: 題名</span></span>
+<span class="line"><span style="color: #e1e4e8">console.log(company);    //結果: 出版社</span></span></code></pre>
 <p>上記の例ではtitle/publishプロパティを変数name/companyに代入します。</p>
 <h3 id="論理演算子について">論理演算子について</h3>
 <p>他の言語同様、論理演算子が使用できます。</p>
@@ -215,19 +198,19 @@ JavaScriptを業務で使用しているものの、必要となったときに�
 ここでデータ型を使用するfor文についてまとめてみたいと思います。</p>
 <h3 id="基本のfor文とカンマ演算子">基本のfor文とカンマ演算子</h3>
 <p>JavaScriptにおけるfor文は以下のように書きます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">for(var i = 0; i &#x3C; 10; i++){</span></span>
-<span class="line"><span style="color: #c9d1d9">    // 処理内容</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">for(var i = 0; i &#x3C; 10; i++){</span></span>
+<span class="line"><span style="color: #e1e4e8">    // 処理内容</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>ここで、カンマ演算子を利用することで、初期化式、ループ継続条件式、増減式に複数の式を指定する事もできます。
 カンマで区切られた式は先頭から順に実行されます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">for (var i = 1,j = 1; i &#x3C; 5; i++, j++) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    console.log('i * jは' + i * j)</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">for (var i = 1,j = 1; i &#x3C; 5; i++, j++) {</span></span>
+<span class="line"><span style="color: #e1e4e8">    console.log('i * jは' + i * j)</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>出力結果</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">i + j は 1</span></span>
-<span class="line"><span style="color: #c9d1d9">i + j は 4</span></span>
-<span class="line"><span style="color: #c9d1d9">i + j は 9</span></span>
-<span class="line"><span style="color: #c9d1d9">i + j は 16</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">i + j は 1</span></span>
+<span class="line"><span style="color: #e1e4e8">i + j は 4</span></span>
+<span class="line"><span style="color: #e1e4e8">i + j は 9</span></span>
+<span class="line"><span style="color: #e1e4e8">i + j は 16</span></span></code></pre>
 <p>基本的には可読性を落とすので避けるべきですが、ブロック内の処理がごく単純な場合にはシンプルに表現することができます。</p>
 <h3 id="foreach命令">forEach命令</h3>
 <p>配列要素に対して繰り返し処理をします。
@@ -237,18 +220,18 @@ forEachは構文ではなくメソッドとして実装されており、引数�
 <h3 id="forin命令">for…in命令</h3>
 <p>指定されたオブジェクト(連想配列)の要素を取り出して、先頭から順に処理します。</p>
 <p>例)</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">for(仮変数 in 連想配列) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    ループ内で実行する命令</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">for(仮変数 in 連想配列) {</span></span>
+<span class="line"><span style="color: #e1e4e8">    ループ内で実行する命令</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
 <p>注意点としては、配列に対しては<code>for...in</code>命令は利用しないことです。<br>
 構文上は配列に対しても利用することは可能ですが、以下のような場合に不都合が生じます。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let data = ['apple', 'orange', 'banana'];</span></span>
-<span class="line"><span style="color: #c9d1d9">// 配列オブジェクトにhogeメソッドを追加</span></span>
-<span class="line"><span style="color: #c9d1d9">Array.prototype.hoge () function {}  // 配列の機能を拡張</span></span>
-<span class="line"><span style="color: #c9d1d9">for (let ley in data) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    console.log(data[key]);</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9">// 結果: 「apple」「orange」「banana」「function(){}」を順に出力</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">let data = ['apple', 'orange', 'banana'];</span></span>
+<span class="line"><span style="color: #e1e4e8">// 配列オブジェクトにhogeメソッドを追加</span></span>
+<span class="line"><span style="color: #e1e4e8">Array.prototype.hoge () function {}  // 配列の機能を拡張</span></span>
+<span class="line"><span style="color: #e1e4e8">for (let ley in data) {</span></span>
+<span class="line"><span style="color: #e1e4e8">    console.log(data[key]);</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8">// 結果: 「apple」「orange」「banana」「function(){}」を順に出力</span></span></code></pre>
 <p>上記のコードの場合、拡張された機能までが列挙されてしまいます。</p>
 <ul>
 <li>for…in命令では処理の順序も保証されない</li>
@@ -261,12 +244,12 @@ forEachは構文ではなくメソッドとして実装されており、引数�
 配列、及びArrayライクなオブジェクト(NodeList,argumentsなど)、イテレーター/ジェネレーターに対して使用できます。
 これらは総称して<code>列挙可能なオブジェクト</code>と呼ばれます。</p>
 <p>例)</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">let data = ['apple', 'orange', 'banana'];</span></span>
-<span class="line"><span style="color: #c9d1d9">Array.prototype.hoge = function() {}</span></span>
-<span class="line"><span style="color: #c9d1d9">for (let value of data) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    console.log(value);</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9">// 結果 : 「apple」「orange」「banana」を順に出力</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">let data = ['apple', 'orange', 'banana'];</span></span>
+<span class="line"><span style="color: #e1e4e8">Array.prototype.hoge = function() {}</span></span>
+<span class="line"><span style="color: #e1e4e8">for (let value of data) {</span></span>
+<span class="line"><span style="color: #e1e4e8">    console.log(value);</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8">// 結果 : 「apple」「orange」「banana」を順に出力</span></span></code></pre>
 <p><code>for...of</code>では仮変数にはキーではなく値が列挙されている点にも注意が必要です。
 indexを使用する場合にはObject.entriesを使用し、keyとvalueの配列になる。</p>
 <h3 id="for文の選択">for文の選択</h3>
@@ -309,24 +292,24 @@ ES2015で追加された仕組みです。</p>
 <p>イテレータの定義が理解できると、自作できることがわかると思います。
 <code>Symbol.iterator</code>キーを持つプロパティが必要となります。
 MDNには、以下のような例が紹介されています。</p>
-<pre is:raw="" class="astro-code" style="background-color: #0d1117; overflow-x: auto;"><code><span class="line"><span style="color: #c9d1d9">var myIterable = {</span></span>
-<span class="line"><span style="color: #c9d1d9">    *[Symbol.iterator]() {</span></span>
-<span class="line"><span style="color: #c9d1d9">        yield 1;</span></span>
-<span class="line"><span style="color: #c9d1d9">        yield 2;</span></span>
-<span class="line"><span style="color: #c9d1d9">        yield 3;</span></span>
-<span class="line"><span style="color: #c9d1d9">    }</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">for (let value of myIterable) {</span></span>
-<span class="line"><span style="color: #c9d1d9">    console.log(value);</span></span>
-<span class="line"><span style="color: #c9d1d9">}</span></span>
-<span class="line"><span style="color: #c9d1d9">// 1</span></span>
-<span class="line"><span style="color: #c9d1d9">// 2</span></span>
-<span class="line"><span style="color: #c9d1d9">// 3</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">or</span></span>
-<span class="line"><span style="color: #c9d1d9"></span></span>
-<span class="line"><span style="color: #c9d1d9">[...myIterable]; // [1, 2, 3]</span></span></code></pre>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">var myIterable = {</span></span>
+<span class="line"><span style="color: #e1e4e8">    *[Symbol.iterator]() {</span></span>
+<span class="line"><span style="color: #e1e4e8">        yield 1;</span></span>
+<span class="line"><span style="color: #e1e4e8">        yield 2;</span></span>
+<span class="line"><span style="color: #e1e4e8">        yield 3;</span></span>
+<span class="line"><span style="color: #e1e4e8">    }</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">for (let value of myIterable) {</span></span>
+<span class="line"><span style="color: #e1e4e8">    console.log(value);</span></span>
+<span class="line"><span style="color: #e1e4e8">}</span></span>
+<span class="line"><span style="color: #e1e4e8">// 1</span></span>
+<span class="line"><span style="color: #e1e4e8">// 2</span></span>
+<span class="line"><span style="color: #e1e4e8">// 3</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">or</span></span>
+<span class="line"><span style="color: #e1e4e8"></span></span>
+<span class="line"><span style="color: #e1e4e8">[...myIterable]; // [1, 2, 3]</span></span></code></pre>
 <h2 id="所感">所感</h2>
 <p>今回はJavaScriptの言語仕様について復習してみました。<br>
 JavaScriptについては業務で使用しているものの、書籍を通して読むと知らなかった構文等を発見することができます。<br>
@@ -335,9 +318,4 @@ JavaScriptは他の言語と比べても使用しないほうがいい地雷の�
 手を動かすことの合間に言語仕様についても復習する時間をこれからも確保したいと思います。</p>
 <h2 id="参考">参考</h2>
 <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Iterators_and_Generators">https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Iterators_and_Generators</a>
-<a href="https://qiita.com/kura07/items/cf168a7ea20e8c2554c6">https://qiita.com/kura07/items/cf168a7ea20e8c2554c6</a></p>
-        </div>
-      </div>
-      <div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div>
-    </main>
-  </body></html>
+<a href="https://qiita.com/kura07/items/cf168a7ea20e8c2554c6">https://qiita.com/kura07/items/cf168a7ea20e8c2554c6</a></p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
