@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="ja"><head><title>社内勉強会レポ 2023-11-10 GraphQL</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回は社内勉強会のレポートです。  
+定期的に社内のエンジニアで集まって勉強会を行っています。  
+勉強会のノリとしてはだいぶ緩く、お題はなんでもいいんですが参加者が気になっている技術などについてあまり前準備なく、みんな"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/11/10</div><h1>社内勉強会レポ 2023-11-10 GraphQL</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>今回は社内勉強会のレポートです。<br>
+定期的に社内のエンジニアで集まって勉強会を行っています。<br>
+勉強会のノリとしてはだいぶ緩く、お題はなんでもいいんですが参加者が気になっている技術などについてあまり前準備なく、みんなで調べて見解を共有するという感じのものです。<br>
+具体的に質問や議論があればそれらをテーマにすることもありますが、社内勉強会では参加するメンバーが別々のプロジェクトチームに所属していることが多いので、共通して興味のありそうなものを選択します。<br>
+今回はGraphQLについて調べてみました。</p>
+<h2 id="graphqlとは">GraphQLとは</h2>
+<p>参考: <a href="https://zenn.dev/nameless_sn/articles/graphql_tutorial">GraphQLを徹底解説する記事</a>
+参考: <a href="https://speakerdeck.com/ichikawa/15fen-defen-katutaqi-ninarugraphql">15分で分かった気になるGraphQL</a></p>
+<p>まずは理解度を確認するために、GraphQLとは何かをざっくりと確認します。</p>
+<p>GraphQLはクエリ言語であり、REST APIの代替として開発されました。<br>
+特に複雑なデータ構造や多様なクライアントのニーズを持つアプリケーションで有効なようです。<br>
+<a href="https://speakerdeck.com/ichikawa/15fen-defen-katutaqi-ninarugraphql?slide=4">こちらのスライド</a>にあるように、クエリを送ることで必要なデータを取得できるようになります。</p>
+<h3 id="overfetchとunderfetch">OverFetchとUnderFetch</h3>
+<h4 id="オーバーフェッチoverfetching">オーバーフェッチ(OverFetching)</h4>
+<p><strong>定義:</strong> オーバーフェッチは、クライアントが必要以上のデータを取得する状況を指します。</p>
+<p><strong>REST APIでの問題:</strong> RESTでは、エンドポイントが固定されたデータセットを返すため、クライアントが必要とする特定の情報だけではなく、余分なデータも含まれることが多いです。</p>
+<p><strong>GraphQLによる解決:</strong> GraphQLでは、クライアントが必要なデータのみを指定してクエリを送ることができます。このため、余分なデータの取得を避け、効率的なデータ取得が可能になります。</p>
+<h4 id="アンダーフェッチunderfetching">アンダーフェッチ(UnderFetching)</h4>
+<p><strong>定義:</strong> アンダーフェッチは、クライアントが一度のリクエストで必要なデータをすべて取得できない状況を指します。</p>
+<p><strong>REST APIでの問題:</strong> 一つのエンドポイントからは限られた情報しか取得できないため、複数のリソースを組み合わせる必要がある場合、複数のAPIリクエストを行う必要があります。</p>
+<p><strong>GraphQLによる解決:</strong> GraphQLでは、一つのクエリで複数のリソースや関連するデータを同時に取得できます。これにより、必要なすべてのデータを一度のリクエストで効率的に取得することが可能です。</p>
+<p>弊社では、基本的にRESTfulなAPIを作成しているため、このあたりの辛さはあるよねといった課題感を再確認します。</p>
+<h2 id="メリットデメリット">メリット、デメリット</h2>
+<p>参考: <a href="https://engineering.mercari.com/blog/entry/20220303-concerns-with-using-graphql/">GraphQLを導入する時に考えておいたほうが良いこと</a></p>
+<h3 id="graphqlのメリット">GraphQLのメリット</h3>
+<p>GraphQL自体はさまざまなWebサイトやブログ等でメリットやデメリットが解説されていますが、まとめると以下のような内容になります。</p>
+<ol>
+<li><strong>効率的なデータ取得</strong>: クライアントは必要なデータのみをリクエストでき、オーバーフェッチやアンダーフェッチを防ぎます。</li>
+<li><strong>柔軟なクエリ</strong>: 複数のリソースを一つのクエリで取得でき、APIリクエストの数を減らすことが可能です。</li>
+<li><strong>リアルタイムデータ</strong>: サブスクリプションを利用することでリアルタイムのデータ更新が容易になります。</li>
+<li><strong>自己文書化</strong>: クエリ言語がスキーマに基づいているため、APIの文書化が容易になります。</li>
+</ol>
+<h3 id="graphqlのデメリット">GraphQLのデメリット</h3>
+<ol>
+<li><strong>複雑なクエリのパフォーマンス</strong>: 深くネストされたクエリはサーバーに大きな負荷をかける可能性があります。</li>
+<li><strong>キャッシュの難しさ</strong>: HTTPキャッシュの利用がRESTに比べて難しくなることがあります。</li>
+<li><strong>学習曲線</strong>: 新しいクエリ言語の学習とシステムへの適応には時間がかかることがあります。</li>
+<li><strong>ファイルアップロード</strong>: 標準のGraphQLはファイルアップロードを直接サポートしていないため、実装にはカスタムスキーマや追加のライブラリが必要になることが多いです。</li>
+<li><strong>エラーハンドリング</strong>: デフォルトではGraphQLはエラーを返さず、全てステータスコード200となります。エラーはあくまでレスポンスの内容という形をとります。</li>
+<li><strong>モニタリング</strong>: すべてのリクエストが同じエンドポイントを使用するため、リクエストの種類を識別しにくいことがあり、モニタリングが複雑になることがあります。</li>
+</ol>
+<h3 id="rest-apiのメリット">REST APIのメリット</h3>
+<ol>
+<li><strong>広範なサポートと成熟度</strong>: 広く使われており、多くのツールとライブラリが利用可能です。</li>
+<li><strong>シンプルな設計</strong>: 理解しやすく、多くの開発者にとって馴染み深いです。</li>
+<li><strong>キャッシュの利用</strong>: HTTPキャッシュメカニズムを簡単に活用できます。</li>
+<li><strong>ファイルアップロード</strong>: RESTはマルチパートフォームデータをサポートしており、ファイルアップロードが比較的簡単に実装できます</li>
+</ol>
+<h3 id="rest-apiのデメリット">REST APIのデメリット</h3>
+<ol>
+<li><strong>オーバーフェッチとアンダーフェッチ</strong>: 必要ないデータの取得や、複数のリクエストが必要な場合があります。</li>
+<li><strong>固定されたデータ構造</strong>: エンドポイントが固定されたデータセットを返すため、柔軟なデータ取得が難しいです。</li>
+<li><strong>多くのエンドポイント</strong>: 多様なデータニーズに対応するために多くのエンドポイントを設計する必要があります。</li>
+</ol>
+<h2 id="graphqlの実装">GraphQLの実装</h2>
+<p>GraphQLは特定のライブラリではなく、RESTのようなアーキテクチャの一つです。そのため、具体的な実装方法はいくつか存在します。</p>
+<p>PHPにおいては、LightHouseというGraphQLの実装があります。</p>
+<p><a href="https://lighthouse-php.com/">https://lighthouse-php.com/</a></p>
+<p>また、一般的に知られているのは、Apollo ServerというGraphQLの実装です。</p>
+<p><a href="https://www.apollographql.com/">https://www.apollographql.com/</a></p>
+<h2 id="採用事例">採用事例</h2>
+<p>GraphQLの概要がなんとなく掴めてきたところで、実際に採用している事例を見てみます。</p>
+<p><a href="https://engineering.mercari.com/blog/entry/20210810-mercari-shops-tech-stack/">メルカリShops の技術スタックと、その選定理由</a></p>
+<p><a href="https://techblog.yahoo.co.jp/entry/2020121530052952/">Next.js + NestJS + GraphQLで変化に追従するフロントエンドへ 〜 ショッピングクーポンの事例紹介</a></p>
+<p><a href="https://netflixtechblog.com/how-netflix-scales-its-api-with-graphql-federation-part-1-ae3557c187e2">How Netflix Scales its API with GraphQL Federation (Part 1)</a></p>
+<h3 id="考察">考察</h3>
+<p>採用事例をみて、参加者で気付いたことを話し合いました。</p>
+<ul>
+<li>コンテンツの配信のようなリソースの種類や量が多く、1ページの情報量が多いプロダクトがほとんど</li>
+<li>発信力もあるかもしれないが、比較的有名なサービスが多い</li>
+</ul>
+<p>また、下記のようなサイトも参考にしました。</p>
+<p>参考: <a href="https://jp.quora.com/GraphQL%E3%81%8C%E3%81%82%E3%81%BE%E3%82%8A%E6%99%AE%E5%8F%8A%E3%81%97%E3%81%AA%E3%81%84%E7%90%86%E7%94%B1%E3%81%AF%E3%81%AA%E3%82%93%E3%81%A7%E3%81%99%E3%81%8B">GraphQLがあまり普及しない理由はなんですか？</a></p>
+<p>この回答では、以下のような内容が説明されています。</p>
+<blockquote>
+<ul>
+<li>マイクロサービスをまとめるためのBFFとしては非常に有効</li>
+<li>GraphQL特有の問題がある(N+1、クエリのコスト)</li>
+<li>フロント、バックが同じチームならREST APIで十分</li>
+</ul>
+</blockquote>
+<p>確かに、マイクロサービスの場合、BFFとしてGraphQLを採用することで、フロントエンドの開発者が必要なデータを自由に取得できるようになります。</p>
+<p>弊社での採用についても少し意見を出しました。</p>
+<ul>
+<li>弊社のプロダクトの場合、マイクロサービスではなく、フロントとバックも分かれていないことが多い</li>
+<li>採用事例のようなコンテンツの配信のようなリソースの種類や量が多く、1ページの情報量が多いプロダクトは<a href="https://apps.smaregi.jp/">スマレジアプリマーケット</a>くらい</li>
+<li>ただし、リソースの量や開発規模を考慮するとGraphQLを採用するほどのモチベーションはないんじゃないか</li>
+</ul>
+<h2 id="脱線">脱線</h2>
+<p>REST APIへの対抗策として、こんなのもあるよと私の方から提案したのが、<a href="https://trpc.io/">tRPC</a>というものです。</p>
+<p>個人的に副業や個人開発を通してフロントエンドの技術を触っていて、キャッチアップした内容を簡単に共有しました。</p>
+<p>Next.js14や、Blitz.jsといったフレームワーク、T3 Stackと呼ばれる技術スタックなどがあり、フロントエンド界隈でのREST API以外のアーキテクチャの動きについて共有しました。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>今回はGraphQLについてざっくりと調べてみました。</p>
+<ul>
+<li>GraphQLはクエリ言語であり、REST APIの代替として開発されました。</li>
+<li>GraphQLは特定のライブラリではなく、RESTのようなアーキテクチャの一つです。</li>
+<li>GraphQLのメリットとしては、効率的なデータ取得、柔軟なクエリ、リアルタイムデータ、自己文書化があります。</li>
+<li>GraphQLのデメリットとしては、複雑なクエリのパフォーマンス、キャッシュの難しさ、学習曲線、ファイルアップロード、エラーハンドリング、モニタリングがあります。</li>
+<li>GraphQLの実装としては、LightHouseやApollo Serverがあります。</li>
+<li>GraphQLの採用事例としては、メルカリShopsやYahoo!ショッピング、Netflixなどがあります。</li>
+<li>弊社で採用する候補としては、スマレジアプリマーケットがありますが、リソースの量や開発規模を考慮するとGraphQLを採用するほどのモチベーションはないんじゃないかという結論になりました。</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>このようなゆるい勉強会を定期的に行っています。<br>
+直接的な業務ではなくても、特定の技術にたいして「名前は聞いたことある」程度から「概要は掴めた」程度まで解像度を上げていくことができるので、個人的にはとても良い勉強になっています。<br>
+また、社内のエンジニアの技術力や興味のある技術についても知ることができるので、社内の技術力の向上にもつながっていると思います。<br>
+ちなみに、弊社ではPHPやLaravelといった技術を採用しているため、このあたりがテーマになった時はもう少し深掘りした内容となることが多いです。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
