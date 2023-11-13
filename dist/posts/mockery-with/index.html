@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ja"><head><title>Mockeryを使った引数の検証方法まとめ</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+プログラミングをしていて、誰しもわからない箇所やメソッドの使い方がわからなくて調べる事があると思います。  
+今回、私は一度引っかかったことにもう一度引っかかって、さらに思い出すまでに時間がかかったのでメモとして残してお"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/11/13</div><h1>Mockeryを使った引数の検証方法まとめ</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>プログラミングをしていて、誰しもわからない箇所やメソッドの使い方がわからなくて調べる事があると思います。<br>
+今回、私は一度引っかかったことにもう一度引っかかって、さらに思い出すまでに時間がかかったのでメモとして残しておきます。</p>
+<p>また、mockeryはとても直感的に使用できるライブラリではあるんですが、日本語での情報が少なく、今回問題を解決しようとして自分が以前書いた記事を見直すこともあったので、改めて知見を日本語で残しておこうと思います。</p>
+<p>勝手に高専出身勢は全員英語出来ないと思っているので日本語の記事があると助かりますね。</p>
+<p>ChatGPTに誤字脱字の校閲してもらったら指導を受けました。</p>
+<blockquote>
+<p>読者層の想定: 記事の冒頭で「勝手に高専出身勢は全員英語出来ないと思っている」という記述があります。これは一般化の可能性があり、読者によっては不快に感じる可能性があります。対象読者層をより広くするためには、このような前提を排除する表現が適切かもしれません。</p>
+</blockquote>
+<p>以前書いた記事はこちらです。</p>
+<p><a href="https://www.lyricrime.com/posts/mockery/">Mockeryの基本的な使い方</a></p>
+<p>また、mockeryの公式ドキュメントの翻訳は以下になります。</p>
+<p><a href="https://readouble.com/mockery/1.0/ja/index.html">https://readouble.com/mockery/1.0/ja/index.html</a></p>
+<h2 id="結論">結論</h2>
+<ul>
+<li>基本的にモックの引数を検証する場合において、引数がオブジェクトの場合はMockery::onを使用しましょう。</li>
+<li>引数が複数の場合は、引数ごとにMockery::onを渡す必要があります。</li>
+</ul>
+<h2 id="今回の問題">今回の問題</h2>
+<p>今回の問題はmockeryを使用した引数の検証についてです。</p>
+<p>例として、今回は以下のようなケースを考えます。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">User</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">readonly</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $userIdentifier,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $userName,</span></span>
+<span class="line"><span style="color: #E1E4E8">    ) {</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">userIdentifier</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">string</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userIdentifier;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">userName</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">string</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userName;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">changeUserName</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $userName)</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userName </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $userName;</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">UserRepository</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">findById</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $identifier)</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">User</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #6A737D">// 再構築処理</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">save</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">User</span><span style="color: #E1E4E8"> $user)</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #6A737D">// 　永続化処理</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<p>これらのクラスを利用するユースケースを考えます。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">ChangeUserName</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserRepository</span><span style="color: #E1E4E8"> $userRepository,</span></span>
+<span class="line"><span style="color: #E1E4E8">    ) {</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">execute</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $userIdentifier, </span><span style="color: #F97583">string</span><span style="color: #E1E4E8"> $userName)</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        $user </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userRepository</span><span style="color: #F97583">-></span><span style="color: #B392F0">findById</span><span style="color: #E1E4E8">($userIdentifier);</span></span>
+<span class="line"><span style="color: #E1E4E8">        $user</span><span style="color: #F97583">-></span><span style="color: #B392F0">changeUserName</span><span style="color: #E1E4E8">($userName);</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userRepository</span><span style="color: #F97583">-></span><span style="color: #B392F0">save</span><span style="color: #E1E4E8">($user);</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<p>このユースケースに対してテストを書いていきます。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">ChangeUserNameTest</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">testExecute</span><span style="color: #E1E4E8">(): </span><span style="color: #79B8FF">void</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        $userRepository </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">\Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">mock</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">UserRepository</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #6A737D">// findByIdの動作を定義します。</span></span>
+<span class="line"><span style="color: #E1E4E8">        $userRepository</span><span style="color: #F97583">-></span><span style="color: #B392F0">shouldReceive</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'findById'</span><span style="color: #E1E4E8">)</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">-></span><span style="color: #B392F0">with</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-identifier'</span><span style="color: #E1E4E8">)                               </span><span style="color: #6A737D">// 引数の検証</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">-></span><span style="color: #B392F0">andReturn</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">User</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-identifier'</span><span style="color: #E1E4E8">, </span><span style="color: #9ECBFF">'user-name'</span><span style="color: #E1E4E8">));  </span><span style="color: #6A737D">// 戻り値の指定</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">        $userRepository</span><span style="color: #F97583">-></span><span style="color: #B392F0">shouldReceive</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'save'</span><span style="color: #E1E4E8">)                      </span><span style="color: #6A737D">// 素直に書けばこれで引数の検証ができる?</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">-></span><span style="color: #B392F0">with</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">User</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-identifier'</span><span style="color: #E1E4E8">, </span><span style="color: #9ECBFF">'new-user-name'</span><span style="color: #E1E4E8">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">        $changeUserName </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">ChangeUserName</span><span style="color: #E1E4E8">($userRepository);</span></span>
+<span class="line"><span style="color: #E1E4E8">        $changeUserName</span><span style="color: #F97583">-></span><span style="color: #B392F0">execute</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-identifier'</span><span style="color: #E1E4E8">, </span><span style="color: #9ECBFF">'new-user-name'</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<p>ところが、このテストは失敗します。</p>
+<p>公式ドキュメントを確認します。</p>
+<p><a href="https://readouble.com/mockery/1.0/ja/argument_validation.html">引数のバリデーション</a></p>
+<blockquote>
+<p>オブジェクトの引数のマッチングでは、Mockeryは厳密な===比較だけを行いますので、全く同じ$objectのみ一致します。</p>
+</blockquote>
+<p>PHPにおいて、厳密な比較の場合、オブジェクトの場合は同じインスタンスである必要があります。今回のテストでは、<code>findById</code>で取得したオブジェクトと<code>save</code>に渡すオブジェクトは別のインスタンスになっているため、テストが失敗しています。</p>
+<h2 id="解決策">解決策</h2>
+<p>今回の問題を解決するには、Mockery::onを使用します。</p>
+<p>公式ドキュメントにも記載があるのですが、いくつかバリエーションを紹介しておきます。</p>
+<h3 id="単純なmockeryon">単純なMockery::on</h3>
+<p>まずは冒頭のケースでのMockey::onの使用例を紹介します。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">testExecute</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// ~~省略~~</span></span>
+<span class="line"><span style="color: #E1E4E8">    $userRepository</span><span style="color: #F97583">-></span><span style="color: #B392F0">shouldReceive</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'save'</span><span style="color: #E1E4E8">)</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">-></span><span style="color: #B392F0">with</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">\Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">on</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">User</span><span style="color: #E1E4E8"> $user) {             </span><span style="color: #6A737D">// 無名関数の引数には実際にメソッドに渡される引数を指定します。</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">assertSame</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-identifier'</span><span style="color: #E1E4E8">, $user</span><span style="color: #F97583">-></span><span style="color: #B392F0">userIdentifier</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">assertSame</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'new-user-name'</span><span style="color: #E1E4E8">, $user</span><span style="color: #F97583">-></span><span style="color: #B392F0">userName</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">true</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #6A737D">// 検証に成功したかどうかをboolで返します。今回の場合は検証に失敗するとassertSame関数が例外を投げるので、常にtrueを返します。</span></span>
+<span class="line"><span style="color: #E1E4E8">        }));</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// ~~省略~~</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<h3 id="assertsameを使用せずに引数の確認">assertSameを使用せずに引数の確認</h3>
+<p>Mockery::onを使用する場合は、無名関数内でboolを返せばいいので、比較を自分で書いても大丈夫です。</p>
+<p>公式にもこちらの方法の記載があります。</p>
+<p>また、$thisを使用しない用に書くとstaticを付与する事ができるようになります。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">testExecute</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// ~~省略~~</span></span>
+<span class="line"><span style="color: #E1E4E8">    $userRepository</span><span style="color: #F97583">-></span><span style="color: #B392F0">shouldReceive</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'save'</span><span style="color: #E1E4E8">)</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">-></span><span style="color: #B392F0">with</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">\Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">on</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">static</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">User</span><span style="color: #E1E4E8"> $user) {          </span><span style="color: #6A737D">// 無名関数の引数には実際にメソッドに渡される引数を指定します。</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> $user</span><span style="color: #F97583">-></span><span style="color: #B392F0">userIdentifier</span><span style="color: #E1E4E8">() </span><span style="color: #F97583">===</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'user-identifier'</span><span style="color: #E1E4E8">;   </span><span style="color: #6A737D">// 例えば、IDのみを比較したい場合。</span></span>
+<span class="line"><span style="color: #E1E4E8">        }));</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// ~~省略~~</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<h3 id="メソッドが複数引数を取る場合">メソッドが複数引数を取る場合</h3>
+<p>今回私が引っかかったのは、メソッドが複数の引数を取る場合でした。</p>
+<p>次のようなユースケースのテストを考えます。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">CreateUser</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">__construct</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserFactory</span><span style="color: #E1E4E8"> $userFactory,</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">private</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserRepository</span><span style="color: #E1E4E8"> $userRepository,</span></span>
+<span class="line"><span style="color: #E1E4E8">    ) {</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">execute</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">UserName</span><span style="color: #E1E4E8"> $userName, </span><span style="color: #79B8FF">Email</span><span style="color: #E1E4E8"> $email)</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        $user </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userFactory</span><span style="color: #F97583">-></span><span style="color: #B392F0">create</span><span style="color: #E1E4E8">($userName, $email);</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">userRepository</span><span style="color: #F97583">-></span><span style="color: #B392F0">save</span><span style="color: #E1E4E8">($user);</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">UserFactory</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">create</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">UserName</span><span style="color: #E1E4E8"> $userName, </span><span style="color: #79B8FF">Email</span><span style="color: #E1E4E8"> $email)</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">User</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #6A737D">// IDの採番</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #6A737D">// エンティティの作成</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<p>このユースケースに対してテストを書いていきます。</p>
+<p>先程と異なる点は、ID、Emailといったパラメータがオブジェクトとなっています。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">class</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">CreateUserTest</span></span>
+<span class="line"><span style="color: #E1E4E8">{</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">testExecute</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">void</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        $userFactory </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">\Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">mock</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">UserFactory</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">        $userRepository </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">\Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">mock</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">UserRepository</span><span style="color: #F97583">::class</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">        $userFactory</span><span style="color: #F97583">-></span><span style="color: #B392F0">shouldReceive</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'create'</span><span style="color: #E1E4E8">)</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">-></span><span style="color: #B392F0">with</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #79B8FF">\Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">on</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">static</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">UserName</span><span style="color: #E1E4E8"> $userName) {</span></span>
+<span class="line"><span style="color: #E1E4E8">                    </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> $userName</span><span style="color: #F97583">-></span><span style="color: #B392F0">value</span><span style="color: #E1E4E8">() </span><span style="color: #F97583">===</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'user-name'</span><span style="color: #E1E4E8">;  </span><span style="color: #6A737D">// 第一引数の検証</span></span>
+<span class="line"><span style="color: #E1E4E8">                }),</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #79B8FF">\Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">on</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">static</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">Email</span><span style="color: #E1E4E8"> $email) {</span></span>
+<span class="line"><span style="color: #E1E4E8">                    </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> $email</span><span style="color: #F97583">-></span><span style="color: #B392F0">value</span><span style="color: #E1E4E8">() </span><span style="color: #F97583">===</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'user-email'</span><span style="color: #E1E4E8">;    </span><span style="color: #6A737D">// 第二引数の検証</span></span>
+<span class="line"><span style="color: #E1E4E8">                })</span></span>
+<span class="line"><span style="color: #E1E4E8">            ) </span><span style="color: #6A737D">// withの引数には、引数の数だけMockery::onを渡す必要があります。</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">-></span><span style="color: #B392F0">andReturn</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">User</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-identifier'</span><span style="color: #E1E4E8">, </span><span style="color: #9ECBFF">'user-name'</span><span style="color: #E1E4E8">));  </span><span style="color: #6A737D">// 戻り値の指定</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">        $userRepository</span><span style="color: #F97583">-></span><span style="color: #B392F0">shouldReceive</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'save'</span><span style="color: #E1E4E8">)</span></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">-></span><span style="color: #B392F0">with</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">\Mockery</span><span style="color: #F97583">::</span><span style="color: #B392F0">on</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #79B8FF">User</span><span style="color: #E1E4E8"> $user) {</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">assertSame</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-identifier'</span><span style="color: #E1E4E8">, $user</span><span style="color: #F97583">-></span><span style="color: #B392F0">userIdentifier</span><span style="color: #E1E4E8">()); </span><span style="color: #6A737D">// Factoryから返却されたUserIdであることを検証します</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">assertSame</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-name'</span><span style="color: #E1E4E8">, $user</span><span style="color: #F97583">-></span><span style="color: #B392F0">userName</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">assertSame</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-email'</span><span style="color: #E1E4E8">, $user</span><span style="color: #F97583">-></span><span style="color: #B392F0">email</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"><span style="color: #E1E4E8">                </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">true</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #E1E4E8">            }));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">        $createUser </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">CreateUser</span><span style="color: #E1E4E8">($userFactory, $userRepository);</span></span>
+<span class="line"><span style="color: #E1E4E8">        $createUser</span><span style="color: #F97583">-></span><span style="color: #B392F0">execute</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">UserName</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-name'</span><span style="color: #E1E4E8">), </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Email</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'user-email'</span><span style="color: #E1E4E8">));</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<p>このように、mockery::onを使用することでかなり柔軟な引数の検証が可能になります。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>基本的にモックの引数を検証する場合において、引数がオブジェクトの場合はMockery::onを使用しましょう。</li>
+<li>引数が複数の場合は、引数ごとにMockery::onを渡す必要があります。</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>オブジェクトに対する引数の検証は、設計をきっちりしようとするとかなり頻出するパターンです。<br>
+今回の例のように、Repositoryを採用した場合は、抽象化されるため、検証内容が以下のように変わります。</p>
+<p>実際のDBに意図した値が保存されていること => saveメソッドに渡されるオブジェクトが意図したものであること</p>
+<p>Mockeryを使用する上で、withを使用した様々なテスト実装パターンが存在しますが、Mockery::onがあれば、オブジェクトの検証はほぼカバーできると思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
