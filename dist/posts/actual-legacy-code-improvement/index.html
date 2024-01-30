@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="ja"><head><title>「t-wadaさんが後世に残したい、実録レガシーコード改善」を聞いて得た気づきメモ</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+個人的なエンジニアとしての強みとして、テストやレガシーコード改善を武器にしていきたいと考えて日々プログラミングと向き合っています。  
+そんな中、t-wadaさんが後世に残したい、実録レガシーコード改善というイベントの再"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/01/30</div><h1>「t-wadaさんが後世に残したい、実録レガシーコード改善」を聞いて得た気づきメモ</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>個人的なエンジニアとしての強みとして、テストやレガシーコード改善を武器にしていきたいと考えて日々プログラミングと向き合っています。<br>
+そんな中、t-wadaさんが後世に残したい、実録レガシーコード改善というイベントの再放送に参加し、自身のテストに関する解像度がさらに上がりました。<br>
+また、テストの考え方を人に伝える上でとてもいい表現をされていたので、そのあたりをメモ的に残しておきます。<br>
+あくまで個人的に印象に残った部分をピックアップしているので、全体の流れや実際のコード例についてはぜひ元のスライドをご覧ください。</p>
+<h2 id="対象イベント">対象イベント</h2>
+<ul>
+<li><a href="https://findy.connpass.com/event/307431/">t-wadaさんが後世に残したい、実録レガシーコード改善</a></li>
+</ul>
+<p>発表スライドはこちらです。</p>
+<ul>
+<li>[実録レガシーコード改善]<a href="https://speakerdeck.com/twada/working-with-legacy-code-the-true-record">https://speakerdeck.com/twada/working-with-legacy-code-the-true-record</a></li>
+</ul>
+<h2 id="概要">概要</h2>
+<p>実際のスマートスピーカースキルの開発を通して、非エンジニアが書いたコードを引き継ぎ、テストを用意しながらレガシーコードを改善していくという内容です。</p>
+<h2 id="ソフトウェア開発の3本柱">ソフトウェア開発の3本柱</h2>
+<ul>
+<li>Version Control</li>
+<li>Testing</li>
+<li>Automation</li>
+</ul>
+<p>この中の優先度について、Version Control > Automation > Testingという順番であるという話がありました。<br>
+理由は「早期に用意することでより多くのレバレッジが効く」からだそうです。テストを専門にしているt_wadaさんがテストより自動化を優先するというのが意外で印象に残っています。<br>
+とにかく手作業を減らすことで、単純作業の時間を安定して削減することができ、かつチーム開発の場合はさらに全員が利益を得られるので、より効果が高まります。</p>
+<h2 id="自動テスト">自動テスト</h2>
+<p>自動テストは安全にコードを変更するための前線基地となります。<br>
+最初は網羅性は不要で、能天気な正常系(Happy Path)のテストを書くことから始めるといいとのことでした。<br>
+この辺りは、自分自身レガシーなコードに対してどんなテストを用意するべきか悩むことも多かったので、新しい気づきが多かったです。<br>
+特に、<code>リファクタリングへの耐性</code>を高めるために、実装から間合いを取ったテストを書く、という表現はわかりやすく、他人に伝わりやすいなと感じました。</p>
+<p>ここから個人的な考えをまとめておきます。<br>
+自分の書くコードではクラスごとにユニットテストを用意していることが多いです。</p>
+<p>これは、API単位のテストのような<code>実装から間合いを取ったテスト</code>と比べるとリファクタリングへの耐性は劣りますが、網羅のしやすさ、つまりはメンテナンスコストが抑えられると考えています。<br>
+ただ、テストがないレガシーなコードの場合はそもそもテストが書きづらかったり、テストを書くなかでより良い設計に気づくことが多いため、ある程度実装から間合いを取ったテストにしておくと、安全に、より良い設計に近づけるのかなと思いました。</p>
+<p>私が自分で書くコードの場合はある程度自分やチームの中で設計の方針が共有できており、大幅なインターフェースの変更が少ないため、クラス単位のテストのメリットが大きくなるなと考えています。<br>
+反対に、慣れていない技術を使用しているものなど、より良い正解を模索しながらインターフェースを変更していく段階では、実装から間合いを取ったテストの方が良いのかなと思いました。<br>
+また、テストには開発者のためのテストと、品質を担保するためのテストに分かれると思っていて、ユニットテストは開発者のためのテストとしての役割が大きいと考えています。</p>
+<p>以下、t_wadaさんのスライドでも<code>レガシーコード改善ガイド</code>から引用されている言葉ですが、テストを書く場合にはコードを変更が必要となり、例外は少ないです。</p>
+<blockquote>
+<p>コードを変更するためにはテストを整備する必要がある。多くの場合、テストを整備するためには、コードを変更する必要がある。</p>
+</blockquote>
+<h2 id="テストとリファクタリング">テストとリファクタリング</h2>
+<p>スライドでは、テストを整備する準備ができたらTDDのサイクルを回しつつ、機能追加等を進めていくんですが、途中で設計への不安に気づく場面が出てきます。</p>
+<blockquote>
+<p>リファクタリングしないと内部の質は上がらないのに、リファクタリングを行うという発想がそもそも無くなっちゃっている。</p>
+</blockquote>
+<p>テストを書いて変更を安全に行うことはできるようになったものの、リファクタリングを行っていないため、コードの設計は改善されず、ただ単にテストコードが増えていくだけになっています。</p>
+<blockquote>
+<p>テストでは品質は上がらないですよ。テストはあくまでも品質をあげるきっかけ。品質を上げるのはプログラミングです。これは大昔からそう。</p>
+</blockquote>
+<p>この言葉はとても印象に残りました。自分の中でもテストがあるコードは漠然と品質が高いんじゃないかと思っていたんですが、よくよく考えると、コード自体に鎧を着せるようなイメージで、コードの中身自体は変わっていないんだから、そりゃ品質は変わらないよなあと思いました。</p>
+<p>テストはリファクタリングのために必要ですが、テストだけで終わっていては品質は変わらないというのは肝に銘じておきたいです。</p>
+<p>このあと、スライドではリファクタリングに話題が移っていくんですが、引用されている言葉が実際の場面によく当てはまるので、こちらもメモしておきます。</p>
+<blockquote>
+<p>「あとでクリーンにすればいいよ。先に市場に出さなければ!」
+開発者はそうやっていつもごまかす。だが、あとでクリーンにすることはない。
+市場からのプレッシャーは止まらないからだ。「先に市場に出さなければ」ということは、後ろに競合他社が大勢いるということである。競合他社に追い抜かれないためには、これからも走り続けるしかない。<br>
+その結果、開発者はモードを切り替えることができない。次の機能、また次の機能、またまた次の機能を追加することになり、コードをクリーンにすることまで手が回らない。<br>
+そして、崩壊が始める。生産性がゼロに近づいていく。</p>
+</blockquote>
+<p>いろんなプロダクトの話を聞いてもよくある話ですね。コードは基本的には書いた瞬間から将来の変更の際の生産性を下げてしまうので、常にリファクタリングによってそのコストを抑えていく必要があります。<br>
+これを日常的にできなかった場合は、プロダクトが崩壊するか、どこかで膨大な工数のリファクタリングが必要となります。<br>
+リファクタリングに限らず、ソフトウェアに関する諸々の問題は早期に発見して早期に対応するのが最も効果がかからないというのは、よく言われています。<br>
+早期発見、かつ安全な変更のためにテストを書き、リファクタリングも日常的に行うことが大切です。</p>
+<h2 id="設計の改善">設計の改善</h2>
+<p>スライドでは、リファクタリングをExtractという手法を用いて進めていきます。</p>
+<p>比較されるのはSproutと呼ばれる手法です。</p>
+<ul>
+<li>Extract(書籍: リファクタリング)
+<ul>
+<li>既存のコードにテストを書いて保護しながら、新しいコードを抽出していく</li>
+</ul>
+</li>
+<li>Sprout(書籍: レガシーコード改善ガイド)
+<ul>
+<li>既存のコードにテストを書くことはあきらめるとしても、せめて新しく書くコードだけはテストを書きながら開発する</li>
+</ul>
+</li>
+</ul>
+<p>具体的な設計の改善は以下のような手順で進んでいきますが、ここでは割愛したいと思います。</p>
+<ol>
+<li>詳細への依存を減らす</li>
+<li>状態遷移もモデル自身が判断できるようにする</li>
+<li>結合度をさらに減らし、抽象度の高い関数のみを公開する</li>
+</ol>
+<p>結果として、さまざまな設計の原理原則を適用していくと、最終的にはクリーンアーキテクチャのような依存の方向性が整理されたコードに近づいていく、という点はクリーンアーキテクチャを他人に説明する際にもきちんと伝えないといけないなと思いました。</p>
+<h2 id="所感">所感</h2>
+<p>今回のイベントを通して、テストや設計に対する考え方がさらに深まりました。<br>
+また、これらの思想を他人に伝える際の語彙がかなり増えたので、今後に活かせる発表でした。<br>
+参考文献として挙げられている書籍の大半はすでに読んでいるんですが、エンジニアになりたてのころに読んでちゃんと理解できていないものもありそうなので、改めて読み直すことで新しい気づきを得られそうです。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
