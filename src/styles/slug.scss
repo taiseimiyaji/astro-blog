@@ -1,0 +1,56 @@
+@import "/src/components/app.scss";
+
+.content {
+    a {
+        text-decoration: underline;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+
+        th, td {
+            border: 1px solid $white;
+            padding: 0.5rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgba($white, 0.2);
+            color: $white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(odd) {
+            background-color: rgba($white, 0.1);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba($white, 0.05);
+        }
+    }
+
+    blockquote {
+        padding: 1rem;
+        margin: 1rem 0;
+        border-left: 4px solid $white;
+        background-color: rgba($white, 0.1);
+        color: $white;
+        font-style: italic;
+        overflow-wrap: break-word;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    h2 {
+        color: $white;
+        margin: 2rem 0 1rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        border-bottom: 2px solid $white;
+        padding-bottom: 0.5rem;
+    }
+}
