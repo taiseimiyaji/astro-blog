@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="ja"><head><title>Next.jsのServerActionsを試してみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+ここ最近あまり手を動かして新しいものを作成することができていなかったので、今回はNext.jsのServerActionsを試して見たいと思います。
+
+まずは簡単なTodoリストの作成から始めてみます。
+
+## 開発方針"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/02/29</div><h1>Next.jsのServerActionsを試してみる</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>ここ最近あまり手を動かして新しいものを作成することができていなかったので、今回はNext.jsのServerActionsを試して見たいと思います。</p>
+<p>まずは簡単なTodoリストの作成から始めてみます。</p>
+<h2 id="開発方針">開発方針</h2>
+<p>個人開発ですが、先にデプロイの方法を考えてから開発を始めてみます。</p>
+<p>今回選択したデプロイ先はVercelのHobbyプラン + PlanetScaleです。</p>
+<p>どちらも無料枠があるので、個人開発を手軽に始めるには良い選択肢かなと思いました。</p>
+<h2 id="利用するfwライブラリ">利用するFW、ライブラリ</h2>
+<p>今回はServerActionsとNext.jsを使ってみたいので、Next.jsの14.0.4、app routerを利用します。</p>
+<p>その他インストールするライブラリは以下の通りです。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #9ECBFF">"@prisma/client"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^5.10.2"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #9ECBFF">"next"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"14.0.4"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #9ECBFF">"next-auth"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^4.24.5"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #9ECBFF">"prisma"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^5.10.2"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #9ECBFF">"react"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^18"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #9ECBFF">"react-dom"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^18"</span></span>
+<span class="line"><span style="color: #9ECBFF">"autoprefixer"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^10.0.1"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #9ECBFF">"biome"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^0.3.3"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #9ECBFF">"postcss"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^8"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #9ECBFF">"tailwindcss"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^3.3.0"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #9ECBFF">"typescript"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"^5"</span></span></code></pre>
+<h2 id="デプロイ先の設定">デプロイ先の設定</h2>
+<p>今回はとりあえずデプロイして動作すればOKを目標にするので、Vercel上で先に行っておく設定としては環境変数の設定くらいです。</p>
+<p>ローカルでは<code>.env.local</code>に設定しておき、production環境用の環境変数はVercelのダッシュボードから設定します。</p>
+<p>next-authを利用したGoogleのOauth認証を作成したので、以下の環境変数も併せて設定しておきます。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">DATABASE_URL= // planetScaleのDB URL</span></span>
+<span class="line"><span style="color: #e1e4e8">GOOGLE_CLIENT_ID= // Google OauthのClient ID</span></span>
+<span class="line"><span style="color: #e1e4e8">GOOGLE_CLIENT_SECRET= // Google OauthのClient Secret</span></span>
+<span class="line"><span style="color: #e1e4e8">NEXTAUTH_URL=</span></span>
+<span class="line"><span style="color: #e1e4e8">NEXTAUTH_SECRET=</span></span></code></pre>
+<h2 id="データベースの設定">データベースの設定</h2>
+<p>今回はORMとしてPrismaを利用するので、まずはPrismaの設定を行います。</p>
+<p>この辺りは公式ドキュメントを参照しながら進めていきます。<br>
+公式ドキュメントではPlanetScaleに関する情報も記載されています。</p>
+<p><a href="https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases-typescript-planetscale">公式ドキュメント</a></p>
+<p>割とセットアップする機会が多いのでChatGPTの回答を参考にして進めても詰まることなく進めることができました。</p>
+<p>インストール</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">npm</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">install</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">prisma</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">@prisma/client</span></span></code></pre>
+<p>初期化</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">npx</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">prisma</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">init</span></span></code></pre>
+<p>この時点でprismaディレククトリが作成され、<code>schema.prisma</code>が作成されます。</p>
+<p>また、.envファイルを作成していない場合は作成されるはずです。</p>
+<p>先程のあげた内容の環境変数を設定し、DATABASE_URLにはPlanetScaleのURLを設定します。</p>
+<p>以下のような形式でPlanetScaleからURLが提供されるので、それを設定します。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">DATABASE_URL="mysql://&#x3C;username>:&#x3C;password>@&#x3C;host>/&#x3C;database>?sslaccept=strict"</span></span></code></pre>
+<h2 id="データベースのマイグレーション">データベースのマイグレーション</h2>
+<p>PlanetScaleはgitブランチのような仕組みでDBスキーマを管理するため、従来のマイグレーションとは少し異なる形でマイグレーションを行います。</p>
+<p>まずは<code>schema.prisma</code>を編集して、テーブルを作成します。</p>
+<p>Prismaの<code>db push</code>を利用してローカルのスキーマ変更をPlanetScaleのブランチにプッシュします。</p>
+<p>そのうえでPlanetScale上のダッシュボードを変更内容を確認し、問題がなければメインブランチのDBスキーマとしてマージします。</p>
+<p>この辺りはPrismaの従来の方法ではないので少し注意しながら作業する必要があります。</p>
+<h2 id="serveractionsの作成">ServerActionsの作成</h2>
+<p>本題のServerActionsの作成です。</p>
+<h3 id="serveractionsの概要">ServerActionsの概要</h3>
+<p>ざっくりとした概要をChatGPTに聞いてみました。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">Next.jsのServerActionsは、サーバーサイドで非同期関数を実行するための機能です。これらは、サーバーおよびクライアントコンポーネントでフォームの送信やデータの変更を処理するために使用できます。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #79B8FF; font-weight: bold">### 概要</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FFAB70">-</span><span style="color: #E1E4E8"> </span><span style="color: #E1E4E8; font-weight: bold">**定義と使用法**</span><span style="color: #E1E4E8">: ServerActionsは</span><span style="color: #79B8FF">`async`</span><span style="color: #E1E4E8">関数として定義され、</span><span style="color: #79B8FF">`"use server"`</span><span style="color: #E1E4E8">ディレクティブを使用してマークされます。これらのアクションは、サーバーコンポーネントおよびクライアントコンポーネントで使用でき、フォームの送信やデータの変更を処理するために使用されます。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FFAB70">-</span><span style="color: #E1E4E8"> </span><span style="color: #E1E4E8; font-weight: bold">**動作**</span><span style="color: #E1E4E8">: ServerActionsは</span><span style="color: #79B8FF">`&#x3C;form>`</span><span style="color: #E1E4E8">要素の</span><span style="color: #79B8FF">`action`</span><span style="color: #E1E4E8">属性を使用して呼び出され、サーバーコンポーネントではプログレッシブエンハンスメントがサポートされています。クライアントコンポーネントでは、JavaScriptがロードされるまでフォームの送信がキューに入れられ、ハイドレーション後にブラウザのリフレッシュが発生しないようになっています。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">Next.jsのServerActionsは、サーバーサイドで非同期関数を実行するための機能です。これらは、サーバーおよびクライアントコンポーネントでフォームの送信やデータの変更を処理するために使用できます。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FFAB70">-</span><span style="color: #E1E4E8"> </span><span style="color: #E1E4E8; font-weight: bold">**クライアントコンポーネントでの使用**</span><span style="color: #E1E4E8">: クライアントコンポーネントでは、モジュールレベルの</span><span style="color: #79B8FF">`"use server"`</span><span style="color: #E1E4E8">ディレクティブを使用してインポートされたアクションのみを使用できます。ServerActionをクライアントコンポーネントにプロパティとして渡すこともできます。</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color: #79B8FF; font-weight: bold">### ServerActionsの利点</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FFAB70">-</span><span style="color: #E1E4E8"> </span><span style="color: #E1E4E8; font-weight: bold">**サーバーサイドのデータ取得**</span><span style="color: #E1E4E8">: ServerActionsを使用すると、データ取得をサーバーに移動し、データソースに近づけることができます。これにより、レンダリングに必要なデータの取得時間が短縮され、クライアントが行うリクエストの数が減り、パフォーマンスが向上します。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FFAB70">-</span><span style="color: #E1E4E8"> </span><span style="color: #E1E4E8; font-weight: bold">**セキュリティ**</span><span style="color: #E1E4E8">: ServerActionsを使用すると、トークンやAPIキーなどの機密データやロジックをサーバーに保持できます。これにより、クライアントにこれらの情報が露出するリスクを回避できます。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #FFAB70">-</span><span style="color: #E1E4E8"> </span><span style="color: #E1E4E8; font-weight: bold">**キャッシュ**</span><span style="color: #E1E4E8">: サーバー上でレンダリングすることで、結果をキャッシュして後続のリクエストやユーザー間で再利用できます。これにより、パフォーマンスが向上し、各リクエストでのレンダリングおよびデータ取得の量が減少し、コストが削減されます。</span></span>
+<span class="line"></span></code></pre>
+<p>ただ、今回の実装にあたってChatGPTの回答はあまり精度が高くなく、かえって混乱することが多かったので、Next.jsの公式ドキュメントを参照しながら進めて行った方が良さそうです。</p>
+<p>技術要素でいうとPrismaに関する情報は比較的精度が高かったんですが、他の技術要素に関してはChatGPTの利用を避けた方が良さそうな印象を受けました。</p>
+<h3 id="serveractionsの実装">ServerActionsの実装</h3>
+<p>app routerの場合はルーティング設定がpages routerの場合とは異なる点に留意しつつ、ServerActionsを実装していきます。</p>
+<p>pages routerを触ったことがある場合は下記のようなZennの記事を見るとイメージ掴みやすいかもしれません。</p>
+<p><a href="https://zenn.dev/yamadadayo123/articles/6cb4f586de0183">ざっくりApp Router入門【Next.js】</a></p>
+<p>pages routerにも自信がなかったりする場合は公式ドキュメントを端から読んでいくほうが近道かもしれません。</p>
+<p>app/todos/action.ts</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #9ECBFF">"use server"</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { PrismaClient } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">"@prisma/client"</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">type</span><span style="color: #E1E4E8"> { NextRequest } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">"next/server"</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">prisma</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">PrismaClient</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">async</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">getTodos</span><span style="color: #E1E4E8">() {</span></span>
+<span class="line"><span style="color: #E1E4E8">	</span><span style="color: #9ECBFF">"use server"</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #E1E4E8">	</span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">todos</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">await</span><span style="color: #E1E4E8"> prisma.todo.</span><span style="color: #B392F0">findMany</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">		orderBy: { createdAt: </span><span style="color: #9ECBFF">"desc"</span><span style="color: #E1E4E8"> },</span></span>
+<span class="line"><span style="color: #E1E4E8">	});</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> todos;</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">async</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">createTodo</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">formData</span><span style="color: #F97583">:</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">FormData</span><span style="color: #E1E4E8">) {</span></span>
+<span class="line"><span style="color: #E1E4E8">	</span><span style="color: #9ECBFF">"use server"</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #E1E4E8">	</span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">rawFormData</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">		title: formData.</span><span style="color: #B392F0">get</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">"title"</span><span style="color: #E1E4E8">) </span><span style="color: #F97583">as</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">string</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #E1E4E8">		description: formData.</span><span style="color: #B392F0">get</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">"description"</span><span style="color: #E1E4E8">),</span></span>
+<span class="line"><span style="color: #E1E4E8">		completed: formData.</span><span style="color: #B392F0">get</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">"completed"</span><span style="color: #E1E4E8">) </span><span style="color: #F97583">===</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">"true"</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #E1E4E8">	};</span></span>
+<span class="line"><span style="color: #E1E4E8">	</span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">todo</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">await</span><span style="color: #E1E4E8"> prisma.todo.</span><span style="color: #B392F0">create</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">		data: { title: rawFormData.title, completed: </span><span style="color: #79B8FF">false</span><span style="color: #E1E4E8"> },</span></span>
+<span class="line"><span style="color: #E1E4E8">	});</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<p>このような形で、“use server”を文頭につけます。<br>
+また、引数にはformDataを受け取るとform内のinput要素の値を取得することができます。</p>
+<p>今回は極力シンプルな形で実装しましたが、実際にはバリデーションやエラーハンドリングなども実装する必要があります。</p>
+<p>参考: <a href="https://zenn.dev/rio_dev/articles/eb69fae0557f20">【Next.js】Server Actionsを現場で使うテクニック</a></p>
+<p>コンポーネント側の実装としてはform要素のactionに上記の関数を指定することで、ServerActionsを利用することができます。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">	</span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">handleCreate</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">async</span><span style="color: #E1E4E8"> () </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">		</span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">formData</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">FormData</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"><span style="color: #E1E4E8">		formData.</span><span style="color: #B392F0">append</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">"title"</span><span style="color: #E1E4E8">, newTodo);</span></span>
+<span class="line"><span style="color: #E1E4E8">		</span><span style="color: #F97583">try</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">			</span><span style="color: #F97583">await</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">createTodo</span><span style="color: #E1E4E8">(formData);</span></span>
+<span class="line"><span style="color: #E1E4E8">		} </span><span style="color: #F97583">catch</span><span style="color: #E1E4E8"> (e) {</span></span>
+<span class="line"><span style="color: #E1E4E8">			console.</span><span style="color: #B392F0">error</span><span style="color: #E1E4E8">(e);</span></span>
+<span class="line"><span style="color: #E1E4E8">		}</span></span>
+<span class="line"><span style="color: #E1E4E8">		</span><span style="color: #6A737D">// 作成完了後にリロードする</span></span>
+<span class="line"><span style="color: #E1E4E8">		window.location.</span><span style="color: #B392F0">reload</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"><span style="color: #E1E4E8">	};</span></span></code></pre>
+<p>今回の場合はJSの関数を利用したかったので、クライアントコンポーネントから上記の呼び出しを行っています。</p>
+<p>ただ、ServerActionsのメリットを活かせないような気もしているのでもう少しドキュメントを読みつつ試行錯誤してみたいと思います。</p>
+<p>戸惑う点としては、フロントエンドの中でもクライアントサイドとサーバーサイドのコードを混在させることになるので、意識の切り替えが自分の中でうまくできていない感触がありました。</p>
+<p>ServerActions、RSCあたりはまだなにもわからないので、思想を理解できるように手を動かしていきたいと思います。</p>
+<p>参考<a href="https://zenn.dev/uhyo/articles/react-server-components-multi-stage">一言で理解するReact Server Components</a></p>
+<h2 id="まとめ">まとめ</h2>
+<p>今回はNext.jsのServerActionsを試しつつ、新しく個人開発を始めるにあたっての最小限のデプロイまで行いました。</p>
+<p>フロントエンドはまだまだ知見が浅くベストプラクティスがわからない分野なので、悩みながらも楽しくすすめることができました。</p>
+<p>個人的には先にデプロイをしやすい環境を用意しておくとモチベーションを保ったまま開発を進めることができているかなと思います。</p>
+<p>今後も引き続きフロントエンドもキャッチアップをしつつ、個人開発を楽しみたいと思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
