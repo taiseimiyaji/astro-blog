@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="ja"><head><title>DRY原則とそのトレードオフ</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+おそらくもっとも有名なソフトウェア工学の原則の1つに、DRY（Don't Repeat Yourself）原則があります。DRY原則は、同じコードを何度も書かないようにすることを目指しています。この記事では、DRY原則の"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/04/09</div><h1>DRY原則とそのトレードオフ</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>おそらくもっとも有名なソフトウェア工学の原則の1つに、DRY（Don’t Repeat Yourself）原則があります。DRY原則は、同じコードを何度も書かないようにすることを目指しています。この記事では、DRY原則の重要性とそのトレードオフについて考えてみます。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://www.oreilly.co.jp//books/9784814400317/">ソフトウェア設計のトレードオフと誤り</a></p>
+<h2 id="dry原則とは">DRY原則とは？</h2>
+<p>DRY原則（Don’t Repeat Yourself）は、ソフトウェア開発における原則の一つです。</p>
+<p>重複したコードを避け、同じコードを複数の場所で書かないようにすることを推奨しています。</p>
+<p>DRY原則を遵守することで得られる主なメリットは次のとおりです。</p>
+<ol>
+<li><strong>保守性の向上：</strong> 同じコードが複数の場所に存在しないため、修正が必要な場合に一箇所だけ変更すれば済みます。これにより、コードの保守性が向上します。</li>
+<li><strong>可読性の向上：</strong> 重複するコードがないため、コードの構造が明確になり、読みやすくなります。</li>
+<li><strong>バグの減少：</strong> 重複したコードを修正する際に、一部の場所を修正し忘れることがなくなるため、ケアレスミスによるバグが減少します。</li>
+<li><strong>開発効率の向上：</strong> コードの重複を避けることで、新しい機能の追加や既存機能の改善が容易になり、開発効率が向上します。</li>
+</ol>
+<h2 id="dry原則のトレードオフ">DRY原則のトレードオフ</h2>
+<p>現在のソフトウェア開発において、コードの重複を減らそうとすると、いくつかのトレードオフが生じることがあります。<br>
+コンポーネント間が密結合いなったり、チームの開発速度が低下したりします。<br>
+例えば、同じコードを複数の場所で使い回すことで、コードの再利用性が向上する一方で、コードの変更による影響範囲が大きくなります。</p>
+<p>DRY原則は非常に重要ですが、過度に適用すると逆に問題が生じることがあります。異なる文脈で同じコードを無理に使おうとしてしまい、適切な抽象化が行われないこともあります。</p>
+<p>ここからは、コードの重複が合理的になるパターンと、逆にどのような場合に避けるべきなのかについて考えてみます。</p>
+<h3 id="アムダールの法則">アムダールの法則</h3>
+<p>今回参考にした書籍では、まずアムダールの法則について触れています。</p>
+<p>アムダールの法則とは、</p>
+<blockquote>
+<p>ある計算機システムとその対象とする計算についてのモデルにおいて、その計算機の並列度を上げた場合に、並列化できない部分の存在、特にその割合が「ボトルネック」となることを示した法則である</p>
+</blockquote>
+<p>引用元: <a href="https://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%A0%E3%83%80%E3%83%BC%E3%83%AB%E3%81%AE%E6%B3%95%E5%89%87">wikipedia</a></p>
+<p>この法則をソフトウェア開発に置き換えて考えてみると、必要な同期処理が少ない(つまり並列処理部分が多い)ほど、問題解決のためにリソースを追加することで得られる利益が大きいということが言えます。もっと単純に、待ち状態が発生しにくいほどリソース追加の効果が大きいといってもいいでしょう。</p>
+<h3 id="例-認証ライブラリ">例: 認証ライブラリ</h3>
+<p>参考書籍でも紹介されていますが、例えば、認証ライブラリを開発する場合を考えてみましょう。書籍の内容をできるだけ簡潔にしながらまとめるので、より詳細な説明が必要な場合は書籍を参照してください。</p>
+<p>この例では、ビジネス的に分断され、開発チームとしても分かれている2つのプロジェクトがあります。それぞれのプロジェクトで認証機能が必要になりました。</p>
+<p>先に紹介したアムダールの法則通り、それぞれのチームで認証機能を開発することを選択した場合のことを考えてみます。</p>
+<p>この場合、認証機能はそれぞれのプロジェクトで独立して開発されるため、コードの重複が発生します。同じ認証という機能を独立して開発しているため、コードや作業に重複が存在します。</p>
+<p>この時発生する事象として、下記のようなものがあります。</p>
+<ul>
+<li>多くのバグやミスにつながる
+<ul>
+<li>たとえば、片方のチームがバグを修正した場合、もう片方のチームも同じバグを抱えている可能性があります。</li>
+</ul>
+</li>
+<li>知見は共有されない
+<ul>
+<li>片方のチームがバグを発見し、彼らのコードベースでそのバグを修正したとします。しかし、もう片方のチームのコードベースにその修正が反映されることはありません。お互いのチームはそれぞれこのバグを修正する必要があります。</li>
+</ul>
+</li>
+<li>チーム間での調整なしの作業はより早く進みます</li>
+</ul>
+<p>この例からわかるように、コードの重複は問題を引き起こす可能性があります。このような場合、DRY原則を適用することで、コードの重複を避けることが重要です。</p>
+<p>続いて、この二つのチームは、コードベース間で重複している部分を別のライブラリに抽出することを決定しました。これにより、認証機能は共通のライブラリとして提供され、両方のプロジェクトで再利用されることになります。</p>
+<p>重複を除くことで、コード全体の品質が向上します、共通のライブラリを蓄積することで、双方のチーム間での協力が可能になり、共通のコードベースが改善されます。</p>
+<p>バグを修正する際の作業の重複もなくなります。</p>
+<p>このライブラリとして抽出するアプローチを選択する場合のトレードオフについて考えてみましょう。</p>
+<ul>
+<li>抽出したライブラリ自身は元のコードベースとは別の様式、デプロイ方法、コードの慣例を持つ</li>
+<li>そのため、最初に共有ライブラリを追加するコストは高くなるが、2つ目を追加するコストは低くなる</li>
+<li>共有ライブラリを選択した場合、ほとんどのケースではそれを利用するクライアントと同じ言語を利用する必要がある
+<ul>
+<li>ネイティブインターフェースのような技術でラップすることも可能だが、中間層が増え、例えばOS間での移植が難しくなったり、別の問題が発生する</li>
+</ul>
+</li>
+<li>ライブラリを開発する場合はバージョンに寄る互換性の維持やシンプルな設計など、ライブラリの品質にも注意が必要</li>
+<li>ライブラリをインポートした場合、ライブラリのコードは利用者のコードの一部となり、責任が発生する</li>
+</ul>
+<p>上記のライブラリの利用による問題をいくつか解決するために、参考書籍ではマイクロサービスのアーキテクチャを提案しています。</p>
+<p>マイクロサービスとして切り出して、そのサービスをHTTPなどのプロトコルを通して利用する場合は、ライブラリを利用する場合に比べると結合が緩やかになります。言語による制限や、ライブラリの品質による問題をブラックボックスとして扱うことができ、APIのみが唯一の結合箇所になります。</p>
+<p>ただし、現在のコードを実行するための新しい依存関係として、クライアントライブラリを追加する必要があります。</p>
+<p>また、ライブラリの場合と同様に、マイクロサービスの場合も、サービスの品質やバージョン管理に注意する必要があり、独自のデプロイの仕組みが必要になります。また、サービス自体をデプロイするインフラの整備や、監視の仕組みなど、多くの追加の実装が必要になります。</p>
+<h2 id="dry原則のトレードオフバランス">DRY原則のトレードオフバランス</h2>
+<p>適切なバランスを見つけるためには、以下の点を考慮することが重要です。</p>
+<ol>
+<li><strong>文脈の理解：</strong> コードを再利用する際には、そのコードが適用される文脈を理解することが重要です。異なる文脈で同じコードを無理に適用することは避けましょう。</li>
+<li><strong>抽象化の適切なレベル：</strong> 抽象化は適切なレベルで行う必要があります。過度に抽象化すると、コードの理解が難しくなります。</li>
+<li><strong>可読性と再利用性のバランス：</strong> 可読性と再利用性は両立しないことがあります。どちらを優先するかは、プロジェクトの状況やチームの方針によって異なります。</li>
+</ol>
+<p>また、本質的な重複か、偶然の重複かを意識することが重要です。</p>
+<p>参考書籍には、<code>ソフトウェア開発者はパターンマッチングに過剰適合する傾向があります。</code>という記述があります。これは、同じコードを見つけると、それを抽出して再利用しようとする傾向があるということです。2つのものが同一に見える場合には、それらが同じビジネス目標を解決する場合と、作業しているコード内における偶然の重複の場合に分けられます。</p>
+<p>通常、2つの概念が異なることが判明したときに分離する場合と、2つの別の概念が同じことが判明した時に1つに統合する場合を比べると、後者のほうが簡単です。一度抽象化を行い、複数の場所で利用され始めると、分離する際に影響範囲が広がり、さまざまな調整が必要になります。</p>
+<p>抽象化された状態から考え始めて、発生しうる全ての利用法を、決めた抽象化の枠組みに適合させていくのは、大抵のケースで最適ではない、と書籍内で記述がありますが、これは私個人の経験則とも合致するものです。</p>
+<p>まずは独立したコンポーネントを作成し、多少コードの重複があったとしても、しばらくの間独立させたままシステムを実装できます。</p>
+<p>このように、独立した実装を維持するか、ライブラリとして共有するか、マイクロサービスとして切り出すかは、それぞれのユースケースでトレードオフが発生します。適切なバランスを見つけるためには、文脈の理解、適切な抽象化のレベル、可読性と再利用性のバランスを考慮することが重要です。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>DRY原則はソフトウェア開発において非常に重要な原則ですが、大抵の場合は分離するほうが難易度が高くなりがちなので過度に適用することは避けるべきです。適切なバランスを見つけることで、高品質で保守しやすいコードを実現できると思いました。</p>
+<p>参考書籍の中で、まとめられている箇所がありましたので、引用します。</p>
+<blockquote>
+<ul>
+<li>コードベース間での共通コードの共有は、ライブラリとして抽出することで実現できます。しかし、ライブラリ経由でのコードの再利用は密結合や柔軟性の低下などのさまざまな問題が伴います。</li>
+<li>共通のビジネスロジックを分離したサービスに抽出することは、より複雑な問題に対しては正しい選択かもしれませんが、保守コストが高くなります。</li>
+<li>継承は、コードの重複を取り除くことや子クラス間でのコードの共有に役立ちます。しかし、継承はコードの柔軟性を制限するなど、多くのトレードオフがあります。</li>
+<li>時として、重複したコードを残しておくことで柔軟性が維持され、チーム間の調整を減らす価値があります。</li>
+</ul>
+</blockquote>
+<h2 id="所感">所感</h2>
+<p>DRY原則は、エンジニアになって一番最初に覚えた原則でしたが、その内容を本当の意味で理解するようになったのは意外と最近のことでした。<br>
+ソフトウェア開発は常に様々なトレードオフが存在するため、手法ごとにその適用範囲を理解し、トレードオフを可視化したうえで判断を繰り返していくことが重要だと感じました。<br>
+社内でもライブラリやマイクロサービスとしての切り出しは行われているため、それぞれのケースについて今一度トレードオフの内容を考え直すきっかけになりました。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
