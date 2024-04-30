@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="ja"><head><title>SQLiteとLaravel11でのカラム削除の挙動でつまづいた話</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回は2024年3月12日にリリースされたLaravel11のうち、移行時につまづいたSQLiteの仕様についてまとめます。
+
+[Laravel Upgrade Guide](https://laravel.com/do"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/04/25</div><h1>SQLiteとLaravel11でのカラム削除の挙動でつまづいた話</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>今回は2024年3月12日にリリースされたLaravel11のうち、移行時につまづいたSQLiteの仕様についてまとめます。</p>
+<p><a href="https://laravel.com/docs/11.x/upgrade">Laravel Upgrade Guide</a></p>
+<h2 id="概要">概要</h2>
+<p>Laravel11ではSQLiteは3.35.0以上のバージョンが必須となりました。<br>
+この3.35.0というバージョンは2021年3月12日にリリースされたものです。<br>
+この3.35.0でカラムの削除周りの挙動が変更されたのが今回のサポートバージョンの変更の理由のようです。</p>
+<h2 id="カラム削除の挙動について">カラム削除の挙動について</h2>
+<h3 id="3350以前のsqliteでの挙動">3.35.0以前のSQLiteでの挙動</h3>
+<p>3.35.0以前は<code>ALTER TABLE DROP COLUMN</code>のサポートがなかったので、カラムを削除する場合には以下の手順を踏む必要がありました。</p>
+<ol>
+<li>既存のテーブル名を変更</li>
+<li>新しいテーブルを元々のテーブル名で作成</li>
+<li>古いテーブルから新しいテーブルにレコードをコピー</li>
+<li>古いテーブルを削除</li>
+</ol>
+<h3 id="3350以降のsqliteでの挙動">3.35.0以降のSQLiteでの挙動</h3>
+<p><code>ALTER TABLE DROP COLUMN</code>のサポートが追加されたので、以下のようなSQLの実行が可能になります。</p>
+<p><a href="https://www.sqlite.org/lang_altertable.html#altertabdropcol">https://www.sqlite.org/lang_altertable.html#altertabdropcol</a></p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">ALTER</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">TABLE</span><span style="color: #E1E4E8"> table_name </span><span style="color: #F97583">DROP</span><span style="color: #E1E4E8"> COLUMN column_name;</span></span></code></pre>
+<p>ほかのDBMS同様に、下記のような場合に削除できない制約があります。</p>
+<ul>
+<li>列が主キー、またはその一部である</li>
+<li>列にユニーク制約が設定されている</li>
+<li>列にインデックスが設定されている</li>
+<li>列の名前が部分インデックスのWHERE句に含まれている</li>
+<li>列がテーブル内の他の列に関連付けられたCHECK制約に利用されている</li>
+<li>列が外部キー制約の参照先である</li>
+<li>列が生成列の式で利用される</li>
+<li>列がトリガーまたはビューで利用される</li>
+</ul>
+<h2 id="外部キー制約の削除時の挙動">外部キー制約の削除時の挙動</h2>
+<p>SQLiteでは、外部キー制約の削除はサポートされておらず、SQLite3.35.0時点でも削除できません。</p>
+<p>その代わりに、外部キー制約を削除するためには、次の方法を使用する必要があります。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">PRAGMA foreign_keys</span><span style="color: #F97583">=OFF</span><span style="color: #E1E4E8">;</span></span></code></pre>
+<h2 id="発生する問題">発生する問題</h2>
+<p>上記の通り、カラムの削除はサポートされましたが、外部キー制約の削除はサポートされていません。</p>
+<p>Laravelのマイグレーションでは、外部キー制約の削除を直接行うことができないため、エラーが発生するケースがあります。</p>
+<p>特にSQLite3.35.0以前ではテーブルを再作成していたため、外部キー制約は削除されていましたが、3.35.0以降では外部キー制約が残ったままになるため、外部キー制約関連のエラーが発生します。</p>
+<p><a href="https://github.com/laravel/framework/blob/10.x/src/Illuminate/Database/Schema/Grammars/SQLiteGrammar.php#L403">Laravel 10 SQLiteGrammar</a></p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">/**</span></span>
+<span class="line"><span style="color: #6A737D">     * Compile a drop column command.</span></span>
+<span class="line"><span style="color: #6A737D">     *</span></span>
+<span class="line"><span style="color: #6A737D">     * </span><span style="color: #F97583">@param</span><span style="color: #6A737D">  </span><span style="color: #79B8FF">\Illuminate\Database\Schema\Blueprint</span><span style="color: #6A737D">  $blueprint</span></span>
+<span class="line"><span style="color: #6A737D">     * </span><span style="color: #F97583">@param</span><span style="color: #6A737D">  </span><span style="color: #79B8FF">\Illuminate\Support\Fluent</span><span style="color: #6A737D">  $command</span></span>
+<span class="line"><span style="color: #6A737D">     * </span><span style="color: #F97583">@param</span><span style="color: #6A737D">  </span><span style="color: #79B8FF">\Illuminate\Database\Connection</span><span style="color: #6A737D">  $connection</span></span>
+<span class="line"><span style="color: #6A737D">     * </span><span style="color: #F97583">@return</span><span style="color: #6A737D"> </span><span style="color: #F97583">array</span></span>
+<span class="line"><span style="color: #6A737D">     */</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">compileDropColumn</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">Blueprint</span><span style="color: #E1E4E8"> $blueprint, </span><span style="color: #79B8FF">Fluent</span><span style="color: #E1E4E8"> $command, </span><span style="color: #79B8FF">Connection</span><span style="color: #E1E4E8"> $connection)</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> ($connection</span><span style="color: #F97583">-></span><span style="color: #B392F0">usingNativeSchemaOperations</span><span style="color: #E1E4E8">()) {</span></span>
+<span class="line"><span style="color: #E1E4E8">            $table </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">wrapTable</span><span style="color: #E1E4E8">($blueprint);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">            $columns </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">prefixArray</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'drop column'</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">wrapArray</span><span style="color: #E1E4E8">($command</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">columns));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">collect</span><span style="color: #E1E4E8">($columns)</span><span style="color: #F97583">-></span><span style="color: #B392F0">map</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">fn</span><span style="color: #E1E4E8"> ($column) => </span><span style="color: #9ECBFF">'alter table '</span><span style="color: #F97583">.</span><span style="color: #E1E4E8">$table</span><span style="color: #F97583">.</span><span style="color: #9ECBFF">' '</span><span style="color: #F97583">.</span><span style="color: #E1E4E8">$column</span></span>
+<span class="line"><span style="color: #E1E4E8">            )</span><span style="color: #F97583">-></span><span style="color: #B392F0">all</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"><span style="color: #E1E4E8">        } </span><span style="color: #F97583">else</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">            $tableDiff </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">getDoctrineTableDiff</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">                $blueprint, $schema </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $connection</span><span style="color: #F97583">-></span><span style="color: #B392F0">getDoctrineSchemaManager</span><span style="color: #E1E4E8">()</span></span>
+<span class="line"><span style="color: #E1E4E8">            );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">foreach</span><span style="color: #E1E4E8"> ($command</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">columns </span><span style="color: #F97583">as</span><span style="color: #E1E4E8"> $name) {</span></span>
+<span class="line"><span style="color: #E1E4E8">                $tableDiff</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">removedColumns[$name] </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> $connection</span><span style="color: #F97583">-></span><span style="color: #B392F0">getDoctrineColumn</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">                    </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">getTablePrefix</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">.</span><span style="color: #E1E4E8">$blueprint</span><span style="color: #F97583">-></span><span style="color: #B392F0">getTable</span><span style="color: #E1E4E8">(), $name</span></span>
+<span class="line"><span style="color: #E1E4E8">                );</span></span>
+<span class="line"><span style="color: #E1E4E8">            }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> (</span><span style="color: #F97583">array</span><span style="color: #E1E4E8">) $schema</span><span style="color: #F97583">-></span><span style="color: #B392F0">getDatabasePlatform</span><span style="color: #E1E4E8">()</span><span style="color: #F97583">-></span><span style="color: #B392F0">getAlterTableSQL</span><span style="color: #E1E4E8">($tableDiff);</span></span>
+<span class="line"><span style="color: #E1E4E8">        }</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span></code></pre>
+<p><a href="https://github.com/laravel/framework/blob/11.x/src/Illuminate/Database/Schema/Grammars/SQLiteGrammar.php#L450">Laravel 11 SQLiteGrammar</a></p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">    </span><span style="color: #6A737D">/**</span></span>
+<span class="line"><span style="color: #6A737D">     * Compile a drop column command.</span></span>
+<span class="line"><span style="color: #6A737D">     *</span></span>
+<span class="line"><span style="color: #6A737D">     * </span><span style="color: #F97583">@param</span><span style="color: #6A737D">  </span><span style="color: #79B8FF">\Illuminate\Database\Schema\Blueprint</span><span style="color: #6A737D">  $blueprint</span></span>
+<span class="line"><span style="color: #6A737D">     * </span><span style="color: #F97583">@param</span><span style="color: #6A737D">  </span><span style="color: #79B8FF">\Illuminate\Support\Fluent</span><span style="color: #6A737D">  $command</span></span>
+<span class="line"><span style="color: #6A737D">     * </span><span style="color: #F97583">@param</span><span style="color: #6A737D">  </span><span style="color: #79B8FF">\Illuminate\Database\Connection</span><span style="color: #6A737D">  $connection</span></span>
+<span class="line"><span style="color: #6A737D">     * </span><span style="color: #F97583">@return</span><span style="color: #6A737D"> </span><span style="color: #F97583">array</span></span>
+<span class="line"><span style="color: #6A737D">     */</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">public</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">compileDropColumn</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">Blueprint</span><span style="color: #E1E4E8"> $blueprint, </span><span style="color: #79B8FF">Fluent</span><span style="color: #E1E4E8"> $command, </span><span style="color: #79B8FF">Connection</span><span style="color: #E1E4E8"> $connection)</span></span>
+<span class="line"><span style="color: #E1E4E8">    {</span></span>
+<span class="line"><span style="color: #E1E4E8">        $table </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">wrapTable</span><span style="color: #E1E4E8">($blueprint);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">        $columns </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">prefixArray</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'drop column'</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">$this</span><span style="color: #F97583">-></span><span style="color: #B392F0">wrapArray</span><span style="color: #E1E4E8">($command</span><span style="color: #F97583">-></span><span style="color: #E1E4E8">columns));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">collect</span><span style="color: #E1E4E8">($columns)</span><span style="color: #F97583">-></span><span style="color: #B392F0">map</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">fn</span><span style="color: #E1E4E8"> ($column) => </span><span style="color: #9ECBFF">'alter table '</span><span style="color: #F97583">.</span><span style="color: #E1E4E8">$table</span><span style="color: #F97583">.</span><span style="color: #9ECBFF">' '</span><span style="color: #F97583">.</span><span style="color: #E1E4E8">$column)</span><span style="color: #F97583">-></span><span style="color: #B392F0">all</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span></code></pre>
+<p>Laravel10までのコードでは、<code>usingNativeSchemaOperations</code>でスキーマのチェックを行って、スキーマ操作が利用可能であればそのまま実行、そうでなければDoctrineを利用してスキーマ変更を処理していました。</p>
+<p>Laravel11ではシンプルな処理に変わって、SQLコマンドを作成しているだけの処理になっています。</p>
+<h2 id="回避策">回避策</h2>
+<p>先述したように外部キー制約の設定自体をオフにすることで一応回避はできますが、必要な外部キー制約まで無効になってしまうため、本質的な対応ではないです。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">PRAGMA foreign_keys</span><span style="color: #F97583">=OFF</span><span style="color: #E1E4E8">;</span></span></code></pre>
+<h2 id="記事中に出てきたdb用語">記事中に出てきたDB用語</h2>
+<p>今回の記事はDBに関する話題が多かったので、DB用語について簡単にまとめておきます。</p>
+<h3 id="主キー">主キー</h3>
+<p>データベースのテーブル内の各行を一意に識別するために使用される列。<br>
+複数の列を設定することもでき、その場合は複合主キーと呼ばれる。<br>
+主キーに設定された列の値は一意でなければならず、NULLを含むことができません。<br>
+つまり後述するユニーク制約、NOT NULL制約が自動的に設定される。</p>
+<h3 id="ユニーク制約">ユニーク制約</h3>
+<p>指定された列の値がテーブル内で一意であることを保証する制約。<br>
+これにより、特定の列に重複したデータが存在することを防ぐ事ができる。<br>
+主キーと似ているが、NULL値の扱いに違いがあり、ユニーク制約の列は複数のNULL値を許容することができる</p>
+<h3 id="インデックス">インデックス</h3>
+<p>データベースの検索や並べ替えの操作を高速化するためにテーブルのデータに作成されるデータ構造。<br>
+一般的にはインデックスを適用すると、データへのアクセス速度が向上する。<br>
+メリットだけでなく、書き込み操作時にオーバーヘッドが増えるため、使用する場面を選ぶ必要がある。</p>
+<h3 id="部分インデックス">部分インデックス</h3>
+<p>テーブルの全データではなく、特定の条件を満たすデータのみにインデックスを作成する方法。<br>
+インデックスのサイズをより小さくする事ができ、検索速度を向上させることができる。</p>
+<h3 id="check制約">CHECK制約</h3>
+<p>列に入力されるデータが特定の条件を満たすことを要求する制約。<br>
+この制約を使用することで、データの整合性と正確性を保証できる。<br>
+例えば、年齢が0以上でなければならないといった条件を設定することができる。</p>
+<h3 id="外部キー制約">外部キー制約</h3>
+<p>あるテーブルの列が別のテーブルの特定の列に関連づけられていることを定義するための制約。<br>
+外部キーが参照する列は、その列が属するテーブルにおいて一意の値を持つ必要がある。<br>
+通常、外部キーは他のテーブルの主キーを参照する事が多いが、ユニーク制約が設定されている任意の列も参照することができる。</p>
+<h3 id="生成列">生成列</h3>
+<p>他の列の値から計算される列。<br>
+これにより、データを冗長に保存することなく、必要に応じて特定のデータを動的に生成することができる。<br>
+MySQLでは5.7.6から、PostgreSQLでは12からサポートされている。<br>
+SQLiteの場合は3.31.0(2020/01/22 リリース)からサポートされている。</p>
+<h3 id="トリガー">トリガー</h3>
+<p>トリガーは、データベースのテーブルに対する特定の操作（INSERT、UPDATE、DELETEなど）が行われたときに自動的に実行されるプロシージャ(DB内に定義された一連のSQL命令)。<br>
+これを利用することで、データの変更を監視したり、特定のビジネスルールを強制したりすることが可能。</p>
+<h3 id="ビュー">ビュー</h3>
+<p>一つまたは複数のテーブルから抽出されたデータの仮想表。<br>
+ビューは実際にデータを格納するのではなく、定義されたSQLクエリに基づいてデータを表示するための窓口のようなイメージ。<br>
+ビューを利用することで、複雑なクエリを単純化し、データアクセスを容易にすることができる。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
