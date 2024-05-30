@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="ja"><head><title>HTMLタグとアクセシビリティ、コンポーネント化について考える</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+最近、個人的なプロジェクトのコードをNext.jsで書きながらキャッチアップをしています。  
+普段の業務では、すでにコンポーネント化されたUIを組み合わせて利用することが多く、基本的なコンポーネントを1から作ることはな"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/05/30</div><h1>HTMLタグとアクセシビリティ、コンポーネント化について考える</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>最近、個人的なプロジェクトのコードをNext.jsで書きながらキャッチアップをしています。<br>
+普段の業務では、すでにコンポーネント化されたUIを組み合わせて利用することが多く、基本的なコンポーネントを1から作ることはないのですが、個人で開発する場合には、コンポーネント化したくなる場面があり、その方針や基準に悩む機会が増えました。<br>
+今回は、基本的なHTMLタグを復習しつつ、コンポーネント化の方針について考えてみたいと思います。</p>
+<h2 id="ユーザーのアクセシビリティに影響するhtmlタグ">ユーザーのアクセシビリティに影響するHTMLタグ</h2>
+<p>基本的に、HTMLタグはそのタグ自体が持つ意味を持つように設計されています。
+コンポーネント化したいケースの大半は、コンポーネントの挙動、インタラクションと呼ばれる部分に関わることが多いですが、HTMLタグには、そのタグ自体が持つ意味があり、それを無視してしまうと、ユーザーのアクセシビリティに影響を与えることがあります。</p>
+<p>まずはインタラクションを実現することのできる要素について、復習してみます。</p>
+<h2 id="buttonformlabel">button,form,label</h2>
+<h3 id="button">button</h3>
+<p><code>&#x3C;button></code>要素は、ユーザーがクリックできるボタンを作成するための要素です。</p>
+<p>例:</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"button"</span><span style="color: #E1E4E8">>Click Me&#x3C;/</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"submit"</span><span style="color: #E1E4E8">>Submit&#x3C;/</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"reset"</span><span style="color: #E1E4E8">>Reset&#x3C;/</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8">></span></span></code></pre>
+<ul>
+<li><code>type="button"</code>: ボタンをクリックしたときに何もしない。この要素のイベントを待ち受けし、イベントが発生すると起動されるスクリプトを設定すること亜できます。</li>
+<li><code>type="submit"</code>: ボタンをクリックしたときに、フォームのデータを送信します。</li>
+<li><code>type="reset"</code>: ボタンをクリックしたときに、フォームのデータをリセットします。</li>
+</ul>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Element/button">https://developer.mozilla.org/ja/docs/Web/HTML/Element/button</a></p>
+<h3 id="form">form</h3>
+<p><code>&#x3C;form></code>要素は、ユーザーからの入力を受け付け、サーバーに送信するためのコンテナです。</p>
+<p>例:</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">form</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">action</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"/submit"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">method</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"post"</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">for</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"name"</span><span style="color: #E1E4E8">>Name:&#x3C;/</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">input</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"text"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">id</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"name"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"name"</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"submit"</span><span style="color: #E1E4E8">>Submit&#x3C;/</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;/</span><span style="color: #85E89D">form</span><span style="color: #E1E4E8">></span></span></code></pre>
+<p>このように、buttonやinputといった要素を<code>&#x3C;form></code>要素内に配置することで、ユーザーからの入力を受け付け、サーバーに送信することができます。</p>
+<ul>
+<li><code>action</code> 属性：フォームデータを送信するURLを指定します。この値は <code>&#x3C;button></code>、<code>&#x3C;input type="submit"></code>、<code>&#x3C;input type="image"></code> の formaction 属性によって上書きすることが可能です。この属性は method=“dialog” が設定されている場合は無視されます。</li>
+<li><code>method</code> 属性：データ送信の方法を指定（GET または POST）できます。また、dialog要素の中にformがある場合はdialogを指定することでdialogを閉じてsubmitイベントを発火させることができます。</li>
+</ul>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Element/form">https://developer.mozilla.org/ja/docs/Web/HTML/Element/form</a></p>
+<h3 id="label">label</h3>
+<p><code>&#x3C;label></code> 要素は、フォーム入力要素のラベルを定義します。ラベルをクリックすると対応する入力フィールドにフォーカスが移ります。</p>
+<p>例:</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">for</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8">>Email:&#x3C;/</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">input</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">id</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8">></span></span></code></pre>
+<p>関連づけておくと、スクリーンリーダーなどの支援技術を使っているユーザーにとって、フォームの入力フィールドが何を意味しているのかを理解しやすくなります。</p>
+<p>ちなみに、<code>&#x3C;label></code>要素の中に<code>&#x3C;input></code>要素を配置することもでき、この場合はfor属性やid属性を使わずに関連づけることができます。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  Email:</span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">input</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;/</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span></code></pre>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Element/label">https://developer.mozilla.org/ja/docs/Web/HTML/Element/label</a></p>
+<h2 id="input">input</h2>
+<p><code>&#x3C;input></code> 要素は、多様な種類のデータをユーザーから入力させるための要素です。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">for</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"username"</span><span style="color: #E1E4E8">>Username:&#x3C;/</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">input</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"text"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">id</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"username"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"username"</span><span style="color: #E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">for</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"password"</span><span style="color: #E1E4E8">>Password:&#x3C;/</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">input</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"password"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">id</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"password"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"password"</span><span style="color: #E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">for</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8">>Email:&#x3C;/</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">input</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">id</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"email"</span><span style="color: #E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">for</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"birthday"</span><span style="color: #E1E4E8">>Birthday:&#x3C;/</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">input</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"date"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">id</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"birthday"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"birthday"</span><span style="color: #E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">type</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"submit"</span><span style="color: #E1E4E8">>Submit&#x3C;/</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8">></span></span></code></pre>
+<p>type属性には、text, password, email, date, number, tel, urlなどさまざまな値を指定できますが、ここでは割愛します。</p>
+<p>関連するトピックとして最近目にしたのは<a href="https://ics.media/entry/11221/">今どきの入力フォームはこう書く！HTMLコーダーがおさえるべきinputタグの書き方まとめ</a>という記事です。</p>
+<p>また、input要素でワンタイムパスワードを実装する場合は、<code>&#x3C;input type="password"></code>ではなく、<code>&#x3C;input type="text" autocomplete="one-time-code"></code>を使用することで、自動入力で煩わしさを感じることがなくなりそうです。(<a href="https://x.com/honey321998/status/1795400591537312074">参考</a>)</p>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Element/input">https://developer.mozilla.org/ja/docs/Web/HTML/Element/input</a></p>
+<h2 id="textarea">textarea</h2>
+<p><code>&#x3C;textarea></code>要素は、複数行のテキスト入力フィールドを提供します。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">for</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"message"</span><span style="color: #E1E4E8">>Message:&#x3C;/</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">textarea</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">id</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"message"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"message"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">rows</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"4"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">cols</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"50"</span><span style="color: #E1E4E8">>&#x3C;/</span><span style="color: #85E89D">textarea</span><span style="color: #E1E4E8">></span></span></code></pre>
+<ul>
+<li>rows 属性：行数を指定</li>
+<li>cols 属性：列数を指定</li>
+</ul>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Element/textarea">https://developer.mozilla.org/ja/docs/Web/HTML/Element/textarea</a></p>
+<h2 id="detailssummary">details,summary</h2>
+<p><code>&#x3C;details></code> 要素は、ユーザーがクリックすると折りたたまれた内容を表示するための要素です。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">details</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">summary</span><span style="color: #E1E4E8">>More Info&#x3C;/</span><span style="color: #85E89D">summary</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">p</span><span style="color: #E1E4E8">>This is additional information that can be revealed by clicking on "More Info".&#x3C;/</span><span style="color: #85E89D">p</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;/</span><span style="color: #85E89D">details</span><span style="color: #E1E4E8">></span></span></code></pre>
+<p><code>&#x3C;summary></code>要素は、<code>&#x3C;details></code>要素の折りたたみヘッダーを定義します。<br>
+<code>&#x3C;summary></code>要素がない場合は通常は「詳細」という文字列を表示します。</p>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Element/details">https://developer.mozilla.org/ja/docs/Web/HTML/Element/details</a></p>
+<h2 id="anav">a,nav</h2>
+<h3 id="a">a</h3>
+<p><code>&#x3C;a></code>要素は、ハイパーリンクを作成するための要素です。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">a</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">href</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"https://www.example.com"</span><span style="color: #E1E4E8">>Visit Example&#x3C;/</span><span style="color: #85E89D">a</span><span style="color: #E1E4E8">></span></span></code></pre>
+<ul>
+<li>href 属性：リンク先のURLを指定します。</li>
+</ul>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Element/a">https://developer.mozilla.org/ja/docs/Web/HTML/Element/a</a></p>
+<h3 id="nav">nav</h3>
+<p><code>&#x3C;nav></code> 要素は、ページ内の主要なナビゲーションリンクのセクションを定義するために使用されます。<code>&#x3C;nav></code> 要素自体はリンクではなく、ナビゲーションリンクをグループ化するためのコンテナとして機能します。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">nav</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">a</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">href</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"/home"</span><span style="color: #E1E4E8">>Home&#x3C;/</span><span style="color: #85E89D">a</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">a</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">href</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"/about"</span><span style="color: #E1E4E8">>About&#x3C;/</span><span style="color: #85E89D">a</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">a</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">href</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"/contact"</span><span style="color: #E1E4E8">>Contact&#x3C;/</span><span style="color: #85E89D">a</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;/</span><span style="color: #85E89D">nav</span><span style="color: #E1E4E8">></span></span></code></pre>
+<p>MDNには、下記の記載があり、アクセシビリティに配慮したナビゲーションの作成に役立つかもしれません。</p>
+<blockquote>
+<p>スクリーンリーダーのような障碍者向けのユーザーエージェントは、この要素を使用してナビゲーション用のコンテンツを初期読み上げから省略するかを判断するために使用することがあります。</p>
+</blockquote>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Element/nav">https://developer.mozilla.org/ja/docs/Web/HTML/Element/nav</a></p>
+<h2 id="selectoption">select,option</h2>
+<p><code>&#x3C;select></code>要素は、ドロップダウンリストを作成します。<br>
+<code>&#x3C;option></code> 要素は、<code>&#x3C;select></code> 要素内で選択肢を定義します。</p>
+<p>例:</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">for</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"choice"</span><span style="color: #E1E4E8">>Choose an option:&#x3C;/</span><span style="color: #85E89D">label</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">select</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">id</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"choice"</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">name</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"choice"</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">option</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">value</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"option1"</span><span style="color: #E1E4E8">>Option 1&#x3C;/</span><span style="color: #85E89D">option</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">option</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">value</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"option2"</span><span style="color: #E1E4E8">>Option 2&#x3C;/</span><span style="color: #85E89D">option</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">option</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">value</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"option3"</span><span style="color: #E1E4E8">>Option 3&#x3C;/</span><span style="color: #85E89D">option</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;/</span><span style="color: #85E89D">select</span><span style="color: #E1E4E8">></span></span></code></pre>
+<p><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Element/select">https://developer.mozilla.org/ja/docs/Web/HTML/Element/select</a></p>
+<h2 id="コンポーネント化の方針">コンポーネント化の方針</h2>
+<p>フロントエンドをがっつり触ったことがあまりないですが、基本的な方針としては、上記のようなHTMLタグを適切に利用したうえで、デザイン含めて再利用性を高めるためにコンポーネント化を行うことが望ましいのかなと感じました。<br>
+単純なインタラクションのみの場合は、HTMLタグを適切に使い、コンポーネント化を行わない方が良い場合もあるかもしれません。<br>
+個人的にコンポーネント化するか考えるときは、以下のような観点で判断しています。</p>
+<ul>
+<li>再利用するかどうか</li>
+<li>複雑かどうか</li>
+<li>状態を保つかどうか</li>
+<li>デザインの変更があるかどうか</li>
+</ul>
+<h2 id="コンポーネントの分割">コンポーネントの分割</h2>
+<p>コンポーネント化と同時に、コンポーネントの分割についても考える必要があります。<br>
+また、利用するライブラリによっても方針が変わるかもしれません。例えば、Reactも場合はJSX内で参考演算子を使ってViewを出し分けたい場合にロジックとViewが混ざってしまい、見づらくなるのでコンポーネント分割を行うことが多いです。<br>
+Vueの場合はv-if等の仕組みがあるので、この理由で分割することは少ない気がします。<br>
+また、バックエンドのクラス分割と同様に、責務やライフサイクル基準で分割することもあります。</p>
+<h2 id="所感">所感</h2>
+<p>近年のフロントエンドでは、技術の進化が著しく、新しいライブラリやフレームワークが次々と登場しています。<br>
+それらのキャッチアップに加えて、アクセシビリティへの意識が高まっている印象があります。<br>
+例えば、下記のようなブログを各社が公開していることもあります。</p>
+<ul>
+<li><a href="https://qiita.com/degudegu2510/items/4313f361d46e31a53420">Qiitaアクセシビリティ史 ~ Qiitaの歩んできた道 ~</a></li>
+<li><a href="https://note.com/cybozu_design/n/na9e33dd9a913">だれもが使える設定画面に─kintoneのフロントエンド刷新とアクセシビリティ</a></li>
+</ul>
+<p>個人的にもフロントエンドの改善に課題感を持っているため、この辺りは興味深いです。<br>
+生成AIの進化等によって、SEOハック等のために本来の挙動以外のHTMLタグを使うことが減るのではないかと思っています。<br>
+アクセシビリティに配慮したコードを書く第一歩は、HTMLの仕様を詳細まで理解し、意図通りのタグを使うことだと感じました。</p>
+<p>フロントエンドの難しいところは、JS、HTML、CSSをそれぞれ実装することですが、これらがお互いの領域と重なる部分があり、HTMLで実現できることと同様の動作をJSで実装してしまえたり、CSSで実現できることをJSで実装してしまったりすることがあります。</p>
+<p>また、コンポーネント分割やライブラリのキャッチアップなどのコード面とデザイン面の両方を考える必要があるため、フロントエンドは複雑な部分が多いと感じます。</p>
+<p>アクセシビリティやフロントエンドはまだまだ勉強し始めたばかりなので、これからも学び続けていきたいです。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
