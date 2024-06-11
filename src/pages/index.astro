@@ -1,14 +1,15 @@
 ---
-import Header from '../components/Header/Header';
-import '../styles/index.scss';
-import Footer from '../components/Footer/Footer';
-import CardList from '../components/CardList/CardList';
+import Header from "../components/Header/Header";
+import "../styles/index.scss";
+import Footer from "../components/Footer/Footer";
+import CardList from "../components/CardList/CardList";
 import { getCollection } from "astro:content";
-import { postOrderByCreatedAt } from '../utils/sort';
+import { postOrderByCreatedAt } from "../utils/sort";
 
-const blogEntries = await(await getCollection("blog")).filter((entry) => !entry.data.draft);
+const blogEntries = await (await getCollection("blog")).filter(
+	(entry) => !entry.data.draft,
+);
 const posts = postOrderByCreatedAt(blogEntries);
-
 ---
 <html lang="ja">
   <head>
