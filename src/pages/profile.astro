@@ -1,66 +1,74 @@
 ---
-import Header from '../components/Header/Header';
-import '../styles/index.scss';
-import Footer from '../components/Footer/Footer';
-import CardList from '../components/CardList/CardList';
+import Header from "../components/Header/Header";
+import "../styles/index.scss";
+import Footer from "../components/Footer/Footer";
+import CardList from "../components/CardList/CardList";
 import { getCollection } from "astro:content";
-import { postOrderByCreatedAt } from '../utils/sort';
+import { postOrderByCreatedAt } from "../utils/sort";
 
-const blogEntries = await(await getCollection("blog")).filter((entry) => !entry.data.draft);
+const blogEntries = await (await getCollection("blog")).filter(
+	(entry) => !entry.data.draft,
+);
 const posts = postOrderByCreatedAt(blogEntries);
-
 ---
 <html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta name="description"
+          content="技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。">
     <title>このブログの作者について</title>
-  </head>
-      <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
 
-        gtag('config', 'G-ZBD90YGZ4N');
-        </script>
-  <body>
-      <main>
-        <Header></Header>
-        <div class="content">
-            <h1>このブログの作者について</h1>
-            <h2>Taisei Miyaji</h2>
-            <p>
-                エンジニアとしてのキャリアは組み込み系から始まり、
-                現在は<a href="https://corp.smaregi.jp/">株式会社スマレジ</a>にてWEBエンジニアをしています。<br>
-                <br>
-                このブログでは業務や趣味の開発を通して得た知見をメモ代わりにまとめています。
-            </p>
-            <h2>Skills</h2>
-            <p>
-                主にバックエンド開発を得意としています。<br>
-                PHP、Rubyを触る機会が多いです。<br>
-                フロントエンドは業務ではVue.jsおよびNuxt.jsを中心に触っていて、
-                副業や趣味ではReact.js、Next.jsに興味があって触っています。<br>
-                このブログはastroを使用して作成しています。
-            </p>
-            <h2>Hobby</h2>
-            <p>
-                休日はバスケや音楽ライブに参戦したり、バイクに乗ったりしています。<br>
-                平日の業務終了後の時間は副業や趣味開発に充てることが多く、技術書が好きで積みすぎているので消化していることが多いです。<br>
-                このブログにもいくつか技術書を読んでまとめた記事を公開していますのでよければ読んでみてください。
-            </p>
-            <h2>
-              Works
-            </h2>
-            <p>
-              ユニットテスト導入支援、DDD導入支援など副業で技術顧問業も行っています。<br>
-              お仕事のご依頼は <a href="mailto:taisei.miyaji4602@gmail.com">taisei.miyaji4602@gmail.com</a> までご連絡をお願いします。<br>
-            </p>
-          </div>
-        <Footer></Footer>
-      </main>
-  </body>
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-ZBD90YGZ4N');
+</script>
+<body>
+<main>
+    <Header></Header>
+    <div class="content">
+        <h1>このブログの作者について</h1>
+        <h2>Taisei Miyaji</h2>
+        <p>
+            エンジニアとしてのキャリアは組み込み系から始まり、
+            現在は<a href="https://corp.smaregi.jp/">株式会社スマレジ</a>にてWEBエンジニアをしています。<br>
+            <br>
+            このブログでは業務や趣味の開発を通して得た知見をメモ代わりにまとめています。
+        </p>
+        <h2>Skills</h2>
+        <p>
+            主にバックエンド開発を得意としています。<br>
+            PHP、Rubyを触る機会が多いです。<br>
+            フロントエンドは業務ではVue.jsおよびNuxt.jsを中心に触っていて、
+            副業や趣味ではReact.js、Next.jsに興味があって触っています。<br>
+            このブログはastroを使用して作成しています。
+        </p>
+        <h2>Hobby</h2>
+        <p>
+            休日はバスケや音楽ライブに参戦したり、バイクに乗ったりしています。<br>
+            平日の業務終了後の時間は副業や趣味開発に充てることが多く、技術書が好きで積みすぎているので消化していることが多いです。<br>
+            このブログにもいくつか技術書を読んでまとめた記事を公開していますのでよければ読んでみてください。
+        </p>
+        <h2>
+            Works
+        </h2>
+        <p>
+            ユニットテスト導入支援、DDD導入支援など副業で技術顧問業も行っています。<br>
+            条件面の目安は月20時間程度、目安時給6000円 ~となります。<br>
+            Laravel, Ruby on Rails, Vue.js, Nuxt.js, React.js, Next.jsなどの技術、およびドメイン駆動設計等の設計面の改善、単体テスト設計、作成等の支援を専門としています<br>
+            お仕事のご依頼は <a href="mailto:taisei.miyaji4602@gmail.com">taisei.miyaji4602@gmail.com</a> までご連絡をお願いします。<br>
+        </p>
+    </div>
+    <Footer></Footer>
+</main>
+</body>
 </html>

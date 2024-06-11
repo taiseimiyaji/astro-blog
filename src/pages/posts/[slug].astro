@@ -1,17 +1,19 @@
 ---
 import { getCollection } from "astro:content";
 import Footer from "../../components/Footer/Footer";
-import Header from '../../components/Header/Header';
-import '../../styles/index.scss';
-import '../../styles/slug.scss';
+import Header from "../../components/Header/Header";
+import "../../styles/index.scss";
+import "../../styles/slug.scss";
 import { getNowDateWithString } from "../../utils/date";
 
 export async function getStaticPaths() {
-  const blogEntries = await(await getCollection("blog")).filter((entry) => !entry.data.draft);
-  return blogEntries.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+	const blogEntries = await (await getCollection("blog")).filter(
+		(entry) => !entry.data.draft,
+	);
+	return blogEntries.map((entry) => ({
+		params: { slug: entry.slug },
+		props: { entry },
+	}));
 }
 const { entry } = Astro.props;
 const { Content } = await entry.render();
