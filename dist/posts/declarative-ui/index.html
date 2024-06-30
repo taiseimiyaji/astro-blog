@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="ja"><head><title>フロントエンド入門 宣言的UIと命令的UI</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## 宣言的UIと命令的UI
+
+前回の記事で一通りWebフロントエンドの歴史を整理したところで、宣言的UIと命令的UIについて整理していきたいと思います。  
+本記事では、フロントエンドの歴史において特に象徴的なjQueryからReact"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/06/30</div><h1>フロントエンド入門 宣言的UIと命令的UI</h1><div class="post"><h2 id="宣言的uiと命令的ui">宣言的UIと命令的UI</h2>
+<p>前回の記事で一通りWebフロントエンドの歴史を整理したところで、宣言的UIと命令的UIについて整理していきたいと思います。<br>
+本記事では、フロントエンドの歴史において特に象徴的なjQueryからReactへの移行を中心に整理していきます。<br>
+命令的UIと宣言的UIの違いとその利点、欠点について整理しどのようにして現在のフロントエンド開発が進化してきたのかを探ります。</p>
+<h3 id="宣言的uiとは">宣言的UIとは</h3>
+<p>宣言的UIは、UIの状態を宣言的に記述し、その状態に基づいてUIをレンダリングするアプローチです。開発者は、どのようにUIを構築するかを直接指示するのではなく、UIが最終的にどのように見えるべきかを宣言します。代表的なフレームワークにはReactやVue.jsがあります。<br>
+Reactのようなライブラリでは、コンポーネントベースの設計を採用しており、再利用性の高いUIコンポーネントを作成することができます。</p>
+<p>宣言的UIの大きな利点は、コードの可読性と保守性が向上する点です。開発者は、UIの状態とその変化をシンプルに記述するだけで済み、状態が変わると自動的にUIが更新されます。jQueryのような直接DOMを更新するものと比較すると。仮想DOMの利用により、効率的な差分計算と更新が行われ、パフォーマンスも向上します。</p>
+<p>また、リアクティブなデータバインディングの仕組みを持っているため、データの変更が自動的にUIに反映され、手動でDOMを操作しての更新作業が不要です。</p>
+<h3 id="命令的uiとは">命令的UIとは</h3>
+<p>命令的UIは、UIの具体的な変更手順を詳細に記述するアプローチです。開発者は、どの要素をどのように操作するかを直接指示します。代表的なライブラリにはjQueryがあります。jQueryを用いると、DOM要素の操作やイベントハンドリングが簡便になり、当時のWeb開発に大きな影響を与えました。また、jQueryはブラウザ間の互換性を確保するためのラッパー関数を提供し、開発者はブラウザ間の差異を気にせずに開発を行うことができました。</p>
+<p>命令的UIの利点は、操作が直感的であり、小規模なプロジェクトや単純なタスクには適していることです。開発者は、DOM要素を直接操作するため、動作の確認やデバッグが比較的容易です。大規模なアプリケーションになると、命令的UIのアプローチはコードが散在しやすく、次第に管理が難しくなります。</p>
+<p>命令的UIは、シンプルなWebサイトや古いブラウザのサポートが必要なプロジェクトには今でも利用されています。また、時代的な視点から、従来のMVCフレームワークのテンプレート機能を利用して書かれたコードに動的な振る舞いを追加しやすく、そういった構成のアプリケーションではいまだに使われています。</p>
+<p>現代の複雑なWebアプリケーション開発においては、技術的な背景からも、フロントエンド組織とバックエンド組織を分割したいという組織的な要求からも、宣言的UIのアプローチが選択されることが多いです。</p>
+<h2 id="jqueryの時代">jQueryの時代</h2>
+<p>jQueryは2006年に登場し、ブラウザ間の互換性の確保とDOM操作の簡略化を軸に当時のWeb開発を大きく変えました。豊富なプラグインエコシステムもあり、多くのWebサイトで利用されました。しかし、jQueryの時代には以下のような課題がありました。</p>
+<p>課題1: アプリケーションの構造</p>
+<ul>
+<li>命令的なイベントハンドラ</li>
+<li>大量のイベントハンドラが散らばり、処理も散らばる
+<ul>
+<li>イベントハンドラ間に不明瞭な依存関係が生まれる</li>
+</ul>
+</li>
+<li>DOMが巨大で暗黙的なグローバル変数になってしまう</li>
+</ul>
+<p>課題2: 開発ワークフロー</p>
+<ul>
+<li>HTMLはマスタとなるリソースではない<br>
+多くの場合、Gitで管理されるのはHTMLテンプレートであり、実際にレンダリングされるHTMLはそのテンプレートから生成されます。</li>
+<li>JS側が必要とするHTMLを修正するには、テンプレートの修正が必要<br>
+テンプレートの修正が必要な場合、バックエンドとフロントエンドの開発者間でのコミュニケーションが煩雑になります。</li>
+</ul>
+<h2 id="reactの登場による影響と当時の状況">Reactの登場による影響と当時の状況</h2>
+<p>2013年にFacebookがReactを公開したことは、フロントエンド開発に大きな変革をもたらしました。当時、jQueryやbackbone.jsなどの命令的なライブラリが主流であり、DOM操作やイベントハンドリングが中心でしたが、大規模なアプリケーションではコードの可読性や保守性に問題が生じていました。</p>
+<p>Reactは、UIをコンポーネントという再利用可能な単位で構築する宣言的なアプローチを導入しました。この発明が画期的で、開発者はUIの状態を明示的に管理し、コードをわかりやすく書くことができるようになりました。また、直接DOM操作をせずに仮想DOMを通じて効率的に更新することが可能となりました。<br>
+Reactは一方向データフローを採用しており、データの流れを予測しやすくし、バグの発生を抑制する効果がありました。Vue.jsはReactの影響を受けて開発されていますが、双方向データバインディングをサポートしているため、Reactよりも状態管理が簡単です。ただ、一方向データフローの方がバグの発生を防ぎやすいとされています。</p>
+<p>また、エコシステムの発展も迅速で、ReduxやReact Routerなどのライブラリが次々と登場し、開発効率が向上しました。これにより、Reactは短期間で広範な支持を集め、フロントエンド開発の標準的な選択肢となりました。宣言的UIの普及により、開発プロセスが劇的に改善され、現在もその影響は続いています。</p>
+<h3 id="宣言的uiの利点">宣言的UIの利点</h3>
+<ul>
+<li>コンポーネントベースの設計: 再利用可能なコンポーネントを作成し、UIを構築します。これにより、コードの再利用性とメンテナンス性が向上します。</li>
+<li>仮想DOM: 仮想DOMにより、効率的な更新が可能になり、パフォーマンスが向上します。</li>
+<li>一方向データフロー: 状態管理がシンプルになり、バグの発生を防ぎやすくなります。</li>
+<li>エコシステムとツールチェーンの豊富さ: ReactやVue.jsは、豊富なライブラリやツールチェーンを持ち、開発効率を大幅に向上させます。</li>
+<li>リアクティブなデータバインディング: データの変更が自動的にUIに反映されるため、手動での更新が不要です。</li>
+</ul>
+<h3 id="宣言的uiの欠点">宣言的UIの欠点</h3>
+<ul>
+<li>学習曲線: jQueryに比べて学習曲線が急であり、習得に時間がかかることがあります。</li>
+<li>設定が複雑: プロジェクトのセットアップや構成が複雑になることがあります。</li>
+<li>依存関係の管理: 多くのライブラリやツールに依存するため、依存関係の管理が難しくなることがあります。</li>
+</ul>
+<h3 id="jqueryとreactの比較">jQueryとReactの比較</h3>
+<p>jQuery</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">$</span><span style="color: #E1E4E8">(document).</span><span style="color: #B392F0">ready</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">function</span><span style="color: #E1E4E8">(){</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #B392F0">$</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'#submit'</span><span style="color: #E1E4E8">).</span><span style="color: #B392F0">click</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">function</span><span style="color: #E1E4E8">(){</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #B392F0">$</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'#form'</span><span style="color: #E1E4E8">).</span><span style="color: #B392F0">hide</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"><span style="color: #E1E4E8">    });</span></span>
+<span class="line"><span style="color: #E1E4E8">});</span></span></code></pre>
+<p>React</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> React, { useState } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'react'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">App</span><span style="color: #E1E4E8">() {</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> [</span><span style="color: #79B8FF">visible</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">setVisible</span><span style="color: #E1E4E8">] </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">useState</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">true</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> (</span></span>
+<span class="line"><span style="color: #E1E4E8">        &#x3C;</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">            &#x3C;</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">onClick</span><span style="color: #F97583">=</span><span style="color: #E1E4E8">{() </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">setVisible</span><span style="color: #E1E4E8">(</span><span style="color: #79B8FF">false</span><span style="color: #E1E4E8">)}>Hide Form&#x3C;/</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">            {visible </span><span style="color: #F97583">&#x26;&#x26;</span><span style="color: #E1E4E8"> &#x3C;</span><span style="color: #85E89D">form</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">id</span><span style="color: #F97583">=</span><span style="color: #9ECBFF">"form"</span><span style="color: #E1E4E8">>...&#x3C;/</span><span style="color: #85E89D">form</span><span style="color: #E1E4E8">>}</span></span>
+<span class="line"><span style="color: #E1E4E8">        &#x3C;/</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">    );</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<p>jQueryでは、DOM要素を直接操作する命令的なスタイルで記述されます。小規模なプロジェクトや、古いブラウザへの対応が必要な場合には有用ですが、今新しく何かを作る場合にjQueryを選択することは基本的にはないでしょう。</p>
+<p>Reactでは、状態にもとづいてUIをレンダリングする宣言的なスタイルで記述されています。例では、<code>visible</code>という状態に基づいてフォームを表示・非表示するようになっています。Reactのコンポーネントは、状態を持ち、その状態に基づいてUIをレンダリングすることができます。2024年時点で新しいプロジェクトを作成する場合、基本的にはReactをベースとして技術選定することが多いです。jQueryと比較した場合のReactの欠点はHTML、CSS、JSといった基本知識以外にReact特有の知識を学ぶ必要があることです。また、古いブラウザへの対応が必要な場合、Reactの利用が難しいこともあります。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>宣言的UIと命令的UI
+<ul>
+<li>宣言的UI
+<ul>
+<li>React, Vue.jsなどのフレームワークが主流</li>
+<li>データを変更すると、自動的にUIが変更される</li>
+</ul>
+</li>
+<li>命令的UI
+<ul>
+<li>jQueryなどのライブラリが主流</li>
+<li>データを変更すると、UIを手動で変更する必要がある</li>
+<li>アプリケーション構造が複雑になると、コードが複雑になりやすい</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>命令的UIと宣言的UIは、アプローチの違いによってそれぞれ異なる利点と課題を持ちます。jQueryの時代には命令的なスタイルが主流でしたが、Reactの登場により宣言的なスタイルが主流となりました。2024年時点で新しいプロジェクトを作成する場合、基本的にはReactをベースとして技術選定することが多いでしょう。<br>
+特にバックエンドの構造化されたアプリケーションに馴染みのある場合は、Reactのような宣言的UIのアプローチが理解しやすいかもしれません。</p>
+<p>日々進化しているフロントエンドの技術ですが、大きなパラダイムの変化としてjQueryからReactへの移行が象徴的な出来事であると言えるでしょう。。個人的にはシンプルなSPAを作成する際にはVue.js、比較的大規模だったり、長期的なプロジェクトにはReactを選択することが多いです。また、要件的にSSGが適している場合は簡単なものだとAstro、複雑なものだとNext.jsを選択することが多いです。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
