@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="ja"><head><title>スクラム入門　ユーザーストーリーとストーリーポイント</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+スクラム開発において、ストーリーポイントという単位でタスクの見積もりを行います。
+
+今回の記事では、アジャイル開発における見積もりの方法と登場する独自の概念についてまとめます。
+
+## ユーザーストーリーとは
+
+アジャイ"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/07/23</div><h1>スクラム入門　ユーザーストーリーとストーリーポイント</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>スクラム開発において、ストーリーポイントという単位でタスクの見積もりを行います。</p>
+<p>今回の記事では、アジャイル開発における見積もりの方法と登場する独自の概念についてまとめます。</p>
+<h2 id="ユーザーストーリーとは">ユーザーストーリーとは</h2>
+<p>アジャイル開発においてはタスクの内容を示す概念として、ユーザーストーリーが使われます。<br>
+アジャイルにおいて重要視されるのは「人」であり、ユーザーストーリーではエンドユーザーを中心に考えます。</p>
+<p>一般的には下記のテンプレートでユーザーストーリーを記述します。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">&#x3C;ユーザーの種類>として、</span></span>
+<span class="line"><span style="color: #e1e4e8">&#x3C;達成したいゴール>をしたい。</span></span>
+<span class="line"><span style="color: #e1e4e8">なぜなら&#x3C;理由>だからだ。</span></span></code></pre>
+<p>このストーリーには関係する作業を全て細かく書く必要はなく、あくまでざっくりとした内容で構いません。<br>
+制約条件や仕様等はユーザーストーリーの補足として別途記述することが一般的です。</p>
+<p>大切なのは、ストーリーをみた関係者がなんのことを言っているかすぐに思い出せることです。<br>
+そして、人を重視するアジャイル開発においては、思い出した内容についてメンバー間で議論しましょう。<br>
+このように、無駄な詳細化を避けつつ、顧客や関係者との会話に役立つのがユーザーストーリーです。<br>
+また、後述するようにアジャイル開発においては見積もりを行う際にもユーザーストーリーが重要な役割を果たします。</p>
+<h2 id="いいユーザーストーリーの条件">いいユーザーストーリーの条件</h2>
+<ul>
+<li>スケジュール可能な単位であること</li>
+<li>他のストーリーに依存していないこと</li>
+<li>エンドユーザーからみた価値が書かれていること</li>
+</ul>
+<p>Ron Jeffries氏によると、ユーザーストーリーは以下の3つのCで評価できると言われています。</p>
+<ul>
+<li>Card: カードに書ける程度の大きさであること。見積もりやメモ等も一緒に書く。</li>
+<li>Conversation: ストーリーについての議論ができること。エンドユーザーの視点での価値があること。</li>
+<li>Confirmation: ストーリーが完了したかどうかを確認できること。テストが書けること。</li>
+</ul>
+<p>エンドユーザーから見た価値を提供できるリリース可能な単位でストーリーを記述します。</p>
+<p>また、いいユーザーストーリーを作るための基準として、「INVEST」という基準があります。</p>
+<ul>
+<li>Independent: 他のストーリーに依存していない</li>
+<li>Negotiable: 議論可能である</li>
+<li>Valuable: エンドユーザーにとって価値がある</li>
+<li>Estimatable: 見積もりが可能である</li>
+<li>Small: スケジュール可能な単位である</li>
+<li>Testable: テストが可能である</li>
+</ul>
+<p>上記のように、あくまでチームとステークホルダーの議論のための道具であり、全員がわかる用語で記述することが重要です。<br>
+技術的な詳細はできるかぎり避け、ビジネスの視点で記述することが重要です。</p>
+<h2 id="見積もりの目的">見積もりの目的</h2>
+<p>アジャイルサムライの中には見積もりの目的として以下の引用が書かれています。</p>
+<blockquote>
+<p>「ソフトウェア見積りの主目的は、プロジェクトの結果を予言することではない。見積りを行うのは、プロジェクトのターゲットがコントロールによって達成可能な程度に現実的なものかどうかを判断するためである。」
+— Steve McConnell、『Software Estimation: Demystifying the Black Art』</p>
+</blockquote>
+<p>つまり、見積もりというのは不完全なもので、プロジェクトの初期であればあるほどその不確実性は高く、プロジェクトが進むにつれ、ようやく完了させる見込みが出てくるものです。</p>
+<p>端的に言えば、<strong>前もって正確に見積もることは不可能</strong>です。ただ、それでも私たちは、<strong>このプロジェクトをやり遂げられそうなのか</strong>を判断する必要があります。</p>
+<p>見積もりにおいてはいつ終わりそうなのか?以前に自分たちのゴール、プロジェクトのゴールを再確認し、そのゴールに対する現在地を先に確認します。</p>
+<p>アジャイル開発においては、プロジェクトの初期段階での概算見積りを信用しません。その代わり、何かを作る時にはそれがどれくらいかかったかを計測して、次回の見積もりに活かすというアプローチを取ります。これによってゴールと現在地の距離、過去に計測したスピードから、プロジェクトの進捗を予測します。</p>
+<p>具体的には、次のようなことを行います。</p>
+<ul>
+<li>ストーリー()それぞれを相対的な基準で見積もる</li>
+<li>ポイントをもとにして進捗を追跡する</li>
+</ul>
+<p>大切なのは<strong>ストーリーの規模を見積もり、期間は導出する</strong>ということです。</p>
+<h3 id="例">例</h3>
+<p>アジャイルサムライに記載のわかりやすい例は以下の通りです。</p>
+<blockquote>
+<p>チョコチップクッキーを1枚食べるのに10秒かかるということがわかっていたとする。このとき、クッキーを7枚とか14枚平らげるのに(1杯だけなら牛乳を飲んでもいいよ)どれぐらいかかるだろうか?さあ、君の見積りは?</p>
+</blockquote>
+<p>人間は、このような相対的な見積もりをうまく予測できる傾向にあるそうです。</p>
+<h2 id="ストーリーポイントの目的">ストーリーポイントの目的</h2>
+<p>アジャイル開発では、見積もりと実績を比較して計画を修正していくことが重要ですが、例えば3日かかると見積もったタスクが4日かかってしまった場合、その差をどう扱うかが問題になります。</p>
+<p>ほかのタスクを同様に1.33倍に見積もるんでしょうか?つまりもともと5日かかる予定だったタスクは6.66日かかると見積もるんでしょうか?<br>
+こうした見積もりの数値の再調整を避けるために、見積もり結果の数値の単位には意味を持たせず、ただポイントとして扱います。</p>
+<ul>
+<li>1pt: 楽勝</li>
+<li>3pt: やれないことはない</li>
+<li>5pt: ちょっと大変</li>
+</ul>
+<h2 id="相対的な見積もり">相対的な見積もり</h2>
+<p>基準となるタスクを決め、それと比較してストーリーを見積もっていきます。</p>
+<p>利用するストーリーポイントとしてはフィボナッチ数列がよく使われます。また、プランニングポーカーと呼ばれる手法を使って、チーム全員が見積もりに参加することが一般的です。</p>
+<h2 id="ストーリーポイントの計算">ストーリーポイントの計算</h2>
+<p>まずは基準となるストーリーを決めます。このストーリーを1ポイントとして、他のストーリーと比較していきます。<br>
+1ポイントのストーリー以外にも、いくつかのストーリーを基準として、それぞれのストーリーに対してポイントを割り振っておくといいかもしれません。</p>
+<p>私のチームで取り組む場合は3つほどのストーリーを基準として事前に話し合いました。</p>
+<p>プランニングポーカーにあたっては、各メンバーがストーリーに対してポイントを提示し、その理由を述べます。</p>
+<p>ここで、細かい数字の差に固執せず、大まかな見積もりを行うことが重要です。</p>
+<p>議論を行うべき場面は、基準に対してストーリーの大きさの認識がメンバー間で異なる場合です。</p>
+<p>例:<br>
+Aさん: この3ポイントのストーリーを基準とすると、このタスクよりは重たいので5ポイント<br>
+Bさん: いや、このタスクは3ポイントのストーリーよりは軽いと思うので2ポイント</p>
+<p>この例では、AさんとBさんの見解が異なるため、議論が必要です。基準となるストーリーの認識か、ストーリーに対する認識のどちらかにずれがあるため、チーム内でこのずれを解消するための議論が必要です。</p>
+<h2 id="ストーリーポイントの利用">ストーリーポイントの利用</h2>
+<p>ストーリーポイントを活用することで、チーム全体のベロシティ(速さ)を計測することができます。<br>
+チームとしてストーリーポイントをどれだけこなせるかを計測し、次のスプリントの見積もりに活かすことができます。</p>
+<p>たとえチーム内で実力に差があったとしても、担当が変更になった際に見積もりを再度行うことなく、ストーリーポイントという規模は変わらないため、チーム全体の進捗を把握しやすくなります。</p>
+<h2 id="疑問">疑問</h2>
+<ol>
+<li>人によって知識量が違うので、Aさんだととても軽いストーリーだが、Bさんから見ると作業量が多いということがある。この場合、どちらの見解を採用すべきか?</li>
+</ol>
+<ul>
+<li>調査を別のストーリーにしてしまう。</li>
+<li>そもそもAさんのベロシティ(キャパシティ)が高いと考えて、ストーリーポイント自体は変えない。</li>
+</ul>
+<ol start="2">
+<li>初めて作る時は大きいストーリーポイントを設定したが、その際に将来に備えた設計をしていて、今回は簡単に変更できる。</li>
+</ol>
+<ul>
+<li>タスクの大きさ自体は変わらないので、ストーリーポイントは変えない。</li>
+<li>チームのベロシティが向上したと考える。</li>
+</ul>
+<h2 id="優れた見積もりを作成するために">優れた見積もりを作成するために</h2>
+<p>見積もりというのはもちろんできる限り正確に行いたいものですが、見積もりの値を顧客との約束としてしまうと以下のような結果を招くことがあります。</p>
+<ul>
+<li>作業完了後に見積もりを大幅に超えてしまった。次からは二度と誤らないように大きいバッファを積んでしまおう。</li>
+<li>チームが見積もりを誤ることのないように、慎重に再検討をしよう。その結果見積もりにかける時間が膨大になってしまった。</li>
+</ul>
+<p>つまり、見積もりを正確に行うには信頼と安心に基づいた環境や、事前の情報を自由に共有できること、学習と改善を目的に議論できることなど、見積もりの数値を約束ではなく、予測の結果として扱える環境を用意することが重要です。</p>
+<p>スプリント計画の目的は次のスプリント向けに「ちょうどいい」計画を立てることであり、チームにとって厄介な問題でないことを確認する必要があります。<br>
+チームのフォーカスはあくまでもスプリントによって達成される「成果」であるべきです。</p>
+<p>前提としてスクラムは複雑な問題の解決を目的とした手法のため、スプリントの中で学習すること、改善することを含んでおり、自身の成長やチームの成長を完全に予測した計画を立てることはできないという認識を持つことが重要です。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>ストーリーポイントは見積もりの単位であり、見積もりの目的はプロジェクトの進捗を予測することである。</li>
+<li>ストーリーポイントは相対的な見積もりの基準であり、チーム全体のベロシティを計測する。</li>
+<li>「計画」という結果そのものが大切なのではなく、「議論して計画する」プロセスが重要</li>
+<li>チーム全体で見積もり、その結果を次回以降に活かすのが目的なので、計画に完璧を求めすぎない。</li>
+</ul></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
