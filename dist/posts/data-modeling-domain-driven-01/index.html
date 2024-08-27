@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="ja"><head><title>「データモデリングでドメインを駆動する」を読む その１ システムの分類と残</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回は杉本 啓さんの「データモデリングでドメインを駆動する」(以降書籍と呼びます)を読んでいきます。  
+これまでの記事で、ドメイン駆動設計の基本的な思想や設計手法については書いてきましたが、実際に基幹システムを例にして"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/08/20</div><h1>「データモデリングでドメインを駆動する」を読む その１ システムの分類と残</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>今回は杉本 啓さんの「データモデリングでドメインを駆動する」(以降書籍と呼びます)を読んでいきます。<br>
+これまでの記事で、ドメイン駆動設計の基本的な思想や設計手法については書いてきましたが、実際に基幹システムを例にしてデータモデリングを行うとなると、どのように進めていけばよいのか、また、どのような視点でデータモデリングを行うべきなのか、といったことについては深く考えることができていませんでした。</p>
+<p>今回は書籍をもとに基本的な概念の理解をしたあと、実際に弊社のようなPOSシステムのようなドメインだとどうなるのか、といったことについて考えていきたいと思います。</p>
+<p>今回の記事の対象は1章から3章あたりまでを対象としています。</p>
+<h2 id="システムの分類">システムの分類</h2>
+<p>に登場する用語として、システムを分類した呼称がいくつか登場するので、まずは呼称について整理します。
+読み進めるうえでも頻出し、英語の名称なので混乱することが多かったので、整理しておきます。</p>
+<h3 id="soeとsor">SoEとSoR</h3>
+<ul>
+<li>SoE: System of Engagement
+<ul>
+<li>日本語に訳せば「関わり合いのシステム」です。</li>
+<li>顧客やサプライヤーとの関係を構築するためのシステムです。</li>
+</ul>
+</li>
+<li>SoR: System of Record
+<ul>
+<li>日本語に訳せば「記録のシステム」です。</li>
+</ul>
+</li>
+</ul>
+<p>書籍では基幹系システムをSoRとして位置づけています。</p>
+<h3 id="sorをさらにsoaとsomに分類する">SoRをさらにSoAとSoMに分類する</h3>
+<p>書籍ではSoRを中心に扱いますが、その上でSoRをさらに2つに分類しています。</p>
+<ul>
+<li>SoA: System of Activities
+<ul>
+<li>日本語に訳せば「活動のシステム」です。</li>
+<li>SoRの中でも、業務の進行を支援するためのシステムです。</li>
+</ul>
+</li>
+<li>SoM: System of Management
+<ul>
+<li>日本語に訳せば「経営管理のシステム」です。</li>
+<li>SoRの中でも、業務の進行を管理するためのシステムです。</li>
+</ul>
+</li>
+</ul>
+<p>書籍にも登場する通り、下記の表のような性質がシステムとして大きく異なります。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>活動のシステム SoA</th><th>経営管理のシステム SoM</th></tr></thead><tbody><tr><td>　扱うデータの粒度</td><td>細粒度(件別のデータ)</td><td>粗粒度(要約レベルのデータ)</td></tr><tr><td>集計パターン</td><td>限定可能(多次元集計は必須ではない)</td><td>多様(多次元集計が必須)</td></tr><tr><td>適合するデータモデル形式</td><td>リレーショナルモデル</td><td>リレーショナルモデル + 多次元データモデル</td></tr><tr><td>記録の履歴管理</td><td>重要(修正は赤黒方式が望ましい)</td><td>細かい修正履歴は重要ではない</td></tr><tr><td>バージョン管理</td><td>さほど重要ではない(確定した取引事実の把握)</td><td>重要(計画、見込の変遷を把握)</td></tr></tbody></table>
+<p>基幹システムの多くはSoAにおけるデータ処理を主に念頭に置き、データの整合性を重視しているが、経営管理のシステムの要件にはさほどマッチしていません。そのために、開発における苦痛の割にユーザーにとって使い勝手が悪いシステムが数多く作られてきた、というのが書籍の主張です。</p>
+<p>かなり抽象的なので、具体例もいくつか挙げられています。</p>
+<p>システムに変更が加わるタイミングの観点から、SoAとSoMの違いについて考えてみます。まず、現場業務に合わせてSoAを設計します。そのため、現場での業務が変わらない限り、SoAは変更されることはありません。一方で、SoMは経営管理の要件に合わせて設計されるため、経営管理の要件が変わるとSoMも変更されることがあります。<br>
+例えば、在庫管理において、在庫の増減自体はSoA的な業務の流れに当たるものですが、例えば欠品が生じたときだけ補充するのか、売れ筋のものは多めに在庫を持つのかといった部分はまさしく経営管理の要件であり、SoM的です。</p>
+<p>会計上、在庫の評価額を査定する方法はFIFO、LIFO、加重平均法などがありますが、これは経営管理の要件によって変わるため、SoM的な要件です。
+この基準が変更されようとも、現場の業務のための仕組み、SoAはほとんど影響しないはずです。</p>
+<p>SoAとSoMはソフトウェア設計で強調される「関心の分離」を基幹システムに適用したものだと書籍では述べられています。</p>
+<p>書籍ではSoA、SoMのそれぞれの内容や具体例、業務プロセスや機能の違いについても詳しく記載されているので、興味がある方はぜひ読んでみてください。</p>
+<h2 id="残という概念">「残」という概念</h2>
+<p>書籍に登場する重要な概念として、筆者は「残」という概念を挙げています。<br>
+業務機能の最小単位として、残を核として業務機能を分割していきます。</p>
+<p>この「残」とは、未処理の業務対象です。
+例えば受注してまだ未出荷のものは「受注残」、支払いがまだ完了していないものは「支払い残」といったように、業務の進行状況を表すものです。</p>
+<p>得意先に出荷した商品に関しては請求がなされますが、入金までの間には「請求残」が残ります。入金までの間、未入金の請求残を把握し、入金遅れがないかを適宜チェックする必要があります。</p>
+<p>このように、現場活動は残の管理と解消に駆動されて実施されています。残と業務機能が必ずしも一致するわけではありませんが、ある特定の残の発生から消滅までを管理する仕事の単位がSoAにおける業務機能の最小単位と言えます。</p>
+<p>書籍ではSoAの分割の切り口として「残」に着目することを提案している点が特徴的です。ただ、この残は独自の概念ではなく、業務プロセスの分析手法としては一般的なものです。ただ、「残」が基幹システムの分割における最小単位であることが強調されている点が書籍の特徴と言えるでしょう。</p>
+<p>これまでに「残」が最小単位として扱われてこなかった理由を書籍内で3つ挙げています。</p>
+<ul>
+<li>SoAとSoMを区別する視点が弱かったこと。</li>
+<li>業務プロセスに着目すると業務の流れが第一の関心事になってしまい、残が最小単位である点が見えづらくなること。</li>
+<li>業務責任を区分することのない日本の文化
+<ul>
+<li>欧米製の会計システムでは、経理業務に関するサブシステムが売掛金システム、買掛金システムというように分割されている。</li>
+<li>日本の場合は処理の流れのほうが重要視されがちで、こちらのほうが効率的になるが、データに齟齬が発生した場合等の例外に弱い</li>
+</ul>
+</li>
+</ul>
+<h2 id="posシステムにおける残の概念">POSシステムにおける「残」の概念</h2>
+<p>弊社スマレジのようなPOSシステムにおいても、残の概念で分割することができると思うので、具体例を挙げてみます。</p>
+<h3 id="在庫残">在庫残</h3>
+<p>在庫残とは、店舗や倉庫において現在保管されている商品の数を指します。商品が売れた場合や新たに入荷した場合、在庫残は変動します。例えば、店頭である商品が販売された際にはその商品の在庫残が減少し、同時に「販売残」として記録されると考える事ができます。<br>
+また、倉庫から店舗に商品が補充された際には倉庫の在庫残が減少し、店舗の在庫残が増加します。在庫管理においては、複数の倉庫をすべて別物として扱うのかどうか、近くの倉庫は同じとして扱うのかといった運送ドメインと、販売に関わるドメインでは担当者が分かれているのが普通で、関心事が分離していると言えます。</p>
+<h3 id="注文残">注文残</h3>
+<p>注文残とは、顧客から注文を受けたが、まだ発送されていない商品やサービスの状況を指します。例えば、オンラインストアで顧客が商品を購入した際、その商品がまだ発送されていなければ、その商品は注文残として残ります。この注文残が発生するのは、商品の在庫切れや、発送準備、顧客からの特定の納品希望日などの要因があります。<br>
+基幹システムとしてはこれらの残を記録しておき、解消していく必要があります。</p>
+<h3 id="売上残">売上残</h3>
+<p>売上残とは、販売された商品やサービスの代金がまだ回収されていない状態を指します。POSシステムでは、顧客にクレジットカードや請求書払いのオプションを提供することがあります。この場合は販売が完了しても、代金が口座に振り込まれるまで売上残が残ります。また、商品の返品やクレジットカードの不正利用などの理由で売上残が発生することもあります。売上残が多い場合はキャッシュフローに影響を及ぼすため、ビジネス上非常に重要になります。</p>
+<p>上記の様に、POSシステム上にも様々な「残」が存在し、それぞれの単位で管理することで責務を分割することができます。業務プロセスの中でどこに滞りが生じているかを可視化しやすくなり、問題が発生した際にも迅速に対応することができるでしょう。</p>
+<p>弊社スマレジアプリマーケットでは、POS本体と連携できる様々なアプリを連携することができ、この仕組みはまさしく「残」の単位で管理されている個別のシステムを組み合わせて業務プロセスを構築することができます。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>今回は書籍「データモデリングでドメインを駆動する」の1章から3章あたりまでを読んでみました。<br>
+主にSoAとSoMの違い、そして「残」という概念について整理しました。<br>
+書籍には更に詳しい具体例や、業務プロセスの分析手法についても記載されているので、興味がある方はぜひ読んでみてください。<br>
+また、書籍を読みながら、具体的な例をPOSシステムを通じて考えてみることで、理解が深まったなと感じました。<br>
+次回は4章以降を読んでいき、また記事にしたいと思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
