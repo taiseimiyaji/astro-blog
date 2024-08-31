@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="ja"><head><title>OpenAPIの理解とその活用方法を考える</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回はWeb APIの仕様書として広く使われているOpenAPIについて調査してみます。
+
+## OpenAPIとは
+
+OpenAPI(旧Swagger)はREST APUのAPI記述形式です。
+
+公式ドキュメントによる"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/08/28</div><h1>OpenAPIの理解とその活用方法を考える</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>今回はWeb APIの仕様書として広く使われているOpenAPIについて調査してみます。</p>
+<h2 id="openapiとは">OpenAPIとは</h2>
+<p>OpenAPI(旧Swagger)はREST APUのAPI記述形式です。</p>
+<p>公式ドキュメントによると、次の内容を記述できると書かれています。</p>
+<ul>
+<li>利用可能なエンドポイント(/users)と書くエンドポイントでの操作(GET /users, POST/users)</li>
+<li>操作パラメータ 各操作の入力と出力</li>
+<li>認証方法</li>
+<li>連絡先情報、ライセンス、利用規約、その他の情報。</li>
+</ul>
+<p>参考: <a href="https://swagger.io/docs/specification/about/">https://swagger.io/docs/specification/about/</a></p>
+<p>なお、よく登場するSwaggerという用語は、OpenAPIの前身の名称のようです。<br>
+もともとReverb(現SmartBear)が開発したAPI設計ツールおよび仕様です。<br>
+APの設計やドキュメント化、テスト、モックサーバーなどシミュレーションのためのツールセットを提供しており、広く使われるようになりました。<br>
+OpenAPIはそのSwagger仕様をベースに進化したもので、Swagger 2.0の後継として誕生しました。現在は<a href="https://www.openapis.org/">OpenAPI Initiative</a>という組織によって管理されているAPIの設計と仕様を標準化するための業界標準です。</p>
+<p>現在Swaggerという名称は、OpenAPIのためのツールの名称として残っており、Swagger EditorやSwagger UIなどがOpenAPIのツールとして提供されています。<br>
+OpenAPIという名称は先述の通り、ツールではなく仕様の名称です。</p>
+<h2 id="openapiの活用方法事例">OpenAPIの活用方法、事例</h2>
+<p>基本的な活用としては、OpenAPIでREST APIの仕様を記述することですが、ほかにも次のような活用方法があります。</p>
+<ol>
+<li>
+<p>自動テスト
+いわゆる契約テストとして、OpenAPI仕様書をもとに、APIが仕様通りに動作しているかを自動的にテストするツールがあります。<br>
+例えば、GUIでAPIリクエストを送信できるクライアントツールとしてPostmanがあります。<br>
+このPostmanのリクエストを定義したCollectionをOpenAPI仕様書から自動生成するためのツールもあります。(<a href="https://github.com/postmanlabs/openapi-to-postman">OpenAPI 3.0, 3.1 and Swagger 2.0 to Postman Collection</a>)<br>
+PostmanはGUIなので、CI/CDパイプラインに組み込むことは難しいですが、Postmanのコレクションをコマンドラインで実行する<a href="https://github.com/postmanlabs/newman">Newman</a>というツールもあるようです。</p>
+</li>
+<li>
+<p>モックサーバーの作成
+開発の初期段階で、バックエンドチームとフロントエンドチームが分かれている場合、OpenAPI仕様を先に作成することで、フロントエンドチームはモックサーバーを使って開発を進めることができます。
+これにより、バックエンドの実装が完了する前に、APIとのやりとりを模倣しながら開発を進めることができます。ツールはPrismが一番有名なのかなと思います。
+OpenAPI仕様書以外にも、PostmanのCollectionからモックサーバーを作成することもできます。<a href="https://docs.stoplight.io/docs/prism/bffdc5c112ca9-postman-collections-support">Postman Collections Support</a></p>
+</li>
+<li>
+<p>クライアントコードの自動生成
+OpenAPI仕様書から、各種プログラミング言語向けのクライアントSDKを自動生成できます。ツールは割と乱立していそうですが、有名どころは下記の通りです。</p>
+</li>
+</ol>
+<ul>
+<li>Swagger Codegen</li>
+<li>OpenAPI Generator</li>
+<li>Kiota</li>
+</ul>
+<p>一番ポピュラーなのはSwagger Codegenかなと思います。先に述べたSwaggerツール群の一つです。OpenAPI GenerattorはSwagger Codegenからのフォークで、Swagger Codegenの後継として開発されています。(<a href="https://github.com/OpenAPITools/openapi-generator/blob/e78aeb6bc7610a763e17e3d53614a1ef1990f311/docs/qna.md">https://github.com/OpenAPITools/openapi-generator/blob/e78aeb6bc7610a763e17e3d53614a1ef1990f311/docs/qna.md</a>)</p>
+<ol start="4">
+<li>API Gatewayの設定
+OpenAPI仕様から、AWS API GatewayのCDKを利用してAPI Gatewayの設定を自動生成することができるようです。参考: <a href="https://zenn.dev/taroman_zenn/articles/91879cec40627c">https://zenn.dev/taroman_zenn/articles/91879cec40627c</a></li>
+</ol>
+<h2 id="スキーマ駆動開発">スキーマ駆動開発</h2>
+<p>OpenAPIはREST APIの仕様を記述するためのもので、スキーマ駆動開発の一環として使われることが多いです。<br>
+スキーマ駆動開発とは、実装前にAPIの仕様をスキーマとして定義し、そのスキーマに従って実装を進める開発手法です。<br>
+これにより、先述したようなドキュメント、実装コード、テスト、モックサーバーなどの一部を自動生成することができます。<br>
+また、バックエンドチームの実装を待たずにフロントエンドチームが開発を進めることができるようになります。<br>
+また、スキーマを決めることによってデータ構造等の一貫性を保つことができるため、開発の品質を向上させることができます。</p>
+<p>個人的に実現したいスキーマ駆動開発のポイントとして、次のようなものがあります。</p>
+<ul>
+<li>OpenAPI仕様書からTypeScriptの型定義を自動生成する。</li>
+<li>バックエンドでは実装と仕様の乖離を減らす。</li>
+</ul>
+<p>一点目についてはさまざまなツールが存在しているので、実現は難しくないと思います。例えば、<a href="https://github.com/acacode/swagger-typescript-api">swagger-typescript-api</a>のようなツールがあります。</p>
+<p>2点目については、バックエンドをtypescript以外で実装する場合は同じ言語で型定義を共有することができないため、仕様と実装の乖離が生じやすいです。
+PHP、Laravelの場合はこちらの記事が参考になりそうでした。<br>
+参考: <a href="https://zenn.dev/katzumi/articles/schema-driven-development-flow">実装と乖離させないスキーマ駆動開発フロー / OpenAPI Laravel編</a></p>
+<p>スキーマとコードを同期させるためには、コードベースに埋め込むのがいい、という発想は以前phpDocumentorを利用した経験があるので、なるほどと思いました。</p>
+<p>PHP8以降はAttributeが利用できるようになったので、phpDocよりもAttributeの方がスキーマとコードを同期させやすいかもしれません。</p>
+<p><a href="https://github.com/zircote/swagger-php">swagger-php</a>では、Attributeでスキーマを記載できます。<br>
+IDEのサポートを受けることができる点もAttributeの利点です。</p>
+<p>ただ、参考記事のようにAttributeから全てのコードを生成するのは、すでに動いているプロジェクトに導入するのは難しいかなと感じました。</p>
+<p>あくまで補助的に導入し、IDE等で警告を出すなどの形でスキーマとコードの乖離を防ぐのが良いのかなと思いました。</p>
+<p>バックエンドの実装を待たなくてもいいことがスキーマ駆動開発のメリットでもあるため、各プロジェクトで、先にOpenAPI仕様書を作成するのか、コードベースから生成するのかを検討する必要がありそうです。</p>
+<p>ドキュメントの重要性は叫ばれますが、実際にはドキュメントはコードベースと乖離してしまい、信頼できなくなった時点で無価値になってしまいます。<br>
+そのため、スキーマ駆動開発はドキュメントの信頼性を高めるためにも有効な手法だと感じました。テスト駆動開発に近い感覚で開発を進めることができると思います。</p>
+<p>実装の乖離のチェックとして、契約テストを行うことも有効だと思います。Pact、Prism、Postmanなどのツールを使って、APIの仕様と実装が一致しているかを自動的にチェックする仕組みの用意、CI/CDパイプラインでの実行が現実的に導入しやすいと感じました。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>OpenAPIはREST APIの仕様を記述するための仕様書です。</li>
+<li>OpenAPIを使うことで、自動テスト、モックサーバーの作成、クライアントコードの自動生成、API Gatewayの設定などができます。</li>
+<li>スキーマ駆動開発のポイントとして、OpenAPI仕様書からTypeScriptの型定義を自動生成することが挙げられます。</li>
+<li>バックエンドの実装を待たなくてもいいことがスキーマ駆動開発のメリットでもあるため、各プロジェクトで、先にOpenAPI仕様書を作成するのか、コードベースから生成するのかを検討する必要がありそうです。</li>
+<li>スキーマ駆動開発はドキュメントの信頼性を高めるためにも有効な手法だと感じました。テスト駆動開発に近い感覚で開発を進めることができると思います。</li>
+<li>Pact、Prism、Postmanなどのツールを使って、APIの仕様と実装が一致しているかを自動的にチェックするCI/CDパイプラインの実行が現実的に導入しやすいと感じました。</li>
+</ul></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
