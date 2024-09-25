@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="ja"><head><title>tRPCへの入門</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回はtRPCという技術について調査してみます。  
+なにもわからない状態からのやってみた系記事になります。  
+概念の理解や個人的な感想を中心に書いていきます。  
+実際に導入する際には公式サイトを参照することをおすす"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/09/23</div><h1>tRPCへの入門</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>今回はtRPCという技術について調査してみます。<br>
+なにもわからない状態からのやってみた系記事になります。<br>
+概念の理解や個人的な感想を中心に書いていきます。<br>
+実際に導入する際には公式サイトを参照することをおすすめします。</p>
+<h2 id="trpcとは">tRPCとは</h2>
+<p>そもそもRPCとは?については<a href="https://qiita.com/il-m-yamagishi/items/8709de06be33e7051fd2">こちらのQiita記事</a>に詳しく書かれています。</p>
+<p>tRPC公式サイトにも<a href="https://trpc.io/docs/concepts">コンセプトページ</a>が用意されています。</p>
+<p>tRPCを利用するメリットとしては、TypeScriptによる型推論を活用して、フルスタックアプリケーションを構築する場合において、型安全なAPIクライアントとサーバーを提供することができる点が挙げられます。<a href="https://trpc.io/">公式サイト</a>には以下のような特徴が記載されています。日本語訳なので不自然な表現があるかもしれませんが、ご了承ください。</p>
+<ol>
+<li>自動的安全性: サーバー側で変更を加えた場合、ファイルを保存する前にクライアント上でエラーを警告します。</li>
+<li>SnappyDX: tRPCにはビルドやコンパイルのステップがなく、コード生成、ランタイムの膨張がありません。(Snappyは快活な、活発な、きびきびした、威勢の良い、てきぱきしたという意味があります。)</li>
+<li>フレームワークに依存しない: 全てのJavaScriptフレームワークおよびランタイムと互換性があります。既存のプロジェクトに簡単に追加できます</li>
+<li>自動補完: tRPCを使用すると、APIのサーバーコードにSDKを使用するのと同じになり、エンドポイントに自信が持てるようになります。</li>
+<li>ライトバンドルサイズ: tRPCには依存関係がなく、クライアント側のフットプリントが小さいため軽量です。(フットプリントとは、稼働時に必要とする資源の大きさという意味があります。)</li>
+<li>電池付属: React, Next.js, Express, Fastify, AWS Lambda、Solid、Svelteなどのアダプターを提供しています。</li>
+</ol>
+<h2 id="trpcを導入する手順">tRPCを導入する手順</h2>
+<h3 id="1-trpcのセットアップ">1. tRPCのセットアップ</h3>
+<p>パッケージのインストール</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">npm</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">install</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">@trpc/server@next</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">@trpc/client@next</span></span></code></pre>
+<p>今回はNext.jsにtRPCを導入してみます。まずはsrc配下にserverディレクトリを作成し、trpc.tsを作成します。
+ここではバックエンドを初期化します。
+いい慣例として、再利用可能なヘルパー関数としてエクスポートすることが推奨されています。</p>
+<p><code>src/server/tprc.ts</code></p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { initTRPC } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'@trpc/server'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">t</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> initTRPC.</span><span style="color: #B392F0">create</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">router</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> t.router;</span></span>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">publicProcedure</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> t.procedure;</span></span></code></pre>
+<p>次にルーターのセットアップをします。</p>
+<p>公式サイトでは<code>server/index.ts</code>に記述されていますが、今回は<code>src/server/routers</code>フォルダを用意し、エンドポイントが増えた場合に対応しやすいように記述します。</p>
+<p><code>src/server/routers/_app.ts</code></p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { router } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'../trpc'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { exampleRouter } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">"./example"</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">appRouter</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">router</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #6A737D">// ここにルーターを追加</span></span>
+<span class="line"><span style="color: #E1E4E8">  example: exampleRouter</span></span>
+<span class="line"><span style="color: #E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">type</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">AppRouter</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">typeof</span><span style="color: #E1E4E8"> appRouter;</span></span></code></pre>
+<h3 id="2-エンドポイントの作成">2. エンドポイントの作成</h3>
+<p>それぞれのエンドポイントでは、下記のようにプロシージャを作成します。</p>
+<p><code>src/server/routers/example.ts</code></p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { publicProcedure, router} </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">"../trpc"</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { z } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">"zod"</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6A737D">// エンドポイントの定義</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">exampleRouter</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">router</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">  hello: publicProcedure</span></span>
+<span class="line"><span style="color: #E1E4E8">    .</span><span style="color: #B392F0">input</span><span style="color: #E1E4E8">(z.</span><span style="color: #B392F0">object</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">      text: z.</span><span style="color: #B392F0">string</span><span style="color: #E1E4E8">().</span><span style="color: #B392F0">nullish</span><span style="color: #E1E4E8">()</span></span>
+<span class="line"><span style="color: #E1E4E8">    }).</span><span style="color: #B392F0">nullish</span><span style="color: #E1E4E8">())</span></span>
+<span class="line"><span style="color: #E1E4E8">      .</span><span style="color: #B392F0">query</span><span style="color: #E1E4E8">(({ </span><span style="color: #FFAB70">input</span><span style="color: #E1E4E8"> })</span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">          greeting: </span><span style="color: #9ECBFF">`Hello, ${</span><span style="color: #E1E4E8">input</span><span style="color: #9ECBFF">?.</span><span style="color: #E1E4E8">text</span><span style="color: #9ECBFF"> </span><span style="color: #F97583">??</span><span style="color: #9ECBFF"> </span><span style="color: #9ECBFF">"world"}!`</span></span>
+<span class="line"><span style="color: #E1E4E8">        }</span></span>
+<span class="line"><span style="color: #E1E4E8">      }</span></span>
+<span class="line"><span style="color: #E1E4E8">    )</span></span>
+<span class="line"><span style="color: #E1E4E8">});</span></span></code></pre>
+<p>これはごく簡単な例ですが、この内容がエンドポイントの処理内容になるので、ドメイン駆動設計やクリーンアーキテクチャなどを取り入れる場合はさらにファイルを分割することになります。</p>
+<p>このプロシージャーをAction層、Controller層として扱い、UseCaseやRepository、Service、ドメインオブジェクトなどに分割してそれぞれテストを書いていくことができます。</p>
+<p>この例ではシンプルに書いてますが、実際にはprisma等を利用してDBアクセスしたり、外部APIを呼び出したりすることができます。</p>
+<h3 id="3-クライアントのセットアップ">3. クライアントのセットアップ</h3>
+<p>クライアント側のコードに移り、バックエンドと同じ型を利用し型安全性の力を活用しつつ、バックエンドの呼び出しを行います。</p>
+<p>tRPCのセットアップとして、公式サイトのクイックスタート同様にhttpBatchLinkを利用します。解説は後に回します。</p>
+<p><code>src/client/trpc.ts</code></p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { createTRPCClient } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'@trpc/client'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">type</span><span style="color: #E1E4E8"> { AppRouter } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'src/server/routers/_app'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { httpBatchLink} </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">"@trpc/client"</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">trpc</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">createTRPCClient</span><span style="color: #E1E4E8">&#x3C;</span><span style="color: #B392F0">AppRouter</span><span style="color: #E1E4E8">>({</span></span>
+<span class="line"><span style="color: #E1E4E8">      links: [</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #B392F0">httpBatchLink</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">          url: </span><span style="color: #9ECBFF">'/api/trpc'</span></span>
+<span class="line"><span style="color: #E1E4E8">        })</span></span>
+<span class="line"><span style="color: #E1E4E8">      ],</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">);</span></span></code></pre>
+<h3 id="4-クライアントからエンドポイントを呼び出す">4. クライアントからエンドポイントを呼び出す</h3>
+<p>クライアントの任意のファイルでエンドポイントを呼び出します。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">example</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">await</span><span style="color: #E1E4E8"> trpc.example.hello.</span><span style="color: #B392F0">query</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">      text: </span><span style="color: #9ECBFF">"世界"</span></span>
+<span class="line"><span style="color: #E1E4E8">    });</span></span></code></pre>
+<h3 id="httpbatchlinkについて">httpBatchLinkについて</h3>
+<p>httpBatchLinkは、複数のリクエストを一度に送信するためのリンクです。</p>
+<p>例えば、次のようなリクエストを送信することができます。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">somePosts</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">await</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Promise</span><span style="color: #E1E4E8">.</span><span style="color: #B392F0">all</span><span style="color: #E1E4E8">([</span></span>
+<span class="line"><span style="color: #E1E4E8">    trpc.post.byId.</span><span style="color: #B392F0">query</span><span style="color: #E1E4E8">({ id: </span><span style="color: #79B8FF">1</span><span style="color: #E1E4E8"> }),</span></span>
+<span class="line"><span style="color: #E1E4E8">    trpc.post.byId.</span><span style="color: #B392F0">query</span><span style="color: #E1E4E8">({ id: </span><span style="color: #79B8FF">2</span><span style="color: #E1E4E8"> }),</span></span>
+<span class="line"><span style="color: #E1E4E8">    trpc.post.byId.</span><span style="color: #B392F0">query</span><span style="color: #E1E4E8">({ id: </span><span style="color: #79B8FF">3</span><span style="color: #E1E4E8"> }),</span></span>
+<span class="line"><span style="color: #E1E4E8">])</span></span></code></pre>
+<p>このコードは1つのHTTPリクエストになります。</p>
+<p>詳細は<a href="https://trpc.io/docs/client/links/httpBatchLink">公式サイト</a>を参照してください。</p>
+<h3 id="用語について">用語について</h3>
+<p>改めて公式サイトに記載されているコンセプトと用語を確認しておきましょう。</p>
+<p><a href="https://trpc.io/docs/concepts#what-is-rpc-what-mindset-should-i-adopt">RPCとは</a></p>
+<p>RPCはRemote Procedure Callの略です。あるコンピューター上の関数を別のコンピューターから呼び出すことができる方法のことを指します。(厳密にはより広義の意味合いもありますが、現代フロントエンドにおいてはこの意味合いが一般的です。)</p>
+<p>tPRCは、TypeScriptのモノレポように設計されたRPCの実装の1つです。</p>
+<p>平たく言えば、HTTP通信のラッパーであり、アプリケーションコードを書く際に実装の詳細について意識せずに、関数を呼び出すだけでtRPCが全てを処理します。</p>
+<p>公式サイトより、以下の用語がエコシステムで頻繁に使用される用語です。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>用語</th><th>意味</th></tr></thead><tbody><tr><td>Procedure</td><td>APIエンドポイント - <code>query</code>、<code>mutation</code>、<code>subscription</code>のいずれか。</td></tr><tr><td>Query</td><td>データを取得するための手続き。procedure</td></tr><tr><td>Mutation</td><td>データを変更するための手続き。creates, updates, or deletes を行う手続き。procedure</td></tr><tr><td>Subscription</td><td>持続的な接続を作成し、変更を受け付けるための手続き。procedure</td></tr><tr><td>Router</td><td>共有している名前空間の下にあるprocedure(または他のルーター)の集まり。</td></tr><tr><td>Context</td><td>全てのprocedureがアクセスできるもの。セッション状態やデータベース接続などに使用される。</td></tr><tr><td>Middleware</td><td>procedureの前後に実行できる関数。コンテキストを変更することができる。</td></tr><tr><td>Validation</td><td>procedureの入力データを検証するためのしくみ。</td></tr></tbody></table>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>tRPCはTypeScriptの型推論を活用して、フルスタックアプリケーションを構築する場合において、型安全なAPIクライアントとサーバーを提供することができる。</li>
+<li>サーバーサイドのエンドポイントは、プロシージャを作成し、アクション層、コントローラー層として扱い、UseCaseやRepository、Service、ドメインオブジェクトなどに分割してそれぞれテストを書いていくこともできる。</li>
+<li>クライアントサイドからは関数を呼び出すだけでtRPCの処理を呼び出すことができる。</li>
+<li>Next.jsと組み合わせて使う場合は、API Routeを利用することで、サーバーサイドのエンドポイントを作成することができる。</li>
+</ul></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
