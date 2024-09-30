@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="ja"><head><title>フロントエンドの状態管理について調べてみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回はフロントエンドの状態管理について調査してみます。
+
+## フロントエンドにおける状態管理とは
+
+フロントエンドにおける状態管理とは、ユーザーインターフェース（UI）のデータやその変化を一貫性を持って管理する手法を指"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2024/09/30</div><h1>フロントエンドの状態管理について調べてみる</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>今回はフロントエンドの状態管理について調査してみます。</p>
+<h2 id="フロントエンドにおける状態管理とは">フロントエンドにおける状態管理とは</h2>
+<p>フロントエンドにおける状態管理とは、ユーザーインターフェース（UI）のデータやその変化を一貫性を持って管理する手法を指します。<br>
+ここで言う「状態（State）」とは、サーバーから取得したデータ、UIの現在の表示内容など、アプリケーションの動作に影響を与える全ての情報を意味します。<br>
+ユーザーからの入力も状態に含まれます。</p>
+<p>今回は自分の考えにも近いこちらの記事を参考に状態管理周りを調査してみます。</p>
+<p><a href="https://zenn.dev/knowledgework/articles/32371c83e68cbe">2020年に立ち上げたWebフロントエンド構成の振り返り</a></p>
+<h2 id="状態が必要な理由">状態が必要な理由</h2>
+<p>状態管理を行わない、もしくは不適切な状態管理を行なった場合のつらさを確認してみます。</p>
+<h3 id="データの不整合">データの不整合</h3>
+<p>主流となっている宣言的UI系のライブラリ、Vue.jsやReactでは、コンポーネントの再利用性を高めるために、コンポーネントごとにデータを管理することができます。</p>
+<p>この管理をした場合、各コンポーネントが独自の状態を持つことになります。これにより、同じリソースを表示すべき箇所が複数ある場合はUIコンポーネント間でデータの不整合が発生する可能性があります。</p>
+<h3 id="コードの複雑化">コードの複雑化</h3>
+<p>データの受け渡しの流れを適切に整理せず、コンポーネント間でデータを受け渡すことが多くなると、コードの複雑化が進みます。<br>
+UIはどうしても親子関係が入れ子になるため、親から子へのデータの受け渡し、子から親へのデータの受け渡し、兄弟間でのデータの受け渡しなど、データの流れを把握するのが難しくなります。</p>
+<p>後述するVuexの公式ドキュメントには下記の記載があります。</p>
+<blockquote>
+<p>しかし、単純さは、共通の状態を共有する複数のコンポーネントを持ったときに、すぐに破綻します:<br>
+複数のビューが同じ状態に依存することがあります。<br>
+異なるビューからのアクションで、同じ状態を変更する必要があります。<br>
+一つ目は、プロパティ (props) として深く入れ子になったコンポーネントに渡すのは面倒で、兄弟コンポーネントでは単純に機能しません。二つ目は、親子のインスタンスを直接参照したり、イベントを介して複数の状態のコピーを変更、同期することを試みるソリューションに頼っていることがよくあります。これらのパターンは、いずれも脆く、すぐにメンテナンスが困難なコードに繋がります。<br>
+では、コンポーネントから共有している状態を抽出し、それをグローバルシングルトンで管理するのはどうでしょうか？ これにより、コンポーネントツリーは大きな “ビュー” となり、どのコンポーネントもツリー内のどこにあっても状態にアクセスしたり、アクションをトリガーできます!<br>
+さらに、状態管理に関わる概念を定義、分離し、特定のルールを敷くことで、コードの構造と保守性を向上させることができます。<br>
+これが Vuex の背景にある基本的なアイディアであり、Flux、 Redux そして The Elm Architectureから影響を受けています。 他のパターンと異なるのは、Vuex は効率的な更新のために、Vue.js の粒度の細かいリアクティビティシステムを利用するよう特別に調整して実装されたライブラリだということです。</p>
+</blockquote>
+<h3 id="バグの増加と開発効率の低下">バグの増加と開発効率の低下</h3>
+<p>機能追加時や変更時に状態の管理が複雑になってしまうと、理解するのに時間がかかり、開発スピードが落ちます。<br>
+同じデータを扱う場合の同期の問題など、データのスコープを適切に設計しないと、バグが発生しやすくなります。</p>
+<h2 id="vuejsにおける状態管理">Vue.jsにおける状態管理</h2>
+<p>Vue.js 2.xでは、Vuexという状態管理ライブラリが提供されています。現在のVue.js 3.xでもVuexは引き続き利用可能ですが、Vue 3.xではComposition APIを利用することで、Vuexを使わずに状態管理を行うことも可能です。似たような状態管理ライブラリとして、Piniaが公式で推奨されています。</p>
+<h3 id="vuex">Vuex</h3>
+<p>Vuexはアプリケーション全体で共有される集中型ストアを持ちます。これはFluxというアーキテクチャにインスパイアされており、他のライブラリにも影響を与えています。</p>
+<p>VUexは以下の要素で構成されています。</p>
+<ul>
+<li>State：アプリケーションの状態を保持するオブジェクト。</li>
+<li>Getters：状態を取得するための算出プロパティ。</li>
+<li>Mutations：状態を変更するためのメソッド。同期的な処理。</li>
+<li>Actions：ミューテーションをコミットするためのメソッド。非同期処理も可能。</li>
+</ul>
+<p>Stateの定義の仕方</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">store</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> Vuex.</span><span style="color: #B392F0">Store</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">  state: {</span></span>
+<span class="line"><span style="color: #E1E4E8">    count: </span><span style="color: #79B8FF">0</span></span>
+<span class="line"><span style="color: #E1E4E8">  }</span></span>
+<span class="line"><span style="color: #E1E4E8">})</span></span></code></pre>
+<p>Stateの取得、Gettersの定義の仕方</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">store</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> Vuex.</span><span style="color: #B392F0">Store</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">  state: {</span></span>
+<span class="line"><span style="color: #E1E4E8">    count: </span><span style="color: #79B8FF">0</span></span>
+<span class="line"><span style="color: #E1E4E8">  },</span></span>
+<span class="line"><span style="color: #E1E4E8">  getters: {</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #B392F0">doubleCount</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">state</span><span style="color: #E1E4E8">) {</span></span>
+<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> state.count </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">2</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">  }</span></span>
+<span class="line"><span style="color: #E1E4E8">})</span></span></code></pre>
+<p>Mutationの定義の仕方</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">store</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> Vuex.</span><span style="color: #B392F0">Store</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">  state: {</span></span>
+<span class="line"><span style="color: #E1E4E8">    count: </span><span style="color: #79B8FF">0</span></span>
+<span class="line"><span style="color: #E1E4E8">  },</span></span>
+<span class="line"><span style="color: #E1E4E8">  mutations: {</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #B392F0">increment</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">state</span><span style="color: #E1E4E8">) {</span></span>
+<span class="line"><span style="color: #E1E4E8">      state.count</span><span style="color: #F97583">++</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">  }</span></span>
+<span class="line"><span style="color: #E1E4E8">})</span></span></code></pre>
+<p>Actionでの非同期処理の定義の仕方</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">store</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> Vuex.</span><span style="color: #B392F0">Store</span><span style="color: #E1E4E8">({</span></span>
+<span class="line"><span style="color: #E1E4E8">  state: { count: </span><span style="color: #79B8FF">0</span><span style="color: #E1E4E8"> },</span></span>
+<span class="line"><span style="color: #E1E4E8">  mutations: { </span><span style="color: #6A737D">/* ... */</span><span style="color: #E1E4E8"> },</span></span>
+<span class="line"><span style="color: #E1E4E8">  actions: {</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #B392F0">incrementAsync</span><span style="color: #E1E4E8">({ </span><span style="color: #FFAB70">commit</span><span style="color: #E1E4E8"> }) {</span></span>
+<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #B392F0">setTimeout</span><span style="color: #E1E4E8">(() </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #B392F0">commit</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'increment'</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">      }, </span><span style="color: #79B8FF">1000</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">    }</span></span>
+<span class="line"><span style="color: #E1E4E8">  }</span></span>
+<span class="line"><span style="color: #E1E4E8">});</span></span></code></pre>
+<h3 id="fluxとは">Fluxとは</h3>
+<p>FluxはFacebookが提唱するアプリケーションのアーキテクチャです。<br>
+Fluxは3つの要素から構成されています。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>要素</th><th>説明</th></tr></thead><tbody><tr><td>Store</td><td>アプリケーションの状態を保持するオブジェクト、および状態の更新処理</td></tr><tr><td>Action</td><td>ユーザーの操作やAPIのレスポンスなど、アプリケーションの状態を変更するための処理</td></tr><tr><td>Dispatcher</td><td>Storeに対してActionを発火させる</td></tr></tbody></table>
+<p>Fluxの特徴として、データの流れが一方向であることが挙げられます。</p>
+<p>流れとしてはAction -> Dispatcher -> Store -> Viewとなります。</p>
+<p>状態を更新する場合は</p>
+<ol>
+<li>ViewからActionを発火(ボタンを押す、文字を入力するなど)</li>
+<li>更新したい内容をActionとしてDispatcherに送信</li>
+<li>DispatcherがStoreにActionを送信</li>
+<li>Storeの状態がActionの内容に応じて更新され、それを検知したViewが再描画される</li>
+</ol>
+<p>という流れになります。</p>
+<p>この方法によって、データの流れを逆流させたり、Dispatcherを経由せずにStoreを直接更新することができないため、データの一貫性を保つことができます。</p>
+<p>ちなみに現在主流となっているPiniaやVuex5と呼ばれるものはFluxアーキテクチャをベースにしてはいますが、よりシンプルでFluxアーキテクチャを理解する必要がないように設計されています。</p>
+<h2 id="reactにおける状態管理">Reactにおける状態管理</h2>
+<p>ReactにおいてもFluxアーキテクチャをベースにした状態管理ライブラリがいくつか存在します。<br>
+Reduxが有名ですが、他にもMobXやRecoil、Zustandなどがあります。</p>
+<p>ですが、今回はそれらのライブラリの解説ではなく、自分の考えている状態管理の最適解についてまとめてみます。</p>
+<h2 id="状態の分類">状態の分類</h2>
+<p>参考記事にもある通り、フロントエンドで扱う<code>状態</code>は下記のように分類できると考えます。</p>
+<ul>
+<li>サーバーから取得したデータのキャッシュとしての状態</li>
+<li>アプリケーション全体で持つグローバルな状態</li>
+<li>コンポーネント内でのみ持つローカルな状態</li>
+</ul>
+<h2 id="サーバーから取得したデータのキャッシュとしての状態">サーバーから取得したデータのキャッシュとしての状態</h2>
+<h3 id="swr">SWR</h3>
+<p>SWR(Stale-While-Revalidate)は、Next.jsの開発元であるVercel社が提供するReact Hooksライブラリです。<br>
+主な責務はデータの取得とキャッシュを簡単に行うことです。</p>
+<p>SWRは、HTTPのキャッシュ戦略であるStale-While-Revalidateを採用しています。(<a href="https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Cache-Control">MDN web docs</a>)</p>
+<p>この戦略は、キャッシュが古い場合に古いデータを返しつつ、バックグラウンドで新しいデータを取得し、新しいデータが取得できたら古いデータを新しいデータに置き換えるというものです。</p>
+<p>基本的な使い方は下記の通りです。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> useSWR </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'swr'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">fetcher</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #FFAB70">url</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">fetch</span><span style="color: #E1E4E8">(url).</span><span style="color: #B392F0">then</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">res</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> res.</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">Profile</span><span style="color: #E1E4E8">() {</span></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> { </span><span style="color: #79B8FF">data</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">error</span><span style="color: #E1E4E8"> } </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">useSWR</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'/api/user'</span><span style="color: #E1E4E8">, fetcher);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (error) </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> &#x3C;</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>Failed to load&#x3C;/</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>;</span></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (</span><span style="color: #F97583">!</span><span style="color: #E1E4E8">data) </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> &#x3C;</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>Loading...&#x3C;/</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> &#x3C;</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>Hello {data.name}!&#x3C;/</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>;</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<p>特徴としては、下記のような点が挙げられます。</p>
+<ul>
+<li>キャッシュの有効期限を設定できる</li>
+<li>フォーカス時や再接続時にデータを再取得する</li>
+<li><code>api/user</code>のような部分はエンドポイントではなくキー。同じキーを指定することで、複数のコンポーネントでデータを共有できる</li>
+</ul>
+<p>ただ、あくまでデータフェッチに特化しており、サーバーからのデータ取得に特化しているため、状態管理ライブラリとしては不十分です。</p>
+<h3 id="react-query">React Query</h3>
+<p>React Queryは、Reactアプリケーションでデータを取得、キャッシュ、更新、削除するためのライブラリです。<br>
+SWRと比較すると、より高度な機能を持っています。</p>
+<p>もともと、React QueryやSWRを利用しない場合はuseStateとuseEffectを組み合わせてデータの取得とキャッシュを行っていましたが、React Queryを利用することで、データの取得やキャッシュを簡単に行うことができます。</p>
+<p>初期設定</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #6A737D">// index.js</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> React </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'react'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> ReactDOM </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'react-dom'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { QueryClient, QueryClientProvider } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'react-query'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> App </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'./App'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">queryClient</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">QueryClient</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">ReactDOM.</span><span style="color: #B392F0">render</span><span style="color: #E1E4E8">(</span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #79B8FF">React.StrictMode</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">    &#x3C;</span><span style="color: #79B8FF">QueryClientProvider</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">client</span><span style="color: #F97583">=</span><span style="color: #E1E4E8">{queryClient}></span></span>
+<span class="line"><span style="color: #E1E4E8">      &#x3C;</span><span style="color: #79B8FF">App</span><span style="color: #E1E4E8"> /></span></span>
+<span class="line"><span style="color: #E1E4E8">    &#x3C;/</span><span style="color: #79B8FF">QueryClientProvider</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;/</span><span style="color: #79B8FF">React.StrictMode</span><span style="color: #E1E4E8">>,</span></span>
+<span class="line"><span style="color: #E1E4E8">  document.</span><span style="color: #B392F0">getElementById</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'root'</span><span style="color: #E1E4E8">)</span></span>
+<span class="line"><span style="color: #E1E4E8">);</span></span>
+<span class="line"></span></code></pre>
+<p>データの取得</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #6A737D">// App.js</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> React </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'react'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { useQuery } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'react-query'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">fetchUsers</span><span style="color: #E1E4E8">() {</span></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">fetch</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'https://api.example.com/users'</span><span style="color: #E1E4E8">).</span><span style="color: #B392F0">then</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">res</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> res.</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">());</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">App</span><span style="color: #E1E4E8">() {</span></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> { </span><span style="color: #79B8FF">data</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">error</span><span style="color: #E1E4E8">, </span><span style="color: #79B8FF">isLoading</span><span style="color: #E1E4E8"> } </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">useQuery</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'users'</span><span style="color: #E1E4E8">, fetchUsers);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (isLoading) </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> &#x3C;</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>読み込み中...&#x3C;/</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>;</span></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (error) </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> &#x3C;</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>エラーが発生しました: {error.message}&#x3C;/</span><span style="color: #85E89D">div</span><span style="color: #E1E4E8">>;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> (</span></span>
+<span class="line"><span style="color: #E1E4E8">    &#x3C;</span><span style="color: #85E89D">ul</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">      {data.</span><span style="color: #B392F0">map</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">user</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> (</span></span>
+<span class="line"><span style="color: #E1E4E8">        &#x3C;</span><span style="color: #85E89D">li</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">key</span><span style="color: #F97583">=</span><span style="color: #E1E4E8">{user.id}>{user.name}&#x3C;/</span><span style="color: #85E89D">li</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">      ))}</span></span>
+<span class="line"><span style="color: #E1E4E8">    &#x3C;/</span><span style="color: #85E89D">ul</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  );</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">export</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">default</span><span style="color: #E1E4E8"> App;</span></span>
+<span class="line"></span></code></pre>
+<p>useQueryの第一引数にはキーを指定します。このキーはデータのキャッシュに利用されます。<br>
+useQueryの第二引数にはデータを取得する関数を指定します。この関数は非同期関数である必要があります。<br>
+その他状態としてisLoadingやerrorが返却されるため、それに応じて表示を変更することができます。</p>
+<p>React Queryはデフォルトでデータをキャッシュし、一定時間が経過すると自動的に再フェッチします。これにより、データの新鮮性を保ちながら、不要なリクエストを削減できます。</p>
+<p>キャッシュの有効期限を設定することも可能です。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">useQuery</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'users'</span><span style="color: #E1E4E8">, fetchUsers, {</span></span>
+<span class="line"><span style="color: #E1E4E8">  staleTime: </span><span style="color: #79B8FF">1000</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">60</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">*</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">5</span><span style="color: #E1E4E8">, </span><span style="color: #6A737D">// 5分間データを新鮮とみなす</span></span>
+<span class="line"><span style="color: #E1E4E8">});</span></span></code></pre>
+<p>取得だけでなく、データの更新や削除も簡単に行うことができます。</p>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">import</span><span style="color: #E1E4E8"> { useMutation, useQueryClient } </span><span style="color: #F97583">from</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'react-query'</span><span style="color: #E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #F97583">function</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">AddUser</span><span style="color: #E1E4E8">() {</span></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">queryClient</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">useQueryClient</span><span style="color: #E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">mutation</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">useMutation</span><span style="color: #E1E4E8">(</span><span style="color: #FFAB70">newUserData</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">fetch</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'https://api.example.com/users'</span><span style="color: #E1E4E8">, {</span></span>
+<span class="line"><span style="color: #E1E4E8">      method: </span><span style="color: #9ECBFF">'POST'</span><span style="color: #E1E4E8">,</span></span>
+<span class="line"><span style="color: #E1E4E8">      body: </span><span style="color: #79B8FF">JSON</span><span style="color: #E1E4E8">.</span><span style="color: #B392F0">stringify</span><span style="color: #E1E4E8">(newUserData),</span></span>
+<span class="line"><span style="color: #E1E4E8">    });</span></span>
+<span class="line"><span style="color: #E1E4E8">  }, {</span></span>
+<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #B392F0">onSuccess</span><span style="color: #E1E4E8">: () </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #6A737D">// 'users'クエリを無効化して再フェッチ</span></span>
+<span class="line"><span style="color: #E1E4E8">      queryClient.</span><span style="color: #B392F0">invalidateQueries</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">'users'</span><span style="color: #E1E4E8">);</span></span>
+<span class="line"><span style="color: #E1E4E8">    },</span></span>
+<span class="line"><span style="color: #E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">const</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">handleAddUser</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> () </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> {</span></span>
+<span class="line"><span style="color: #E1E4E8">    mutation.</span><span style="color: #B392F0">mutate</span><span style="color: #E1E4E8">({ name: </span><span style="color: #9ECBFF">'新しいユーザー'</span><span style="color: #E1E4E8"> });</span></span>
+<span class="line"><span style="color: #E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> (</span></span>
+<span class="line"><span style="color: #E1E4E8">    &#x3C;</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">onClick</span><span style="color: #F97583">=</span><span style="color: #E1E4E8">{handleAddUser}></span></span>
+<span class="line"><span style="color: #E1E4E8">      ユーザーを追加</span></span>
+<span class="line"><span style="color: #E1E4E8">    &#x3C;/</span><span style="color: #85E89D">button</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  );</span></span>
+<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<p>ちなみにSWRにもuseSWRMutationというデータの更新を行うためのフックが用意されていますが、React Queryの方がより高度な機能を持っています。<br>
+シンプルさを求める場合はSWR、より高度な機能を求める場合はReact Queryを利用すると良いでしょう。</p>
+<h2 id="アプリケーション全体で持つグローバルな状態">アプリケーション全体で持つグローバルな状態</h2>
+<p>これはSWRやReact Queryでは対応できないため、状態管理ライブラリを利用する必要があります。<br>
+とはいえコンポーネント内で保持できるものは後述するローカルな状態で十分であるため、アプリケーション全体で持つグローバルな状態を持つ必要がある場合は、VuexやRedux等ライブラリを利用して、状態管理を行うことが一般的です。</p>
+<p>例えば、認証の情報やサイドバーの開閉状態、検索条件などページを跨いでも保持しておきたい情報がこれに該当します。</p>
+<p>参考記事ではRecoilを利用していますが、こちらに関しては触ったことがないため、ここでは割愛します。</p>
+<p>この記事も参考になりそうです。
+<a href="https://blog.uhy.ooo/entry/2020-05-16/recoil-first-impression/">Facebook製の新しいステート管理ライブラリ「Recoil」を最速で理解する</a></p>
+<h2 id="コンポーネント内でのみ持つローカルな状態">コンポーネント内でのみ持つローカルな状態</h2>
+<p>最後に、コンポーネント内で保持するローカルな状態についてです。</p>
+<p>ページを跨いで保持する必要のない状態はReactの場合はuseStateやuseReducerを利用して管理することができます。<br>
+単純である代わりにテストがしづらいことが参考記事では挙げられていますが、storybookを利用したフロントエンドのテストは現状取り組めていないため、今後の課題としたいと思います。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>フロントエンドの状態管理について調査してみました。<br>
+状態管理の悩みの種であるサーバーからのデータの取得とキャッシュについてを中心に調査しましたが、React QueryやSWRを利用することで、簡単にデータの取得とキャッシュを行うことができることがわかりました。<br>
+コンポーネントのテストや、アプリケーション全体で共有する状態については、まだまだ課題が残っているため、今後も引き続き調査を行っていきたいと思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
