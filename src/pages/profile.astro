@@ -2,7 +2,10 @@
 import Header from "../components/Header/Header";
 import "../styles/index.scss";
 import Footer from "../components/Footer/Footer";
-import CardList from "../components/CardList/CardList";
+import GitHubCard from "../components/SNS/GitHubCard";
+import XCard from "../components/SNS/XCard";
+import ZennCard from "../components/SNS/ZennCard";
+import QiitaCard from "../components/SNS/QiitaCard";
 import { getCollection } from "astro:content";
 import { postOrderByCreatedAt } from "../utils/sort";
 
@@ -38,32 +41,46 @@ const posts = postOrderByCreatedAt(blogEntries);
     <div class="content">
         <h1>このブログの作者について</h1>
         <h2>Taisei Miyaji</h2>
-        <a href="https://x.com/lyricrime">Xはこちら りりっく @lyricrime </a>
+        <div class="card-container">
+            <GitHubCard url={'https://github.com/taiseimiyaji'} />
+            <XCard url={'https://x.com/lyricrime'} />
+            <ZennCard url={'https://zenn.dev/miyaji4602/'} />
+        </div>
         <p>
-            エンジニアとしてのキャリアは組み込み系から始まり、
-            現在は<a href="https://corp.smaregi.jp/">株式会社スマレジ</a>にてWEBエンジニアをしています。<br>
+            <h3>所属 <a href="https://corp.smaregi.jp/">株式会社スマレジ</a> CTO室</h3>
+            エンジニアとしてのキャリアは組み込み系から始まり、現在はWEBエンジニアとして開発業務のリードをしています。<br>
             <br>
             このブログでは業務や趣味の開発を通して得た知見をメモ代わりにまとめています。
-        </p>
         <h2>
-            Works
+            Policies
         </h2>
         <p>
-            <h3>提供できること</h3>
-            ・ユニットテスト導入支援<br>
-            ・ビジネスのスピードに追従するための設計の改善、ドメイン駆動設計導入支援<br>
-            ・Laravel、Ruby on Rails、Vue.js、Nuxt.js、React.js、Next.js等の技術を用いた開発支援<br>
-            ・その他技術面を中心としたコンサルティング<br>
-            お仕事のご依頼は <a href="mailto:taisei.miyaji4602@gmail.com">taisei.miyaji4602@gmail.com</a> までご連絡をお願いします。<br>
-        </p>
+        <h3>私が仕事をするうえで大切にしていること</h3>
+        <ul>
+            <li><strong>信頼と透明性</strong><br>
+                クライアントとの信頼関係を最優先に考えています。進捗や課題、リスクを正直に伝え、常に透明性を保ちながらプロジェクトを進めます
+            </li>
+            <li><strong>品質と効率</strong><br>
+                私は、効率的であることと高い品質を維持することは相反しないと考えています。ユニットテストやCI/CDの導入により、長期的な視点での保守性やスケーラビリティを考慮した開発を行います。
+            </li>
+            <li><strong>クライアントのビジネス目標に寄り添う</strong><br>
+                私はエンジニアというロールでビジネスにコミットするビジネスマンなので、技術的な成果を追求するだけでなく、クライアントのビジネス目標を理解し、それに合わせた最適な技術ソリューションを提案します。プロジェクトの成果がビジネスの成長に直接つながるよう努めています。
+            </li>
+        </ul>
+
         <h2>Skills</h2>
-        <p>
-            主にバックエンド開発を得意としています。<br>
-            PHP、Rubyを触る機会が多いです。<br>
-            フロントエンドは業務ではVue.jsおよびNuxt.jsを中心に触っていて、
-            副業や趣味ではReact.js、Next.jsに興味があって触っています。<br>
-            このブログはastroを使用して作成しています。
-        </p>
+
+        <ul>
+            <li><strong>PHP・Ruby</strong><br>
+                私の得意分野は、バックエンド開発です。PHPやRubyを中心に、テスト継続的に開発速度を落とさない設計を意識して開発を行ってきました。
+                Laravel、Ruby on Railsを用いた開発を得意としています。
+            </li>
+            <li><strong>フロントエンド</strong><br>
+                主軸をバックエンドに置きつつも、フロントエンドでは業務でVue.jsやNuxt.jsを使い、副業ではReact.jsやNext.jsに取り組んでいます。<br>
+                このブログ自体も、最新の静的サイトジェネレーターであるAstroを用いて構築しています。
+                社内でもフロントエンドの技術選定やアーキテクチャ設計に携わっています。
+            </li>
+        </ul>
         <h2>Hobby</h2>
         <p>
             休日はバスケや音楽ライブに参戦したり、バイクに乗ったりしています。<br>

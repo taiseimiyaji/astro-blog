@@ -1,18 +1,19 @@
-<!DOCTYPE html><html lang="ja"><head><title>TypeScriptの型について</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+<!DOCTYPE html><html lang="ja"> <head><title>TypeScriptの型について</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## TypeScriptの型付け
 
 TypeScriptはJavaScriptに対して型を付与するという思想で仕様が定められています。   
-TypeScriptでは型を付与する方法として、様々な方法が用意されていますが、どこまで利用す"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
-html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+TypeScriptでは型を付与する方法として、様々な方法が用意されていますが、どこまで利用す"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
 </style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/01/29</div><h1>TypeScriptの型について</h1><div class="post"><h2 id="typescriptの型付け">TypeScriptの型付け</h2>
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2023/01/29</div> <h1>TypeScriptの型について</h1> <div class="post"> <h2 id="typescriptの型付け">TypeScriptの型付け</h2>
 <p>TypeScriptはJavaScriptに対して型を付与するという思想で仕様が定められています。<br>
 TypeScriptでは型を付与する方法として、様々な方法が用意されていますが、どこまで利用するかは費用対効果を考えながら行う必要があります。</p>
 <h2 id="any型-最もゆるい型付け">any型 最もゆるい型付け</h2>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">function example(args: any){</span></span>
-<span class="line"><span style="color: #e1e4e8">    // argsにhogeが存在するかのチェックはしないのでコンパイルエラーとはならない</span></span>
-<span class="line"><span style="color: #e1e4e8">    console.log(args.hoge);</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>function example(args: any){</span></span>
+<span class="line"><span>    // argsにhogeが存在するかのチェックはしないのでコンパイルエラーとはならない</span></span>
+<span class="line"><span>    console.log(args.hoge);</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>any型を使った場合、TypeScriptの型チェックの恩恵を受けることができません。<br>
 any型は型チェックを無効化する型です。any型の変数になにかを代入することや、any型の値を他の型の変数に代入することに対してもコンパイルエラーは発生しません。<br>
 JavaScriptからの移行時等に一時的に利用するなど以外は原則使用しないようにするべきです。</p>
@@ -22,9 +23,10 @@ JavaScriptからの移行時等に一時的に利用するなど以外は原則�
 unknown型にはどのようなデータもチェックなしに入れる事ができます。<br>
 any型と違う点は変数を利用する場合に型アサーションを使ってチェックを行わないとエラーになる点です。</p>
 <p>any型はどのような型の変数にも代入できますが、unknown型の値は具体的な型へ代入できません。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const value: any = 10;</span></span>
-<span class="line"><span style="color: #e1e4e8">const int: number = value;</span></span>
-<span class="line"><span style="color: #e1e4e8">const bool: boolean = value;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const value: any = 10;</span></span>
+<span class="line"><span>const int: number = value;</span></span>
+<span class="line"><span>const bool: boolean = value;</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>また、ジェネリクスを使ったクラスや関数のうち、自動で型推論で設定できなかったものが<code>unknown</code>となります。<br>
 この型変数の<code>unknown</code>に関してはエラーチェックなどが行われることがなく、<code>any</code>のように振る舞います。</p>
 <p>unknownの用途としてはany型の値をより安全に扱うことです。<code>unknown</code>に対して許可される操作は限定的です。<br>
@@ -36,12 +38,13 @@ any型を扱う場合は一旦unknown型にしておくことで存在しない�
 <p>unknownの値を実用的に使うためには型を絞り込む必要があります。<br>
 型の絞り込みには<code>typeof</code>や<code>instanceof</code>などを条件式に含んだif文やswitch文を使います。
 これは<strong>型ガード</strong>といい、それ以降の処理では絞り込まれた型として扱う事ができます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">function useUnknown(value: unknown) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    if (typeof value === "string") {</span></span>
-<span class="line"><span style="color: #e1e4e8">        // この時点でvalはstring型になる</span></span>
-<span class="line"><span style="color: #e1e4e8">        console.log(value.toUpperCase());</span></span>
-<span class="line"><span style="color: #e1e4e8">    }</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>function useUnknown(value: unknown) {</span></span>
+<span class="line"><span>    if (typeof value === "string") {</span></span>
+<span class="line"><span>        // この時点でvalはstring型になる</span></span>
+<span class="line"><span>        console.log(value.toUpperCase());</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <h2 id="ユニオン型とインターセクション型">ユニオン型とインターセクション型</h2>
 <p>日本語でいう「または」や「かつ」を表現する型です。</p>
 <ul>
@@ -49,111 +52,119 @@ any型を扱う場合は一旦unknown型にしておくことで存在しない�
 </ul>
 <p>「型Tまたは型U」のような表現ができる型です。<br>
 「T | U」のように書きます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">type Animal = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    species: string;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">type Human = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: string;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">type User = Animal | Human;</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const tama: User = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    species: "calico"</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const you: User = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: "Your Name"</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>type Animal = {</span></span>
+<span class="line"><span>    species: string;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>type Human = {</span></span>
+<span class="line"><span>    name: string;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>type User = Animal | Human;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const tama: User = {</span></span>
+<span class="line"><span>    species: "calico"</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const you: User = {</span></span>
+<span class="line"><span>    name: "Your Name"</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span></span></span></code></pre>
 <p>「ユーザーには動物と人間の2種類がある」という場合、つまりユーザーは動物または人間である」という場合を想定しています。<br>
 下記のように、コンパイラによる型チェックを受けられます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">// エラーが発生する</span></span>
-<span class="line"><span style="color: #e1e4e8">const book: User = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    title: "Software Design"</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// エラーが発生する</span></span>
+<span class="line"><span>const book: User = {</span></span>
+<span class="line"><span>    title: "Software Design"</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>User型を持つことだけがわかっている場合は実際にはそれがAnimalなのかHumanなのか不明です。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">function getName(user: User): string {</span></span>
-<span class="line"><span style="color: #e1e4e8">    return user.name;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>function getName(user: User): string {</span></span>
+<span class="line"><span>    return user.name;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>userはAnimalかもしれないしHumanかもしれません。Animalにはnameというプロパティが存在しないため、userがnameを持たない可能性がある場合はコンパイルエラーになります。<br>
 つまり、上記で作成したUser型は全くプロパティアクセスができません。</p>
 <p>反対に、必ず存在するプロパティの場合は下記のようになります。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">type Animal = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    species: string;</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: string;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">type Human = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: string;</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: number;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">type User = Animal | Human;</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const tama: User = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    species: "calico",</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: "永遠の17歳"</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const you: User = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: "Your Name",</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: 25</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">function showAge(user: User) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    const age = user.age;</span></span>
-<span class="line"><span style="color: #e1e4e8">    console.log(age); // ageは string | number型となる</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>type Animal = {</span></span>
+<span class="line"><span>    species: string;</span></span>
+<span class="line"><span>    age: string;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>type Human = {</span></span>
+<span class="line"><span>    name: string;</span></span>
+<span class="line"><span>    age: number;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>type User = Animal | Human;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const tama: User = {</span></span>
+<span class="line"><span>    species: "calico",</span></span>
+<span class="line"><span>    age: "永遠の17歳"</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const you: User = {</span></span>
+<span class="line"><span>    name: "Your Name",</span></span>
+<span class="line"><span>    age: 25</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>function showAge(user: User) {</span></span>
+<span class="line"><span>    const age = user.age;</span></span>
+<span class="line"><span>    console.log(age); // ageは string | number型となる</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>ユニオン型に対するプロパティアクセスが可能である場合、その結果はユニオンの構成要素それぞれのプロパティの型を集めたユニオン型となります。</p>
 <ul>
 <li>インターセクション型</li>
 </ul>
 <p>「T &#x26; U」のように書く、「T型かつU型」を意味する型です。<code>交差型</code>とも呼ばれます。<br>
 例えば、下記のように「HumanはAnimalの一種である」ことを表現します。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">type Animal = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    species: string;</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: number;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">type Human = Animal &#x26; {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: string;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const tama: Animal = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    species: "calico",</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: 3</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const you: Human = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    species: "Homo sapiens",</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: 26,</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: "Your Name"</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>type Animal = {</span></span>
+<span class="line"><span>    species: string;</span></span>
+<span class="line"><span>    age: number;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>type Human = Animal &#x26; {</span></span>
+<span class="line"><span>    name: string;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const tama: Animal = {</span></span>
+<span class="line"><span>    species: "calico",</span></span>
+<span class="line"><span>    age: 3</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const you: Human = {</span></span>
+<span class="line"><span>    species: "Homo sapiens",</span></span>
+<span class="line"><span>    age: 26,</span></span>
+<span class="line"><span>    name: "Your Name"</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>Human型は、Animal型を拡張してstring型のnameプロパティを持ちます。<br>
 つまり、下記と同様になります。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">type Human = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    species: string;</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: number;</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: string;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>type Human = {</span></span>
+<span class="line"><span>    species: string;</span></span>
+<span class="line"><span>    age: number;</span></span>
+<span class="line"><span>    name: string;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>また、&#x26;で作られた型はそれぞれの構成要素の型の部分型となります。<br>
 <code>HumanはAnimalの部分型</code>となります。</p>
 <h2 id="ユニオン型とインターセクション型の関係">ユニオン型とインターセクション型の関係</h2>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">type Human = {name: string};</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">type Animal = {species: string};</span></span>
-<span class="line"><span style="color: #e1e4e8">function getName(human; Human) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    return human.name;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8">function getSpecies(animal: Animal) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    return animal.species;</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8">const mysteryFunc = Math.random() &#x3C; 0.5 ? getName : getSpecies;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>type Human = {name: string};</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>type Animal = {species: string};</span></span>
+<span class="line"><span>function getName(human; Human) {</span></span>
+<span class="line"><span>    return human.name;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>function getSpecies(animal: Animal) {</span></span>
+<span class="line"><span>    return animal.species;</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>const mysteryFunc = Math.random() &#x3C; 0.5 ? getName : getSpecies;</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>変数mysteryFuncにはgetNameが入るかもしれないしgetSpeciesが入るかもしれません。<br>
 この場合、mysteryFuncは以下の様な型になります。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">((human: Human) => string | ((animal: Animal) => string))</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>((human: Human) => string | ((animal: Animal) => string))</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>mysteryFuncを関数として呼び出したい場合、Human型を受け取るとは限らないのでHumanを渡すことはできないし、その一方でAnimalを受け取るとは限らないのでAnimalを渡すこともできません。<br>
 ユニオン型を持つ関数はどんな引数を受け取るのか不明なので扱いが困難です。</p>
 <p>ここでmysteryFuncを呼び出す方法は、Human &#x26; Animal型を渡すことです。<br>
@@ -165,10 +176,11 @@ any型を扱う場合は一旦unknown型にしておくことで存在しない�
 <code>never</code>型にはnever型以外何も代入できません。<br>
 正規の手段でnever型の値を得ることは不可能であり、言い換えるとnever型の値が存在しているコードは実際には実行されません。<br>
 ただし、never型はどんな型にも代入することができます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const nev = 1 as never;</span></span>
-<span class="line"><span style="color: #e1e4e8">const a: string = nev;</span></span>
-<span class="line"><span style="color: #e1e4e8">const b: number = nev;</span></span>
-<span class="line"><span style="color: #e1e4e8">const c: string[] = nev;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const nev = 1 as never;</span></span>
+<span class="line"><span>const a: string = nev;</span></span>
+<span class="line"><span>const b: number = nev;</span></span>
+<span class="line"><span>const c: string[] = nev;</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>これは、「never型はすべての型の部分型である」からです。<br>
 また、never型はユニオン型の中では消えることも把握しておく必要があります。<br>
 例えば、string | never はstringと同じです。</p>
@@ -181,34 +193,37 @@ any型を扱う場合は一旦unknown型にしておくことで存在しない�
 <li>引数名 is 型</li>
 <li>asserts 引数名 is 型</li>
 </ul>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">function isStringOrNumber(value: unknown): value is string | number {</span></span>
-<span class="line"><span style="color: #e1e4e8">    return typeof value === "string" || typeof value === "number";</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const something: unknown = 123;</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">if(isStringOrNumber(something)) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    //この時点でsomethingは string | number型</span></span>
-<span class="line"><span style="color: #e1e4e8">    console.log(something.toString());</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>function isStringOrNumber(value: unknown): value is string | number {</span></span>
+<span class="line"><span>    return typeof value === "string" || typeof value === "number";</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const something: unknown = 123;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>if(isStringOrNumber(something)) {</span></span>
+<span class="line"><span>    //この時点でsomethingは string | number型</span></span>
+<span class="line"><span>    console.log(something.toString());</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>下記のように、<code>isStringOrNumber</code>の返り値をbooleanに変えてみると、コンパイルエラーとなります。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">function isStringOrNumber(value: unknown): boolean {</span></span>
-<span class="line"><span style="color: #e1e4e8">    return typeof value === "string" || typeof value === "number";</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const something: unknown = 123;</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">if(isStringOrNumber(something)) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    // エラー: Object is of type 'unknown'.</span></span>
-<span class="line"><span style="color: #e1e4e8">    console.log(something.toString());</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>function isStringOrNumber(value: unknown): boolean {</span></span>
+<span class="line"><span>    return typeof value === "string" || typeof value === "number";</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const something: unknown = 123;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>if(isStringOrNumber(something)) {</span></span>
+<span class="line"><span>    // エラー: Object is of type 'unknown'.</span></span>
+<span class="line"><span>    console.log(something.toString());</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>ユーザー定義型ガードは関数を絞り込みに使うことができます。ですが、その関数の型定義でユーザー定義型ガードを使わなければいけません。<br>
 注意点としては、ユーザー定義型ガードは関数の実装内容はTypeScriptの保証する範囲ではないことです。<br>
 下記のような間違った実装をしてしまった場合でもコンパイルエラーは発生しないため、型安全性を破壊することになります。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">function isStringOrNumber(value: unknown): value is string | number {</span></span>
-<span class="line"><span style="color: #e1e4e8">    // 実装を間違えているがエラーが起きない!</span></span>
-<span class="line"><span style="color: #e1e4e8">    return typeof value === "string" || typeof value === "boolean";</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>function isStringOrNumber(value: unknown): value is string | number {</span></span>
+<span class="line"><span>    // 実装を間違えているがエラーが起きない!</span></span>
+<span class="line"><span>    return typeof value === "string" || typeof value === "boolean";</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <h2 id="所感">所感</h2>
 <p>今回はTypeScriptの型の一部について調査しました。<br>
 特にユニオン型とインターセクション型は使用頻度が高くなりそうな型でした。<br>
@@ -217,4 +232,4 @@ TypeScriptには他にも高度な型が用意されていますが、今回の�
 <h2 id="参考">参考</h2>
 <p><a href="https://future-architect.github.io/typescript-guide/typing.html">https://future-architect.github.io/typescript-guide/typing.html</a><br>
 <a href="https://typescriptbook.jp/">https://typescriptbook.jp/</a>
-　</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
+　</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>

@@ -1,14 +1,14 @@
-<!DOCTYPE html><html lang="ja"><head><title>Renovate + GitLab CI を使ってパッケージの依存関係を自動更新する</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+<!DOCTYPE html><html lang="ja"> <head><title>Renovate + GitLab CI を使ってパッケージの依存関係を自動更新する</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## Renovateとは
 
 依存関係の自動アップデートツールです。
 
 [公式サイトはこちら](https://docs.renovatebot.com/)
 
-有名なのはdependabotですが、dependabotの場合は手動でale"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
-html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+有名なのはdependabotですが、dependabotの場合は手動でale"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
 </style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/07/28</div><h1>Renovate + GitLab CI を使ってパッケージの依存関係を自動更新する</h1><div class="post"><h2 id="renovateとは">Renovateとは</h2>
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2023/07/28</div> <h1>Renovate + GitLab CI を使ってパッケージの依存関係を自動更新する</h1> <div class="post"> <h2 id="renovateとは">Renovateとは</h2>
 <p>依存関係の自動アップデートツールです。</p>
 <p><a href="https://docs.renovatebot.com/">公式サイトはこちら</a></p>
 <p>有名なのはdependabotですが、dependabotの場合は手動でalertsの内容を確認し、ローカルで<code>npm audit fix</code>や<code>composer update</code>を実行します。<br>
@@ -28,14 +28,15 @@ Get replacement PRs to migrate from a deprecated dependency to the community sug
 Open source</p>
 </blockquote>
 <p>DeepL翻訳</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">Renovateを使う理由</span></span>
-<span class="line"><span style="color: #e1e4e8">依存関係を更新し、ファイルをロックするためにプルリクエストを取得する</span></span>
-<span class="line"><span style="color: #e1e4e8">RenovateがPRを作成するタイミングをスケジューリングすることでノイズを減らす</span></span>
-<span class="line"><span style="color: #e1e4e8">Renovateはmonoreposを含め、関連するパッケージファイルを自動的に見つけます。</span></span>
-<span class="line"><span style="color: #e1e4e8">設定ファイルでボットの動作をカスタマイズできる</span></span>
-<span class="line"><span style="color: #e1e4e8">ESLintのような設定プリセットで設定を共有できます</span></span>
-<span class="line"><span style="color: #e1e4e8">非推奨の依存関係からコミュニティが提案する代替に移行するための代替PRを取得します(npmパッケージのみ)</span></span>
-<span class="line"><span style="color: #e1e4e8">オープンソース</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Renovateを使う理由</span></span>
+<span class="line"><span>依存関係を更新し、ファイルをロックするためにプルリクエストを取得する</span></span>
+<span class="line"><span>RenovateがPRを作成するタイミングをスケジューリングすることでノイズを減らす</span></span>
+<span class="line"><span>Renovateはmonoreposを含め、関連するパッケージファイルを自動的に見つけます。</span></span>
+<span class="line"><span>設定ファイルでボットの動作をカスタマイズできる</span></span>
+<span class="line"><span>ESLintのような設定プリセットで設定を共有できます</span></span>
+<span class="line"><span>非推奨の依存関係からコミュニティが提案する代替に移行するための代替PRを取得します(npmパッケージのみ)</span></span>
+<span class="line"><span>オープンソース</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>サポートしているプラットフォームは以下の通りです。</p>
 <blockquote>
 <p>Supported Platforms<br>
@@ -59,71 +60,74 @@ Gitea and Forgejo</p>
 <a href="https://docs.renovatebot.com/configuration-options/">https://docs.renovatebot.com/configuration-options/</a></p>
 <p>私の場合はざっくり下記のような内容で作成しました。<br>
 GitLab上で作成するMRに対してのラベルやReviewersを指定することもできます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">{</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"extends"</span><span style="color: #E1E4E8">: [</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">"config:base"</span><span style="color: #E1E4E8">            </span><span style="color: #6A737D">// 公式の推奨設定を継承して利用します</span></span>
-<span class="line"><span style="color: #E1E4E8">  ],</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"timezone"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"Asia/Tokyo"</span><span style="color: #E1E4E8">,</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"enabledManagers"</span><span style="color: #E1E4E8">: [</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">"npm"</span><span style="color: #E1E4E8">,</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">"composer"</span></span>
-<span class="line"><span style="color: #E1E4E8">  ],</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"lockFileMaintenance"</span><span style="color: #E1E4E8">: {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #79B8FF">"enabled"</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">true</span><span style="color: #E1E4E8">          </span><span style="color: #6A737D">// package-lock.jsonやcomposer-lock.jsonを更新するためのフラグです</span></span>
-<span class="line"><span style="color: #E1E4E8">  },</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"packageRules"</span><span style="color: #E1E4E8">: [</span></span>
-<span class="line"><span style="color: #E1E4E8">    {</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #79B8FF">"matchPackagePatterns"</span><span style="color: #E1E4E8">: [</span></span>
-<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #9ECBFF">"*"</span><span style="color: #E1E4E8">                  </span><span style="color: #6A737D">// 全パッケージを更新対象にします</span></span>
-<span class="line"><span style="color: #E1E4E8">      ]</span></span>
-<span class="line"><span style="color: #E1E4E8">    },</span></span>
-<span class="line"><span style="color: #E1E4E8">    {</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #79B8FF">"matchDepTypes"</span><span style="color: #E1E4E8">: [</span></span>
-<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #9ECBFF">"dependencies"</span><span style="color: #E1E4E8">       </span><span style="color: #6A737D">// dependenciesのMRを作成します。</span></span>
-<span class="line"><span style="color: #E1E4E8">      ],</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #79B8FF">"groupName"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"dependencies"</span></span>
-<span class="line"><span style="color: #E1E4E8">    },</span></span>
-<span class="line"><span style="color: #E1E4E8">    {</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #79B8FF">"matchDepTypes"</span><span style="color: #E1E4E8">: [</span></span>
-<span class="line"><span style="color: #E1E4E8">        </span><span style="color: #9ECBFF">"devDependencies"</span><span style="color: #E1E4E8">    </span><span style="color: #6A737D">// devDependenciesのMRを作成します。dependenciesと分けて定義することで別々のMRが作成されるようになります</span></span>
-<span class="line"><span style="color: #E1E4E8">      ],</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #79B8FF">"groupName"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"devDependencies"</span></span>
-<span class="line"><span style="color: #E1E4E8">    }</span></span>
-<span class="line"><span style="color: #E1E4E8">  ],</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"ignoreDeps"</span><span style="color: #E1E4E8">: [</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">"@types/*"</span><span style="color: #E1E4E8">,              </span><span style="color: #6A737D">// 更新対象外のパッケージを指定します</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">"typescript"</span><span style="color: #E1E4E8">,</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">"php"</span></span>
-<span class="line"><span style="color: #E1E4E8">  ],</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"force"</span><span style="color: #E1E4E8">: {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #79B8FF">"constraints"</span><span style="color: #E1E4E8">: {</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #79B8FF">"composer"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"x.x.x"</span><span style="color: #E1E4E8">,   </span><span style="color: #6A737D">// renovateの動作に使用するパッケージのバージョンを指定します</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #79B8FF">"node"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"x.x.x"</span></span>
-<span class="line"><span style="color: #E1E4E8">    }</span></span>
-<span class="line"><span style="color: #E1E4E8">  },</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"major"</span><span style="color: #E1E4E8">: {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #79B8FF">"enabled"</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">false</span><span style="color: #E1E4E8">         </span><span style="color: #6A737D">// メジャーバージョンの更新を禁止します</span></span>
-<span class="line"><span style="color: #E1E4E8">  },</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"baseBranches"</span><span style="color: #E1E4E8">: [</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">"master"</span><span style="color: #E1E4E8">                 </span><span style="color: #6A737D">// 更新対象のブランチを指定します</span></span>
-<span class="line"><span style="color: #E1E4E8">  ],</span></span>
-<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "extends"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">    "config:base"</span><span style="color:#6A737D">            // 公式の推奨設定を継承して利用します</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#79B8FF">  "timezone"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Asia/Tokyo"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  "enabledManagers"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">    "npm"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "composer"</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#79B8FF">  "lockFileMaintenance"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "enabled"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#6A737D">          // package-lock.jsonやcomposer-lock.jsonを更新するためのフラグです</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  "packageRules"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">      "matchPackagePatterns"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">        "*"</span><span style="color:#6A737D">                  // 全パッケージを更新対象にします</span></span>
+<span class="line"><span style="color:#E1E4E8">      ]</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">      "matchDepTypes"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">        "dependencies"</span><span style="color:#6A737D">       // dependenciesのMRを作成します。</span></span>
+<span class="line"><span style="color:#E1E4E8">      ],</span></span>
+<span class="line"><span style="color:#79B8FF">      "groupName"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"dependencies"</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#79B8FF">      "matchDepTypes"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">        "devDependencies"</span><span style="color:#6A737D">    // devDependenciesのMRを作成します。dependenciesと分けて定義することで別々のMRが作成されるようになります</span></span>
+<span class="line"><span style="color:#E1E4E8">      ],</span></span>
+<span class="line"><span style="color:#79B8FF">      "groupName"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"devDependencies"</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#79B8FF">  "ignoreDeps"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">    "@types/*"</span><span style="color:#E1E4E8">,              </span><span style="color:#6A737D">// 更新対象外のパッケージを指定します</span></span>
+<span class="line"><span style="color:#9ECBFF">    "typescript"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    "php"</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#79B8FF">  "force"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "constraints"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      "composer"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"x.x.x"</span><span style="color:#E1E4E8">,   </span><span style="color:#6A737D">// renovateの動作に使用するパッケージのバージョンを指定します</span></span>
+<span class="line"><span style="color:#79B8FF">      "node"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"x.x.x"</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  "major"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "enabled"</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span><span style="color:#6A737D">         // メジャーバージョンの更新を禁止します</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  "baseBranches"</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">    "master"</span><span style="color:#6A737D">                 // 更新対象のブランチを指定します</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
 <h3 id="dockerを使用してrenovateを動かす">Dockerを使用してRenovateを動かす</h3>
 <p>Renovateでは公式でDockerイメージを提供しています。<br>
 今回の導入方法では、Dockerを使用してRenovateを動かします。</p>
 <p><a href="https://hub.docker.com/r/renovate/renovate">https://hub.docker.com/r/renovate/renovate</a></p>
 <p>設定作業を行う際には、ローカルで動作確認をしながら設定項目を追加していくのがいいと思います。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">docker</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">run</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">--rm</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">-e</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">GITHUB_COM_TOKEN={{</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">GitHubのpublic</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">repo権限のトークン。リリースノートの取得に使用</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">}}</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">renovate/renovate:xx.xx.xx</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">renovate</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">--platform</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">gitlab</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">--token</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">{{</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">GitLabのAPI_TOKENの値</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">}}</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">--endpoint</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">https://git.plugram.co.jp/api/v4</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">{{</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">GitLabのプロジェクトのパス</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">}}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:#B392F0">docker</span><span style="color:#9ECBFF"> run</span><span style="color:#79B8FF"> --rm</span><span style="color:#79B8FF"> -e</span><span style="color:#9ECBFF"> GITHUB_COM_TOKEN={{</span><span style="color:#9ECBFF"> GitHubのpublic</span><span style="color:#9ECBFF"> repo権限のトークン。リリースノートの取得に使用</span><span style="color:#9ECBFF"> }}</span><span style="color:#9ECBFF"> renovate/renovate:xx.xx.xx</span><span style="color:#9ECBFF"> renovate</span><span style="color:#79B8FF"> --platform</span><span style="color:#9ECBFF"> gitlab</span><span style="color:#79B8FF"> --token</span><span style="color:#9ECBFF"> {{</span><span style="color:#9ECBFF"> GitLabのAPI_TOKENの値</span><span style="color:#9ECBFF"> }}</span><span style="color:#79B8FF"> --endpoint</span><span style="color:#9ECBFF"> https://git.plugram.co.jp/api/v4</span><span style="color:#9ECBFF"> {{</span><span style="color:#9ECBFF"> GitLabのプロジェクトのパス</span><span style="color:#9ECBFF"> }}</span></span>
+<span class="line"></span></code></pre>
 <h3 id="gitlab-ciで設定する">GitLab CIで設定する</h3>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">"Renovate Bot":</span></span>
-<span class="line"><span style="color: #e1e4e8">  stage: {{ 任意のステージ }}</span></span>
-<span class="line"><span style="color: #e1e4e8">  image:</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: renovate/renovate:xx.xx.xx // 任意のバージョンを指定してください</span></span>
-<span class="line"><span style="color: #e1e4e8">    entrypoint: [""]</span></span>
-<span class="line"><span style="color: #e1e4e8">  script:</span></span>
-<span class="line"><span style="color: #e1e4e8">    - renovate --platform gitlab --token $API_TOKEN --endpoint $CI_SERVER_URL/api/v4 $CI_PROJECT_PATH</span></span>
-<span class="line"><span style="color: #e1e4e8">  only:</span></span>
-<span class="line"><span style="color: #e1e4e8">    - schedules  // 設定例ですが、定期実行の設定をしておくといいです</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>"Renovate Bot":</span></span>
+<span class="line"><span>  stage: {{ 任意のステージ }}</span></span>
+<span class="line"><span>  image:</span></span>
+<span class="line"><span>    name: renovate/renovate:xx.xx.xx // 任意のバージョンを指定してください</span></span>
+<span class="line"><span>    entrypoint: [""]</span></span>
+<span class="line"><span>  script:</span></span>
+<span class="line"><span>    - renovate --platform gitlab --token $API_TOKEN --endpoint $CI_SERVER_URL/api/v4 $CI_PROJECT_PATH</span></span>
+<span class="line"><span>  only:</span></span>
+<span class="line"><span>    - schedules  // 設定例ですが、定期実行の設定をしておくといいです</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>CIで記載する場合は各環境変数をリポジトリに設定しておく必要があります。<br>
 筆者の環境だと<code>Setting</code>><code>CI/CD</code>><code>Variables</code>から設定できました。</p>
 <p>CI上で動作させる場合、環境変数GITHUB_TOKENはrenovateがデフォルトで参照するので<code>Settings</code>><code>CI/CD</code>><code>Variables</code>に設定できていれば大丈夫です。<br>
@@ -133,28 +137,30 @@ GitLab上で作成するMRに対してのラベルやReviewersを指定するこ
 <p>原因は使用しているImageが古く、プロダクトが使用しているNode.js、及びnpmのバージョンとrenovateが動作するNode.js、及びnpmのバージョンが異なっていたためでした。</p>
 <p><a href="https://docs.renovatebot.com/configuration-options/#constraints">https://docs.renovatebot.com/configuration-options/#constraints</a></p>
 <p>lockFileVersionについては少し話がそれてしまうのでChatGPTに説明してもらいます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">npmの</span><span style="color: #79B8FF">`lockFileVersion`</span><span style="color: #E1E4E8">は</span><span style="color: #79B8FF">`package-lock.json`</span><span style="color: #E1E4E8">ファイルに含まれ、npmが使用するロックファイルのバージョンを示します。このバージョン情報はnpmがパッケージの依存関係をどのように解決・記録するかを決定します。</span></span>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E1E4E8">npmの</span><span style="color:#79B8FF">`lockFileVersion`</span><span style="color:#E1E4E8">は</span><span style="color:#79B8FF">`package-lock.json`</span><span style="color:#E1E4E8">ファイルに含まれ、npmが使用するロックファイルのバージョンを示します。このバージョン情報はnpmがパッケージの依存関係をどのように解決・記録するかを決定します。</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #79B8FF">`lockFileVersion`</span><span style="color: #E1E4E8">の違いは以下の通りです：</span></span>
+<span class="line"><span style="color:#79B8FF">`lockFileVersion`</span><span style="color:#E1E4E8">の違いは以下の通りです：</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FFAB70">-</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">`lockFileVersion: 1`</span><span style="color: #E1E4E8">: これはnpm v5から導入されました。</span><span style="color: #79B8FF">`package-lock.json`</span><span style="color: #E1E4E8">には、プロジェクトでインストールされている各パッケージの具体的なバージョンとその依存関係が記録されています。</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#79B8FF"> `lockFileVersion: 1`</span><span style="color:#E1E4E8">: これはnpm v5から導入されました。</span><span style="color:#79B8FF">`package-lock.json`</span><span style="color:#E1E4E8">には、プロジェクトでインストールされている各パッケージの具体的なバージョンとその依存関係が記録されています。</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FFAB70">-</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">`lockFileVersion: 2`</span><span style="color: #E1E4E8">: これはnpm v7で導入されました。これはv1と同様の情報を含んでいますが、加えて</span><span style="color: #79B8FF">`optionalDependencies`</span><span style="color: #E1E4E8">（オプションの依存関係）を考慮に入れた形式になっています。このフォーマットは、従来のnpmと互換性があり、また、Yarnでも利用することが可能です。</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#79B8FF"> `lockFileVersion: 2`</span><span style="color:#E1E4E8">: これはnpm v7で導入されました。これはv1と同様の情報を含んでいますが、加えて</span><span style="color:#79B8FF">`optionalDependencies`</span><span style="color:#E1E4E8">（オプションの依存関係）を考慮に入れた形式になっています。このフォーマットは、従来のnpmと互換性があり、また、Yarnでも利用することが可能です。</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #FFAB70">-</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">`lockFileVersion: 3`</span><span style="color: #E1E4E8">: これもnpm v7で導入されました。v2と同様の情報を含みつつ、</span><span style="color: #79B8FF">`peerDependencies`</span><span style="color: #E1E4E8">（ピア依存関係）をより適切に表現できるように改良されています。ただし、このフォーマットはYarnと互換性がありません。</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#79B8FF"> `lockFileVersion: 3`</span><span style="color:#E1E4E8">: これもnpm v7で導入されました。v2と同様の情報を含みつつ、</span><span style="color:#79B8FF">`peerDependencies`</span><span style="color:#E1E4E8">（ピア依存関係）をより適切に表現できるように改良されています。ただし、このフォーマットはYarnと互換性がありません。</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #E1E4E8">これらの</span><span style="color: #79B8FF">`lockFileVersion`</span><span style="color: #E1E4E8">の目的は、開発者間でのパッケージのバージョン管理を容易にし、それぞれが同じ依存関係を持つことを保証することです。これにより、"開発環境で動作するが、プロダクション環境で動作しない"といった問題を避けることができます。</span></span>
+<span class="line"><span style="color:#E1E4E8">これらの</span><span style="color:#79B8FF">`lockFileVersion`</span><span style="color:#E1E4E8">の目的は、開発者間でのパッケージのバージョン管理を容易にし、それぞれが同じ依存関係を持つことを保証することです。これにより、"開発環境で動作するが、プロダクション環境で動作しない"といった問題を避けることができます。</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #E1E4E8">また、これらのバージョンは、特定のnpmのバージョンでデフォルトとして生成されますが、他のnpmのバージョンでも問題なく解釈・利用できます。たとえば、npm v7はデフォルトで</span><span style="color: #79B8FF">`lockFileVersion: 2`</span><span style="color: #E1E4E8">または</span><span style="color: #79B8FF">`3`</span><span style="color: #E1E4E8">のロックファイルを生成しますが、それでもnpm v5やv6はこれを正しく解釈できます（ただし、</span><span style="color: #79B8FF">`lockFileVersion: 3`</span><span style="color: #E1E4E8">の一部情報は無視されます）。</span></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">また、これらのバージョンは、特定のnpmのバージョンでデフォルトとして生成されますが、他のnpmのバージョンでも問題なく解釈・利用できます。たとえば、npm v7はデフォルトで</span><span style="color:#79B8FF">`lockFileVersion: 2`</span><span style="color:#E1E4E8">または</span><span style="color:#79B8FF">`3`</span><span style="color:#E1E4E8">のロックファイルを生成しますが、それでもnpm v5やv6はこれを正しく解釈できます（ただし、</span><span style="color:#79B8FF">`lockFileVersion: 3`</span><span style="color:#E1E4E8">の一部情報は無視されます）。</span></span>
+<span class="line"></span></code></pre>
 <p>とはいえ、互換性があろうがなかろうがrenovateが作成する<code>package-lock.json</code>のバージョンと手動で<code>npm install</code>を実行したときのバージョンが異なると、<code>package-lock.json</code>の更新差分が多くなるので避けたいと判断しました。</p>
 <p>公式サイトを参考に、下記のような形で指定することで解決しました。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">{</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #79B8FF">"force"</span><span style="color: #E1E4E8">: {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #79B8FF">"constraints"</span><span style="color: #E1E4E8">: {</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #79B8FF">"node"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"&#x3C; 15.0.0"</span></span>
-<span class="line"><span style="color: #E1E4E8">    }</span></span>
-<span class="line"><span style="color: #E1E4E8">  }</span></span>
-<span class="line"><span style="color: #E1E4E8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "force"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "constraints"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      "node"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"&#x3C; 15.0.0"</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
 <blockquote>
 <p>Constraints are also used to manually restrict which datasource versions are possible to upgrade to based on their language support. For now this datasource constraint feature only supports python, other compatibility restrictions will be added in the future.</p>
 </blockquote>
@@ -185,4 +191,4 @@ DockerHubやGitLab Container Registry等を使用してCIから利用できる�
 <p>また、言語自体のアップデートも行えるため、Node自体であったり、PHP自体のアップデートも行えます。</p>
 <p>コンテナ化されたプロジェクトの場合はより恩恵を受けられると思います。</p>
 <p>自動化自体も好きですが、自動化にとどまらず、リリースノートを都度確認する習慣ができ、依存パッケージへの意識を高めてくれるツールだと感じました。<br>
-書籍「ソフトウェア設計のトレードオフと誤り」では、<code>あなたが使うライブラリはあなたのコードとなる</code>という章が存在するくらいなので、この意識は持ち続けたいですね。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
+書籍「ソフトウェア設計のトレードオフと誤り」では、<code>あなたが使うライブラリはあなたのコードとなる</code>という章が存在するくらいなので、この意識は持ち続けたいですね。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>

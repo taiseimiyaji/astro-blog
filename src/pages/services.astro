@@ -1,0 +1,82 @@
+---
+import Header from "../components/Header/Header";
+import "../styles/index.scss";
+import Footer from "../components/Footer/Footer";
+import GitHubCard from "../components/SNS/GitHubCard";
+import XCard from "../components/SNS/XCard";
+import ZennCard from "../components/SNS/ZennCard";
+---
+
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="バックエンド・フロントエンド開発、技術コンサルティング、ユニットテスト導入支援など、幅広い技術サービスを提供しています。">
+    <title>Services</title>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-ZBD90YGZ4N');
+</script>
+<body>
+<main>
+    <Header></Header>
+    <div class="content">
+        <h1>提供サービス</h1>
+        <div>
+            <div>
+                <h2>バックエンド開発</h2>
+                <div>
+                    PHP（Laravel）、Ruby（Ruby on Rails）を中心に、継続的に開発速度を落とさないスケール可能なバックエンドシステムの設計・開発を行います。API設計からデータベース設計、セキュリティ対策まで一貫してサポートいたします。
+                </div>
+            </div>
+            <div>
+                <h2>フロントエンド開発</h2>
+                <div>
+                    Vue.js、Nuxt.js、React.js、Next.jsなどのモダンなフロントエンド技術を用いて、ユーザーエクスペリエンスを重視したアプリケーションの開発を行います。レスポンシブデザインやパフォーマンス最適化も対応可能です。
+                </div>
+            </div>
+            <div>
+                <h2>技術コンサルティング</h2>
+                <div>
+                    システムの技術的課題の解決や、新技術の導入支援を行います。技術的負債の解消、アーキテクチャの改善、ドメイン駆動設計（DDD）の導入など、ビジネスのニーズに合わせた最適なソリューションを提案いたします。
+                </div>
+            </div>
+            <div>
+                <h2>ユニットテスト導入支援</h2>
+                <div>
+                    開発プロセスの品質向上のために、ユニットテストの導入やテスト自動化の支援を行います。CI/CD環境の構築やテストフレームワークの選定・導入もお任せください。
+                </div>
+            </div>
+            <div>
+                <h2>その他サービス</h2>
+                <div>
+                    - システムのパフォーマンスチューニング<br>
+                    - クリーンアーキテクチャに基づいた設計支援<br>
+                    - 技術者向けのトレーニングやワークショップの実施<br>
+                    - 技術ブログやドキュメントの執筆サポート<br>
+                </div>
+            </div>
+            <div>
+                <h2>お問い合わせ</h2>
+                <div>
+                    プロジェクトのご相談やお見積もりなど、お気軽にお問い合わせください。<br>
+                    <a href="mailto:taisei.miyaji4602@gmail.com">taisei.miyaji4602@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-container">
+            <GitHubCard url={'https://github.com/taiseimiyaji'} />
+            <XCard url={'https://x.com/lyricrime'} />
+            <ZennCard url={'https://zenn.dev/miyaji4602/'} />
+        </div>
+    </div>
+    <Footer></Footer>
+</main>
+</body>
+</html>

@@ -17,3 +17,8 @@
         overflow:inherit;
     }
 }
+.card:hover {
+    background-color: #2d3748;
+    color: white;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}

@@ -1,14 +1,14 @@
-<!DOCTYPE html><html lang="ja"><head><title>TypeScriptでAtCoderに挑戦してみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+<!DOCTYPE html><html lang="ja"> <head><title>TypeScriptでAtCoderに挑戦してみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## はじめに
 
 スマレジでは、副業が可能です。   
 https://corp.smaregi.jp/recruit/culture/workstyle.php   
 
 個人的に最近、副業にも挑戦しようかなと考え始めています。   
-副"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
-html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+副"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
 </style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/01/17</div><h1>TypeScriptでAtCoderに挑戦してみる</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2023/01/17</div> <h1>TypeScriptでAtCoderに挑戦してみる</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>スマレジでは、副業が可能です。<br>
 <a href="https://corp.smaregi.jp/recruit/culture/workstyle.php">https://corp.smaregi.jp/recruit/culture/workstyle.php</a></p>
 <p>個人的に最近、副業にも挑戦しようかなと考え始めています。<br>
@@ -22,22 +22,25 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <p>過去問は下記サイトから閲覧できます。</p>
 <p><a href="https://kenkoooo.com/atcoder/#/table/">https://kenkoooo.com/atcoder/#/table/</a></p>
 <p>なお、問題に色がついていますが、</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">灰色 -> 茶色 -> 緑色 -> 水色 -> 青色 ...</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>灰色 -> 茶色 -> 緑色 -> 水色 -> 青色 ...</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>の順番で難しくなっていきます。<br>
 この辺りのレートのシステムについても公式を参考にしていただければと思います。</p>
 <p>以前少しやったことがあるんですが、その際の<strong>個人的な感触</strong>としては以下の様な感じです。<br>
 業務上はC問題くらいはすらすら解けるといいな〜と思ってたりします。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">A問題...標準入出力とプログラミングの基礎がわかれば誰でも解ける   </span></span>
-<span class="line"><span style="color: #e1e4e8">B問題...問題文をきちんと理解できてfor文とif文が書ければ愚直に解ける   </span></span>
-<span class="line"><span style="color: #e1e4e8">C問題...愚直に解くだけでは大抵計算量で弾かれてしまうのでなにかしら対策が必要   </span></span>
-<span class="line"><span style="color: #e1e4e8">D問題以降...何回か挑戦したけど試行回数少なくてあまりわかってない   </span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>A問題...標準入出力とプログラミングの基礎がわかれば誰でも解ける   </span></span>
+<span class="line"><span>B問題...問題文をきちんと理解できてfor文とif文が書ければ愚直に解ける   </span></span>
+<span class="line"><span>C問題...愚直に解くだけでは大抵計算量で弾かれてしまうのでなにかしら対策が必要   </span></span>
+<span class="line"><span>D問題以降...何回か挑戦したけど試行回数少なくてあまりわかってない   </span></span>
+<span class="line"><span></span></span></code></pre>
 <h2 id="環境構築">環境構築</h2>
 <p>前提として、真面目に競技プログラミングに取り組む場合はTypeScriptはおすすめしません。<br>
 大人しくC++かPythonを使用するべきだと思っています。<br>
 が、今回はTypeScriptに慣れることが目的のため、あえてTypeScriptを使用していきます。</p>
 <p>nodeやnpmのインストールは今回は省略します。<br>
 まずはパッケージ管理のためにpackage.jsonを下記コマンドで作成します。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">npm</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">install</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span></span>
+<span class="line"></span></code></pre>
 <p>必要なものは以下のパッケージとなります。</p>
 <ul>
 <li>typescript@3.8 (本記事執筆時点でのAtCoderでのTypeScript対応バージョン)</li>
@@ -45,11 +48,13 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <li>@types/node (TypeScriptの標準入出力ライブラリ等を含むライブラリ)</li>
 </ul>
 <p>忘れずに<code>tsconfig.json</code>の作成もしておきましょう。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">npx</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">tsc</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">--init</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="shell"><code><span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> tsc</span><span style="color:#79B8FF"> --init</span></span>
+<span class="line"></span></code></pre>
 <h2 id="標準入出力">標準入出力</h2>
 <p>TypeScriptで一番めんどくさいのが標準入出力になります。</p>
 <p>windowsでは使えないですが、以下が一番シンプルな記述かと思います。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const input = require('fs').readFileSync('/dev/stdin', 'utf8');</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const input = require('fs').readFileSync('/dev/stdin', 'utf8');</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>毎回書くのも面倒なのである程度テンプレートとしておくのがいいと思います。<br>
 Ctrl + Dで入力終了です。<br>
 他にもいくつか手段はあるので気になる方がいれば調べてみてください。</p>
@@ -71,41 +76,43 @@ Ctrl + Dで入力終了です。<br>
 親の数字をnとしたとき、<code>2n</code>,<code>2n+1</code>であれば直接結ばれています。</li>
 </ol>
 <p>上記を考慮してコードを書くと以下の様になります。(競技プログラミングの特に簡単な問題では変数名の命名が適当になりがちなんですがご容赦ください)</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">import * as fs from 'fs';</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
-<span class="line"><span style="color: #e1e4e8">const a = +input[0];</span></span>
-<span class="line"><span style="color: #e1e4e8">const b = +input[1];</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const ans = (Boolean)(b === (2 * a) || b === (2 * a + 1));</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">if (ans) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    console.log("Yes");</span></span>
-<span class="line"><span style="color: #e1e4e8">} else {</span></span>
-<span class="line"><span style="color: #e1e4e8">    console.log("No");</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>import * as fs from 'fs';</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span>const a = +input[0];</span></span>
+<span class="line"><span>const b = +input[1];</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const ans = (Boolean)(b === (2 * a) || b === (2 * a + 1));</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>if (ans) {</span></span>
+<span class="line"><span>    console.log("Yes");</span></span>
+<span class="line"><span>} else {</span></span>
+<span class="line"><span>    console.log("No");</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <ol start="2">
 <li>愚直に書く方法<br>
 これはA問題のようなパターンが少なく、制約がある問題で使える方法なんですが、愚直に全てのパターンを実行することでも正解することができます。
 説明するよりコードを見てもらった方が早いと思います。</li>
 </ol>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">import * as fs from 'fs';</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
-<span class="line"><span style="color: #e1e4e8">const a = +input[0];</span></span>
-<span class="line"><span style="color: #e1e4e8">const b = +input[1];</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const tree =</span></span>
-<span class="line"><span style="color: #e1e4e8">{</span></span>
-<span class="line"><span style="color: #e1e4e8">    1: [2, 3],</span></span>
-<span class="line"><span style="color: #e1e4e8">    2: [4, 5],</span></span>
-<span class="line"><span style="color: #e1e4e8">    3: [6, 7],</span></span>
-<span class="line"><span style="color: #e1e4e8">    4: [8, 9],</span></span>
-<span class="line"><span style="color: #e1e4e8">    5: [10, 11],</span></span>
-<span class="line"><span style="color: #e1e4e8">    6: [12, 13],</span></span>
-<span class="line"><span style="color: #e1e4e8">    7: [14, 15],</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(tree[a] &#x26;&#x26; tree[a].includes(b) ? "Yes" : "No");</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>import * as fs from 'fs';</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span>const a = +input[0];</span></span>
+<span class="line"><span>const b = +input[1];</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const tree =</span></span>
+<span class="line"><span>{</span></span>
+<span class="line"><span>    1: [2, 3],</span></span>
+<span class="line"><span>    2: [4, 5],</span></span>
+<span class="line"><span>    3: [6, 7],</span></span>
+<span class="line"><span>    4: [8, 9],</span></span>
+<span class="line"><span>    5: [10, 11],</span></span>
+<span class="line"><span>    6: [12, 13],</span></span>
+<span class="line"><span>    7: [14, 15],</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span>console.log(tree[a] &#x26;&#x26; tree[a].includes(b) ? "Yes" : "No");</span></span>
+<span class="line"><span></span></span></code></pre>
 <p><code>console.log()</code>の中で<code>tree[a]</code>の存在をチェックして7より大きい場合は全てNoとしています。<br>
 あとは愚直にオブジェクトを使用しています。<br>
 今回の様なわかりやすい例ではあまり使用しませんが、いざコンテストとなると早く解かないとという焦りなどからA問題で混乱してしまうこともあるので、この様な愚直な解き方も覚えておくと使えるかもしれません。</p>
@@ -128,23 +135,24 @@ Ctrl + Dで入力終了です。<br>
 <li>問題文より、breakする条件は<code>Si</code> === <code>Sk+i</code>のとき。</li>
 </ol>
 <p>上記をもとにまずは愚直にループを回してみます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">import * as fs from 'fs';</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
-<span class="line"><span style="color: #e1e4e8">const n: number = parseInt(input[0]);</span></span>
-<span class="line"><span style="color: #e1e4e8">const s: String = input[1];</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">for (let i = 0; i &#x3C; n; i++) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    let l = 0;</span></span>
-<span class="line"><span style="color: #e1e4e8">    for (let k = 0; k &#x3C; n - i; k++) {</span></span>
-<span class="line"><span style="color: #e1e4e8">        if (s.charAt(k) === s.charAt(k + i)) {</span></span>
-<span class="line"><span style="color: #e1e4e8">            break;</span></span>
-<span class="line"><span style="color: #e1e4e8">        } else {</span></span>
-<span class="line"><span style="color: #e1e4e8">            l++;</span></span>
-<span class="line"><span style="color: #e1e4e8">        }</span></span>
-<span class="line"><span style="color: #e1e4e8">    }</span></span>
-<span class="line"><span style="color: #e1e4e8">    console.log(l);</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>import * as fs from 'fs';</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span>const n: number = parseInt(input[0]);</span></span>
+<span class="line"><span>const s: String = input[1];</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>for (let i = 0; i &#x3C; n; i++) {</span></span>
+<span class="line"><span>    let l = 0;</span></span>
+<span class="line"><span>    for (let k = 0; k &#x3C; n - i; k++) {</span></span>
+<span class="line"><span>        if (s.charAt(k) === s.charAt(k + i)) {</span></span>
+<span class="line"><span>            break;</span></span>
+<span class="line"><span>        } else {</span></span>
+<span class="line"><span>            l++;</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>    console.log(l);</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>愚直に用件を実装しましたがこれで正解(AC)取れたのでよしとします。</p>
 <h3 id="c問題">C問題</h3>
 <p>C問題以降は多少実装に工夫が必要になる場合があります。<br>
@@ -154,41 +162,43 @@ Ctrl + Dで入力終了です。<br>
 <ul>
 <li>一回目の提出(WA)</li>
 </ul>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">import * as fs from 'fs';</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
-<span class="line"><span style="color: #e1e4e8">const s: String = input[0];</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const length = s.length;</span></span>
-<span class="line"><span style="color: #e1e4e8">const charCodeAt = 64;</span></span>
-<span class="line"><span style="color: #e1e4e8">let num = 0;</span></span>
-<span class="line"><span style="color: #e1e4e8">for (let i = 0; i &#x3C; length; i++) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    num += (s.charCodeAt(i) - 64) * (26 ** (length - (i+1)));</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(num);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>import * as fs from 'fs';</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span>const s: String = input[0];</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const length = s.length;</span></span>
+<span class="line"><span>const charCodeAt = 64;</span></span>
+<span class="line"><span>let num = 0;</span></span>
+<span class="line"><span>for (let i = 0; i &#x3C; length; i++) {</span></span>
+<span class="line"><span>    num += (s.charCodeAt(i) - 64) * (26 ** (length - (i+1)));</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>console.log(num);</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>上記の提出で50ケース中47ケースACで3ケースWAとなりました。<br>
 このパターンが一番きついですね。ある程度のロジックは合っていますし、人間は自分の書いたコードを信じたがる業の深い生き物なので。</p>
 <p>経験上ですが、こういったほぼほぼ正解でいくつかのテストケースのみ落ちる場合は境界値系のテストで落ちている可能性が高いです。<br>
 今回の場合はJavaScriptのnumber型の最大値を超えていました。<br>
 BigIntを使用するよう修正します。合わせて少し解説コメントもいれてみやすくしました。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">import * as fs from 'fs';</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
-<span class="line"><span style="color: #e1e4e8">const s: String = input[0];</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const length = s.length;</span></span>
-<span class="line"><span style="color: #e1e4e8">const charCodeAt = 64;</span></span>
-<span class="line"><span style="color: #e1e4e8">let num = BigInt(0);</span></span>
-<span class="line"><span style="color: #e1e4e8">for (let i = 0; i &#x3C; length; i++) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    const charNum = (s.charCodeAt(i) - charCodeAt); // アルファベットを文字コードを使用して数値に変換</span></span>
-<span class="line"><span style="color: #e1e4e8">    // 1桁目の場合は　26の0乗 * 文字列の番号</span></span>
-<span class="line"><span style="color: #e1e4e8">    // 2桁目の場合は　26の1乗 * 文字列の番号</span></span>
-<span class="line"><span style="color: #e1e4e8">    num += BigInt(charNum * (26 ** (length - (i+1))));</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(num.toString());</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>import * as fs from 'fs';</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const input = fs.readFileSync("/dev/stdin", "utf8").split(/\s/);</span></span>
+<span class="line"><span>const s: String = input[0];</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const length = s.length;</span></span>
+<span class="line"><span>const charCodeAt = 64;</span></span>
+<span class="line"><span>let num = BigInt(0);</span></span>
+<span class="line"><span>for (let i = 0; i &#x3C; length; i++) {</span></span>
+<span class="line"><span>    const charNum = (s.charCodeAt(i) - charCodeAt); // アルファベットを文字コードを使用して数値に変換</span></span>
+<span class="line"><span>    // 1桁目の場合は　26の0乗 * 文字列の番号</span></span>
+<span class="line"><span>    // 2桁目の場合は　26の1乗 * 文字列の番号</span></span>
+<span class="line"><span>    num += BigInt(charNum * (26 ** (length - (i+1))));</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>console.log(num.toString());</span></span>
+<span class="line"><span></span></span></code></pre>
 <h2 id="所感">所感</h2>
 <p>今回はAtCoderにTypeScriptで挑戦してみました。<br>
 C問題くらいまでであれば言語に関係なく解くことができそうです。(D問題以降は挑戦してみる価値はありそう)<br>
 今回はB問題で思いのほか時間を取られましたが、C問題はさくっと解くことができました。<br>
 これからもアルゴリズム力の強化のためにコンテストに参加してみたいと思います。<br>
-TypeScriptは使用しているユーザーは多いと思うので興味があれば過去問等からでも解いてみてください。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
+TypeScriptは使用しているユーザーは多いと思うので興味があれば過去問等からでも解いてみてください。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>

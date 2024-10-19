@@ -1,11 +1,11 @@
-<!DOCTYPE html><html lang="ja"><head><title>再帰的なデータ構造で閉包テーブルを使用したToDoリストを作ってみる ~その1~ 目標設定とDB設計</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+<!DOCTYPE html><html lang="ja"> <head><title>再帰的なデータ構造で閉包テーブルを使用したToDoリストを作ってみる ~その1~ 目標設定とDB設計</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 
 ## はじめに
 
-[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/10/27/232126)で半年間の振り返りをしました。このブログも約半年間継続できていろんなことをイン"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
-html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/10/27/232126)で半年間の振り返りをしました。このブログも約半年間継続できていろんなことをイン"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
 </style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/activity"><div>Activity</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/11/05</div><h1>再帰的なデータ構造で閉包テーブルを使用したToDoリストを作ってみる ~その1~ 目標設定とDB設計</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/11/05</div> <h1>再帰的なデータ構造で閉包テーブルを使用したToDoリストを作ってみる ~その1~ 目標設定とDB設計</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p><a href="https://taisei-miyaji.hatenadiary.com/entry/2022/10/27/232126">前回の記事</a>で半年間の振り返りをしました。このブログも約半年間継続できていろんなことをインプットできているかなと思います。
 そろそろアウトプットとしてゴリゴリ実装したいなという気持ちになっているので、インプットと並行してなにか個人開発に挑戦してみようかと思います。</p>
 <h2 id="todoリストを開発する上での目標">ToDoリストを開発する上での目標</h2>
@@ -158,18 +158,20 @@ taskについて子孫関係を持つ場合の閉包テーブルがどのよう�
 tree_pathsテーブルで例えば4の子孫のtaskのレコードを取得する場合のSQL
 先祖が4のレコードを検索します。</li>
 </ul>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">SELECT tasks.*</span></span>
-<span class="line"><span style="color: #e1e4e8">FROM tasks</span></span>
-<span class="line"><span style="color: #e1e4e8">    INNER JOIN tree_paths ON tasks.id = tree_paths.descendant</span></span>
-<span class="line"><span style="color: #e1e4e8">    WHERE tree_paths.ancestor = 4;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>SELECT tasks.*</span></span>
+<span class="line"><span>FROM tasks</span></span>
+<span class="line"><span>    INNER JOIN tree_paths ON tasks.id = tree_paths.descendant</span></span>
+<span class="line"><span>    WHERE tree_paths.ancestor = 4;</span></span>
+<span class="line"><span></span></span></code></pre>
 <ul>
 <li>あるレコードの先祖をすべて取得する場合<br>
 6の先祖を取得したい場合は逆に子孫が6のレコードを検索します。</li>
 </ul>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">SELECT tasks.*</span></span>
-<span class="line"><span style="color: #e1e4e8">FROM tasks</span></span>
-<span class="line"><span style="color: #e1e4e8">    INNER JOIN tree_paths ON tasks.id = tree_paths.ancestor</span></span>
-<span class="line"><span style="color: #e1e4e8">    WHERE tree_paths.descendant = 6;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>SELECT tasks.*</span></span>
+<span class="line"><span>FROM tasks</span></span>
+<span class="line"><span>    INNER JOIN tree_paths ON tasks.id = tree_paths.ancestor</span></span>
+<span class="line"><span>    WHERE tree_paths.descendant = 6;</span></span>
+<span class="line"><span></span></span></code></pre>
 <ul>
 <li>あるレコードに子を追加する場合<br>
 8というレコードを5の子として追加する場合<br>
@@ -184,31 +186,34 @@ tree_pathsテーブルで例えば4の子孫のtaskのレコードを取得す�
 <li>その子孫を8に置き換えたレコードを用意して追加(これまでtask5を子孫としているレコードは新たに8も子孫に含めるため)</li>
 </ol>
 <p>という手順になります。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">INSERT INTO tasks(id, name, costs, deadline, detail)</span></span>
-<span class="line"><span style="color: #e1e4e8">    VALUES(8, 'newTask', 12, '2022-11-04', '新しいタスク');</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">INSERT INTO tree_paths (ancestor, descendant)</span></span>
-<span class="line"><span style="color: #e1e4e8">    SELECT tree_paths.ancestor, 8</span></span>
-<span class="line"><span style="color: #e1e4e8">    FROM tree_paths</span></span>
-<span class="line"><span style="color: #e1e4e8">    WHERE tree_paths.descendant = 5</span></span>
-<span class="line"><span style="color: #e1e4e8">    UNION ALL</span></span>
-<span class="line"><span style="color: #e1e4e8">        SELECT 8, 8;</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>INSERT INTO tasks(id, name, costs, deadline, detail)</span></span>
+<span class="line"><span>    VALUES(8, 'newTask', 12, '2022-11-04', '新しいタスク');</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>INSERT INTO tree_paths (ancestor, descendant)</span></span>
+<span class="line"><span>    SELECT tree_paths.ancestor, 8</span></span>
+<span class="line"><span>    FROM tree_paths</span></span>
+<span class="line"><span>    WHERE tree_paths.descendant = 5</span></span>
+<span class="line"><span>    UNION ALL</span></span>
+<span class="line"><span>        SELECT 8, 8;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span></span></span></code></pre>
 <ul>
 <li>ある末尾の葉レコードを削除する場合<br>
 例えばtask7を削除する場合、子孫としてtask7を参照しているすべての行を削除します。
 これも先程同様に取得時のレコードを考えると削除するべきレコードがどういうものになるか理解できると思います。</li>
 </ul>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">DELETE FROM tree_paths WHERE descendant = 7;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>DELETE FROM tree_paths WHERE descendant = 7;</span></span>
+<span class="line"><span></span></span></code></pre>
 <ul>
 <li>あるサブツリー全体を削除する場合
 例えばtask4とその子孫をすべて削除するには、子孫としてtask4を参照しているすべての行と、task4の子孫を子孫として参照するすべての行を削除します。</li>
 </ul>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">DELETE FROM tree_paths</span></span>
-<span class="line"><span style="color: #e1e4e8">WHERE descendant IN (SELECT x.id FROM</span></span>
-<span class="line"><span style="color: #e1e4e8">                    (SELECT descendant AS id</span></span>
-<span class="line"><span style="color: #e1e4e8">                    FROM tree_paths</span></span>
-<span class="line"><span style="color: #e1e4e8">                    WHERE ancestor = 4) AS x);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>DELETE FROM tree_paths</span></span>
+<span class="line"><span>WHERE descendant IN (SELECT x.id FROM</span></span>
+<span class="line"><span>                    (SELECT descendant AS id</span></span>
+<span class="line"><span>                    FROM tree_paths</span></span>
+<span class="line"><span>                    WHERE ancestor = 4) AS x);</span></span>
+<span class="line"><span></span></span></code></pre>
 <ul>
 <li>サブツリーを移動する場合
 tree_pathsテーブルはtaskレコードの関連性を格納しているテーブルのため、レコードを削除してもtask自体は削除されません。<br>
@@ -218,67 +223,73 @@ tree_pathsテーブルはtaskレコードの関連性を格納しているテー
 例えば、task6をtask4の子からtask3の子に移動する場合を考えてみます。<br>
 移動するtaskの自己参照レコードを削除しないよう注意が必要です。
 6のすべての先祖とそれらの子孫を削除します。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">DELETE FROM tree_paths</span></span>
-<span class="line"><span style="color: #e1e4e8">WHERE descendant IN (SELECT x.id FROM(SELECT descendant AS id</span></span>
-<span class="line"><span style="color: #e1e4e8">                    FROM tree_paths</span></span>
-<span class="line"><span style="color: #e1e4e8">                    WHERE ancestor = 6) AS x)</span></span>
-<span class="line"><span style="color: #e1e4e8">                AND ancestor IN (SELECT y.id FROM (SELECT ancestor AS id</span></span>
-<span class="line"><span style="color: #e1e4e8">                FROM tree_paths</span></span>
-<span class="line"><span style="color: #e1e4e8">                WHERE descendant = 6</span></span>
-<span class="line"><span style="color: #e1e4e8">                AND ancestor != descendant) AS y)</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>DELETE FROM tree_paths</span></span>
+<span class="line"><span>WHERE descendant IN (SELECT x.id FROM(SELECT descendant AS id</span></span>
+<span class="line"><span>                    FROM tree_paths</span></span>
+<span class="line"><span>                    WHERE ancestor = 6) AS x)</span></span>
+<span class="line"><span>                AND ancestor IN (SELECT y.id FROM (SELECT ancestor AS id</span></span>
+<span class="line"><span>                FROM tree_paths</span></span>
+<span class="line"><span>                WHERE descendant = 6</span></span>
+<span class="line"><span>                AND ancestor != descendant) AS y)</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>次に、移動先の先祖とサブツリーの子孫の組み合わせを表す行を挿入します。
 新しい移動先の先祖とサブツリーのすべてのノードの組み合わせ行を生成するために、デカルト積を生成するCROSS JOIN構文を使用できます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">INSERT INTO tree_paths (ancestor, descendant)</span></span>
-<span class="line"><span style="color: #e1e4e8">    SELECT supertree.ancestor, subtree.descendant</span></span>
-<span class="line"><span style="color: #e1e4e8">    FROM tree_paths AS supertree</span></span>
-<span class="line"><span style="color: #e1e4e8">        CROSS JOIN tree_paths AS subtree</span></span>
-<span class="line"><span style="color: #e1e4e8">        WHERE supertree.descendant = 3</span></span>
-<span class="line"><span style="color: #e1e4e8">            AND subtree.ancestor = 6;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>INSERT INTO tree_paths (ancestor, descendant)</span></span>
+<span class="line"><span>    SELECT supertree.ancestor, subtree.descendant</span></span>
+<span class="line"><span>    FROM tree_paths AS supertree</span></span>
+<span class="line"><span>        CROSS JOIN tree_paths AS subtree</span></span>
+<span class="line"><span>        WHERE supertree.descendant = 3</span></span>
+<span class="line"><span>            AND subtree.ancestor = 6;</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>上記SQLで、task3を含むtask3の先祖と、task6を含むtask6の子孫のパスを挿入します。
 結果としてtask6から開始されるサブツリーはtask3の子に移動します。</p>
 <h3 id="閉包テーブルの欠点">閉包テーブルの欠点</h3>
 <p>閉包テーブルは先祖や子孫の一覧を比較的カンタンなクエリで取得できます。<br>
 一方で、隣接リストや経路列挙といったデータ構造と比べると直近の子や親へのクエリがやや複雑になります。この問題への対処としてtree_pathsテーブルへpath_length属性を追加します。path_lengthにはノードの自己参照を0、直近の子は1、孫は2といったように割り当てることが可能です。
 例えば以下のようにtask4の子を簡単に取得できます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">SELECT *</span></span>
-<span class="line"><span style="color: #e1e4e8">FROM tree_paths</span></span>
-<span class="line"><span style="color: #e1e4e8">WHERE ancestor = 4 AND path_length = 1;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>SELECT *</span></span>
+<span class="line"><span>FROM tree_paths</span></span>
+<span class="line"><span>WHERE ancestor = 4 AND path_length = 1;</span></span>
+<span class="line"><span></span></span></code></pre>
 <h2 id="今回作成するtodoリストのテーブル設計">今回作成するToDoリストのテーブル設計</h2>
 <ul>
 <li>taskテーブル</li>
 </ul>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">CREATE TABLE `task` (</span></span>
-<span class="line"><span style="color: #e1e4e8">  `id` char(26) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `detail` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `deadline` datetime NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `cost` int NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `status_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `created_at` timestamp NULL DEFAULT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `updated_at` timestamp NULL DEFAULT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `deleted_at` timestamp NULL DEFAULT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  PRIMARY KEY (`id`),</span></span>
-<span class="line"><span style="color: #e1e4e8">  CONSTRAINT `task_id_foreign` FOREIGN KEY (`id`) REFERENCES `task_status` (`id`)</span></span>
-<span class="line"><span style="color: #e1e4e8">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>CREATE TABLE `task` (</span></span>
+<span class="line"><span>  `id` char(26) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span>  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span>  `detail` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span>  `deadline` datetime NOT NULL,</span></span>
+<span class="line"><span>  `cost` int NOT NULL,</span></span>
+<span class="line"><span>  `status_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span>  `created_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span>  `updated_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span>  `deleted_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span>  PRIMARY KEY (`id`),</span></span>
+<span class="line"><span>  CONSTRAINT `task_id_foreign` FOREIGN KEY (`id`) REFERENCES `task_status` (`id`)</span></span>
+<span class="line"><span>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span></span>
+<span class="line"><span></span></span></code></pre>
 <ul>
 <li>task_statusテーブル</li>
 </ul>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">CREATE TABLE `task_status` (</span></span>
-<span class="line"><span style="color: #e1e4e8">  `id` char(26) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `created_at` timestamp NULL DEFAULT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `updated_at` timestamp NULL DEFAULT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  PRIMARY KEY (`id`)</span></span>
-<span class="line"><span style="color: #e1e4e8">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>CREATE TABLE `task_status` (</span></span>
+<span class="line"><span>  `id` char(26) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span>  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,</span></span>
+<span class="line"><span>  `created_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span>  `updated_at` timestamp NULL DEFAULT NULL,</span></span>
+<span class="line"><span>  PRIMARY KEY (`id`)</span></span>
+<span class="line"><span>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span></span>
+<span class="line"><span></span></span></code></pre>
 <ul>
 <li>tree_paths</li>
 </ul>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">CREATE TABLE `tree_paths` (</span></span>
-<span class="line"><span style="color: #e1e4e8">  `ancestor` int NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `descendant` int NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  `path_length` int NOT NULL,</span></span>
-<span class="line"><span style="color: #e1e4e8">  PRIMARY KEY (`ancestor`,`descendant`)</span></span>
-<span class="line"><span style="color: #e1e4e8">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>CREATE TABLE `tree_paths` (</span></span>
+<span class="line"><span>  `ancestor` int NOT NULL,</span></span>
+<span class="line"><span>  `descendant` int NOT NULL,</span></span>
+<span class="line"><span>  `path_length` int NOT NULL,</span></span>
+<span class="line"><span>  PRIMARY KEY (`ancestor`,`descendant`)</span></span>
+<span class="line"><span>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;</span></span>
+<span class="line"><span></span></span></code></pre>
 <h2 id="所感">所感</h2>
 <p>今回はこれまで勉強してきた内容でなにか作ってみるための第一歩としてToDoリストを制作することに決め、その際の目標を決めました。<br>
 また、永続化のためにDBの設計について考えました。<br>
@@ -286,4 +297,4 @@ tree_pathsテーブルはtaskレコードの関連性を格納しているテー
 再帰的データ構造の実現のために閉包テーブルを作成し、その復習も兼ねて記事にしました。<br>
 次回はこのテーブル構造からtaskエンティティの作成とRepositoryの作成を行いたいと思います。<br>
 インプットしてきたことがアウトプットの役に立っている実感があり、モチベ的にも高くなってる気がします。<br>
-引き続き楽しみながらプログラミングしていこうと思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2023 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
+引き続き楽しみながらプログラミングしていこうと思います。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
