@@ -1,12 +1,12 @@
-<!DOCTYPE html><html lang="ja"><head><title>TypeScriptに入門する</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+<!DOCTYPE html><html lang="ja"> <head><title>TypeScriptに入門する</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 
 ## はじめに
 前回の記事同様直近の大きな課題感を感じているのはフロントエンド技術です。  
 今回はその中でも最近主流となっているTypeScriptに入門してみます。  
-私のエンジニア人生はC言語から始まっているので静的型付けで書け"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+私のエンジニア人生はC言語から始まっているので静的型付けで書け"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
 </style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2022/12/25</div><h1>TypeScriptに入門する</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/12/25</div> <h1>TypeScriptに入門する</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>前回の記事同様直近の大きな課題感を感じているのはフロントエンド技術です。<br>
 今回はその中でも最近主流となっているTypeScriptに入門してみます。<br>
 私のエンジニア人生はC言語から始まっているので静的型付けで書けないJSに違和感をずっと感じていたため、個人開発等で導入し、ゆくゆくは社内のプロダクトもどんどん移行していきたいなと感じています。<br>
@@ -22,12 +22,14 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 バージョン1.0の公開、つまり正式リリースが2014年4月。</p>
 <h3 id="静的型システムの例">静的型システムの例</h3>
 <p>静的型システムとは、ざっくりいうと、変数や式が型をもつということ。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const str: string = "foobar";</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const str: string = "foobar";</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>変数<code>str</code>はstring型を持っているという<code>型注釈</code>が書かれている</p>
 <p>同時にTypeScriptは<code>型推論</code>という機能も充実している。
 型推論とは、型注釈を書かなくてもTypeScriptが補って変数などの型を決めてくれる機能。</p>
 <p>下記のコードは先程のコードから型注釈を省略したもの。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const str = "foobar";</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const str = "foobar";</span></span>
+<span class="line"><span></span></span></code></pre>
 <h3 id="型があるとなぜ嬉しいのか">型があるとなぜ嬉しいのか</h3>
 <ul>
 <li>型安全性</li>
@@ -38,11 +40,12 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <p>コンパイラは、<code>構文が正しくない</code>エラーと<code>型チェックが失敗したこと</code>を表す型エラーの２種類のエラーを主に返すが、特にコンパイラによって型エラーを検出できるのが静的型付け言語の恩恵。</p>
 <p>型エラーとは？<br>
 型チェックの失敗は型に矛盾が発生した場合に起こる。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">function repeatHello(count: number): string {</span></span>
-<span class="line"><span style="color: #e1e4e8">    return "hello".repeat(count)</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8">// countはint型を期待しているが文字列型が入力されるためエラーが発生</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(repeatHello("wow"));</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>function repeatHello(count: number): string {</span></span>
+<span class="line"><span>    return "hello".repeat(count)</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span>// countはint型を期待しているが文字列型が入力されるためエラーが発生</span></span>
+<span class="line"><span>console.log(repeatHello("wow"));</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>ドキュメント化とは型の情報がソースコードに書かれることでプログラムを読解する助けになる、ということ。<br>
 例えば、先程の例を見ると1行目を見るだけで関数<code>repeatHello</code>がnumber型の引数を受け取ってstring型の返り値を返すことがわかる。<br>
 適切な関数名、コメントに加えて型の情報があればプログラムの読解時に関数の中身まで読む必要がなく、ある程度中身を推測しながら読み進める事ができる。<br>
@@ -52,16 +55,17 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 反対に動的なチェックとは、<code>テスト</code>など実際にプログラムを実行してその結果を見てプログラムに間違いがないかを確認するもの。</p>
 <p>TypeScriptはランタイム(実行時)の挙動が型情報に依存しないため、TypeScriptの持つ役割はあくまで静的なチェックのみ。</p>
 <p><code>ランタイム(実行時)の挙動が型情報に依存しない</code>具体例</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">function double(value: number) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    console.log(value * 2);</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">function double(value: string) {</span></span>
-<span class="line"><span style="color: #e1e4e8">    console.log(value.repeat(2));</span></span>
-<span class="line"><span style="color: #e1e4e8">}</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">double(123);</span></span>
-<span class="line"><span style="color: #e1e4e8">double("hello");</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>function double(value: number) {</span></span>
+<span class="line"><span>    console.log(value * 2);</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>function double(value: string) {</span></span>
+<span class="line"><span>    console.log(value.repeat(2));</span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>double(123);</span></span>
+<span class="line"><span>double("hello");</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>上記の様に、同名関数で引数の取る型が違うものを定義できるプログラミング言語が存在する。<br>
 が、TypeScriptでは実行時の挙動は型情報に依存しないため、この機能は存在しない。あくまでTypeScriptはJavaScriptの拡張という立ち位置なので、役割を型チェックに絞ってランタイムの挙動はJavaScriptに従うという思想。　　</p>
 <h3 id="トランスパイル">トランスパイル</h3>
@@ -86,31 +90,35 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 TypeScriptで欠かせない要素が<code>リテラル</code>という概念。<br>
 リテラルとは、何らかの値を生み出すための式のこと。</p>
 <p>数値リテラルとは、以下の<code>5</code>のようなもの</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const value = 5;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const value = 5;</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>他にも2進数や8進数、16進数のリテラルが良く使われる。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const binary = 0b1010; // 2進数リテラル</span></span>
-<span class="line"><span style="color: #e1e4e8">const octal = 0o755; // 8進数リテラル</span></span>
-<span class="line"><span style="color: #e1e4e8">const hexadecimal = 0xff; // 16進数リテラル</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">// 指数表記もリテラルが存在する</span></span>
-<span class="line"><span style="color: #e1e4e8">const big = 1e8;</span></span>
-<span class="line"><span style="color: #e1e4e8">const small = 4e-5;</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const binary = 0b1010; // 2進数リテラル</span></span>
+<span class="line"><span>const octal = 0o755; // 8進数リテラル</span></span>
+<span class="line"><span>const hexadecimal = 0xff; // 16進数リテラル</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// 指数表記もリテラルが存在する</span></span>
+<span class="line"><span>const big = 1e8;</span></span>
+<span class="line"><span>const small = 4e-5;</span></span>
+<span class="line"><span></span></span></code></pre>
 <h3 id="文字列string型">文字列(string)型</h3>
 <p>文字列リテラルにはダブルクォートとシングルクォートの２種類の書き方があるが、機能上の違いはない。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const str1: string = 'Hello,world!';</span></span>
-<span class="line"><span style="color: #e1e4e8">const str2 = "Hello,world!";</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span></span></span>
+<span class="line"><span>const str1: string = 'Hello,world!';</span></span>
+<span class="line"><span>const str2 = "Hello,world!";</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span></span></span></code></pre>
 <p>加えて、<code>テンプレートリテラル</code>ろいうリテラルも存在する。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const message: string = `Hello</span></span>
-<span class="line"><span style="color: #e1e4e8">world!`</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const str1: string = "Hello";</span></span>
-<span class="line"><span style="color: #e1e4e8">const str2: string = "world!";</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(`${str1},${str2}`); // "Hello,world!と表示"</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span></span></span>
+<span class="line"><span>const message: string = `Hello</span></span>
+<span class="line"><span>world!`</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const str1: string = "Hello";</span></span>
+<span class="line"><span>const str2: string = "world!";</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>console.log(`${str1},${str2}`); // "Hello,world!と表示"</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span></span></span></code></pre>
 <p>普通の文字列リテラルとの違いは、</p>
 <ul>
 <li>リテラル中で改行が可能である</li>
@@ -118,83 +126,92 @@ TypeScriptで欠かせない要素が<code>リテラル</code>という概念。
 </ul>
 <h3 id="真偽値boolean型">真偽値(boolean)型</h3>
 <p>trueとfalseの２つの値からなる型。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const no: boolean = false;</span></span>
-<span class="line"><span style="color: #e1e4e8">const yes: boolean = true;</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(yes, no); // true falseと表示される</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const no: boolean = false;</span></span>
+<span class="line"><span>const yes: boolean = true;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>console.log(yes, no); // true falseと表示される</span></span>
+<span class="line"><span></span></span></code></pre>
 <h2 id="オブジェクトとは">オブジェクトとは</h2>
 <p>TypeScriptにおけるオブジェクトは必ずしもクラスに由来するものではない。<br>
 Java等の言語ではクラスとオブジェクトは切っても切り離せない関係にあるので、クラスに触れずにオブジェクトの話ができるTypeScriptはすこしギャップがある。</p>
 <h3 id="オブジェクトは連想配列である">オブジェクトは<strong>連想配列</strong>である</h3>
 <p>オブジェクトはいくつかの値をまとめたデータである。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const obj = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    foo: 123,</span></span>
-<span class="line"><span style="color: #e1e4e8">    bar: "Hello,world!"</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(obj.foo);</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(obj.bar);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const obj = {</span></span>
+<span class="line"><span>    foo: 123,</span></span>
+<span class="line"><span>    bar: "Hello,world!"</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>console.log(obj.foo);</span></span>
+<span class="line"><span>console.log(obj.bar);</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>変数<code>obj</code>に代入されている{}を<code>オブジェクトリテラル</code>と呼ぶ。<br>
 また、<code>:</code>の後ろには固定された数値や文字列を書くだけでなく、変数の値を用いたり、プロパティの値を直接計算したりすることができる。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const user = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: input ? input : "名無し",</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: 20,</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const user = {</span></span>
+<span class="line"><span>    name: input ? input : "名無し",</span></span>
+<span class="line"><span>    age: 20,</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>オブジェクトリテラルは、<code>プロパティ名: 変数名</code>という形の場合、かつプロパティ名と変数名が同じである場合は省略記法を使用することができる。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const name = input ? input: "名無し";</span></span>
-<span class="line"><span style="color: #e1e4e8">const user = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: name,</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: 20,</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span></code></pre>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const name = input ? input: "名無し";</span></span>
-<span class="line"><span style="color: #e1e4e8">const user = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name,</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: 20,</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const name = input ? input: "名無し";</span></span>
+<span class="line"><span>const user = {</span></span>
+<span class="line"><span>    name: name,</span></span>
+<span class="line"><span>    age: 20,</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const name = input ? input: "名無し";</span></span>
+<span class="line"><span>const user = {</span></span>
+<span class="line"><span>    name,</span></span>
+<span class="line"><span>    age: 20,</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span></span></span></code></pre>
 <h3 id="オブジェクトに対するconstの制限について">オブジェクトに対するconstの制限について</h3>
 <p>constで宣言された変数に再代入することはできないが、オブジェクトのプロパティの書き換えはconstによって制限されない。</p>
 <p>次の例のように、constで宣言された変数自体に別のオブジェクトを再代入する場合はエラーが発生する。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const user = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: "hoge",</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: 25,</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">const user = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    name: "fuga",</span></span>
-<span class="line"><span style="color: #e1e4e8">    age: 15,</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const user = {</span></span>
+<span class="line"><span>    name: "hoge",</span></span>
+<span class="line"><span>    age: 25,</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>const user = {</span></span>
+<span class="line"><span>    name: "fuga",</span></span>
+<span class="line"><span>    age: 15,</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span></span></span></code></pre>
 <h3 id="スプレッド構文">スプレッド構文</h3>
 <p>オブジェクトリテラル中では<code>スプレッド構文</code>を使用することができる。</p>
 <p>オブジェクトの作成時にプロパティを別のオブジェクトからコピーする事ができる。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const obj1 = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    bar: 456,</span></span>
-<span class="line"><span style="color: #e1e4e8">    baz: 789</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span>
-<span class="line"><span style="color: #e1e4e8">const obj2 = {</span></span>
-<span class="line"><span style="color: #e1e4e8">    foo: 123,</span></span>
-<span class="line"><span style="color: #e1e4e8">    ...obj1</span></span>
-<span class="line"><span style="color: #e1e4e8">};</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">// obj2 = {foo: 123, bar: 456, baz: 789}</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(obj2);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const obj1 = {</span></span>
+<span class="line"><span>    bar: 456,</span></span>
+<span class="line"><span>    baz: 789</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span>const obj2 = {</span></span>
+<span class="line"><span>    foo: 123,</span></span>
+<span class="line"><span>    ...obj1</span></span>
+<span class="line"><span>};</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// obj2 = {foo: 123, bar: 456, baz: 789}</span></span>
+<span class="line"><span>console.log(obj2);</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>既存のオブジェクトを拡張した別のオブジェクトを作りたい場合に有用。あくまでコピーなので、コピー元のオブジェクトのプロパティを変更してもコピー先には影響しない。</p>
 <h3 id="オブジェクトの等価性">オブジェクトの等価性</h3>
 <p>TypeScriptではオブジェクトが暗黙にコピーされることはなく、複数の変数に同じオブジェクトが入る場合が存在する。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const foo = { num: 1234 };</span></span>
-<span class="line"><span style="color: #e1e4e8">const bar = foo;</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(bar.num); // 1234</span></span>
-<span class="line"><span style="color: #e1e4e8"></span></span>
-<span class="line"><span style="color: #e1e4e8">bar.num = 0;</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(foo.num); // 0</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const foo = { num: 1234 };</span></span>
+<span class="line"><span>const bar = foo;</span></span>
+<span class="line"><span>console.log(bar.num); // 1234</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>bar.num = 0;</span></span>
+<span class="line"><span>console.log(foo.num); // 0</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>上記の例では、変数<code>foo</code>と<code>bar</code>には同じオブジェクトが入っている。<br>
 変数がそのオブジェクトの実体を専有しているとは限らず、他の場所で書き換えられる可能性がある。</p>
 <p>下記の様に、明示的にオブジェクトをコピーすることで別のオブジェクトとして扱う事ができる。
 1つめの方法がスプレッド構文を使用して次のように書く。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #e1e4e8">const foo = { num: 1234 };</span></span>
-<span class="line"><span style="color: #e1e4e8">const bar = { ...foo };</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(bar.num); // 1234</span></span>
-<span class="line"><span style="color: #e1e4e8">bar.num = 0;</span></span>
-<span class="line"><span style="color: #e1e4e8">console.log(foo.num); // 1234(書き換えられていない)</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>const foo = { num: 1234 };</span></span>
+<span class="line"><span>const bar = { ...foo };</span></span>
+<span class="line"><span>console.log(bar.num); // 1234</span></span>
+<span class="line"><span>bar.num = 0;</span></span>
+<span class="line"><span>console.log(foo.num); // 1234(書き換えられていない)</span></span>
+<span class="line"><span></span></span></code></pre>
 <p>ただし、オブジェクトのプロパティの中に更にネストしてオブジェクトが入っている場合は同じオブジェクトのままなので注意が必要。</p>
 <p>また、オブジェクトの比較には<code>===</code>を使用することができる。<br>
 1つ目の例のように同じオブジェクトの場合はtrueとなり、２つ目の例のように中身が同じでも別々のオブジェクトの場合はfalseになる。</p>
@@ -202,4 +219,4 @@ Java等の言語ではクラスとオブジェクトは切っても切り離せ�
 <p>今回は名前と概要しか知らなかったTypeScriptに入門してみる記事でした。<br>
 いざ勉強し始めるとその大部分はJavaScriptと同じことがわかってきて、よりハードルが下がった気がします。<br>
 次回以降、TypeScriptならではの型について勉強していきたいと思います。<br>
-また、実際にJavaScriptと比較してメリットを実感するために個人開発にも積極的に導入していこうと思います。</p></div></div><div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
+また、実際にJavaScriptと比較してメリットを実感するために個人開発にも積極的に導入していこうと思います。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>

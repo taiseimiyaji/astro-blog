@@ -80,4 +80,9 @@ img {
   margin-right: 0.5rem;
 }
 
-
+pre.astro-code.github-dark {
+  background-color: #2d333b !important;
+  overflow-x: auto; /* 横スクロール */
+  padding: 1rem; /* パディング */
+  border-radius: 0.2rem; /* 角丸 */
+}

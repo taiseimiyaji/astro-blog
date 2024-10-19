@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ja"><head><title>linuxの基本的なコマンドを復習する</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+<!DOCTYPE html><html lang="ja"> <head><title>linuxの基本的なコマンドを復習する</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
 ## はじめに
 
 前回の記事でLinuxの簡単な操作について復習しました。
@@ -7,15 +7,16 @@
 
 ## ls
 
-`ファイルやディレクトリを一覧表示"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+`ファイルやディレクトリを一覧表示"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
 </style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head><!-- Google tag (gtag.js) --><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2023/08/26</div><h1>linuxの基本的なコマンドを復習する</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2023/08/26</div> <h1>linuxの基本的なコマンドを復習する</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>前回の記事でLinuxの簡単な操作について復習しました。</p>
 <p>今回はよく使うコマンドについてオプション等を含めて再確認しながら、知らない部分をキャッチアップしていきます。</p>
 <h2 id="ls">ls</h2>
 <p><code>ファイルやディレクトリを一覧表示する</code></p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">ls</span><span style="color: #E1E4E8"> [ディレクトリまたはファイル]</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">ls</span><span style="color:#E1E4E8"> [ディレクトリまたはファイル]</span></span>
+<span class="line"></span></code></pre>
 <p>のような形で指定します。</p>
 <ul>
 <li>ディレクトリを引数にした場合はそのディレクトリの中に含まれるファイルやディレクトリを表示</li>
@@ -72,36 +73,46 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <p>ここまででディレクトリの中でのファイルの確認や移動ができるようになりました。</p>
 <h2 id="mkdir">mkdir</h2>
 <p><code>ディレクトリを作成する</code></p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">mkdir</span><span style="color: #E1E4E8"> [オプション] </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">作成するディレクトリ名</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">mkdir</span><span style="color:#E1E4E8"> [オプション] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">作成するディレクトリ名</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <p>オプションとしてよく使用するのが<code>-p</code>オプションです。</p>
 <p>このオプションを使用することで再帰的に深いディレクトリを作成することができます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">mkdir</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">-p</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">dir1/dir2/dir3</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">mkdir</span><span style="color:#79B8FF"> -p</span><span style="color:#9ECBFF"> dir1/dir2/dir3</span></span>
+<span class="line"></span></code></pre>
 <p>dir1,dir2といったフォルダが存在しない場合、オプションなしではエラーとなりますが、<code>-p</code>オプションを付けることで一緒に作成してくれます</p>
 <h2 id="touch">touch</h2>
 <p><code>ファイルを作成する</code></p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">touch</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #9ECBFF">新しいファイル名</span><span style="color: #F97583">1></span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #9ECBFF">新しいファイル名</span><span style="color: #F97583">2></span><span style="color: #9ECBFF">...</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">touch</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">新しいファイル名</span><span style="color:#F97583">1></span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">新しいファイル名</span><span style="color:#F97583">2></span><span style="color:#9ECBFF">...</span></span>
+<span class="line"></span></code></pre>
 <p>中身のない空のファイルが作成されます。</p>
 <p><code>touch</code>コマンドがどうしてtouchという単語なのか知らなかったんですが、本来はファイルのタイムスタンプを更新するためのコマンドということでした。</p>
 <p>なお、<code>touch</code>コマンドを使用してのファイル作成では、既存のファイル名を指定しても、内容が上書きされたり削除されたりしないため、安全にファイルを作成することができます。</p>
 <h2 id="rm">rm</h2>
 <p><code>ファイルやディレクトリを削除する</code></p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">rm</span><span style="color: #E1E4E8"> [オプション] </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">削除するファイル名</span><span style="color: #F97583">1></span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">削除するファイル名</span><span style="color: #F97583">2></span><span style="color: #E1E4E8">...</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">rm</span><span style="color:#E1E4E8"> [オプション] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">削除するファイル名</span><span style="color:#F97583">1></span><span style="color:#F97583"> &#x3C;</span><span style="color:#E1E4E8">削除するファイル名</span><span style="color:#F97583">2></span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span></code></pre>
 <p><code>-r</code>オプションを付けることでディレクトリを削除することができます。<br>
 この際、削除対象ディレクトリの中のファイルやディレクトリもまとめて削除されてしまうため注意が必要です。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">rm</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">-r</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">dir1</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">rm</span><span style="color:#79B8FF"> -r</span><span style="color:#9ECBFF"> dir1</span></span>
+<span class="line"></span></code></pre>
 <p>似たコマンドとして、<code>rmdir</code>コマンドがあります。こちらは空のディレクトリを削除します。<br>
 中にファイルがあるディレクトリを削除しようとした場合はエラーとなります。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">rmdir</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #9ECBFF">削除するディレクトリ</span><span style="color: #E1E4E8">名</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">rmdir</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">削除するディレクトリ</span><span style="color:#E1E4E8">名</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <p><code>-f</code>オプションを付けることで削除の確認を行わずに削除することができます。指定したファイルが存在しない場合でも警告を出力しません。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">rm</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">-rf</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">dir1</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">rm</span><span style="color:#79B8FF"> -rf</span><span style="color:#9ECBFF"> dir1</span></span>
+<span class="line"></span></code></pre>
 <p>空のディレクトリを削除する場合に、<code>rmdir</code>というコマンドも使用することができます。</p>
 <p><code>-i</code>オプションを付けることでファイルを削除する際に確認することができます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">rm</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">-i</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">file1</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">rm</span><span style="color:#79B8FF"> -i</span><span style="color:#9ECBFF"> file1</span></span>
+<span class="line"></span></code></pre>
 <h2 id="cat">cat</h2>
 <p><code>ファイルの内容を表示する</code></p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">cat</span><span style="color: #E1E4E8"> [オプション] </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">ファイル名</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">cat</span><span style="color:#E1E4E8"> [オプション] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">ファイル名</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <p><code>-n</code>オプションを付けることで行番号を表示することができます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">cat</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">-n</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">file1</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">cat</span><span style="color:#79B8FF"> -n</span><span style="color:#9ECBFF"> file1</span></span>
+<span class="line"></span></code></pre>
 <h2 id="less">less</h2>
 <p><code>ファイルの内容を表示する</code></p>
 <p>catコマンドは単にファイルの内容をそのまま表示しますが、表示したいファイルの行数が多い場合は1画面に収まりきらなくなります。<br>
@@ -109,7 +120,8 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 lessコマンドはファイルの内容を1画面ずつ表示し、スペースキーを押すことで次の画面を表示します。<br>
 bキーで前の画面を表示することもできます。
 qキーでlessコマンドを終了します。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">less</span><span style="color: #E1E4E8"> [オプション] </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">ファイル名</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">less</span><span style="color:#E1E4E8"> [オプション] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">ファイル名</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <p>lessコマンドで開いているファイルから文字列を検索することもできます。</p>
 <p>ファイルを表示中に<code>/</code>を押すと検索モードに入り、検索したい文字列を入力します。</p>
 <p>検索中の操作は以下の通りです。</p>
@@ -141,10 +153,12 @@ qキーでlessコマンドを終了します。</p>
 <table><thead><tr><th>コマンド</th><th>操作内容</th></tr></thead><tbody><tr><td>/&#x3C;文字列></td><td>下方向に向かって検索する</td></tr><tr><td>?&#x3C;文字列></td><td>上方向に向かって検索する</td></tr><tr><td>n</td><td>次の検索結果に移動する</td></tr><tr><td>N</td><td>前の検索結果に移動する</td></tr></tbody></table>
 <h2 id="cp">cp</h2>
 <p><code>ファイルやディレクトリをコピーする</code></p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">cp</span><span style="color: #E1E4E8"> [オプション] </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">コピー元ファイル名</span><span style="color: #F97583">></span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">コピー先ファイル名</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">cp</span><span style="color:#E1E4E8"> [オプション] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">コピー元ファイル名</span><span style="color:#F97583">></span><span style="color:#F97583"> &#x3C;</span><span style="color:#E1E4E8">コピー先ファイル名</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <p>コピー先にディレクトリを指定した場合にはコピー元のファイルをそのディレクトリ内に同一ファイル名でコピーします。<br>
 ディレクトリ内にファイルをコピーする場合には複数のファイルをまとめて指定することができます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">cp</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">file1</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">file2</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">file3</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">dir1</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">cp</span><span style="color:#9ECBFF"> file1</span><span style="color:#9ECBFF"> file2</span><span style="color:#9ECBFF"> file3</span><span style="color:#9ECBFF"> dir1</span></span>
+<span class="line"></span></code></pre>
 <p>上記のようなコマンドでdir1内にfile1,file2,file3がコピーされます。</p>
 <p><code>-r</code>オプションを付けることでディレクトリをコピーすることができます。</p>
 <p>cpコマンドを使用する場合はコピー先のファイルが既に存在している場合には上書きされてしまいます。</p>
@@ -152,12 +166,14 @@ qキーでlessコマンドを終了します。</p>
 <p>また、cpコマンドには<code>-i</code>オプションを付けることで上書きの確認を行うことができます。</p>
 <h2 id="mv">mv</h2>
 <p><code>ファイルやディレクトリを移動する</code></p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">mv</span><span style="color: #E1E4E8"> [オプション] </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">移動元ファイル名</span><span style="color: #F97583">></span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">移動先ファイル名</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">mv</span><span style="color:#E1E4E8"> [オプション] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">移動元ファイル名</span><span style="color:#F97583">></span><span style="color:#F97583"> &#x3C;</span><span style="color:#E1E4E8">移動先ファイル名</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <p>cpコマンドと似た使い方ができますが、cpコマンドと違い移動元のファイルは削除されます。</p>
 <p><code>-i</code>オプションを付けることで移動先に同名のファイルが存在する場合には上書きの確認を行うことができます。</p>
 <h2 id="ln">ln</h2>
 <p><code>ファイルやディレクトリのリンクを作成する</code></p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">ln</span><span style="color: #E1E4E8"> [オプション] </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">リンク元ファイル名</span><span style="color: #F97583">></span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #E1E4E8">リンク先ファイル名</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">ln</span><span style="color:#E1E4E8"> [オプション] </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8">リンク元ファイル名</span><span style="color:#F97583">></span><span style="color:#F97583"> &#x3C;</span><span style="color:#E1E4E8">リンク先ファイル名</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <h3 id="リンクとは">リンクとは</h3>
 <p>Linuxのファイルシステムでは、ファイルに別名を付けることができます。</p>
 <ul>
@@ -171,9 +187,11 @@ qキーでlessコマンドを終了します。</p>
 <p>シンボリックリンクが残っている状態でファイルを削除した場合はリンクが壊れた状態でリンクのみが残ります。</p>
 <h2 id="find">find</h2>
 <p><code>ファイルを検索する</code></p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">find</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #9ECBFF">検索対象ディレクト</span><span style="color: #E1E4E8">リ</span><span style="color: #F97583">></span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #9ECBFF">検索条</span><span style="color: #E1E4E8">件</span><span style="color: #F97583">></span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #9ECBFF">アクショ</span><span style="color: #E1E4E8">ン</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">find</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">検索対象ディレクト</span><span style="color:#E1E4E8">リ</span><span style="color:#F97583">></span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">検索条</span><span style="color:#E1E4E8">件</span><span style="color:#F97583">></span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">アクショ</span><span style="color:#E1E4E8">ン</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <p>&#x3C;検索対象ディレクトリ>を起点として、&#x3C;検索条件>を満たすファイルを検索し、&#x3C;アクション>を実行します。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">find</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">.</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">-name</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">file1.txt</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">-print</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">find</span><span style="color:#9ECBFF"> .</span><span style="color:#79B8FF"> -name</span><span style="color:#9ECBFF"> file1.txt</span><span style="color:#79B8FF"> -print</span></span>
+<span class="line"></span></code></pre>
 <p>例として、このようなコマンドを実行すると、「.」を起点として「file1.txt」というファイルを検索してそのパスを表示します。</p>
 <p>findコマンドではディレクトリツリーの中を再帰的に検索するため、ディレクトリを指定するとそのディレクトリ以下のすべてのファイルを検索します。</p>
 <p>検索条件としてよく使われるものには以下のようなものがあります。</p>
@@ -204,11 +222,13 @@ qキーでlessコマンドを終了します。</p>
 <p>ここまで、コマンドの使い方を復習しましたが、Linux自体にも使い方の説明が用意されています。</p>
 <p>多くのLinuxコマンドでは<code>--help</code>オプションを使用することでコマンド自身のヘルプメッセージを表示します。</p>
 <p>また、<code>man</code>コマンドというコマンドでマニュアルを表示することもできます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">man</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #9ECBFF">調べたいコマンド</span><span style="color: #E1E4E8">名</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">man</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">調べたいコマンド</span><span style="color:#E1E4E8">名</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <p>コマンド名がわからない場合は<code>-k</code>オプションを利用してキーワード検索ができます。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #B392F0">man</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">-k</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">&#x3C;</span><span style="color: #9ECBFF">キーワー</span><span style="color: #E1E4E8">ド</span><span style="color: #F97583">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">man</span><span style="color:#79B8FF"> -k</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">キーワー</span><span style="color:#E1E4E8">ド</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
 <p>ここまで復習して、知っているコマンドも多かったですが、知らないコマンドやオプションもありました。</p>
 <p>よく使うコマンドなだけにオプション一つ覚えると業務ですぐに使えそうな知識が多かったです。manコマンドや—helpオプションをあまり利用したことがなかったので、検索する前にまずは使用してみたいと思います。</p>
 <h2 id="参考">参考</h2>
 <p><a href="https://www.sbcr.jp/product/4797380941/">新しいLinuxの教科書</a></p>
-<p><a href="https://www.shuwasystem.co.jp/book/9784798046143.html">プリンシプル オブ プログラミング</a></p></div></div><div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
+<p><a href="https://www.shuwasystem.co.jp/book/9784798046143.html">プリンシプル オブ プログラミング</a></p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
