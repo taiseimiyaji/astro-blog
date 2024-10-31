@@ -1,0 +1,369 @@
+<!DOCTYPE html><html lang="ja"> <head><title>2024年にReactを学ぶ人のための資料</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+2024年現在、WebフロントエンドはReactが主流となっています。  
+LaravelやRuby on Railsのようなフルスタックフレームワークの流行を過ぎ、バックエンドとフロントエンドを分離することが一般的にな"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2024/10/31</div> <h1>2024年にReactを学ぶ人のための資料</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>2024年現在、WebフロントエンドはReactが主流となっています。<br>
+LaravelやRuby on Railsのようなフルスタックフレームワークの流行を過ぎ、バックエンドとフロントエンドを分離することが一般的になりました。<br>
+今回は、すでにjQueryやLaravel、Ruby on Railsなどを触ったことがある人を対象に、Reactを学ぶための資料をまとめてみました。<br>
+個人的に今のフロントエンドの流行を押さえつつ、プロダクトでの採用を考えた際に十分メリットを享受して採用できるレベルの技術を中心にまとめています。
+Reactに限らず採用できる技術についても軽く触れるので、フロントエンドやTypeScriptに興味がある人にも参考になるかと思います。</p>
+<p>Webフロントエンドの歴史については以前の記事で整理していますので、興味がある方は参考にしてください。</p>
+<p><a href="https://www.lyricrime.com/posts/frontend-history-2024/">フロントエンド入門 フロントエンドの歴史</a></p>
+<h2 id="reactとは">Reactとは</h2>
+<p>Facebookが開発したJavaScriptライブラリで、現在はオープンソースとして公開されています。<br>
+主にUIを構築するために使用され、コンポーネント指向のライブラリです。</p>
+<p>ほかにもVueやAngularなどのライブラリやフレームワークがありますが、Reactはその中でも特に人気が高いです。<br>
+背景としては、Reactはリリースされてからある程度の年月が経過しており、ある程度枯れているため、安定している点や、対抗ライブラリであるVueが2.0から3.0へのアップデートで大幅な変更があり、追従に疲弊した開発者がReactを選択したケースも多いです。</p>
+<p>個人的には、Vueも素晴らしい技術で、Reactと比較しても優れている点は多いと思います。<br>
+ただ、Reactとのコミュニティの方向性の違いとして、Vue.jsはメジャーバージョンアップで大幅に変更があり、過去の負債を抱えずに理想的な形で進化していくことを目指しているのに対し、Reactはバージョンアップでの大幅な変更は少なく、安定性を重視しているという違いがあります。</p>
+<p>技術としてはReactでできることは大抵Vueでもできるので、この記事のスタンスとしてはどちらの技術を採用すべきかという点には言及しません。</p>
+<p>参考: <a href="https://speakerdeck.com/recruitengineers/react-2023">React - 2023年度リクルート エンジニアコース新人研修の講義資料です</a></p>
+<h2 id="reactの特徴">Reactの特徴</h2>
+<h3 id="コンポーネント志向">コンポーネント志向</h3>
+<p>Reactはコンポーネント志向のライブラリです。
+コンポーネントはUIの独立した部品であり、再利用可能なコードブロックとして扱うことができます。
+これにより、複雑なUIを小さなパーツに分割し、管理しやすくなります。</p>
+<p>例: Buttonコンポーネント</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'react'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> Button</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">label</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">onClick</span><span style="color:#E1E4E8"> }) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{onClick}>{label}&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">>;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> Button;</span></span>
+<span class="line"></span></code></pre>
+<p>上記の例では、<code>Button</code>というコンポーネントを定義しています。<br>
+Reactでは、JSXという記法を使ってコンポーネントを記述します。これは、JavaScript + XMLの略で、HTMLのような記法でコンポーネントを記述することができます。</p>
+<p>2024現在のフロントエンドでは、TypeScriptを利用して開発することが主流となっており、JSXとTypeScriptを組み合わせてTSXという記法でコンポーネントを記述することが多いです。</p>
+<p>例: Buttonコンポーネント（TypeScript）</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'react'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> ButtonProps</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">  label</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">  onClick</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> Button</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">label</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">onClick</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ButtonProps</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"button"</span><span style="color:#B392F0"> onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{onClick}>{label}&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">>;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> Button;</span></span>
+<span class="line"></span></code></pre>
+<h3 id="データの流れ単方向データフロー">データの流れ(単方向データフロー)</h3>
+<p>Reactでは、ステート（state）とプロップス（props）という概念を使ってデータの流れを管理します。<br>
+ステート(State): コンポーネント内部で管理される動的なデータ。ユーザーの操作やAPIからのデータ取得など、変化するデータを管理します。
+プロップス(Props): 親コンポーネントから子コンポーネントに渡されるデータ。コンポーネント間でデータを受け渡すために使用します。</p>
+<p>Reactでは、Propsを利用して上位の親コンポーネントが下位の子コンポーネントにデータを渡すのが基本的なデータの流れです。</p>
+<p>単方向データフローと useStateを組み合わせてみましょう。
+useState フックを使ってコンポーネントの状態（state）を管理すると、その状態は変更が必要な特定のコンポーネント内にのみ存在します。状態を持っているコンポーネントが、そのデータを他のコンポーネントに渡すには props を使用します。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useState } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'react'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 子コンポーネント: 表示とボタンを含む</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> CounterDisplayProps</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">  count</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> number</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">  increment</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> CounterDisplay</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">count</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">increment</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#B392F0"> CounterDisplayProps</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">>カウント: {count}&#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"button"</span><span style="color:#B392F0"> onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{increment}></span></span>
+<span class="line"><span style="color:#E1E4E8">        インクリメント</span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 親コンポーネント: 状態を管理し、子コンポーネントに渡す</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> CounterContainer</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">count</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setCount</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 子コンポーネントに渡す関数</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> incrementCount</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#B392F0"> setCount</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">prevCount</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> prevCount </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#79B8FF">CounterDisplay</span><span style="color:#B392F0"> count</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{count} </span><span style="color:#B392F0">increment</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{incrementCount} />;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> CounterContainer;</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre>
+<p>親コンポーネント (CounterContainer) が状態 (count) を管理します。この状態は useState フックを使って定義されています。</p>
+<p>親コンポーネントは状態を子コンポーネントにpropsを通して渡します。この例では、count と increment 関数が CounterDisplay に props として渡されています。</p>
+<p>子コンポーネント (CounterDisplay) は渡された count を表示し、increment ボタンのクリックイベントに対応します。このように、状態管理を親コンポーネントに任せることで、子コンポーネントは「状態の表示」と「クリックイベントのハンドリング」という役割に専念できます。</p>
+<p>この単方向データフローを利用することで、データの流れがシンプルになり、加えて親コンポーネントがデータを管理し、子コンポーネントがそれを表示するという役割分担が明確になります。このようなパターンは、デザインパターンとしてPresentational and Containerと名前がつけられています。</p>
+<h3 id="宣言的ui">宣言的UI</h3>
+<p>Reactは宣言的UIを採用しています。これは、「UIがどうあるべきか」を宣言することで、状態の変化に応じてUIが自動的に更新される仕組みです。
+jQueryなどの命令型のUIライブラリ(手動でDOMを操作する方法)と比べて以下のメリットがあります。</p>
+<ul>
+<li>可読性の向上: コンポーネントがどのように見えるかを宣言するため、コードが直感的になります。</li>
+<li>保守性の向上: 状態管理が一元化され、バグの発生を抑えることができます。</li>
+<li>再利用性の向上: コンポーネント志向とも被りますが、コンポーネントを再利用することが容易になります。</li>
+</ul>
+<p>このブログ内でも記事を作成していますので参考にしてください。</p>
+<p><a href="https://www.lyricrime.com/posts/declarative-ui/">フロントエンド入門 宣言的UIと命令的UI</a></p>
+<h2 id="reactを取り巻くエコシステム">Reactを取り巻くエコシステム</h2>
+<p>Reactはリリースから十分な時間が経ち、エコシステムも充実しています。<br>
+以下にReactを取り巻く主なライブラリやツールのなかで、個人的なおすすめを紹介します。</p>
+<h3 id="swr">SWR</h3>
+<p>SWRは先述したNext.jsの開発元であるVercelが開発したデータフェッチングライブラリです。<br>
+キャッシュ、リフェッチ、再取得などの機能を提供し、React Queryと並んで人気のあるライブラリです。<br>
+React Queryとの違いは、よりシンプルなAPIと、データ取得に特化している点でしょうか。</p>
+<p>基本的な考え方はHTTPのキャッシュ戦略であるStale-While-Revalidateを採用しており、キャッシュが古い場合に古いデータを返しつつ、バックグラウンドで新しいデータを取得し、新しいデータが取得できたら古いデータを新しいデータに置き換えるというものです。</p>
+<p>基本的な使い方</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> useSWR </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'swr'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> User</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">  id</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> number</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  name</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> fetcher</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">url</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Promise</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">User</span><span style="color:#E1E4E8">[]> </span><span style="color:#F97583">=></span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(url).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> res.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> UserList</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">data</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">error</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useSWR</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">User</span><span style="color:#E1E4E8">[]>(</span><span style="color:#9ECBFF">'/api/users'</span><span style="color:#E1E4E8">, fetcher);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (error) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#B392F0">div</span><span style="color:#E1E4E8">>Failed to load</span><span style="color:#F97583">&#x3C;/</span><span style="color:#E1E4E8">div</span><span style="color:#F97583">></span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">data) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#B392F0">div</span><span style="color:#E1E4E8">>Loading</span><span style="color:#F97583">...&#x3C;/</span><span style="color:#E1E4E8">div</span><span style="color:#F97583">></span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#B392F0">ul</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span><span style="color:#FFAB70">data</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">map</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">user</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#F97583">        &#x3C;</span><span style="color:#E1E4E8">li key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{user.id}</span><span style="color:#F97583">></span><span style="color:#E1E4E8">{user.name}</span><span style="color:#F97583">&#x3C;/</span><span style="color:#E1E4E8">li</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#E1E4E8">      ))}</span></span>
+<span class="line"><span style="color:#F97583">    &#x3C;/</span><span style="color:#E1E4E8">ul</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> UserList;</span></span>
+<span class="line"></span></code></pre>
+<p>上記のように、<code>useSWR</code>フックを使用してデータ取得を行います。<code>useSWR</code>は第一引数として、キーを指定します。一般的にはURLのようなかたちでキーを指定することが多いですが、エンドポイントと直接関係はなく、あくまで一意なキーとして扱われます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">data</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">error</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useSWR</span><span style="color:#E1E4E8">(userId </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> `/api/users/${</span><span style="color:#E1E4E8">userId</span><span style="color:#9ECBFF">}`</span><span style="color:#F97583"> :</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">, fetcher);</span></span>
+<span class="line"></span></code></pre>
+<p>のように動的なキーを指定することもできます。</p>
+<p>useSWRからはデータの状態である<code>data</code>とエラーの状態である<code>error</code>を取得することができます。</p>
+<h3 id="zod">Zod</h3>
+<p>Zodはスキーマベースの型バリデーションライブラリで、TypeScriptとシームレスに統合できます。<br>
+Zodを利用すると、オブジェクトや配列に対して、型チェックとバリデーションを同時に行うことができます。</p>
+<p>特にバックエンドでTypeScriptを利用するような場合にサーバーとクライアントのデータチェックを統一できるのが特徴で、バックエンドとフロントエンドの整合性を保つ際に便利です。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { z } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'zod'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> userSchema</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> z.</span><span style="color:#B392F0">object</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: z.</span><span style="color:#B392F0">string</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">min</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"名前は必須です"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  email: z.</span><span style="color:#B392F0">string</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">email</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"有効なメールアドレスを入力してください"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> userSchema.</span><span style="color:#B392F0">safeParse</span><span style="color:#E1E4E8">({ name: </span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">, email: </span><span style="color:#9ECBFF">"invalid-email"</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">result.success) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(result.error.errors);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<p>上記の例では、<code>userSchema</code>というスキーマを定義し、<code>name</code>と<code>email</code>を持っています。<br>
+nameは1文字以上であること、emailは有効なメールアドレスであることをバリデーションしています。</p>
+<p><code>safeParse</code>メソッドを使うことで、バリデーションを行い、エラーがある場合はエラーメッセージを取得することができます。</p>
+<ul>
+<li>resultにはsuccessプロパティが含まれ、バリデーションが成功したかどうかを示します。</li>
+<li>result.successがfalseの場合、バリデーションエラーが発生していることを意味します。</li>
+<li>result.error.errorsにはエラー内容が格納されており、どのフィールドがどのような理由で不正であるかが詳細に記述されています。</li>
+</ul>
+<p>また、このparseに成功した時点で、スキーマから生成される型に対して推論が効くため、レスポンス等をバリデーションしつつ型付けを行うことができます。</p>
+<h3 id="react-hook-form">React Hook Form</h3>
+<p>Reactでフォームを簡単に管理できるライブラリとして、React Hook Formがあります。<br>
+シンプルで、パフォーマンスも良いため、Reactでフォームを扱う際にはおすすめです。</p>
+<p>React Hook Formでは、useFormという関数を使用してフォームの状態やバリデーションを管理します。</p>
+<p>また、先に紹介したZodと組み合わせることで、フォームのバリデーションを型安全に行うことができます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useForm } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'react-hook-form'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { zodResolver } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@hookform/resolvers/zod'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> userSchema</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> z.</span><span style="color:#B392F0">object</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: z.</span><span style="color:#B392F0">string</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">min</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"名前は必須です"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  email: z.</span><span style="color:#B392F0">string</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">email</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"有効なメールアドレスを入力してください"</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> UserFormInputs</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> z</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">infer</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> userSchema>;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> UserForm</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">register</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">handleSubmit</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">formState</span><span style="color:#E1E4E8">: { </span><span style="color:#79B8FF">errors</span><span style="color:#E1E4E8"> } } </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useForm</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">UserFormInputs</span><span style="color:#E1E4E8">>({</span></span>
+<span class="line"><span style="color:#E1E4E8">    resolver: </span><span style="color:#B392F0">zodResolver</span><span style="color:#E1E4E8">(userSchema),</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> onSubmit</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">data</span><span style="color:#F97583">:</span><span style="color:#B392F0"> UserFormInputs</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(data);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#F97583">    &#x3C;</span><span style="color:#E1E4E8">form onSubmit</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#B392F0">handleSubmit</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">onSubmit</span><span style="color:#E1E4E8">)}</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">      &#x3C;</span><span style="color:#E1E4E8">input {</span><span style="color:#F97583">...</span><span style="color:#FFAB70">register</span><span style="color:#E1E4E8">("</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">")} </span><span style="color:#F97583">/></span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span><span style="color:#FFAB70">errors</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8"> &#x26;&#x26; &#x3C;</span><span style="color:#FFAB70">span</span><span style="color:#E1E4E8">>{</span><span style="color:#FFAB70">errors</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">message</span><span style="color:#E1E4E8">}&#x3C;/</span><span style="color:#FFAB70">span</span><span style="color:#E1E4E8">>}</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span></span>
+<span class="line"><span style="color:#F97583">      &#x3C;</span><span style="color:#E1E4E8">input {</span><span style="color:#F97583">...</span><span style="color:#FFAB70">register</span><span style="color:#E1E4E8">("</span><span style="color:#FFAB70">email</span><span style="color:#E1E4E8">")} </span><span style="color:#F97583">/></span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span><span style="color:#FFAB70">errors</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">email</span><span style="color:#E1E4E8"> &#x26;&#x26; &#x3C;</span><span style="color:#FFAB70">span</span><span style="color:#E1E4E8">>{</span><span style="color:#FFAB70">errors</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">email</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">message</span><span style="color:#E1E4E8">}&#x3C;/</span><span style="color:#FFAB70">span</span><span style="color:#E1E4E8">>}</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span></span>
+<span class="line"><span style="color:#F97583">      &#x3C;</span><span style="color:#E1E4E8">button type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"submit"</span><span style="color:#F97583">></span><span style="color:#E1E4E8">Submit</span><span style="color:#F97583">&#x3C;/</span><span style="color:#E1E4E8">button</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">    &#x3C;/</span><span style="color:#E1E4E8">form</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<ol>
+<li>バリデーション: 上記の例だと、zodで定義したスキーマをresolverに指定しています。これでzodのスキーマがフォームに適用されます。</li>
+<li>register: フォームの入力フィールドを<code>&#x3C;input {...register("name")} /></code>のように登録します。これにより、フォームの状態が管理されます。</li>
+<li>エラーメッセージの表示: バリデーションに失敗した場合、エラー情報がformState.errorsに格納されます。たとえば、nameフィールドが空の場合、errors.nameにエラーが設定され、そのエラーメッセージが{errors.name.message}に表示されます。</li>
+<li>handleSubmitは、フォームの送信時にバリデーションを実行し、エラーがなければonSubmit関数にデータを渡します。</li>
+</ol>
+<p>その他の特徴としては、React Hook Formは入力ごとに際レンダリングを行わないので、愚直なReactでのフォーム管理よりもパフォーマンスが向上します。</p>
+<h2 id="フレームワーク">フレームワーク</h2>
+<p>Reactを利用する際には、フレームワークと合わせて利用することをおすすめします。</p>
+<h3 id="nextjsとの組み合わせ">Next.jsとの組み合わせ</h3>
+<p>Next.jsはReactをベースにしたフレームワークで、サーバーサイドレンダリング（SSR）、静的サイト生成（SSG）、APIルートのサポートなどの機能を持ちます。</p>
+<p>Next.jsはフルスタックフレームワークではありますが、バックエンドとフロントエンドを分離することができるため、バックエンドにLaravelやRuby on Railsといった従来のREST APIを使うこともできます。</p>
+<p>主な特徴</p>
+<ul>
+<li>ファイルベースのルーティング: pagesディレクトリに配置したファイルが自動的にルートとして認識されます。</li>
+<li>データフェッチング: getServerSidePropsやgetStaticPropsを使用して、サーバーサイドでデータを取得できます。</li>
+<li>APIルート: pages/apiディレクトリ内にAPIエンドポイントを簡単に作成できます。</li>
+</ul>
+<p><a href="https://nextjs.org/">Next.js公式ドキュメント</a></p>
+<p>この記事で説明するにはあまりにも広範囲なため、詳細は公式ドキュメントや他のブログ等を参照してください。</p>
+<p>個人的な主観としては、2024年時点でReactを使うフレームワークとしては最も人気があるかなと思います。<br>
+とはいえ、App Routerによるキャッシュ周りの複雑性やNext.js15での方向の転換などいくつか方向性が変わる可能性があるため、最新の情報を確認することをおすすめします。</p>
+<p>Next.jsを利用する場合は、Next.jsの思想に合わせていく覚悟が必要だと感じています。</p>
+<h3 id="remix">Remix</h3>
+<p>RemixはNext.jsと同じくReactをベースにしたフレームワークで、サーバーサイドレンダリング（SSR）、静的サイト生成（SSG）、APIルートのサポートなどの機能を持ちます。</p>
+<p>Next.jsに迫る勢いで人気が出てきているフレームワークで、Next.jsとは対象的に、Web標準API、つまりMDNに載っているAPIをほとんどラップせずに利用しているのが特徴です。<br>
+公式ドキュメントにも、「Web標準と最新のウェブアプリUXに焦点を当てる」というような記載があります。</p>
+<p>Remixで取り扱う概念のほとんどは、Webの歴史が作ってきた標準的な概念を利用しているため、フレームワーク独自の概念やAPIを覚える必要がなく、Webの知識がそのまま活かせるというメリットがあります。</p>
+<p>過去フレームワーク固有の仕組みに依存して、破壊的変更等によって疲弊した開発者にとっては、Remixは魅力的な選択肢となるかもしれません。</p>
+<ul>
+<li><a href="https://zenn.dev/acompany/articles/123c29f46d213c">Remix入門: フロントエンドもバックエンドも爆速開発を実現する次世代Webフレームワーク</a></li>
+<li><a href="https://remix.run/">Remix公式</a></li>
+</ul>
+<p>記事執筆時点でのフレームワークの開発の方向性としては、RemixはReact Routerと統合されつつあり、React Server ComponentsベースのRemixの開発が進んでいるようです。</p>
+<h3 id="trpc">tRPC</h3>
+<p>tRPCは、TypeScriptのプロジェクトでバックエンドとフロントエンド間の型安全な通信を可能にするライブラリです。</p>
+<p>簡単に言ってしまえばHTTP通信のラッパーですが、tRPCを使うと、APIのエンドポイントを定義してからそのレスポンスやリクエストに対して型を設定するのではなく、TypeScriptの型定義を直接共有しながら開発を進めることができます。</p>
+<p>入門記事は以前書いたので、興味がある方は参考にしてください。</p>
+<ul>
+<li><a href="https://www.lyricrime.com/posts/trpc-init/">tRPCへの入門</a></li>
+</ul>
+<p>小中規模の、バックエンドにもTypeScriptを採用するようなプロジェクトでの採用は非常に効果的だと感じています。</p>
+<p>ここまで紹介した技術の多くはT3 Stackと呼ばれる開発スタックにも採用され、TypeScriptでフルスタック開発を行う際に人気のある選択肢となっています。</p>
+<ul>
+<li><a href="https://create.t3.gg/en/introduction">Create T3 App</a></li>
+</ul>
+<h2 id="テストの導入">テストの導入</h2>
+<p>ユニットテストについては、まずはJestかVitestの採用を検討することになるかなと思います。</p>
+<p>現状Jestでのテスト環境がない場合はVitestを採用すべきだと思っています。</p>
+<p>理由は、JestはJavaScript前提で作成されており、歴史的にもNode.jsの流行やCJSとESMの混在等が問題になっていた時代に作られたライブラリであるため、現代のフロントエンドでESM、TypeScriptを使用したコードに対して、テストを書く場合はVitestの方が困るポイントが少ないと感じています。</p>
+<p>VitestでReactのコードに対してテストを書くときの例を示します。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#6A737D">// Button.test.tsx</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { render, screen, fireEvent } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@testing-library/react'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Button </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> './Button'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { vi } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'vitest'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">test</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'ボタンのクリックイベントが発火する'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> handleClick</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> vi.</span><span style="color:#B392F0">fn</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">  render</span><span style="color:#E1E4E8">(&#x3C;</span><span style="color:#B392F0">Button</span><span style="color:#B392F0"> label</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"Click me"</span><span style="color:#B392F0"> onClick</span><span style="color:#E1E4E8">={</span><span style="color:#FFAB70">handleClick</span><span style="color:#E1E4E8">} />);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  fireEvent.</span><span style="color:#B392F0">click</span><span style="color:#E1E4E8">(screen.</span><span style="color:#B392F0">getByText</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#DBEDFF">click me</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">i</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#B392F0">  expect</span><span style="color:#E1E4E8">(handleClick).</span><span style="color:#B392F0">toHaveBeenCalledTimes</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span></code></pre>
+<p>もちろん、ロジック部分に対してもモック等を利用したりしつつテストを書くことも可能です。</p>
+<p>担当しているプロダクトでは、フロントエンドにユニットテストを導入する際にJestを採用するかVitestを採用するかを検討しましたが、Viteに移行 + Vitestの採用の方がJestに比べると辛さが少ないと感じたため、Vitestを採用することにしました。</p>
+<p>参考: <a href="https://zenn.dev/sa2knight/articles/migrating_vitest_from_jest">Vite は使ってないけど Jest を Vitest に移行する</a></p>
+<h2 id="ディレクトリ構造">ディレクトリ構造</h2>
+<p>フロントエンドにおけるディレクトリ構造においては、複雑さと向き合うために、ドメイン駆動設計のエッセンスを取り入れているところが多い印象を受けています。<br>
+以前はAtomic Designなどが流行しましたが、必要以上に複雑になることが多いため、最近ではシンプルなディレクトリ構造を採用することが多いです。</p>
+<p>ただ、ドメイン駆動設計を採用するとしてもComponentやPageといったフロントエンド固有のものやReactのHooksなどのファイルをどのように扱うかは、プロジェクトによって異なるのかなと思います。</p>
+<h2 id="formatterと静的解析">Formatterと静的解析</h2>
+<p>LinterやFormatterについては、ESlintとPrettierの組み合わせが主流です。最近ではこれらを統合したようなツールとして、Biomeというものが登場しています。</p>
+<ul>
+<li>ESlint + Prettier</li>
+</ul>
+<p>現状のデファクトスタンダードであり、ほとんどのプロジェクトで採用されていると思います。<br>
+ただ、設定の競合が発生したり、設定自体が複雑で、設定内容についてはプロジェクトごとに議論が必要となります。</p>
+<ul>
+<li>Biome</li>
+</ul>
+<p>ESlintとPrettierを統合したようなツールで、単一のツールで静的解析とフォーマットを行うことができるため、設定が簡単であったり、パフォーマンスが高いことが特徴です。<br>
+ただ、ESlintやPrettierのようにプラグインエコシステムがないため、カスタマイズ性は低くなります。</p>
+<p>個人的にはあまり静的解析やフォーマットにこだわりがなく、カスタマイズも最小限に抑えるべきだと考えているため、Biomeを採用することが多いです。</p>
+<h2 id="reactの最新機能とトレンド">Reactの最新機能とトレンド</h2>
+<p>ここからは2024年現在のReactの最新機能について紹介します。<br>
+どれくらい主流になるかは未知数なので、プロダクトへの本採用を検討する場合は慎重に検討することをおすすめします。</p>
+<h3 id="react-server-components">React Server Components</h3>
+<p>React Server Components（RSC）は、サーバーサイドでコンポーネントをレンダリングし、クライアントに必要な部分だけを送信することで、パフォーマンスを最適化する新しいアーキテクチャです。</p>
+<p>サーバーコンポーネントを利用すると、以下のようなメリットがあります。</p>
+<p>サーバーサイドレンダリングの効率化: RSCは、サーバー上でコンポーネントをレンダリングし、クライアントには軽量なJavaScriptとして送信されます。これにより、初期ロード時間が短縮されます。</p>
+<p>クライアントとサーバーのコード分離: クライアント専用のコードとサーバー専用のコードを明確に分離できます。また、セキュリティ面でも有利です。</p>
+<p>データフェッチングの簡素化: サーバー上でデータを取得し、コンポーネントに直接渡すことができるため、クライアント側でのデータ管理が簡素化されます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#6A737D">// ServerComponent.server.tsx</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'react'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#B392F0"> User</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">  id</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> number</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  name</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> fetchUsers</span><span style="color:#F97583"> =</span><span style="color:#F97583"> async</span><span style="color:#E1E4E8"> ()</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Promise</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">User</span><span style="color:#E1E4E8">[]> </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> response</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'https://api.example.com/users'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> response.</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> ServerComponent</span><span style="color:#F97583"> =</span><span style="color:#F97583"> async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> users</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> fetchUsers</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      {users.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">user</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">li</span><span style="color:#B392F0"> key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{user.id}>{user.name}&#x3C;/</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      ))}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> ServerComponent;</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre>
+<p>こうしてみてみると、ややRemixにも似ている気がしますね。</p>
+<h3 id="suspense">Suspense</h3>
+<p>Suspenseは、非同期操作（例えばデータフェッチングやコードスプリッティング）を簡潔に扱うための仕組みです。Reactの描画プロセスを一時停止し、必要なデータが揃うまで待機することでロード中の状態を管理します。</p>
+<p>非同期データの扱いやすさ: Suspenseを使用することで、データが揃うまでコンポーネントのレンダリングを待機させ、ロード中の状態を簡単に管理できます。</p>
+<p>コードスプリッティングの簡素化: 大規模なアプリケーションにおいて、必要な部分だけを遅延ロードすることで、初期ロード時間を短縮できます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React, { Suspense } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'react'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> LazyComponent</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> React.</span><span style="color:#B392F0">lazy</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#F97583"> import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'./LazyComponent'</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> App</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>Welcome to React&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#79B8FF">Suspense</span><span style="color:#B392F0"> fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>Loading...&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>}></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#79B8FF">LazyComponent</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> App;</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre>
+<h2 id="まとめ">まとめ</h2>
+<p>2024年現在、もっとも主流なフロントエンドのライブラリはReactであると言えます。<br>
+その背景には、Reactの安定性やコミュニティの活発さ、豊富なエコシステムなどが挙げられます。<br>
+Reactをベースに簡単に、UXの向上やパフォーマンスの最適化を行うためのライブラリやツールも多く存在しており、フロントエンド開発においてReactを採用することは非常に有益であると言えます。</p>
+<p>LaravelやRuby on RailsといったフルスタックフレームワークからReactベースに移行する場合にはルーティングやAPIの設計などが課題となることが多いですが、それを差し引いてもReactを採用するメリットは大きいと感じています。</p>
+<h2 id="今回の記事での参考資料">今回の記事での参考資料</h2>
+<ul>
+<li><a href="https://www.lyricrime.com/posts/frontend-history-2024/">フロントエンド入門 フロントエンドの歴史</a></li>
+<li><a href="https://speakerdeck.com/recruitengineers/react-2023">React - 2023年度リクルート エンジニアコース新人研修の講義資料です</a></li>
+<li><a href="https://www.lyricrime.com/posts/declarative-ui/">フロントエンド入門 宣言的UIと命令的UI</a></li>
+<li><a href="https://nextjs.org/">Next.js公式ドキュメント</a></li>
+<li><a href="https://zenn.dev/acompany/articles/123c29f46d213c">Remix入門: フロントエンドもバックエンドも爆速開発を実現する次世代Webフレームワーク</a></li>
+<li><a href="https://remix.run/">Remix公式</a></li>
+<li><a href="https://www.lyricrime.com/posts/trpc-init/">tRPCへの入門</a></li>
+<li><a href="https://create.t3.gg/en/introduction">Create T3 App</a></li>
+<li><a href="https://zenn.dev/sa2knight/articles/migrating_vitest_from_jest">Vite は使ってないけど Jest を Vitest に移行する</a></li>
+</ul> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
