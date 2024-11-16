@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="ja"> <head><title>データベースのマイグレーション時にインデックスを削除する場合に注意すべき外部キー制約とインデックスの依存関係</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回は業務のなかで少しつまづいたポイントについて自分の備忘録としてまとめたいと思います。  
+
+MySQLにおける外部キー制約作成時の既存インデックスの利用についてです。
+
+## 対象システム
+
+- MySQL 8.0
+"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2024/11/16</div> <h1>データベースのマイグレーション時にインデックスを削除する場合に注意すべき外部キー制約とインデックスの依存関係</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>今回は業務のなかで少しつまづいたポイントについて自分の備忘録としてまとめたいと思います。</p>
+<p>MySQLにおける外部キー制約作成時の既存インデックスの利用についてです。</p>
+<h2 id="対象システム">対象システム</h2>
+<ul>
+<li>MySQL 8.0</li>
+<li>Laravel 11</li>
+</ul>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>特定のインデックスを削除する場合、特定の外部キー制約がインデックスを必要としている場合にエラーになる</li>
+<li>外部キー制約の作成時には自動的にインデックスが作成される</li>
+<li>外部キー制約の作成時に、既存のインデックスが存在する場合はインデックスの作成をせず、既存のインデックスを利用する。条件は以下の通り
+<ul>
+<li>外部キーとして利用するカラムが、既存のインデックスの1つ目のカラムと一致している場合
+<ul>
+<li><strong>これは複合インデックスの場合でも最初のカラムであれば利用される</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="背景">背景</h2>
+<p>担当しているプロジェクトにおいて、開発した機能をステージング環境にデプロイする際に、マイグレーションファイルを実行するとエラーが発生しました。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#E1E4E8">SQLSTATE[HY000]: General error: </span><span style="color:#79B8FF">1553</span><span style="color:#E1E4E8"> Cannot </span><span style="color:#F97583">drop</span><span style="color:#F97583"> index</span><span style="color:#9ECBFF"> 'unique_index_name'</span><span style="color:#E1E4E8">: needed </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">foreign key</span><span style="color:#F97583"> constraint</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">Connection</span><span style="color:#E1E4E8">: mysql, </span><span style="color:#F97583">SQL</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">alter</span><span style="color:#F97583"> table</span><span style="color:#9ECBFF"> `table_name`</span><span style="color:#F97583"> drop</span><span style="color:#F97583"> index</span><span style="color:#9ECBFF"> `unique_index_name`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span></code></pre>
+<p>このエラー自体は、特定のインデックスを削除しようとした際にそのインデックスが外部キー制約によって必要とされているために発生します。</p>
+<p>つまり、ステージング環境には<strong>複合外部キー制約Aと複合外部キー制約B、ユニークインデックスBが存在</strong>していました。</p>
+<p>この複合外部キー制約BとユニークインデックスBは同時に作られたものです。<br>
+複合外部キー制約Bの作成時には自動的にユニークインデックスBが作成されていました。<br>
+スキーマを確認し、複合外部キー制約Bを消してからユニークインデックスBを削除する必要があると判断しました。</p>
+<p>しかし、実際には外部キー制約Bが存在しない状態で、外部キー制約Aのみが存在する状態でユニークインデックスBを削除しようとするとエラーが発生しました。</p>
+<p>外部キー制約AもユニークインデックスBに依存していることが原因でした。</p>
+<h2 id="仕様">仕様</h2>
+<p>試行錯誤の結果たどり着いた仮説でしたが、MySQLにおいては外部キー制約の作成時に既存のインデックスを利用する仕様がありました。</p>
+<p>MySQLのInnoDBストレージエンジンにおいて、外部キー制約を設定する際に、参照元テーブルのカラムに対してインデックスが必要です。<br>
+このインデックスは自動的に作成されますが、特定の条件下では既存のインデックスを利用することがあります。<br>
+今回のケースではこの仕様を正しく理解できておらず、一見無関係に見える外部キー制約Aを考慮していないことが原因でした。</p>
+<p>特に、複合ユニークインデックスの場合に気付きにくい仕様です。</p>
+<h3 id="複合ユニークインデックスとは">複合ユニークインデックスとは</h3>
+<p>複合ユニークインデックスとは、複数のカラムに対してユニーク制約を持たせるインデックスのことです。</p>
+<p>複数のカラムに対してユニークな組み合わせを保証します。例えば、(A, B)というインデックスはカラムAとカラムBの組み合わせがユニークであることを保証します。</p>
+<p>MySQLが既存の複合ユニークインデックスを外部キー制約に再利用するための条件は次のようになります。</p>
+<ul>
+<li>外部キー列がインデックスの先頭列であること
+<ul>
+<li>外部キーとして指定する列が、既存のインデックスの先頭（最も左側）に位置している必要があります。つまり、外部キー列がインデックスの最初のカラムである場合、そのインデックスを外部キー制約に利用できます。</li>
+</ul>
+</li>
+</ul>
+<p>公式ドキュメント内の記述は以下の通りです。</p>
+<blockquote>
+<p>MySQL では、外部キーチェックを高速に実行でき、かつテーブルスキャンが必要なくなるように、外部キーおよび参照されるキーに関するインデックスが必要です。 参照しているテーブルには、外部キーカラムが同じ順序で最初のカラムとしてリストされているインデックスが存在する必要があります。 このようなインデックスが存在しない場合は、参照しているテーブル上に自動的に作成されます。 外部キー制約の施行に使用できる別のインデックスを作成した場合、このインデックスは後で暗黙的に削除される可能性があります。index_name が指定されている場合は、前述のように使用されます。</p>
+</blockquote>
+<p>例： 外部キー列が既存の複合インデックスの先頭にある場合</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> parent_table</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    id </span><span style="color:#F97583">BIGINT</span><span style="color:#E1E4E8"> UNSIGNED </span><span style="color:#F97583">PRIMARY KEY</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">    name</span><span style="color:#F97583"> VARCHAR</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">255</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">CREATE</span><span style="color:#F97583"> TABLE</span><span style="color:#B392F0"> child_table</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    child_id </span><span style="color:#F97583">BIGINT</span><span style="color:#E1E4E8"> UNSIGNED </span><span style="color:#F97583">PRIMARY KEY</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    parent_id </span><span style="color:#F97583">BIGINT</span><span style="color:#E1E4E8"> UNSIGNED,</span></span>
+<span class="line"><span style="color:#E1E4E8">    other_column </span><span style="color:#F97583">VARCHAR</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">255</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#F97583">    UNIQUE</span><span style="color:#F97583"> KEY</span><span style="color:#E1E4E8"> unique_parent_other (parent_id, other_column),</span></span>
+<span class="line"><span style="color:#F97583">    FOREIGN KEY</span><span style="color:#E1E4E8"> (parent_id) </span><span style="color:#F97583">REFERENCES</span><span style="color:#E1E4E8"> parent_table(id)</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span></code></pre>
+<p>この場合、child_table の parent_id 列は既に (parent_id, other_column) という複合ユニークインデックスの先頭に位置しています。したがって、MySQLはこの既存のインデックスを外部キー制約のために再利用します。新たなインデックスを作成する必要はありません。</p>
+<h3 id="一見関係のないカラムの外部キー制約を削除しなければならない理由">一見関係のないカラムの外部キー制約を削除しなければならない理由</h3>
+<p>今回の事象で発生した「一見関係のないカラムの外部キー制約を削除しなければならない」という問題は、インデックスの依存関係と外部キー制約の共有によるものです。具体的には、以下のような状況が考えられます：</p>
+<ul>
+<li>
+<p>複合インデックスの共有利用<br>
+複数の外部キー制約が同じ複合インデックスを共有している場合、インデックスを削除する前に、すべての外部キー制約を削除する必要があります。これは、インデックスが依然として外部キー制約によって使用されているためです。</p>
+</li>
+<li>
+<p>インデックスの再利用による依存関係<br>
+外部キー制約が複数の列に対して設定されている場合、これらの制約が同じインデックスを利用している可能性があります。特に、外部キー制約が複数の列を対象としている場合、それぞれの制約が同じ複合インデックスを使用することがあります。</p>
+</li>
+</ul>
+<h2 id="まとめ">まとめ</h2>
+<p>データベースマイグレーションにおいて、外部キー制約とインデックスの依存関係の理解は非常に重要です。
+今回のように複合ユニークインデックスを使用する場合、外部キー制約がインデックスの先頭列に依存しているかどうかを確認する必要があります。</p>
+<ul>
+<li>外部キー制約を設定する前に、外部キー列がインデックスの先頭に位置している場合は既存のインデックスに依存する</li>
+<li>インデックスを削除する際は、そのインデックスに依存するすべての外部キー制約を事前に削除する。</li>
+</ul> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
