@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="ja"> <head><title>良いソフトウェアを目指して設計への入門</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+これまでもいくつも設計に関する記事を書いてきました。  
+今回は設計が大事なのはわかったけど何から始めればいいの?という方向けに、設計への入門としてのアプローチをまとめてみました。  
+初学者のときに知っておきたかったこ"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/01/25</div> <h1>良いソフトウェアを目指して設計への入門</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>これまでもいくつも設計に関する記事を書いてきました。<br>
+今回は設計が大事なのはわかったけど何から始めればいいの?という方向けに、設計への入門としてのアプローチをまとめてみました。<br>
+初学者のときに知っておきたかったことを中心にまとめているので、設計に興味がある方はぜひ参考にしてみてください。</p>
+<p>ここでの設計とは、ソフトウェアの設計、特にコードを書くうえでのソフトウェア構造の設計を指します。</p>
+<h2 id="良いソフトウェアとは">良いソフトウェアとは</h2>
+<p>まずは設計を学ぶ上での目標を明確にしましょう。<br>
+設計の目標は良いソフトウェアを作ることですが、良いソフトウェアとはどのようなものでしょうか?</p>
+<p>もう少し具体化してみましょう。</p>
+<p>良いソフトウェアとは、以下のような特徴を持つものだと言われます。</p>
+<ul>
+<li>可読性</li>
+<li>保守性</li>
+<li>効率性</li>
+<li>信頼性</li>
+<li>拡張性</li>
+</ul>
+<p>一つ一つ見ていきましょう。</p>
+<h2 id="可読性">可読性</h2>
+<p>ソフトウェアの可読性は、コードがどれだけ理解しやすいかを示す指標です。<br>
+他の開発者が容易にコードを理解し、修正や改善がしやすい状態にあるコードは可読性が高いと言えます。</p>
+<p>可読性が高いコードは、仕様の誤解によるバグの発生を抑制し、将来的な機能拡充のコストを低減することができます。</p>
+<blockquote>
+<p>コンピュータ・プログラミングにおける可読性（readability）とは、プログラムのソースコードを人間が読んだときの、その目的や処理の流れの理解しやすさを指している。</p>
+</blockquote>
+<p>引用元: <a href="https://ja.wikipedia.org/wiki/%E5%8F%AF%E8%AA%AD%E6%80%A7">可読性 - Wikipedia</a></p>
+<p>ソフトウェアに関するプラクティスのうち、可読性に関わるものは非常に多く存在します。一般にコーディング規約と呼ばれるものはほとんどが可読性向上を目的としています。</p>
+<p>また、ソフトウェアエンジニアにとってのバイブルとも言える<a href="https://www.oreilly.co.jp/books/9784873115658/">リーダブルコード - O’Reilly Japan</a>も可読性向上のための書籍です。<br>
+それくらいソフトウェアエンジニアにとって可読性は重要な要素です。</p>
+<p>他にも意識するポイントがいくつもあるので、可読性を高めることが目的なんだなと理解しながら、内容を確認していきましょう。</p>
+<h3 id="命名の重要性">命名の重要性</h3>
+<p>まずは変数やクラス、メソッドなどの名前に適切な名前をつけることから始めましょう。<br>
+ソフトウェアというのは基本的に変数の名前やメソッドの名前は短くても動作しますが、多くのエンジニアは適切に処理を表す名前をつけたほうが良いと考えており、プログラミングにおいて最も重要な要素の一つだと言えるでしょう。</p>
+<p>命名においてのポイント</p>
+<ul>
+<li>名前が表す内容が明確であること</li>
+<li>できるだけ省略せずに名前をつける
+<ul>
+<li>コードを多少早く書くことより、コードを読む人が間違わないことのほうがコストが低く、現在はIDEによる補完機能もある</li>
+<li>使われる箇所が広ければ広いほど誤解を招く可能性が高い
+<ul>
+<li>逆に言えば、限られたスコープでしか使わない変数は慣例的に短い命名をすることもある(for文のカウンタ変数など)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>品詞を意識する
+<ul>
+<li>変数名やクラス名には名詞、メソッドには動詞を使うことでより理解しやすくなる</li>
+</ul>
+</li>
+<li>抽象的な単語や情報量のない単語を利用しない
+<ul>
+<li>一時的を表す変数名に<code>tmp</code>を使うのは避ける</li>
+<li><code>〇〇info</code>や<code>〇〇data</code>など、抽象度の高い、情報量のない単語を使わない(プログラミングに使う変数は全部<code>info</code>や<code>data</code>です。)</li>
+</ul>
+</li>
+<li>対になる変数には名前に意味を持たせる
+<ul>
+<li><code>start</code>と<code>end</code>など、関連する変数には関連性を持たせる</li>
+<li>ソフトウェアの世界には<a href="https://ja.wikipedia.org/wiki/%E9%A9%9A%E3%81%8D%E6%9C%80%E5%B0%8F%E3%81%AE%E5%8E%9F%E5%89%87">驚き最小の原則 - Wikipedia</a>と呼ばれる原則がある
+<ul>
+<li>できる限り読んだ人が存在を予測できるように作るべきだという原則。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="美しさ">美しさ</h3>
+<p>美しさとは、コードの見た目の美しさを指します。やや抽象的ですが、コードのインデントや改行、コメントの使い方などが美しさに関わります。</p>
+<p>コーディング規約でもこれらのルールを中心に記述されていることが多いです。</p>
+<p>美しさに関しては、人それぞれ感じ方が異なる部分もありますが、基本的に意識するべきポイントは下記のようなものがあります。</p>
+<ul>
+<li>コードの改行位置やインデントを統一する</li>
+<li>関連する処理をまとめてブロックにする</li>
+</ul>
+<p>美しさに関する内容はLinterやフォーマッターを導入することで自動化しやすいものなので、できるだけ早めにこれらを整備しておくと良いでしょう。</p>
+<h3 id="コメント">コメント</h3>
+<p>コメントはコードの可読性を向上させるための重要な要素です。</p>
+<p>よくHowを説明するコードよりもWhyを説明するコメントを書くべきと言われます。</p>
+<p>コメントの内容についてはよく議論のポイントになることもありますが、基本的には以下のような内容をコメントに書くことが多いです。</p>
+<ul>
+<li>コードを読めばわかることを書かない
+<ul>
+<li>人間はコードよりもコメントに目が止まりやすく、コメントには読ませたい情報を書くようにする</li>
+<li>変数に対して説明的なコメントを書きたくなった場合、変数の命名が悪いことが多いので、命名を見直す</li>
+</ul>
+</li>
+<li>自分の考えを書く
+<ul>
+<li>実装したときに他に考えた選択肢と現在のコードになった理由を書く</li>
+<li>コードの欠陥に対するメモとしてコメントを書く。
+<ul>
+<li>たとえば、よく使われるコメントとして、<code>TODO</code>や<code>FIXME</code>、<code>HACK</code>などがある</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>コードの背景を書く
+<ul>
+<li>コードの背景になる情報を書く</li>
+<li>読み手がコードを読んだときに驚く、気になる箇所を想像してコメントを書く</li>
+</ul>
+</li>
+</ul>
+<h3 id="不変性">不変性</h3>
+<p>ここで、改めて<strong>コードが読めない</strong>という事象について考えてみましょう。</p>
+<p>その<code>読めないコード</code>はどこから読めなくなるのでしょうか?</p>
+<p>私自身の経験から言えば、コードが読めなくなる原因の一つに、脳内メモリの容量不足があります。</p>
+<p>登場する変数の多さ、変数の中身の書き換えの多さ、関数呼び出しのネスト関係、複雑なif文の条件分岐など、コードの複雑さが増すと、脳内メモリの容量が足りなくなり、コードが読めなくなることがあります。</p>
+<p>1行1行のコードは読めても、その内容を覚えながら処理を追うことが難しくなります。</p>
+<p>この現象に関連するプラクティスとして、不変性があります。</p>
+<p>不変性とは、文字通り変更されないことを指します。</p>
+<p>変数の値をできるだけ変更せず、代入したい場合には適した名前をつけた別の変数を用意することで、変数の命名が中身の記憶を助けてくれます。</p>
+<p>また、オブジェクトにおいても<code>final</code>等の修飾子を使って変更を禁止することで、オブジェクトの状態が変わらないことを保証することができる言語が多くあります。</p>
+<p>できる限り不変性を保つことで、コードを読むにあたって記憶することが減り、コードの見通しが良くなります。</p>
+<h2 id="保守性">保守性</h2>
+<p>保守性とは、プログラムが将来的にどれだけ簡単に変更や拡張ができるかを示す指標です。<br>
+言い換えれば、機能追加やバグ修正が容易に行えるかどうかを示します。</p>
+<p>保守性が高いコードは、変更に対して柔軟に対応できるため、長期的な開発においてコストを抑えることができます。変更にかかる時間が短縮できるということは、市場や技術の変化にも迅速に対応できるようになり、これはソフトウェアとしての競争力に直結します。</p>
+<p>保守性を高めるための方法の一つに、コードのモジュール化があります。</p>
+<p>モジュール化とは、コードを機能ごとに分割し、それぞれの機能を独立したモジュールとして扱うことです。<br>
+モジュール間の依存関係をなくし、変更の影響範囲を限定することで、保守性を高めることができます。</p>
+<p>また、モジュール化は再利用性を高め、テストが書きやすくなるというメリットもあります。</p>
+<p>関連する原理、原則として最も有名なのは、<strong>SOLID原則</strong>でしょう。</p>
+<p>SOLID原則は、オブジェクト指向プログラミングにおける5つの原則をまとめたものです。</p>
+<ul>
+<li>単一責任の原則(Single Responsibility Principle)</li>
+<li>オープン/クローズドの原則(Open/Closed Principle)</li>
+<li>リスコフの置換原則(Liskov Substitution Principle)</li>
+<li>インターフェース分離の原則(Interface Segregation Principle)</li>
+<li>依存性逆転の原則(Dependency Inversion Principle)</li>
+</ul>
+<p>詳しい解説はWEB上に多くありますので、興味のある方は調べてみてください。</p>
+<p>参考: <a href="https://zenn.dev/nakurei/books/solid-principle-kanzen-rikai">SOLID原則完全に理解した！になるための本</a></p>
+<p>他にもモジュール化と関連のある概念として、<strong>高凝集・低結合</strong>があります。</p>
+<p>これは、情報の隠蔽によってモジュール間の結合を弱くし、モジュール内の凝集度を高めることに繋がります。オブジェクト志向プログラミングにおけるカプセル化の考え方に近いです。</p>
+<p>ほかにも、有名な原理原則は数多くあるので、ここで紹介しておきます。</p>
+<ul>
+<li>DRY(Don’t Repeat Yourself)
+<ul>
+<li>同じコードを繰り返し書かない</li>
+<li>繰り返し箇所が多いと、修正漏れや工数の増加につながる</li>
+<li>ただし、関心事が異なる場合にDRYを適用してしまうとかえって可読性が下がることもあるので注意</li>
+</ul>
+</li>
+<li>KISS(Keep It Simple, Stupid)
+<ul>
+<li>可能な限りシンプルに保つ</li>
+<li>過度に複雑な設計を避け、初学者でも理解できるレベルを目指すことで可読性・保守性を高める。</li>
+</ul>
+</li>
+<li>YAGNI(You Aren’t Gonna Need It)
+<ul>
+<li>未来の機能を先取りして実装しない</li>
+<li>エンジニアの予測が外れた場合のコストを考慮し、必要になった時に実装する</li>
+<li>ただし、将来の変更への拡張性を考慮して設計する必要はあるため、過度なYAGNIも問題</li>
+</ul>
+</li>
+<li>Boy Scout Rule(ボーイスカウトのルール)
+<ul>
+<li>「来たときよりも美しく」</li>
+<li>コードに手を加える際には少しでもリファクタリングしてコードをきれいにする</li>
+</ul>
+</li>
+<li>Law of Demeter(デメテルの法則)
+<ul>
+<li>「友達の友達に直接話しかけない」</li>
+<li>オブジェクトは、密接に関係するオブジェクトだけを知るようにし、深いチェーンを辿らないようにすることで結合度を下げる。</li>
+</ul>
+</li>
+<li>SLAP(Single Level of Abstraction Principle)
+<ul>
+<li>「関数やメソッドの中で扱う抽象度を1つに統一する」</li>
+<li>低レベルな処理と高レベルな処理を混在させず、階層的に構造を分けることで可読性を高める。</li>
+</ul>
+</li>
+</ul>
+<h2 id="効率性">効率性</h2>
+<p>効率性は、ソフトウェアがパフォーマンスとリソースの効率的な利用を行っているかを示す指標です。<br>
+効率的なソフトウェアは、ユーザーにとって快適な利用環境を提供し、コストを抑えることができます。</p>
+<p>効率性を高めるためには、アルゴリズムやデータ構造の選択が重要です。<br>
+また、リソースやパフォーマンスにおけるボトルネックを特定し、最適化を行うことも効率性向上につながります。</p>
+<p>マルチスレッドや非同期処理を活用することで、並列処理を行い、処理時間を短縮することも効率性向上の手段の一つです。</p>
+<h2 id="信頼性">信頼性</h2>
+<p>信頼性は、ソフトウェアが正確に動作し、安定しているかを示す指標です。</p>
+<p>主にエラー処理の文脈で語られることが多いですが、信頼性を高めるためには、エラー処理だけでなく、テストやデバッグ、ログの出力なども重要です。</p>
+<p>ソフトウェアは、予期しない障害に対処できるように設計される必要があります。<br>
+いいエラー処理とは、問題が発生した際にソフトウェアが安全に停止するか、または問題を報告して適切な対処を行うことを保証します。</p>
+<p>また、これまで紹介してきた可読性や保守性、効率性などによってそもそもバグを減らすことも信頼性向上につながります。<br>
+モジュール化によるテストの充実や自動テストなどのテクニックも信頼性向上に役立ちます。</p>
+<h2 id="拡張性">拡張性</h2>
+<p>拡張性は、ソフトウェアが将来的な変更や拡張に対応できるかを示す指標です。</p>
+<p>要素としては次のようなものがあります。</p>
+<h3 id="抽象化">抽象化</h3>
+<p>保守性の項目でも触れたモジュール化に関連する概念として、抽象化があります。<br>
+抽象化とは、具体的な実装の詳細を隠蔽し、抽象度の高いインターフェースのみを外部に公開することです。</p>
+<p>抽象化されたシステムは、具体的にどのように実装されているかを知らなくても、インターフェースを通じて利用することができます。</p>
+<p>例えば、DBへのアクセスや外部APIの利用など、具体的な実装が変わる可能性がある部分において、抽象化を行うことでDBやAPIの変更が発生した場合でもアプリケーションの他の部分には影響を与えないようにすることができます。</p>
+<h3 id="高凝集低結合">高凝集・低結合</h3>
+<p>モジュール化の項目でも触れた高凝集・低結合も拡張性向上につながります。</p>
+<p><strong>高凝集</strong>とは、モジュール内部の要素(関数や変数など)が一貫した目的や役割を持つ状態を指します。<br>
+もっと簡単に言うと、「1つのモジュールが関連性の高い機能だけをまとめて持っている」ことです。</p>
+<p>高凝集なモジュールには以下のようなメリットがあります。</p>
+<ul>
+<li>理解しやすい
+<ul>
+<li>モジュールの役割の単位でまとまっているため、どこで何をやっているか把握しやすくなります。</li>
+</ul>
+</li>
+<li>保守・修正がしやすい
+<ul>
+<li>変更や追加が必要なとき、モジュール内部に収まっていることが多いので影響範囲を把握しやすいです。</li>
+</ul>
+</li>
+<li>再利用性が高い
+<ul>
+<li>しっかり役割が定義されているモジュールは、他の箇所はもちろん、他のプロジェクトでも同じ役割で流用できる可能性が高まります。</li>
+</ul>
+</li>
+</ul>
+<p>反対に、低凝集の場合のデメリットとしては、何かを変更した場合に意図していない箇所に影響が及ぶ可能性が高まるという点が挙げられます。</p>
+<p><strong>低結合</strong>とは、モジュール間の依存度が低い状態を指します。</p>
+<p>具体的には、「あるモジュールを修正しても他のモジュールに大きな変更を強制しない」ような状態が理想です。</p>
+<p>低結合なモジュールには以下のようなメリットがあります。</p>
+<ul>
+<li>変更の影響範囲が狭い</li>
+<li>拡張しやすい</li>
+<li>テストしやすい</li>
+</ul>
+<h2 id="まとめ">まとめ</h2>
+<p>今回は良いソフトウェアとはという観点から、設計において重要な要素を紹介しました。</p>
+<p>ソフトウェアとしての良さを追求していくと、先人たちの残した原理原則やプラクティスが見えてきます。</p>
+<p>流行しているアーキテクチャもこれらの原理原則に基づいて設計されていることが多く、まずは原理原則を理解することでアーキテクチャの理解、取捨選択ができるようになります。</p>
+<p>可読性や保守性への理解が進むと、「動く」ソフトウェアと「良い」ソフトウェアの間には大きな差があることがわかってきます。</p>
+<p>コードを書くことのコストと、将来的に読むコスト、変更するコストのバランスを考えながら、設計を進めていくことが大切です。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
