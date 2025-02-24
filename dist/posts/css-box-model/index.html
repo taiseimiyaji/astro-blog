@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="ja"> <head><title>CSSの基礎を復習する - ボックスモデル</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回はCSSの基礎の復習とキャッチアップを中心とした記事です。  
+近年のWeb開発では、フロントエンドとバックエンドは明確に分離されつつも、どちらも区別せずに同じチームで取り組むことも増えてきました。  
+プロダクトエ"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/02/22</div> <h1>CSSの基礎を復習する - ボックスモデル</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>今回はCSSの基礎の復習とキャッチアップを中心とした記事です。<br>
+近年のWeb開発では、フロントエンドとバックエンドは明確に分離されつつも、どちらも区別せずに同じチームで取り組むことも増えてきました。<br>
+プロダクトエンジニアとも呼ばれたりしますが、単純な技術だけでなく、UI/UXのデザインやドメインの知識までプロダクトに関連することはすべて解決する姿勢が求められます。</p>
+<p>個人的にもWEBエンジニアになりたてのころはバックエンドの業務が中心でしたが、だんだんとフロントエンドの領域に手を伸ばしつつあります。<br>
+SPAの普及やNode.jsをはじめとするサーバーサイドでのJavaScriptの利用が増えたこともあり、フロントエンドの技術はますます重要になってきています。<br>
+業務においては課題解決を優先するためにモダンなフレームワークを触れることがどうしても多くなりますが、体系的にCSSを学ぶ機会がこれまでなかったので、改めて基礎から学び直すことにしました。</p>
+<p>また、近年はアプリケーションやWebサイトの品質において、アクセシビリティが非常に重要視されるようになってきました。<br>
+特に公共性の高いサイトや商用のサイトでは、障害のある方や高齢者も含め、全てのユーザーが快適に使えるデザインが要求されます。</p>
+<p>アクセシビリティに関するMDN内の説明は以下の通りです。</p>
+<blockquote>
+<p>アクセシビリティというのはあなたのウェブサイトを可能な限り多くの人に利用してもらうようにすることです。かつては我々はアクセシビリティのことをハンディキャップを持つ人々のためのものだと考えていましたが、現在はモバイル端末や遅いネットワークを利用している人々のためのものでもあると考えられています。</p>
+</blockquote>
+<p><a href="https://developer.mozilla.org/ja/docs/Learn_web_development/Core/Accessibility/What_is_accessibility">アクセシビリティとは - ウェブ開発の学習 | MDN</a></p>
+<h2 id="cssの基本">CSSの基本</h2>
+<p>今回はバックエンド中心のエンジニアから見る再入門用の記事のため、基本的な部分は省略します。
+本当に基本的な部分はMDNのドキュメントなどを参照してください。</p>
+<ul>
+<li><a href="https://developer.mozilla.org/ja/docs/Learn_web_development/Core/Styling_basics">CSS によるスタイル設定の基本 - ウェブ開発の学習 | MDN</a></li>
+</ul>
+<h2 id="ボックスモデル">ボックスモデル</h2>
+<p>CSSにおいて、要素はボックスとして扱われます。</p>
+<p>これを「ボックスモデル」と呼び、具体的には以下の4つの領域から構築されます。</p>
+<ol>
+<li>コンテンツ領域(content box)<br>
+要素内のテキストや画像、子要素など、実際に表示されるコンテンツが配置される部分です。<code>width</code>や<code>height</code>などのプロパティを使用して制御し、指定しない場合はコンテンツの量に応じてこの領域の大きさが決まります。</li>
+<li>パディング領域(padding box)<br>
+コンテンツ領域の外側にある余白領域です。<code>padding</code>プロパティおよび関連するプロパティを使用して制御します。背景色や背景画像が設定されている場合、コンテンツ領域だけでなくパディング領域にも適用されます。</li>
+<li>ボーダー領域(border box)<br>
+要素の枠線を示す部分で、太さや色、スタイル(実線や点線など)を指定できます。</li>
+<li>マージン領域(margin box)<br>
+要素の外側にある余白で、隣接する要素との距離を決める役割を担います。マージンは背景色の影響を受けず、通常は透明(要素の背景色が適用されない)です。
+コンテンツ、パディング、およびボーダーを囲うかたちになります。</li>
+</ol>
+<h3 id="コンテンツボックスとボックスサイズの計算">コンテンツボックスとボックスサイズの計算</h3>
+<p>ボックスモデルには、標準ボックスモデルと代替ボックスモデルがあります。<br>
+既定では、ブラウザーは標準ボックスモデルを使用します。</p>
+<ol>
+<li>content-box(標準ボックスモデル)</li>
+</ol>
+<p>デフォルトの状態では、ボックスサイズは「コンテンツ領域」の幅と高さがwidthとheightプロパティで指定され、その外側に指定したパディングやボーダーが加算されます。これを「標準ボックスモデル」と呼びます。</p>
+<p>例えば、以下のようなコードを考えます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.box</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">200</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">100</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  padding</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">10</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  border</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> solid</span><span style="color:#79B8FF"> #000</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  margin</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">20</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<p>この要素の、見た目上の横幅は、以下のように計算されます。</p>
+<ul>
+<li>コンテンツ領域の幅: 200px</li>
+<li>パディング: 左右それぞれ10pxずつ</li>
+<li>ボーダー: 左右それぞれ2pxずつ</li>
+<li>合計: 200px + 10px + 2px + 10px + 2px = 224px</li>
+</ul>
+<p>同様に、高さ方向でもパディングやボーダーが足し算され、最終的な要素の高さが決まります。<br>
+標準ボックスモデルでは、widthとheightプロパティで指定した値がコンテンツ領域のサイズとなり、その外側にパディングやボーダーが追加されます。</p>
+<ol start="2">
+<li>border-box(代替ボックスモデル)</li>
+</ol>
+<p>一方、<code>box-sizing</code>プロパティを<code>border-box</code>に設定することで、ボックスサイズの計算方法を変更できます。</p>
+<p>代替ボックスモデルを使用すると、幅はページ上に表示されるボックスの幅になります。<br>
+コンテンツ領域の幅は、その幅からパディングとボーダーの幅を引いた値になります。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.box-border-box</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  box-sizing</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">border-box</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">200</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">100</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  padding</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">10</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  border</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> solid</span><span style="color:#79B8FF"> #000</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<p>この例だと、ボックス領域が占める幅は200pxになります。<br>
+つまり、標準ボックスモデルよりも最終的なサイズを調整しやすくなるメリットがあります。</p>
+<p>このような直感的なサイズ指定ができることや、異なるブラウザ間でのレンダリングの差異を吸収するために、代替ボックスモデルを使用するケースが増えています。</p>
+<h2 id="パディングボーダーマージンの詳細">パディング、ボーダー、マージンの詳細</h2>
+<h3 id="パディング">パディング</h3>
+<p>パディングは、コンテンツとボーダーの間にある余白です。<br>
+背景色や背景画像はパディング領域にも適用されます。</p>
+<p>マージンとは異なり、負のパディングを指定することはできません。</p>
+<p><code>padding</code>プロパティは、要素のすべての辺のパディングを制御し、各辺を個別に制御するには、以下の個別指定プロパティを使用します。</p>
+<ul>
+<li><code>padding-top</code></li>
+<li><code>padding-right</code></li>
+<li><code>padding-bottom</code></li>
+<li><code>padding-left</code></li>
+</ul>
+<h3 id="ボーダー">ボーダー</h3>
+<p>ボーダーは、要素を囲む枠線のスタイルです。<br>
+標準ボックスモデルの場合はボーダーのサイズがコンテンツボックスのwidthとheightに追加されます。</p>
+<p>代替ボックスモデルを使用している場合、境界のサイズが利用可能なwidthとheightの一部を占めるため、コンテンツボックスが小さくなります。</p>
+<p>パディングと同様に4つの辺を個別に指定するプロパティが用意されています。</p>
+<ul>
+<li><code>border-top</code></li>
+<li><code>border-right</code></li>
+<li><code>border-bottom</code></li>
+<li><code>border-left</code></li>
+</ul>
+<p>また、すべての辺の幅、スタイル、色を設定するためのスタイルは下記です。</p>
+<ul>
+<li><code>border-width</code></li>
+<li><code>border-style</code></li>
+<li><code>border-color</code></li>
+</ul>
+<p>これらは省略形として、</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#E1E4E8">border: 2px solid </span><span style="color:#FDAEB7;font-style:italic">#000</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span></code></pre>
+<p>のように一括指定することもできます。</p>
+<p>単一の辺の幅、スタイル、色を書斎に設定する場合には個別指定プロパティも用意されています。</p>
+<ul>
+<li><code>border-top-width</code></li>
+<li><code>border-top-style</code></li>
+<li><code>border-top-color</code></li>
+<li><code>border-right-width</code></li>
+<li><code>border-right-style</code></li>
+<li><code>border-right-color</code></li>
+<li><code>border-bottom-width</code></li>
+<li><code>border-bottom-style</code></li>
+<li><code>border-bottom-color</code></li>
+<li><code>border-left-width</code></li>
+<li><code>border-left-style</code></li>
+<li><code>border-left-color</code></li>
+</ul>
+<h2 id="インライン要素とブロック要素のボックスモデル">インライン要素とブロック要素のボックスモデル</h2>
+<p>要素にはブロック要素とインライン要素があります。これまで紹介したボックスモデルは、主にブロック要素に適用されますが、プロパティのいくつかはインライン要素にも適用されます。</p>
+<p>ブロック要素は横幅が可能な限りいっぱいに広がり、上下に改行を伴います。<br>
+インライン要素はテキストの流れの中に配置され、基本的には横幅や高さを直接指定できません。<br>
+また、上下方向の<code>margin</code>や<code>padding</code>はテキスト行の高さやレイアウトに大きく影響しない場合があります。</p>
+<ul>
+<li>ブロック要素の例
+<ul>
+<li><code>&#x3C;div></code></li>
+<li><code>&#x3C;p></code></li>
+<li><code>&#x3C;h1></code>〜<code>&#x3C;h6></code></li>
+<li><code>&#x3C;ol></code></li>
+<li><code>&#x3C;ul></code></li>
+<li><code>&#x3C;li></code></li>
+</ul>
+</li>
+<li>インライン要素の例
+<ul>
+<li><code>&#x3C;span></code></li>
+<li><code>&#x3C;a></code></li>
+<li><code>&#x3C;strong></code></li>
+<li><code>&#x3C;em></code></li>
+<li><code>&#x3C;img></code></li>
+</ul>
+</li>
+</ul>
+<p>CSSの<code>display</code>プロパティを使用して、ブロック要素をインライン要素に変更することもできます。</p>
+<h2 id="display-inline-blockの利用"><code>display: inline-block</code>の利用</h2>
+<p><code>display: inline-block</code>は、インライン要素とブロック要素の両方の特性を持つ表示形式です</p>
+<ul>
+<li>インラインフロー
+<ul>
+<li>インライン要素のように、周囲のテキストや他のインライン要素と同じ行に並び、改行されません。</li>
+</ul>
+</li>
+<li>ブロック要素の特性
+<ul>
+<li>ブロック要素のように、<code>width</code>や<code>height</code>、<code>margin</code>、<code>padding</code>、<code>border</code>プロパティを使用して要素を制御できます。</li>
+</ul>
+</li>
+</ul>
+<p>利用例:</p>
+<ul>
+<li>横並びのレイアウト
+<ul>
+<li>複数の要素を同じ行に配置しつつ、各要素に対して独自の幅や高さを設定したい場合。例えば、ナビゲーションメニューの各項目など。</li>
+</ul>
+</li>
+</ul>
+<h2 id="ボックスモデルの典型的な問題と対処">ボックスモデルの典型的な問題と対処</h2>
+<h3 id="ボックスモデルの幅の計算">ボックスモデルの幅の計算</h3>
+<p>繰り返しになりますが、標準ボックスモデルでは、<code>width</code>プロパティで指定した値はコンテンツ領域の幅になり、その外側にパディングやボーダーが追加されます。そのため、<code>width</code>を指定し、さらにパディングやボーダーを追加すると、思っていたよりも要素が大きくなることがあります。</p>
+<p>このようなケースはあらかじめパディングやボーダーを考慮したサイズを指定するか、代替ボックスモデルを使用することで解決できます。</p>
+<h3 id="マージンの折り重なりcollapsing-margins">マージンの折り重なり(collapsing margins)</h3>
+<p>隣接するブロック要素の上下マージンは、重複して大きなマージンにならないように、実際は一方の大きい値のみが　適用される「マージンの相殺」と呼ばれる現象がおきます。<br>
+これは仕様ではあるものの、直感的な挙動ではないため、指定したmarginが効いていないのでは、と誤解されやすいです。</p>
+<p>回避する方法としては余白を入れる方向を統一したり、要素にborderやpaddingを設定するといった方法があります。</p>
+<p>そもそも親要素に<code>display: flex</code>や<code>display: grid</code>を指定することで、マージンの折り重なりを回避することもできます。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>今回はCSSの基礎の復習とボックスモデルについて学びました。</p>
+<p>CSSのアップデートや細かい仕様などは、困った時にドキュメントを参照することはありますが、体系的に学ぶことができていなかったので、改めて基礎から学び直すことができました。</p>
+<p>今後、バックエンドとフロントエンドの境界は曖昧になっていくことを踏まえても、エンジニアとしてはどちらも理解しておくことが重要だと感じました。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/ja/docs/Learn_web_development/Core/Styling_basics/Box_model#%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E3%83%A2%E3%83%87%E3%83%AB%E3%82%92%E8%A9%A6%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B">ボックスモデル - ウェブ開発の学習 | MDN</a></li>
+<li><a href="https://toach.biz/blog/why-is-collapsed-margin-necessary/">marginの相殺（縦のmarginが効かない）はなぜ必要か？</a></li>
+</ul> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
