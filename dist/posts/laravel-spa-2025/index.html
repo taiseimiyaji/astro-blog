@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="ja"> <head><title>LaravelでSPAアプリケーションを構築する際に考えないといけないこと</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回は、Laravel12でスターターキット周りの変更があったり、LivewireのバージョンアップがあったりとLaravelのフロント周辺の変更を踏まえつつ、2025年にLaravelで業務アプリを構築する際に考慮する"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/03/20</div> <h1>LaravelでSPAアプリケーションを構築する際に考えないといけないこと</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>今回は、Laravel12でスターターキット周りの変更があったり、LivewireのバージョンアップがあったりとLaravelのフロント周辺の変更を踏まえつつ、2025年にLaravelで業務アプリを構築する際に考慮することをまとめてみたいと思います。</p>
+<h2 id="技術選定の基準">技術選定の基準</h2>
+<p>私が業務アプリを構築する際に技術選定を行う際に考慮することをまずはまとめます。</p>
+<h3 id="規模の把握">規模の把握</h3>
+<p>作成したいアプリの規模をまずは把握することが重要です。</p>
+<p>規模、とひとことで言っても様々な観点があります。</p>
+<ul>
+<li>ユーザー数</li>
+<li>データ量</li>
+<li>画面数</li>
+<li>リクエスト量</li>
+<li>予算</li>
+<li>期間</li>
+</ul>
+<p>これらについて開発のキックオフ時には把握しておくことが重要です。</p>
+<p>また、ビジネス的な観点も意識しておきましょう。例えば、アプリケーションを作成して納品することで価値を生む受託開発と、アプリケーションそのものの価値で収益を生むプロダクト開発では、技術選定の基準が異なるかもしれません。</p>
+<p>そのアプリケーションの求められる性質がなんなのか考えてみましょう。</p>
+<p>例えば、決済アプリであればセキュリティはもちろん、大量のデータを扱うため非同期処理のサポートが強いプログラミング言語だったりフレームワークを選定した方がいいかもしれません。</p>
+<p>反対に、ユーザーが社内に限られる社内ツールの場合はそこまでパフォーマンスや非同期処理は不要であるものの、長期的に利用されたり、拡張の要望が今後多く発生するかもしれません。</p>
+<h3 id="バックエンド">バックエンド</h3>
+<p>今回選定するバックエンドのフレームワークはLaravelを選択します。</p>
+<p>弊社で主流として利用していることもありますが、LaravelはPHPのフレームワークの中でも人気が高く、コミュニティも活発です。</p>
+<p>一般的なWeb開発において欲しい機能のほとんどがフレームワークおよび拡張ライブラリとして提供されているため、フレームワークを利用する際の開発効率面でのメリットが大きいです。</p>
+<p>また、LaravelはRuby on Railsと比べると制限がゆるく、フレームワークの用意した方法以外での実装がしやすいため、要件に合わせた柔軟な設計を行いやすいです。</p>
+<p>生成AI時代におけるプログラミングでは、当たり前ですがOSSのようにソースコードが公開されているもの、利用者が多く存在するコード量が多いものほどLLMを利用する上でのメリットが大きくなります。<br>
+Laravelはその点でも有利であると言えます。</p>
+<h3 id="laravelが適さないケースを考えてみよう">Laravelが適さないケースを考えてみよう</h3>
+<p>PHPフレームワークの中では圧倒的な人気を誇るLaravelですが、Laravelが適さないケースはあるのでしょうか。
+この観点から考えてみることで自分の作成したいアプリケーションにLaravelが適しているかどうかを考えることができます。</p>
+<h4 id="リアルタイム性が求められるアプリケーション">リアルタイム性が求められるアプリケーション</h4>
+<p>例えば、大規模なチャットシステムや株価配信など、リアルタイム性が求められたり、秒間数万〜数十万のリクエストが発生するような高トラフィック/高スループットが要求されるようなアプリケーションの場合はLaravelはあまり適していないと言えます。</p>
+<p>理由はLaravel、というよりPHPの特徴として同期的な処理を前提としています。ただし、近年はコンテナベースのインフラ技術が発展していることもあり、水平スケーリングで対処しやすい短いリクエストが大量に来るケースではPHPでも対応可能です。このようなケースの例としてはECサイトのような商品の閲覧やニュースサイトのような記事の閲覧による多アクセスのようなケースで、Redis等のキャッシュを利用したり、CDN、オートスケールの利用で十分運用できそうです。</p>
+<p>とはいえ、PHP自体が同期処理を前提としていることもあり、1インスタンスあたりの処理効率が他の技術に比べて高いわけではないため、インフラコスト等の面で最適とは言えないケースもあります。</p>
+<h4 id="長時間の持続的接続が求められるアプリケーション">長時間の持続的接続が求められるアプリケーション</h4>
+<p>PHPでは、リクエスト処理が完結型の仕組み（プロセス or スレッド）で動作します。そのため、WebSocketなどを利用した常時接続を大量に保持するような負荷には向いていません。</p>
+<p>無理やり実現する場合はインフラ構成等の工夫が必要になってきますが、そもそもイベント駆動や非同期I/Oを前提とした言語やフレームワークの方が適していると思います。</p>
+<h3 id="laravelが適しているケース">Laravelが適しているケース</h3>
+<p>逆に言えば、上記以外のケースのほとんどをLaravelはカバーできると言えます。</p>
+<p>ただし、ほとんどのケースに対応できる汎用性はありながらも特定のケースに特化しているわけではないので、特定のケースに特化したフレームワークや言語に比べると、その分パフォーマンスや開発効率が劣ることもあります。</p>
+<p>あくまで一般的なWebアプリケーションを作成する際にはLaravelで困ることは少ないと言えるでしょう。</p>
+<h3 id="フロントエンド">フロントエンド</h3>
+<p>Laravelを基準にフロントエンド技術を選定する際の2025年時点での有力な選択肢について考えてみましょう。</p>
+<p>なお、すべてSPA構築することを前提としています。</p>
+<h3 id="vuejs">Vue.js</h3>
+<p>Laravelとの連携において採用される実績が多く、比較的組み合わせる場合の情報量は多いと言えます。</p>
+<p>ただし、Vue2系からVue3系への移行に伴う破壊的変更や、日本では人気ですが世界的にはReactの方が人気があります。</p>
+<p>個人的にはフレームワークが多くのことを処理してくれるため、Reactと比べると学習コストが低い印象で、初心者が書いても致命的なパフォーマンスの劣化を引き起こしにくい点ではReactよりも優れていると感じています。</p>
+<h3 id="react">React</h3>
+<p>世界で最も人気のあるフレームワークであり、日本でも人気が高いです。</p>
+<p>そのコミュニティの大きさや企業での採用実績、React Nativeなどモバイルアプリケーションでも関連した技術があることから、Reactを選択するメリットは多いと言えます。</p>
+<p>また、SPAだけでなくNext.jsなどのSSRをサポートするフレームワークもあり、SEO対策やパフォーマンスが求められる場合にも対応しやすいです。</p>
+<p>レンダリングの際に考えることの多さではVue.jsと比べると多いですが、どちらにせよある程度作り込んでいくとどちらの技術を採用しても考えないといけないことなのであまり差はないかもしれません。</p>
+<h3 id="laravel--inertiajs">Laravel + Inertia.js</h3>
+<p>SPAの場合、通常フロントエンドはLaravelとは別のプロジェクトとして通信を行い、APIを介してデータのやり取りを行います。
+しかし、Inertiaをもちいると、Laravelのルーティングやコントローラで受け取ったデータを、Bladeテンプレートの代わりにそのままVueやReactのコンポーネントに渡すことができます。</p>
+<p>Bladeを利用しているアプリケーションから徐々にSPA化していく場合やバックエンドエンジニア中心のチームだと選択肢として有力です。</p>
+<h3 id="laravel--livewire">Laravel + Livewire</h3>
+<p>Laravelが提供しているLivewireという技術も選択肢に入ります。</p>
+<p>これはLaravelアプリケーション内でVueやReactといったフロントエンドフレームワークを利用せずにBladeテンプレートを利用して動的なコンポーネントを実装することができます。</p>
+<p>Livewireのコンポーネントはサーバーと非同期通信し、DOMを部分的に差し替えるため、SPAのようなUXを提供することができます。JQueryを利用しているアプリケーションから徐々にSPA化していく場合や、バックエンドエンジニア中心のチームだと選択肢として有力です。</p>
+<p>ただ、Laravelとの連携がしやすい反面、深く統合されてしまうため、ReactやVue.jsのようなフロントエンドフレームワークを利用する場合に比べると、フロントエンドの技術としてのスキルが身につきにくく、技術としても主流ではないため、情報量の少なさや生成AI時代におけるプログラミングの観点からもあまりおすすめできません。</p>
+<h2 id="採用する技術の選定">採用する技術の選定</h2>
+<p>視点としては企業で採用、運用していく、運用期間が長くなることを想定しているアプリケーションの場合、デファクトスタンダードや息の長い技術を選びつつ、いざという時に移行が致命的に難しくない技術を選ぶことが重要です。</p>
+<p>記事執筆時点で上記に当てはまる技術としてはLaravel + Reactが安牌かなと思います。</p>
+<h2 id="laravelでreactを採用する時の統合方法">LaravelでReactを採用する時の統合方法</h2>
+<p>ここからが本題なんですが、LaravelとReactを統合する方法について考えてみます。</p>
+<h3 id="laravelとviteを利用してreactを統合する">LaravelとViteを利用してReactを統合する</h3>
+<p>Laravelを利用しつつフロントエンドフレームワークを利用する場合、現在はビルドにViteを利用することが推奨されています。</p>
+<p>ReactやVue.jsを利用する場合はLaravelに用意されている統合方法を利用することができます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">laravel-react-app/</span></span>
+<span class="line"><span style="color:#B392F0"> ├─</span><span style="color:#9ECBFF"> app/</span></span>
+<span class="line"><span style="color:#B392F0"> ├─</span><span style="color:#9ECBFF"> public/</span></span>
+<span class="line"><span style="color:#B392F0"> ├─</span><span style="color:#9ECBFF"> resources/</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   ├─</span><span style="color:#9ECBFF"> js/</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   │</span><span style="color:#9ECBFF">   ├─</span><span style="color:#9ECBFF"> components/</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   │</span><span style="color:#9ECBFF">   │</span><span style="color:#9ECBFF">   └─</span><span style="color:#9ECBFF"> Example.tsx</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   │</span><span style="color:#9ECBFF">   └─</span><span style="color:#9ECBFF"> app.tsx</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   ├─</span><span style="color:#9ECBFF"> views/</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   │</span><span style="color:#9ECBFF">   └─</span><span style="color:#9ECBFF"> index.blade.php</span></span>
+<span class="line"><span style="color:#B392F0"> ├─</span><span style="color:#9ECBFF"> vite.config.js</span></span>
+<span class="line"><span style="color:#B392F0"> ├─</span><span style="color:#9ECBFF"> package.json</span></span>
+<span class="line"><span style="color:#B392F0"> └─</span><span style="color:#9ECBFF"> ...</span></span>
+<span class="line"></span></code></pre>
+<ul>
+<li>resources/js/app.tsxにReactコンポーネントを置き、app.tsxをエントリポイントとして管理します。</li>
+<li>resources/views/index.blade.phpにapp.tsxを読み込むディレクティブを記述します。</li>
+</ul>
+<p>vite.config.tsにはLaravel用の設定を記述します。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { defineConfig } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'vite'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> laravel </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'laravel-vite-plugin'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> react </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@vitejs/plugin-react'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> defineConfig</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  plugins: [</span></span>
+<span class="line"><span style="color:#B392F0">    laravel</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      input: [</span><span style="color:#9ECBFF">'resources/js/app.tsx'</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">      refresh: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    }),</span></span>
+<span class="line"><span style="color:#B392F0">    react</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span></code></pre>
+<p>LaravelのBladeにはアセットの読み込みを記述して、Laravelからのルーティングはこのファイルに向けます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">&#x3C;!</span><span style="color:#79B8FF">DOCTYPE</span><span style="color:#79B8FF"> html</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF">html</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF">head</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">    &#x3C;</span><span style="color:#79B8FF">meta</span><span style="color:#79B8FF"> charset</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"utf-8"</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">    &#x3C;</span><span style="color:#79B8FF">title</span><span style="color:#F97583">></span><span style="color:#79B8FF">Laravel</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> React</span><span style="color:#F97583">&#x3C;/</span><span style="color:#79B8FF">title</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">    @</span><span style="color:#79B8FF">viteReactRefresh</span></span>
+<span class="line"><span style="color:#F97583">    @</span><span style="color:#B392F0">vite</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'resources/js/app.tsx'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">&#x3C;/</span><span style="color:#79B8FF">head</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF">body</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">    &#x3C;</span><span style="color:#79B8FF">div</span><span style="color:#79B8FF"> id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"app"</span><span style="color:#F97583">>&#x3C;/</span><span style="color:#79B8FF">div</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">&#x3C;/</span><span style="color:#79B8FF">body</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#F97583">&#x3C;/</span><span style="color:#79B8FF">html</span><span style="color:#F97583">></span></span>
+<span class="line"></span></code></pre>
+<p>Reactコンポーネントのエントリポイントでは、コンポーネントをマウントします。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'react'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ReactDOM </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'react-dom/client'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Example </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> './components/Example'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">ReactDOM.</span><span style="color:#B392F0">createRoot</span><span style="color:#E1E4E8">(document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'app'</span><span style="color:#E1E4E8">)).</span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">(&#x3C;</span><span style="color:#79B8FF">Example</span><span style="color:#E1E4E8"> />);</span></span>
+<span class="line"></span></code></pre>
+<p>この方法を取る場合はLaravelと同一のリポジトリで管理がしやすく、ビルド結果を<code>public/build</code>配下に生成される静的アセットを本番環境に配置します。</p>
+<p>開発環境ではViteの開発サーバーを利用できるため、HMRを利用して開発を行うことができます。</p>
+<p>なお、現状のViteでは開発サーバーと本番用ビルドに利用している技術が異なるため、開発環境と本番環境での挙動の違いに注意が必要です。</p>
+<h3 id="laravelとreactを別リポジトリで管理する">LaravelとReactを別リポジトリで管理する</h3>
+<p>フロントエンド (React) とバックエンド (Laravel) をそれぞれ別プロジェクトとして扱う、あるいは同一リポジトリでも完全にディレクトリを分離し、React 側で独自の index.html を持つ形式です。</p>
+<p>Laravel は主に RESTful API（JSONレスポンス）を提供し、React アプリ側がそれを呼び出して画面を描画する“ヘッドレス”や完全 SPA に近い構成になります。</p>
+<p>インフラも含め、フロントエンドとバックエンドを独立してスケール、デプロイできる点がメリットです。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">my-project/</span></span>
+<span class="line"><span style="color:#B392F0"> ├─</span><span style="color:#9ECBFF"> backend-laravel/</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   ├─</span><span style="color:#9ECBFF"> app/</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   ├─</span><span style="color:#9ECBFF"> routes/</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   ├─</span><span style="color:#9ECBFF"> ...</span></span>
+<span class="line"><span style="color:#B392F0"> │</span><span style="color:#9ECBFF">   └─</span><span style="color:#9ECBFF"> Dockerfile</span><span style="color:#E1E4E8"> (optional)</span></span>
+<span class="line"><span style="color:#B392F0"> └─</span><span style="color:#9ECBFF"> frontend-react/</span></span>
+<span class="line"><span style="color:#B392F0">     ├─</span><span style="color:#9ECBFF"> public/</span></span>
+<span class="line"><span style="color:#B392F0">     │</span><span style="color:#9ECBFF">   └─</span><span style="color:#9ECBFF"> index.html</span></span>
+<span class="line"><span style="color:#B392F0">     ├─</span><span style="color:#9ECBFF"> src/</span></span>
+<span class="line"><span style="color:#B392F0">     ├─</span><span style="color:#9ECBFF"> package.json</span></span>
+<span class="line"><span style="color:#B392F0">     ├─</span><span style="color:#9ECBFF"> vite.config.ts</span></span>
+<span class="line"><span style="color:#B392F0">     └─</span><span style="color:#9ECBFF"> Dockerfile</span><span style="color:#E1E4E8"> (optional)</span></span>
+<span class="line"></span></code></pre>
+<p>この方法を取る場合はインフラ構成においても幅広い選択肢を持つことができます。</p>
+<h4 id="バックエンドとフロントエンドを別々のホスティング先にデプロイする">バックエンドとフロントエンドを別々のホスティング先にデプロイする</h4>
+<p>フロントエンドをVerce、Netlify、Firebase Hostingなどの静的ホスティングサービスにデプロイし、バックエンドをHeroku、AWS、GCPなどのPaaSにデプロイする方法です。</p>
+<p>この方法を選択する場合は通信のレイテンシを意識しつつ適切なCORS設定やドメインの設定が必要です。</p>
+<h4 id="同一サーバー上でnginxリバースプロキシ">同一サーバー上でNginxリバースプロキシ</h4>
+<p>Nginx の設定で /api/ 以下を Laravel (PHP-FPM など) に振り分け、 / (それ以外) をビルド済みの React の index.html に返すようにします。
+React アプリはビルド結果が dist や build フォルダにまとめられ、それを Nginx で静的ファイルとして返す形にします。</p>
+<p>この方法の場合、後からフロントエンドでSSRが必要になった場合でもLaravelに依存せず自由な構成を取ることができます。</p>
+<p>また、リポジトリを明確に分割できるため、大規模な開発チームでバックエンドチームとフロントエンドチームを明確に分業しやすい点もメリットになります。</p>
+<h2 id="技術選定における観点">技術選定における観点</h2>
+<p>自分が技術選定を行う場合の観点についてまとめてみました。</p>
+<ul>
+<li>規模の把握</li>
+<li>技術がデファクトスタンダードに近いか</li>
+<li>いざという時の移行が容易か</li>
+<li>チームのスキルセット</li>
+</ul>
+<h2 id="まとめ">まとめ</h2>
+<p>最後に、本記事で取り上げた内容をポイントごとに簡潔にまとめます。Laravel で SPA を構築する際の検討材料として参考にしてください。</p>
+<ol>
+<li>
+<p><strong>規模や要件の把握が最優先</strong></p>
+<ul>
+<li>「ユーザー数」「データ量」「リクエスト数」「予算・期間」などを事前に整理し、要件に見合った技術選定を行う。</li>
+<li>受託開発かプロダクト開発か、運用期間の長さなど、ビジネス的な観点も考慮する。</li>
+</ul>
+</li>
+<li>
+<p><strong>Laravel が得意な領域と不得意な領域を理解する</strong></p>
+<ul>
+<li>Laravel は汎用的な Web アプリケーション構築に強く、コミュニティも活発。</li>
+<li>リアルタイム性や常時接続を大量に捌くアプリケーションには不向き（サーバー／言語特性上、非同期処理を得意としないなど）だが、水平スケールや他技術との組み合わせである程度はカバー可能。</li>
+</ul>
+</li>
+<li>
+<p><strong>フロントエンド技術選定の観点</strong></p>
+<ul>
+<li>Vue.js：学習コストが低めで Laravel との連携事例が多い。</li>
+<li>React：世界的に採用事例が多く、コミュニティが大規模。特に大中規模開発や React Native との連携を考える場合に有力。</li>
+<li>Inertia.js / Livewire：Laravel との親和性が高く、従来の Blade テンプレートから段階的に SPA 化できる。ただし、フロントエンド主導のモダンな技術要素は若干抑えめ。</li>
+</ul>
+</li>
+<li>
+<p><strong>SPA 化の構成例</strong></p>
+<ul>
+<li><strong>Laravel + Vite で一体管理</strong>
+<ul>
+<li>1 つのリポジトリにバックエンドとフロントエンドを集約するため、小〜中規模なら開発も管理もしやすい。</li>
+</ul>
+</li>
+<li><strong>バックエンドとフロントエンドを完全分離</strong>
+<ul>
+<li>RESTful API を利用し、フロントエンド（React など）は独立してビルド・デプロイする。</li>
+<li>大規模開発やチーム分業が必要な場合、インフラ構成やスケーリングの自由度が増す。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>長期運用と移行の容易性</strong></p>
+<ul>
+<li>デファクトスタンダードやコミュニティが活発な技術を選ぶと、情報が多く生成 AI 時代に合致しやすい。</li>
+<li>「いざという時の移行」のしやすさも考慮し、Laravel＋React のように広く使われている組み合わせを選ぶと安心感がある。</li>
+</ul>
+</li>
+</ol>
+<h3 id="所感">所感</h3>
+<p>今回はLaravelと組み合わせるフロントエンド技術について考えてみました。</p>
+<p>今、LaravelでSPAアプリケーションを構築する場合、自分ならLaravelとReactを採用しつつ、完全に別リポジトリで管理する方法を選択するかなと思います。</p>
+<p>これには、バックエンドとフロントエンドの関心の分離はもちろんのこと、生成AIを活用する上で保持するコンテキストや検索範囲をリポジトリ単位で制限しやすいことを考慮しています。</p>
+<p>反対に、規模が小さいプロジェクトであれば、バックエンドにもTSを採用してしまって全部生成AIのコンテキスト対象としてしまうのが生産性が高いかもしれません。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
