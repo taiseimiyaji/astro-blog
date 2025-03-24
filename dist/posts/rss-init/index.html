@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="ja"> <head><title>WEBサイトにおけるRSSの仕組みとNext.js・Astro.jsでの実装</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+インターネット上の情報は長らく検索エンジンによって検索可能でしたが、段々と広告やサイトのクオリティの低下が目立つようになり、生成AIの出現とともに直接WEB上のサイトを閲覧する機会が減りつつあります。
+
+一方で、信憑性の"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/03/24</div> <h1>WEBサイトにおけるRSSの仕組みとNext.js・Astro.jsでの実装</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>インターネット上の情報は長らく検索エンジンによって検索可能でしたが、段々と広告やサイトのクオリティの低下が目立つようになり、生成AIの出現とともに直接WEB上のサイトを閲覧する機会が減りつつあります。</p>
+<p>一方で、信憑性の高い情報や興味深い仮説をブログで公開している方も多くいるため、効率的にそれらを収集したいという思いがあります。</p>
+<p>そのための技術として、RSSとその関連技術について調査してみます。私がエンジニアになった時点でもはや廃れつつある技術だったんですが、個人的に特定の技術ブログを追いたいと感じることが多いです。</p>
+<h2 id="rssの基本的な仕組み">RSSの基本的な仕組み</h2>
+<h3 id="rssとは">RSSとは</h3>
+<p>まずRSSの名称ですが、バージョンによって名称が異なるようです。</p>
+<p><a href="https://ja.wikipedia.org/wiki/RSS">RSS - Wikipedia</a></p>
+<ul>
+<li>RSS 0.9x Rich Site Summary</li>
+<li>RSS 0.9,RSS 1.x系 RDF Site Summary</li>
+<li>RSS 2.0系 Really Simple Syndication</li>
+</ul>
+<p>RSSの最大の利点は、チェックしたいサイトを個別に確認する必要がなく、複数サイトで更新されたページだけを一目で確認できることです。これにより、ユーザーは効率的に情報収集を行うことができます。</p>
+<h3 id="rssの技術的仕組み">RSSの技術的仕組み</h3>
+<p>RSSは、Webサイト上の更新情報や概要を配信するための文章上のルールを指します。技術的には、XMLという言語を使用して必要な情報（更新情報や概要）を構造化しています。</p>
+<p>Webサイト側はRSSを受け取りたいユーザーへ向けて、Webサイトの更新情報や新規ページの概要をまとめた「RSSフィード」を配信します。ユーザー側はRSSリーダーというソフトウェアを使用して、XMLで記述されたRSSフィードから必要な情報だけを読み取ります。RSSリーダーを使うことで、各ページに設定されているRSSフィードを読み取り、ユーザーに更新情報が届くという仕組みです。</p>
+<h3 id="rssフィードの構造">RSSフィードの構造</h3>
+<p>RSSフィードは、XMLフォーマットで記述されています。基本的なRSSフィードの構造は以下のようになっています：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#E1E4E8">&#x3C;?</span><span style="color:#85E89D">xml</span><span style="color:#B392F0"> version</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"1.0"</span><span style="color:#B392F0"> encoding</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"UTF-8"</span><span style="color:#E1E4E8"> ?></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">rss</span><span style="color:#B392F0"> version</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"2.0"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">channel</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>サイトのタイトル&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">link</span><span style="color:#E1E4E8">>サイトのURL&#x3C;/</span><span style="color:#85E89D">link</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">description</span><span style="color:#E1E4E8">>サイトの説明&#x3C;/</span><span style="color:#85E89D">description</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">language</span><span style="color:#E1E4E8">>ja&#x3C;/</span><span style="color:#85E89D">language</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">pubDate</span><span style="color:#E1E4E8">>公開日時&#x3C;/</span><span style="color:#85E89D">pubDate</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">item</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>記事のタイトル&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">link</span><span style="color:#E1E4E8">>記事のURL&#x3C;/</span><span style="color:#85E89D">link</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">description</span><span style="color:#E1E4E8">>記事の概要&#x3C;/</span><span style="color:#85E89D">description</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">pubDate</span><span style="color:#E1E4E8">>公開日時&#x3C;/</span><span style="color:#85E89D">pubDate</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">item</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#6A737D">    &#x3C;!-- 複数の&#x3C;item>要素が続く --></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">channel</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">rss</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span></code></pre>
+<p>この構造において、<code>&#x3C;channel></code> 要素はフィード全体の情報を含み、<code>&#x3C;item></code> 要素は個々の記事や更新情報を表します。各要素には、タイトル、リンク、説明、公開日時などの情報が含まれます。このXML形式のデータをRSSリーダーが解析し、ユーザーに分かりやすく表示することで、効率的な情報収集が可能になります。</p>
+<h3 id="rssとatomの違い">RSSとATOMの違い</h3>
+<p>ATOMもWebサイトの更新情報を知る手段の一つです。RSSと名前こそ異なっていますが、基本的な機能は同じものです。ATOMはRSSの機能に加えて、コンテンツを編集する機能も備えています。ATOMはRSSに改良を加えたものであり、ほぼ違いがないものという認識で問題ありません。</p>
+<p>RSSは歴史的な経緯が長く、そのしがらみがない形でAtomが作成されたらしいですが、こちらはIETFの提案標準RFC4287として採択されています。</p>
+<h3 id="rssとrssフィードの違い">RSSとRSSフィードの違い</h3>
+<p>RSSとRSSフィードは混同されがちですが、それぞれ違うものです。RSSは、Webサイトの更新情報を配信する「仕組み」のことで、RSSフィードはRSSに基づいた「データ（ファイル）」を指します。つまり、「仕組み」と、「その仕組みを利用したデータ」という違いと捉えることができます。</p>
+<h3 id="rssリーダーの種類と役割">RSSリーダーの種類と役割</h3>
+<p>RSSリーダーには、以下のような種類があります：</p>
+<ul>
+<li>メーラー型：メールソフトのようにWebサイトの更新情報を確認できる</li>
+<li>プラグイン型：ブラウザに組み込んで使用できる</li>
+<li>通知型：更新情報をポップアップで通知してくれる</li>
+<li>ティッカー型：デスクトップに設置できる</li>
+<li>ホスティング型：特定のWebサイトのアカウントでRSSを利用する</li>
+</ul>
+<p>代表的なRSSリーダーとしては、Feedly、Inoreader、Tiny Tiny RSS、The Old Reader、NewsBlur、Feederなどがあります。これらのRSSリーダーを使用することで、ユーザーは複数のWebサイトの更新情報を一箇所で効率的に確認することができます。</p>
+<p>個人的にはずっとFeedlyを利用していました。</p>
+<h3 id="rssの利点と活用方法">RSSの利点と活用方法</h3>
+<p>RSSを活用することで、以下のようなメリットがあります：</p>
+<p>効率的な情報収集が可能になります。複数のWebサイトの更新情報を一箇所で確認できるため、チェックしたいサイトを個別に訪問する必要がなくなります。これにより、情報収集にかかる時間を大幅に短縮することができます。</p>
+<p>情報の整理も容易になります。関心のあるトピックごとにフォルダ分けして管理できるため、必要な情報だけを選別して閲覧することができます。また、更新されたコンテンツだけを確認できるため、情報収集の時間を短縮できます。さらに、自動で更新情報を取得するため、定期的なチェックが不要になるという利点もあります。</p>
+<h2 id="rssからatomへの流れとその解説">RSSからAtomへの流れとその解説</h2>
+<h3 id="atomの誕生背景">Atomの誕生背景</h3>
+<p>RSSは1999年に登場し、Webサイトの更新情報を配信する標準的な方法として広く普及しました。しかし、RSSには仕様の曖昧さや制限があり、それらの問題を解決するために2003年にAtom（正式名称：Atom Syndication Format）が開発されました。</p>
+<p>Atomの開発は、RSSの複数のバージョン（RSS 0.9x、RSS 1.0、RSS 2.0）が存在し、それぞれに互換性の問題があったことが大きな要因でした。また、RSSの仕様が明確に定義されていない部分があり、実装によって解釈が異なるという問題もありました。</p>
+<h3 id="rssとatomの主な違い">RSSとAtomの主な違い</h3>
+<p>Atomは、RSSの問題点を解決するために設計されており、以下のような違いがあります：</p>
+<ol>
+<li>
+<p><strong>標準化レベル</strong>：AtomはIETF（Internet Engineering Task Force）によってRFC 4287として標準化されており、明確な仕様が定義されています。一方、RSSは公式の標準化団体によって管理されていません。</p>
+</li>
+<li>
+<p><strong>名前空間</strong>：Atomは常にXML名前空間を使用しますが、RSSでは名前空間の使用が一貫していません。</p>
+</li>
+<li>
+<p><strong>必須要素</strong>：Atomでは、各エントリーに一意のIDが必須であり、更新日時（updated）と作成日時（published）を区別します。RSSでは、これらの要素が必須ではなく、日付も単一の要素（pubDate）しかありません。</p>
+</li>
+<li>
+<p><strong>コンテンツモデル</strong>：Atomはより柔軟なコンテンツモデルを持ち、プレーンテキスト、HTML、XHTML、バイナリなど様々な形式のコンテンツを明示的に指定できます。</p>
+</li>
+<li>
+<p><strong>拡張性</strong>：Atomは拡張性を考慮して設計されており、外部の名前空間を使用した拡張が容易です。</p>
+</li>
+</ol>
+<h3 id="atomフィードの基本構造">Atomフィードの基本構造</h3>
+<p>Atomフィードの基本的な構造は以下のようになっています：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#E1E4E8">&#x3C;?</span><span style="color:#85E89D">xml</span><span style="color:#B392F0"> version</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"1.0"</span><span style="color:#B392F0"> encoding</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"UTF-8"</span><span style="color:#E1E4E8">?></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">feed</span><span style="color:#B392F0"> xmlns</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"http://www.w3.org/2005/Atom"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>サイトのタイトル&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">link</span><span style="color:#B392F0"> href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://example.com/"</span><span style="color:#E1E4E8">/></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">updated</span><span style="color:#E1E4E8">>2025-03-24T10:00:00Z&#x3C;/</span><span style="color:#85E89D">updated</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">author</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">>著者名&#x3C;/</span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">author</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">id</span><span style="color:#E1E4E8">>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6&#x3C;/</span><span style="color:#85E89D">id</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">entry</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>記事のタイトル&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">link</span><span style="color:#B392F0"> href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://example.com/article1"</span><span style="color:#E1E4E8">/></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">id</span><span style="color:#E1E4E8">>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a&#x3C;/</span><span style="color:#85E89D">id</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">updated</span><span style="color:#E1E4E8">>2025-03-23T18:30:02Z&#x3C;/</span><span style="color:#85E89D">updated</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">summary</span><span style="color:#E1E4E8">>記事の概要&#x3C;/</span><span style="color:#85E89D">summary</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">content</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"html"</span><span style="color:#E1E4E8">></span><span style="color:#9ECBFF">&#x3C;![CDATA[記事の本文（HTMLタグを含む）]]></span><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">content</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">entry</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#6A737D">  &#x3C;!-- 複数の&#x3C;entry>要素が続く --></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">feed</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span></code></pre>
+<h3 id="現在の状況と使い分け">現在の状況と使い分け</h3>
+<p>現在では、RSSとAtomの両方が広く使用されています。多くのWebサイトやブログプラットフォームは、両方のフォーマットをサポートしています。例えば、WordPressは標準でRSS 2.0とAtomの両方のフィードを生成します。</p>
+<p>どちらを選ぶべきかについては、以下のような基準があります：</p>
+<ul>
+<li><strong>互換性</strong>：古いRSSリーダーとの互換性が重要な場合は、RSS 2.0が適しています。</li>
+<li><strong>国際化対応</strong>：多言語コンテンツや特殊文字を扱う場合は、Atomの方が適しています。</li>
+<li><strong>標準化</strong>：明確に定義された標準に準拠したいなら、Atomが適しています。</li>
+<li><strong>シンプルさ</strong>：より単純な実装を望むなら、RSS 2.0が適しています。</li>
+</ul>
+<p>多くの場合、両方のフォーマットを提供することで、より広範なユーザーに対応できます。</p>
+<h3 id="実装の観点から見たatom">実装の観点から見たAtom</h3>
+<p>Atomを実装する際には、以下の点に注意が必要です：</p>
+<ol>
+<li>
+<p><strong>Content-Type</strong>：Atomフィードを配信する際は、Content-Typeを<code>application/atom+xml</code>に設定します。</p>
+</li>
+<li>
+<p><strong>必須要素</strong>：Atomでは、<code>id</code>、<code>title</code>、<code>updated</code>が必須要素です。また、各エントリーにも同様に<code>id</code>、<code>title</code>、<code>updated</code>が必須です。</p>
+</li>
+<li>
+<p><strong>ID生成</strong>：Atomでは各エントリーに一意のIDが必須です。通常、URIベースのIDを使用します（例：<code>urn:uuid:...</code>や<code>https://example.com/articles/123</code>など）。</p>
+</li>
+<li>
+<p><strong>日付フォーマット</strong>：日付はISO 8601形式（例：<code>2025-03-24T10:00:00Z</code>）で指定する必要があります。</p>
+</li>
+</ol>
+<p>多くのフレームワークやライブラリは、RSSとAtomの両方のフォーマットをサポートしており、開発者は簡単に両方のフィードを生成できるようになっています。</p>
+<h2 id="nextjsでのrss実装">Next.jsでのRSS実装</h2>
+<h3 id="nextjsとは">Next.jsとは</h3>
+<p>Next.jsは、Reactベースのフロントエンドフレームワークで、サーバーサイドレンダリング（SSR）や静的サイト生成（SSG）などの機能を提供しています。Next.jsは、Reactの開発体験を向上させるために設計されており、ルーティング、データフェッチング、画像最適化などの機能が組み込まれています。Next.jsでRSSフィードを実装する方法はいくつかありますが、主に「feedライブラリ」と「rssライブラリ」を使用する2つのアプローチが一般的です。</p>
+<h3 id="feedライブラリを使用した実装">feedライブラリを使用した実装</h3>
+<h4 id="1-ライブラリのインストール">1. ライブラリのインストール</h4>
+<p>まず、feedライブラリをインストールします：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># npmの場合</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> feed</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># yarnの場合</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> feed</span></span>
+<span class="line"></span></code></pre>
+<h4 id="2-フィード情報を作成する関数">2. フィード情報を作成する関数</h4>
+<p>次に、RSSフィードを生成する関数を作成します。以下は<code>lib/feed.ts</code>などのファイルに実装する例です：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// lib/feed.ts</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { Feed } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'feed'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#B392F0"> generateRssFeed</span><span style="color:#F97583"> =</span><span style="color:#F97583"> async</span><span style="color:#E1E4E8"> ()</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Promise</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">> </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // 環境変数などで設定した基本URLを取得</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> baseUrl</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'localhost:3000'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#6A737D">  // フィードの基本情報を設定</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> feed</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Feed</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    title: </span><span style="color:#9ECBFF">'サイトのタイトル'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    description: </span><span style="color:#9ECBFF">'サイトの説明'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    id: baseUrl,</span></span>
+<span class="line"><span style="color:#E1E4E8">    link: baseUrl,</span></span>
+<span class="line"><span style="color:#E1E4E8">    language: </span><span style="color:#9ECBFF">'ja'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    copyright: </span><span style="color:#9ECBFF">'copyright'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    generator: baseUrl,</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // データを取得する（APIやファイルなどから）</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> posts</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> getPosts</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#6A737D">  // 各記事をフィードに追加</span></span>
+<span class="line"><span style="color:#E1E4E8">  posts.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">post</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    feed.</span><span style="color:#B392F0">addItem</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      title: post.title,</span></span>
+<span class="line"><span style="color:#E1E4E8">      description: post.description,</span></span>
+<span class="line"><span style="color:#E1E4E8">      date: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">(post.date),</span></span>
+<span class="line"><span style="color:#E1E4E8">      id: post.url,</span></span>
+<span class="line"><span style="color:#E1E4E8">      link: post.url,</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // RSS 2.0形式でフィードを出力</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> feed.</span><span style="color:#B392F0">rss2</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#6A737D">  // 他の形式でも出力可能</span></span>
+<span class="line"><span style="color:#6A737D">  // feed.atom1() でAtomフィードを生成</span></span>
+<span class="line"><span style="color:#6A737D">  // feed.json1() でJSONフィードを生成</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span></code></pre>
+<h4 id="3-xmlファイルを生成する">3. XMLファイルを生成する</h4>
+<p>Next.jsでは、Pages RouterとApp Routerの2つのルーティングシステムがあり、それぞれで実装方法が異なります。</p>
+<h5 id="pages-routerの場合pagesfeedtsx">Pages Routerの場合（pages/feed.tsx）</h5>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// pages/feed.tsx</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { GetServerSideProps } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'next'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { generateRssFeed } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../lib/feed'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#B392F0"> getServerSideProps</span><span style="color:#F97583">:</span><span style="color:#B392F0"> GetServerSideProps</span><span style="color:#F97583"> =</span><span style="color:#F97583"> async</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> xml</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> generateRssFeed</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  res.statusCode </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 200</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  res.</span><span style="color:#B392F0">setHeader</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Cache-Control'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'s-maxage=86400, stale-while-revalidate'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  res.</span><span style="color:#B392F0">setHeader</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Content-Type'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'text/xml'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  res.</span><span style="color:#B392F0">end</span><span style="color:#E1E4E8">(xml);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    props: {},</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> Page</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> ()</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> null</span><span style="color:#F97583"> =></span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> Page;</span></span>
+<span class="line"></span></code></pre>
+<h5 id="app-routerの場合apprssxmlroutets">App Routerの場合（app/rss.xml/route.ts）</h5>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// app/rss.xml/route.ts</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { generateRssFeed } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@/lib/feed'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> revalidate</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 60</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 60</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 24</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 24時間ごとに再検証</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> GET</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> xml</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> generateRssFeed</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Response</span><span style="color:#E1E4E8">(xml, {</span></span>
+<span class="line"><span style="color:#E1E4E8">    headers: {</span></span>
+<span class="line"><span style="color:#9ECBFF">      'Content-Type'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'application/xml'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      'Cache-Control'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">`s-maxage=${</span><span style="color:#E1E4E8">revalidate</span><span style="color:#9ECBFF">}, stale-while-revalidate`</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<h3 id="rssライブラリを使用した実装">rssライブラリを使用した実装</h3>
+<p>feedライブラリの代わりに、rssライブラリを使用することもできます。</p>
+<h4 id="1-ライブラリのインストール-1">1. ライブラリのインストール</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># npmの場合</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> rss</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># yarnの場合</span></span>
+<span class="line"><span style="color:#B392F0">yarn</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> rss</span></span>
+<span class="line"></span></code></pre>
+<h4 id="2-app-routerでの実装例">2. App Routerでの実装例</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// app/rss.xml/route.ts</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { description, title } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@/scripts/metadata'</span><span style="color:#E1E4E8">; </span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { getArticles } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@/scripts/microcms'</span><span style="color:#E1E4E8">; </span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Rss </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'rss'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> url</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> String</span><span style="color:#E1E4E8">(process.env.</span><span style="color:#79B8FF">NEXT_PUBLIC_BASE_URL</span><span style="color:#E1E4E8">); </span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> revalidate</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 60</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 60</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 24</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 1日ごとに再検証</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> GET</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> feed</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Rss</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    title,</span></span>
+<span class="line"><span style="color:#E1E4E8">    description,</span></span>
+<span class="line"><span style="color:#E1E4E8">    feed_url: </span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">url</span><span style="color:#9ECBFF">}/rss.xml`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    site_url: url,</span></span>
+<span class="line"><span style="color:#E1E4E8">    language: </span><span style="color:#9ECBFF">'ja'</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">contents</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> getArticles</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> contents.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">; </span><span style="color:#F97583">++</span><span style="color:#E1E4E8">i) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    feed.</span><span style="color:#B392F0">item</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      title: contents[i].title,</span></span>
+<span class="line"><span style="color:#E1E4E8">      description: </span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">contents</span><span style="color:#9ECBFF">[</span><span style="color:#E1E4E8">i</span><span style="color:#9ECBFF">].</span><span style="color:#E1E4E8">description</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">description</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">, </span></span>
+<span class="line"><span style="color:#E1E4E8">      url: </span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">url</span><span style="color:#9ECBFF">}/${</span><span style="color:#E1E4E8">contents</span><span style="color:#9ECBFF">[</span><span style="color:#E1E4E8">i</span><span style="color:#9ECBFF">].</span><span style="color:#E1E4E8">url</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      date: contents[i].updatedAt</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Response</span><span style="color:#E1E4E8">(feed.</span><span style="color:#B392F0">xml</span><span style="color:#E1E4E8">(), {</span></span>
+<span class="line"><span style="color:#E1E4E8">    headers: {</span></span>
+<span class="line"><span style="color:#9ECBFF">      'Content-Type'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'application/xml'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      'Cache-Control'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">`s-maxage=${</span><span style="color:#E1E4E8">revalidate</span><span style="color:#9ECBFF">}, stale-while-revalidate`</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<h3 id="実装時の注意点">実装時の注意点</h3>
+<p>Next.jsでRSSフィードを実装する際には、いくつかの注意点があります。</p>
+<p>キャッシュ設定に関しては、RSSフィードは頻繁に更新されるわけではないため、適切なキャッシュ設定を行うことでサーバーの負荷を軽減できます。<code>Cache-Control</code>ヘッダーを使用して、キャッシュの有効期間を設定しましょう。</p>
+<p>コンテンツのエスケープも重要です。XMLでは特殊文字（<code>&#x3C;</code>, <code>></code>, <code>&#x26;</code>など）をエスケープする必要があります。多くのRSSライブラリは自動的にエスケープを行いますが、HTMLコンテンツを含める場合は<code>CDATA</code>セクションで囲むことを検討してください。</p>
+<p>パフォーマンスについては、大量の記事を含むRSSフィードは生成に時間がかかる場合があります。</p>
+<p>また、RSSフィードをGoogle Search Consoleに登録することで、検索エンジンがコンテンツを効率的にクロールできるようになります。これにより、サイトのSEO対策にも貢献します。</p>
+<h2 id="astrojsでの実装">Astro.jsでの実装</h2>
+<p>自分がブログを作成する際に利用しているAstro.jsでも実装してみます。</p>
+<h3 id="パッケージのインストール">パッケージのインストール</h3>
+<p>まずは公式で用意されているRSS統合パッケージをインストールします。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> @astrojs/rss</span></span>
+<span class="line"></span></code></pre>
+<h3 id="rssフィード生成ページを作成">RSSフィード生成ページを作成</h3>
+<p>Astro.jsでは、<code>src/pages/rss.xml.ts</code>というようなページを作成することでRSSフィードを生成できます。</p>
+<p>自分のブログで実装する場合はこのような形になりそうです。</p>
+<p>blogコレクションにあること、draft記事を除くことなどを指定しています。
+サイトのタイトル等は<code>consts</code>ファイルで定義しています。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> rss </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@astrojs/rss'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { getCollection } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'astro:content'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../consts'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#F97583"> type</span><span style="color:#E1E4E8"> { APIContext } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'astro'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> GET</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">context</span><span style="color:#F97583">:</span><span style="color:#B392F0"> APIContext</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> blog</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> getCollection</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'blog'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> posts</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> blog.</span><span style="color:#B392F0">filter</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">post</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#F97583"> !</span><span style="color:#E1E4E8">post.data.draft);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> rss</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    title: </span><span style="color:#79B8FF">SITE_TITLE</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    description: </span><span style="color:#79B8FF">SITE_DESCRIPTION</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    site: context.site?.</span><span style="color:#B392F0">toString</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">||</span><span style="color:#79B8FF"> SITE_URL</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    items: posts.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">post</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> ({</span></span>
+<span class="line"><span style="color:#E1E4E8">      title: post.data.title,</span></span>
+<span class="line"><span style="color:#E1E4E8">      pubDate: post.data.createDate,</span></span>
+<span class="line"><span style="color:#E1E4E8">      description: post.body.</span><span style="color:#B392F0">slice</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">200</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> '...'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      link: </span><span style="color:#9ECBFF">`/posts/${</span><span style="color:#E1E4E8">post</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">slug</span><span style="color:#9ECBFF">}/`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      categories: post.data.tags,</span></span>
+<span class="line"><span style="color:#E1E4E8">    })),</span></span>
+<span class="line"><span style="color:#E1E4E8">    customData: </span><span style="color:#9ECBFF">`&#x3C;language>ja&#x3C;/language>`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<p>Astro.jsの場合はこれだけで<code>/rss.xml</code>にアクセスするとRSSフィードが生成されていることを確認できます。</p>
+<p>SSGで作成しているブログなので、自分の場合は記事を追加するたびに簡単なCI/CDを利用してデプロイしているため、その際のビルドでRSSフィードも作成されます。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>RSSは1999年に登場した比較的古い技術ですが、現在でも多くのWebサイトで利用されており、ユーザーが効率的に情報を収集するための強力なツールとなっています。RSSを実装することで、Webサイト運営者はユーザーに対して効率的な情報提供を行うことができます。</p>
+<p>現在は個人開発でRSSリーダーを実装しようとしていたので、自分のブログのフィード配信と合わせて勉強になりました。</p>
+<p>生成AIによる検索に頼る時代も到来するかもしれませんが、RSSはまだ重要な役割を果たすと思います。</p>
+<h2 id="参考資料">参考資料</h2>
+<ul>
+<li><a href="https://zenn.dev/ichii731/articles/84a62b88a17a7c">LaravelでRSS/Atomフィードを配信・生成する - Zenn</a></li>
+<li><a href="https://qiita.com/kaeru333/items/3685f9231c9c07edb0e4">Next.jsでfeedライブラリを使いRSSフィードを生成する - Qiita</a></li>
+<li><a href="https://blog.kimizuka.org/entry/2024/03/15/123320">Next.js（App Router）でRSSフィードを実装する - みかづきブログ・カスタム</a></li>
+<li><a href="https://www.profuture.co.jp/mk/column/what-is-rss">RSSとは？基本的な仕組みと使い方を解説 | マーケトランク</a></li>
+</ul> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
