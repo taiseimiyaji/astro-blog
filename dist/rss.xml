@@ -804,7 +804,14 @@ PHPでモックを扱うライブラリとし...</description><pubDate>Fri, 31 J
 
 僕は前職では基本的にC言語、VBAでの開発を行なっていました。   
 業務の合間にテストコードを生成するためのツールなどをPythonを用いて行なっていました。   
-プログラミ...</description><pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate><category>OOP</category></item><item><title>XSSとSQLインジェクションについて</title><link>https://www.lyricrime.com/posts/xss-sql-injection/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/xss-sql-injection/</guid><description>
+プログラミ...</description><pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate><category>OOP</category></item><item><title>バックエンドエンジニアから見るVite入門</title><link>https://www.lyricrime.com/posts/vite-for-backend/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/vite-for-backend/</guid><description>
+## はじめに
+
+Laravelを自身の技術スタックの中心として使用してきた私ですが、以前はフロントエンドのassetのビルドにはwebpackを用いていました。
+
+LaravelではLaravel Mixを用いてWebpackを簡単に扱うことができていました。
+
+しかし、Webpackの開発終了やフロントエンドでのビルドツールの選択肢の増加に伴って、Laravel9からViteが公式標準のビル...</description><pubDate>Fri, 04 Apr 2025 00:00:00 GMT</pubDate><category>Vite</category><category>Backend</category></item><item><title>XSSとSQLインジェクションについて</title><link>https://www.lyricrime.com/posts/xss-sql-injection/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/xss-sql-injection/</guid><description>
 ## XSSとは
 Webアプリケーションの脆弱性を利用して行われるサイバー攻撃の1つ。   
 入力フォームなどに悪質なサイトへ誘導するスクリプトを埋め込みます。   
