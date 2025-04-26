@@ -419,7 +419,18 @@ OpenAIがChatGPTをリリースし、12月にはProプランがリリースさ�
 
 最近、個人的なプロジェクトのコードをNext.jsで書きながらキャッチアップをしています。  
 普段の業務では、すでにコンポーネント化されたUIを組み合わせて利用することが多く、基本的なコンポーネントを1から作ることはないのですが、個人で開発する場合には、コンポーネント化したくなる場面があり、その方針や基準に悩む機会が増えました。  
-今回は、基本的なHTMLタグを復習しつつ、...</description><pubDate>Thu, 30 May 2024 00:00:00 GMT</pubDate><category>html</category></item><item><title>クリーンアーキテクチャのUseCaseにおけるInput,Outputについて</title><link>https://www.lyricrime.com/posts/inputport/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/inputport/</guid><description>
+今回は、基本的なHTMLタグを復習しつつ、...</description><pubDate>Thu, 30 May 2024 00:00:00 GMT</pubDate><category>html</category></item><item><title>業務アプリケーションにおけるIDの種類と選択</title><link>https://www.lyricrime.com/posts/id-selection/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/id-selection/</guid><description>
+## はじめに
+
+今回は、業務でWebアプリケーションを構築する際や、外部サービスのAPI等に利用されるIDの種類と、それらをどう選ぶかについて考えてみます。
+
+## そもそもIDとは
+
+そもそもIDとはなんでしょうか？
+
+日本語だと「識別子」であり、リソースが一意であることを保証するためのラベルです。
+
+Webアプリケーションでは自動で採番された連番のINT型の値を思い浮かべる方も多いと思いま...</description><pubDate>Sat, 26 Apr 2025 00:00:00 GMT</pubDate></item><item><title>クリーンアーキテクチャのUseCaseにおけるInput,Outputについて</title><link>https://www.lyricrime.com/posts/inputport/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/inputport/</guid><description>
 
 ## はじめに
 クリーンアーキテクチャにやっとの思いでなれ始めているこの頃ですが、日頃業務で実装をしていくにあたって疑問に感じることがあります。   

@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="ja"> <head><title>業務アプリケーションにおけるIDの種類と選択</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+今回は、業務でWebアプリケーションを構築する際や、外部サービスのAPI等に利用されるIDの種類と、それらをどう選ぶかについて考えてみます。
+
+## そもそもIDとは
+
+そもそもIDとはなんでしょうか？
+
+日本語だと「識"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/services"><div>Services</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/04/26</div> <h1>業務アプリケーションにおけるIDの種類と選択</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>今回は、業務でWebアプリケーションを構築する際や、外部サービスのAPI等に利用されるIDの種類と、それらをどう選ぶかについて考えてみます。</p>
+<h2 id="そもそもidとは">そもそもIDとは</h2>
+<p>そもそもIDとはなんでしょうか？</p>
+<p>日本語だと「識別子」であり、リソースが一意であることを保証するためのラベルです。</p>
+<p>Webアプリケーションでは自動で採番された連番のINT型の値を思い浮かべる方も多いと思います。</p>
+<p>本来は他の識別子と違うこと以外の意味を持つべきではない値であるという主張から、本記事では「IDは文字列型を採用すべき」という立場から考えてみます。</p>
+<h2 id="int型のidの自動採番における問題点">INT型のIDの自動採番における問題点</h2>
+<p>INT型のIDの自動採番は、主に以下の問題点があります。</p>
+<ul>
+<li>スケールアウトの阻害
+<ul>
+<li>DBMSにレコードを作成する際に自動採番する場合、オートインクリメントは1台のDBに依存します。</li>
+<li>これは水平分割時に重複していないことを担保するのが難しくなります。</li>
+</ul>
+</li>
+<li>ホットスポット
+<ul>
+<li>オートインクリメントの場合、最新レコードへ書き込みが集中します。</li>
+<li>B+Treeの末尾にあるノードが過度にロックされる可能性があります。</li>
+</ul>
+</li>
+<li>リークしやすい連番
+<ul>
+<li>ビジネスロジックとして連番に意味がなくても、数が推測できるため、サービスの規模が露見してしまいます。</li>
+<li>連番であることに依存したビジネスロジックを実装してしまう可能性があります。</li>
+</ul>
+</li>
+</ul>
+<p>また、設計的なデメリットもあります。</p>
+<p>DDDのような責務を分離した設計を行っていくと、DB上にレコードを保存しないとIDを採番できない事による不都合が生じます。</p>
+<p>DDDではエンティティが作成されるタイミングでIDを持つ必要があります。しかし、連番は「DBへINSERTされるタイミング」でIDが確定するため、エンティティの生成タイミングとトランザクションの境界がねじれることになります。</p>
+<h2 id="文字列型のidの利点">文字列型のIDの利点</h2>
+<p>文字列型のIDの利点は主に以下の点です。</p>
+<ul>
+<li>一意性の保証がアプリ層で完結する
+<ul>
+<li>例えば、RFC 9562で定義されているUUID v4/v7ではIDが衝突する確率は天文学的に低く、DBMSに依存しないため、DBが分散したり、DB自体の移行の際にもIDポリシーを維持しやすいです。</li>
+</ul>
+</li>
+<li>順序性を担保できる実装が増えた
+<ul>
+<li>INT型を採用する際の大きな利点として順序性が担保できることによるインデックス性能の向上がありました</li>
+<li>UUIDv7やULIDといったIDの生成アルゴリズムでは、「時刻 + 乱数」構成を用いれば、挿入順のままインデックスを構築することができます</li>
+</ul>
+</li>
+<li>連番ではないので必要な情報以外を切り離せる
+<ul>
+<li>連番によるデメリットである規模の推定や攻撃への利用を防ぐ事ができます</li>
+</ul>
+</li>
+<li>多言語/他のDBとの互換性
+<ul>
+<li>多言語化する際に、IDを文字列型にすることで、IDの意味を変更する必要がなく、PostgreSQL/MySQLなど他のDBとの互換性を保ちやすいです。</li>
+</ul>
+</li>
+</ul>
+<h2 id="int型の方が速い">INT型の方が速い？</h2>
+<p>多くの場合、DBMS目線ではたしかにINT型が最適な選択肢であるという記述が多く見つかります。</p>
+<p><a href="https://www.postgresql.org/docs/current/datatype-numeric.html">PostgreSQL: Documentation: 17: 8.1. Numeric Types</a></p>
+<p>しかし、業務で作成するアプリケーション目線だと連番を採用することによるメリットとデメリットのバランスを考慮する必要があります。</p>
+<p>基本的にサービスを作成、運用、保守するという立場から考えるとDBとしての最高性能にこだわることより、分散可能かつ生成タイミングを限定されないことによる変更容易性のほうが重要だと感じています。</p>
+<p>IDの選択による性能差が問題になる規模になればマイクロサービスによる整理や分散DBによる負荷分散などを行うほうが有利です。</p>
+<p>ちなみに、2022年時点で下記のIDに関する記事が公開されていますが、数年経った2025年時点でも同じ結論になるかなと思います。</p>
+<p><a href="https://zenn.dev/mpyw/articles/rdb-ids-and-timestamps-best-practices">Postgres と MySQL における id, created_at, updated_at に関するベストプラクティス</a></p>
+<p>加えて、2024年の5月にはUUIDの仕様がRFC 9562で正式化されました。</p>
+<p><a href="https://tex2e.github.io/rfc-translater/html/rfc9562.html">RFC 9562 - Universally Unique IDentifiers (UUIDs) 日本語訳</a></p>
+<h2 id="uuidの選択肢">UUIDの選択肢</h2>
+<p>UUIDの選択肢は主に以下の2つです。</p>
+<h3 id="uuidv4">UUIDv4</h3>
+<h3 id="uuidv7">UUIDv7</h3>
+<p>UUIDv4と比べるとページ局所性に優れます。</p>
+<p>このページ局所性とは、データベース内部で「連続するレコードが同じディスク/メモリページ上にまとめて格納される性質」のことです。</p>
+<p>ページ局所性があることで、下記のようなメリットがあります。</p>
+<ul>
+<li>キャッシュ効率の向上
+<ul>
+<li>同じページ内に連続レコードがまとまっていると、一度ページを読み込むだけで複数レコードをまとめてキャッシュできます。つまり、メモリ/ディスクのI/O回数が減るので、全体のクエリ応答性が向上します。</li>
+</ul>
+</li>
+<li>ランダムI/Oの抑制
+<ul>
+<li>ランダムに分散したIDだと、新規挿入時にレコードが書き込まれるページが分散するため、ディスクのシークが増加し、性能が落ちやすくなります。</li>
+</ul>
+</li>
+<li>インデックスの木構造最適化
+<ul>
+<li>B-Tree系のクラスタ化インデックスでは、キー順にリーフページが配置されるため、ページ局所性を保つことで木構造の高さを抑え、検索性能を向上させることができます。</li>
+</ul>
+</li>
+</ul>
+<p>MySQLで利用されているB−Treeについての解説は下記の記事を参考にしてください。</p>
+<ul>
+<li>
+<p><a href="https://qiita.com/kiyodori/items/f66a545a47dc59dd8839">B-treeインデックス入門 #MySQL - Qiita</a></p>
+</li>
+<li>
+<p><a href="https://devblog.thebase.in/entry/2018/12/09/110000">SQLアンチパターンとBtreeインデックスの関連性 - BASEプロダクトチームブログ</a></p>
+</li>
+</ul>
+<p>ページ局所性に関していうと <code>連番</code> > <code>UUIDv1,v6,v7</code>のような時間成分を含むもの > UUIDv4のような完全ランダムのもの</p>
+<p>まとめると下記のようになります。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th><strong>バージョン</strong></th><th><strong>生成方法</strong></th><th><strong>特徴</strong></th><th><strong>典型的用途</strong></th></tr></thead><tbody><tr><td><strong>v4</strong></td><td>暗号学的乱数 122 bit</td><td>衝突確率が低く広くサポート</td><td>分散トランザクション ID など順序不要なケース</td></tr><tr><td><strong>v7</strong></td><td>Unix epoch(ms) + 74 bit 乱数</td><td><strong>時系列ソート可能</strong>・2024 RFC で正式化</td><td>RDB 主キー、ログのキー、メッセージストリーム</td></tr></tbody></table>
+<h3 id="uuid-v7のライブラリ対応状況">UUID v7のライブラリ対応状況</h3>
+<p>UUID自体が2024年のRFCで正式化されたため、それまではライブラリの対応がまちまちでしたが、記事執筆時点の2025年では十分利用できるくらいサポートされてきたなという印象があります。</p>
+<ul>
+<li>Laravel<br>
+モデルに対するHasUuidsトレイトで利用されるIDがUUIDv7に変更されました。<br>
+<a href="https://github.com/laravel/framework/pull/52433">[12.x] モデルを UUID v7 に切り替える by staudenmeir · プルリクエスト #52433 · laravel/framework</a></li>
+</ul>
+<p>また、ID生成に関して時系列情報が使用されるため、プライバシーの観点からUUIDv7を採用するかどうかの議論があり、最終的にモデルのみUUIDv7を採用する方針を採択し、Str::uuid()はUUIDv4を採用する方針となりました。</p>
+<ul>
+<li>npm</li>
+</ul>
+<p>npmパッケージとして利用されるuuidパッケージは、2024年の6月にv7の対応がマージされています。</p>
+<p><a href="https://github.com/uuidjs/uuid/pull/681">uuid v7 by pmccarren · プルリクエスト #681 · uuidjs/uuid</a></p>
+<p>これにより、ドメイン駆動的にフロントエンドでエンティティを作成したいケースや、バックエンドでTypeScriptを利用する場合でも、簡単に利用できるようになりました。</p>
+<h2 id="その他のid">その他のID</h2>
+<ul>
+<li>NanoID
+<ul>
+<li>軽量かつ高い衝突耐性を持つID。URLに利用できる文字で構成され、UUIDv4同等くらいの衝突確率を持ちます。ID長がデフォルトだと21文字で、短い文字数なので利用しやすいです。</li>
+</ul>
+</li>
+<li>ULID
+<ul>
+<li>時系列情報を先頭に配置し、26文字で構成されるIDです。ハイフン無しの短い文字列で、大文字小文字を区別しない設計になっています。</li>
+</ul>
+</li>
+</ul>
+<h2 id="mysqlを使う場合の選択肢">MySQLを使う場合の選択肢</h2>
+<p>MySQLの場合はDBMSの特性上主キーの順序性がない場合は著しく性能が悪化します。
+そのため、下記の様な選択肢を検討する必要があります。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>観点</th><th>INT</th><th>UUID v4</th><th>UUID v7 / ULID</th></tr></thead><tbody><tr><td>主キーサイズ</td><td>4–8 B</td><td>16 B</td><td>16 B / 26 chars</td></tr><tr><td>インデックス局所性</td><td>◎（末尾集中）</td><td>△（ランダム分散）</td><td>○（半順序）</td></tr><tr><td>生成コスト</td><td>DB 依存 (軽)</td><td>アプリ層 (暗号 RNG)</td><td>アプリ層 (RNG + 時刻)</td></tr><tr><td>スケールアウト適性</td><td>△（シーケンス競合）</td><td>◎</td><td>◎</td></tr><tr><td>情報漏えいリスク</td><td>×</td><td>◎</td><td>◎</td></tr></tbody></table>
+<h2 id="結論">結論</h2>
+<p>基本的にはUUIDv7を採用する</p>
+<p>INT型を採用するケースは下記に当てはまり、かつMySQLを利用する場合くらいにとどまりそう</p>
+<ul>
+<li>スケールする可能性が低い</li>
+<li>将来的な拡張性より今シンプルであるほうが価値が高い</li>
+</ul>
+<h2 id="所感">所感</h2>
+<p>INT型を利用することが性能的にプラスに働くことは多いですが、分散不可能というデメリットや、設計的なデメリットが大きいため、多くの場合の最適解としては文字列IDを採用する方針をとるべきだと思います。
+RFCでの採択があり、UUIDv7の採用をしやすくなりました。
+既存システムからの移行は強い動機がないと難しいですが、新規プロダクトの作成時においては、文字列IDを採用するとより柔軟な設計を実現することができると思います。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
