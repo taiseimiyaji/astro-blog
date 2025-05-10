@@ -24,6 +24,13 @@ code {
 		overflow-wrap: normal;
 		overflow: hidden;
 	}
+	p {
+		line-height: 1.7;
+	}
+	ul li,
+	ol li {
+		line-height: 1.7;
+	}
 }
 a {
 	color: $white;
