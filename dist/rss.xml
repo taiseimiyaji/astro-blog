@@ -62,7 +62,18 @@ LaravelやRuby on Railsのようなフルスタックフレームワークの流
 ## 2024年の目標
 
 今年達成したいなあと思っていることは、大きく分けると個人で取り組むことと、組織的に取り組むことの二種類に分けられます。
-それぞれについて、具体的に取り組みたいことを言語化してみます。...</description><pubDate>Wed, 31 Jan 2024 00:00:00 GMT</pubDate><category>private</category></item><item><title>「データモデリングでドメインを駆動する」を読む その１ システムの分類と残</title><link>https://www.lyricrime.com/posts/data-modeling-domain-driven-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/data-modeling-domain-driven-01/</guid><description>
+それぞれについて、具体的に取り組みたいことを言語化してみます。...</description><pubDate>Wed, 31 Jan 2024 00:00:00 GMT</pubDate><category>private</category></item><item><title>生成AI時代のエンジニアのインプット方法の考察</title><link>https://www.lyricrime.com/posts/2025-llm-input/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2025-llm-input/</guid><description>
+## はじめに
+
+この記事は生成AI時代のエンジニアのインプット方法の考察です。
+
+生成AI時代のエンジニアにとって、様々なキャリア戦略の変化が起きています。
+
+筆者はあまりキャリア戦略とかに興味があるわけではないんですが、技術者として成長するために生成AIガンガン活用していきたいと考えています。
+
+これまでの学習方法のまとめとこれから生成AIを活用した事例をまとめていきます。
+
+## 従来の方...</description><pubDate>Sat, 17 May 2025 00:00:00 GMT</pubDate></item><item><title>「データモデリングでドメインを駆動する」を読む その１ システムの分類と残</title><link>https://www.lyricrime.com/posts/data-modeling-domain-driven-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/data-modeling-domain-driven-01/</guid><description>
 ## はじめに
 
 今回は杉本 啓さんの「データモデリングでドメインを駆動する」(以降書籍と呼びます)を読んでいきます。  
