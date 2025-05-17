@@ -10,9 +10,6 @@ export default function Header() {
 				<a href="/">
 					<div> Blog</div>
 				</a>
-				<a href="/services">
-					<div>Services</div>
-				</a>
 				<a href="/profile">
 					<div>Profile</div>
 				</a>

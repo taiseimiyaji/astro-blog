@@ -13,6 +13,13 @@ const blogEntries = await (await getCollection("blog")).filter(
 	(entry) => !entry.data.draft,
 );
 const posts = postOrderByCreatedAt(blogEntries);
+
+declare global {
+    interface Window {
+        dataLayer: any[];
+        gtag: (command: string, targetOrData: string | Date, params?: any) => void;
+    }
+}
 ---
 <html lang="ja">
 <head>
@@ -27,8 +34,8 @@ const posts = postOrderByCreatedAt(blogEntries);
 <script>
     window.dataLayer = window.dataLayer || [];
 
-    function gtag() {
-        dataLayer.push(arguments);
+    function gtag(...args: any[]) {
+        window.dataLayer.push(args);
     }
 
     gtag('js', new Date());
@@ -40,30 +47,52 @@ const posts = postOrderByCreatedAt(blogEntries);
     <Header></Header>
     <div class="content">
         <h1>このブログの作者について</h1>
-        <h2>Taisei Miyaji</h2>
-        <div class="card-container">
-            <GitHubCard url={'https://github.com/taiseimiyaji'} />
-            <XCard url={'https://x.com/lyricrime'} />
-            <ZennCard url={'https://zenn.dev/miyaji4602/'} />
+        <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+            <img src="/images/icon-bg.png" alt="プロフィールアイコン" width="160" height="160" style="border-radius: 50%; !important; max-width: 160px !important;">
+        </div>
+        <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+            <h2>Taisei Miyaji</h2>
         </div>
         <p>
             <h3>所属 <a href="https://corp.smaregi.jp/">株式会社スマレジ</a> CTO室</h3>
             エンジニアとしてのキャリアは組み込み系から始まり、現在はWEBエンジニアとして開発業務のリードをしています。<br>
             <br>
             このブログでは業務や趣味の開発を通して得た知見をメモ代わりにまとめています。
-
-        <h2>Skills</h2>
+        </p>
+        <h2>Skills & Offerings</h2>
 
         <ul>
             <li><strong>PHP・Laravel</strong><br>
-                中心的な技術スタックはLaravelです。SOLIDを中心とした設計を重視しています。
+                中心的な技術スタックはLaravelです。SOLIDを中心とした設計を重視しています。<br>
+                PHP（Laravel）、Ruby（Ruby on Rails）を中心に、バックエンドの設計・開発を行います。API設計からデータベース設計、テストまで可能です。
             </li>
             <li><strong>フロントエンド</strong><br>
                 Vue or Reactを使うことが多いです。
                 このブログ自体は、最新の静的サイトジェネレーターであるAstroを用いて構築しています。
-                社内でもフロントエンドの技術選定やアーキテクチャ設計に携わっています。
+                社内でもフロントエンドの技術選定やアーキテクチャ設計に携わっています。<br>
+                Vue.js、Nuxt.js、React.js、Next.jsなどのフロントエンド技術を用いて、アプリケーションの開発を行います。レスポンシブデザインやパフォーマンス最適化も対応可能です。
+            </li>
+            <li><strong>技術コンサルティング</strong><br>
+                システムの技術的課題の解決や、新技術の導入支援を行います。技術的負債の解消、アーキテクチャの改善、ドメイン駆動設計（DDD）の導入など技術的なサポートが可能です。
+            </li>
+            <li><strong>ユニットテスト導入支援</strong><br>
+                開発プロセスの品質向上のために、ユニットテストの導入やテスト自動化の支援を行います。CI/CD環境の構築やテストフレームワークの選定・導入も対応可能です。
+            </li>
+            <li><strong>受託開発</strong><br>
+               生成AIを活用した開発体制の構築、およびPoCの作成が可能です。お気軽にご相談ください
             </li>
         </ul>
+        <h2>副業のご依頼について</h2>
+        <p>
+            上記スキルセットや提供サービスにご興味をお持ちいただけましたら、副業でのご依頼も積極的にお受けしております。<br>
+            詳細につきましては、下記メールアドレスまでお気軽にお問い合わせください。<br>
+            <a href="mailto:taisei.miyaji4602@gmail.com">taisei.miyaji4602@gmail.com</a>
+        </p>
+        <div class="card-container" style="margin-top: 2rem; margin-bottom: 2rem;">
+            <GitHubCard url={'https://github.com/taiseimiyaji'} />
+            <XCard url={'https://x.com/lyricrime'} />
+            <ZennCard url={'https://zenn.dev/miyaji4602/'} />
+        </div>
         <h2>Hobby</h2>
         <p>
             休日はバスケや音楽ライブに参戦したり、バイクに乗ったりしています。<br>
