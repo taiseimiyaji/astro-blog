@@ -623,7 +623,16 @@ PHPやLaravelを使って開発をしていると、例外処理という言葉�
 今回は完全にポエムです。  
 SNSなどでよく見かける、「エンジニアに向いている人は〇〇な人だ!」という投稿を見ることがあります。  
 たとえば、「数学が得意な人はエンジニアに向いている」とか、反対に「実は文系の方がプログラミングに向いている」といったものがあります。  
-他にも、「コミュニケーション能力がある人」や「集中力がある人」といった、それは大抵の仕事でも必要だろと思わ...</description><pubDate>Fri, 25 Oct 2024 00:00:00 GMT</pubDate><category>poem</category></item><item><title>ChatGPTを活用しながらRailsで個人開発をしてみる</title><link>https://www.lyricrime.com/posts/rails-book-shelves-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/rails-book-shelves-01/</guid><description>
+他にも、「コミュニケーション能力がある人」や「集中力がある人」といった、それは大抵の仕事でも必要だろと思わ...</description><pubDate>Fri, 25 Oct 2024 00:00:00 GMT</pubDate><category>poem</category></item><item><title>生成AIを活用するためのプロンプトの基礎 - 「LLMのプロンプトエンジニアリング」を読んで</title><link>https://www.lyricrime.com/posts/prompt-engineer-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/prompt-engineer-init/</guid><description>
+## はじめに
+
+ここ一年で生成AIの進化は凄まじく、3ヶ月も経てばほとんどの知識が古くなってしまう状態です。
+
+しかし、それでも基本となるLLMの仕組みは変わっておらず、だからこそ効果的なプロンプトの基礎も変わっていません。
+
+この記事では、LLMの仕組みのざっくりとした雰囲気を押さえつつ、効果的なプロンプトを根拠を持って書けるようになるために必要なことをまとめます。
+
+少しでも仕組みを理解す...</description><pubDate>Thu, 29 May 2025 00:00:00 GMT</pubDate><category>AI</category></item><item><title>ChatGPTを活用しながらRailsで個人開発をしてみる</title><link>https://www.lyricrime.com/posts/rails-book-shelves-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/rails-book-shelves-01/</guid><description>
 ## はじめに
 
 スマレジではLaravelをメインで使っているのですが副業で触っているRailsについては理解がまだまだ浅い部分があるため、個人開発でも触ってみたいと思います。

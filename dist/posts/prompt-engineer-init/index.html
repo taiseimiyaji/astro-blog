@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="ja"> <head><title>生成AIを活用するためのプロンプトの基礎 - 「LLMのプロンプトエンジニアリング」を読んで</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
+## はじめに
+
+ここ一年で生成AIの進化は凄まじく、3ヶ月も経てばほとんどの知識が古くなってしまう状態です。
+
+しかし、それでも基本となるLLMの仕組みは変わっておらず、だからこそ効果的なプロンプトの基礎も変わっていません。
+
+この記事"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
+</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/05/29</div> <h1>生成AIを活用するためのプロンプトの基礎 - 「LLMのプロンプトエンジニアリング」を読んで</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>ここ一年で生成AIの進化は凄まじく、3ヶ月も経てばほとんどの知識が古くなってしまう状態です。</p>
+<p>しかし、それでも基本となるLLMの仕組みは変わっておらず、だからこそ効果的なプロンプトの基礎も変わっていません。</p>
+<p>この記事では、LLMの仕組みのざっくりとした雰囲気を押さえつつ、効果的なプロンプトを根拠を持って書けるようになるために必要なことをまとめます。</p>
+<p>少しでも仕組みを理解することで、プロンプトをブラッシュアップしていく際に迷う回数を減らし、より効果的に生成AIやコーディングエージェントを活用することを目指します。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://www.oreilly.co.jp/books/9784814401130/">LLMのプロンプトエンジニアリング - O’Reilly Japan</a></p>
+<h2 id="llmの基本">LLMの基本</h2>
+<p>まずはLLMが何をしているか、どのように動いているかを理解していきます。</p>
+<p>LLMは本質的には、トレーニング段階で学習したテキストを模倣するテキスト補完エンジンです。</p>
+<p>言語モデルは、単に次の単語の確率を予測し、最も確率が高いものを選択して補完します。参考書籍の中では、似たような機能の例として「iPhoneでメッセージを入力する際に、キーボードの上に表示される予測変換バー」を挙げています。</p>
+<p>さらに簡単な言い方も書籍内に登場します。</p>
+<blockquote>
+<p>「文字列を入力すると文字列を返すサービス」</p>
+</blockquote>
+<p>LLMの文脈では、入力する文字列のことを「プロンプト」、出力される文字列のことを「補完」や「レスポンス」と呼びます。</p>
+<p>ただし、LLMが目指すのはトレーニングデータをそっくりそのまま再現することではなく、学習したパターンをもとに新しいプロンプトに対しても補完ができるようになることです。</p>
+<blockquote>
+<p>トレーニングデータセットから無作為にドキュメントを1つ取り出し、そのドキュメントがちょうどそのプロンプトで始まっていると想定してみてください。あなたが知っているのは、そのドキュメントがそのプロンプトで始まっているという事実だけです。では、そのドキュメントを統計的に最も自然な形で続けるとしたら、次に来るのはどのようなテキストでしょうか？それこそがLLMから得られるであろう出力なのです。</p>
+</blockquote>
+<h2 id="gptとはなにか">GPTとはなにか</h2>
+<p>生成的事前トレーニング済みトランスフォーマー(Generative Pre-trained Transformer)でGPTと呼ばれます。</p>
+<p>GPT登場以前の標準的な手法は、インターネット上のテキストなどのラベルなしデータで事前トレーニングを行い、その後モデルのアーキテクチャを修正し、特定のタスクに特化したファインチューニングを適用して、最終的なモデルが「1つの」タスクを非常にうまくこなせるようにする、というものでした。</p>
+<p>例えば、株価の予測や競馬予想など、大量の学習データから未来に起こり得る現象を推測するようなもので、確かに生成AI登場以前から「AI」と呼ばれていたものです。</p>
+<p><a href="https://qiita.com/ksonoda/items/b767cbd283e379303178">ChatGPTのコア技術「GPT」をざっくり理解する #NLP - Qiita</a></p>
+<h2 id="ハルシネーション">ハルシネーション</h2>
+<p>これまでの説明のとおり、LLMは単にトレーニングデータからもっともらしいテキストの補完をするものだと理解できました。</p>
+<p>これには副作用があり、それが「ハルシネーション」と呼ばれます。
+モデル目線で見れば、もっとも確率の高いテキストを補完しているので、事実とことなるがもっともらしく見える情報であればモデルが自信を持って生成してしまう現象です。モデルの視点では他の補完と区別がつかないため、プロンプトでの指示はほとんど効果がありません。</p>
+<p>また、ハルシネーションはプロンプトによって誘発されることもあり、例えばプロンプトで誤った主張をしておきながらそれを訂正するケースは少ないため、与えられたプロンプトを正しいものとみなす傾向があります。</p>
+<h2 id="プロンプトの基礎">プロンプトの基礎</h2>
+<h3 id="トークンの分解をさせない">トークンの分解をさせない</h3>
+<p>人間は単語で文章を認識しますが、LLMは文字列をトークンに分解してから、それをモデルの入力として使用します。</p>
+<p>そのため、例えば単語を並び替えたりといったトークンを分解して再構築するような作業は避けておいた方が良いです。</p>
+<p>書籍では、スキャッターゴリーズという特定の条件に合致する単語を列挙するゲームをLLMにさせていますが、うまくいきません。このゲームは例えば、「Sw」から始まる国を列挙するようなものです。これらの作業にはトークンの分解が必要なので、LLMは苦手です。</p>
+<p>また、人間と違ってトークンで文字を認識しているので、ひらがなとカタカナの違いや大文字と小文字の違いなどを区別するのも苦手としています。同じ単語であっても同じトークンに分解されるとは限らないです。</p>
+<p>これらのトークンを扱うトークナイザーはモデルによって固定されており、このトークナイザーによって文字数がどうトークン数に変換されるかが決まります。また、多くのトークナイザーは英語に最適化されているので、英語をプロンプトに利用するのも有効です。</p>
+<p>トークン数の上限はコンテキストウインドウと呼ばれ、プロンプトの文字数の制限がありますが、参考書籍執筆時点から比べてもモデルの進化が早く、現在はかなり大きくなっています。</p>
+<h3 id="誤った出力をさせない">誤った出力をさせない</h3>
+<p>LLMはプロンプトから得られる最もあり得る次のトークンを補完しますが、1トークン出力されるたびにプロンプトの末尾に付け足され、LLMはまた新しいプロンプトを前提として再び統計的に最もあり得る次のトークンを求めます。</p>
+<blockquote>
+<p>スマートフォンで文字を入力するとき、キーボード上に3つほどの単語候補が出てきて、その中で真ん中の候補ばかり押し続ける、あの漢字を思い浮かべてみてください。LLMを動かすのは、ちょうどあれと似ています。</p>
+</blockquote>
+<p>この仕組みからわかることは、一度トークンを出力してしまうと、LLMはそのトークンを覆したり、あとから削除したりできないということです。人間が執筆中に誤字脱字を明示的に取り消したような「完成前のドキュメント」を学習していないからですね。</p>
+<p>また、この仕組みによって同じ文章を繰り返してしまうこともしばしば見られます。LLMにとっては終了することより回答を続けることが自然だと判断されるからです。このあたりの詳しい内容は参考書籍を参照してください。</p>
+<h3 id="文字数のカウント">文字数のカウント</h3>
+<p>人間はテキストを読み直したり、重要な箇所はスピードを落として読んだりできますが、LLMにはできないので、例えばプロンプトの最後に「文字数を数えろ」というリクエストが出てきたとしても読み直せないです。このことはプロンプトエンジニアリングにおける「順序」の重要性を示します。
+最初に文字数を聞いた場合のほうが最後に聞く場合と比べると、より確実な答えを得ることができます。（もちろんトークン単位での処理なので文字数を数える事自体は苦手としています。）</p>
+<blockquote>
+<p>もし、ある能力がLLMにとって現実的かどうか判断したいなら、次の問を自分に投げかけてみてください。「関連する知識をすべて頭に入れた人間の専門家が、一度も立ち戻りや修正、メモ取りなしでこのプロンプトに対する回答を書き上げられるだろうか？」</p>
+</blockquote>
+<h3 id="few-shot">Few-shot</h3>
+<p>プロンプトに例を追加する手法は「Few-shotプロンプティング」と呼ばれます。
+例示による説明はLLMがパターンを認識し、それを踏襲して補完していることを考えると有用です。</p>
+<p>また、Few-shotプロンプティングを活用することで、質問の解釈だけでなく、期待する補完の具体的な形式まで明示することができます。</p>
+<p>特定のルールや形式があるような回答を求める場合でも、それを明示的に指示するよりも具体例として示したほうが効果的です。</p>
+<h3 id="プロンプトの構成">プロンプトの構成</h3>
+<p>LLMは途中で一時停止してじっくり考えるということはできないので、プロンプトの導入部分で焦点を絞ることで出力を改善できます。</p>
+<p>また、一般的なLLMの特徴として、「プロンプトの末尾に近い情報ほどモデルに大きな影響を与えやすい」、「モデルはプロンプト冒頭と末尾の情報は比較的思い出しやすいが、中間に埋め込まれた情報は活用が難しくなる」などがあります。</p>
+<p>これらの問題への対策として、特にプロンプトが長くなる場合は、すべてのコンテキストを入れ終わった後に、最後でもう一度本題の質問をリマインドすることが有効です。書籍内でも「リフォーカス」や「サンドイッチ手法」と呼ばれています。</p>
+<h3 id="インセプション">インセプション</h3>
+<p>補完モデルを使用する場合は、回答文の最初を提示してあげると、モデルはそれを自分で考え出したものだと認識し、それに応じて残りの補完を生成します。</p>
+<h3 id="学習に利用されるドキュメントを想像する">学習に利用されるドキュメントを想像する</h3>
+<p>例えば、学術的なレポートが豊富にある分野、特にビジネス、文学、科学、法律のような分析的な報告書が日常的に作成される分野であれば活用するのは簡単です。</p>
+<p>一般的な構成が決まっており、例えば導入から始まり、結論に至るまでに必要に応じて要約が挟み込まれる事が多いので、構成しやすいです。</p>
+<p>レポートのスコープを最初に絞り込むことも有効です。<code>「自己啓発本ではなく小説だけを提案してほしい」</code>といった除外条件は、対話のやり取りで行うのではなく冒頭で述べるようにすると、レポートの導入部で書かれることの多い情報なのでより有効になります。</p>
+<h3 id="markdownの利用">Markdownの利用</h3>
+<p>LLM自体はテキストであれば扱えますが、書籍の中ではMarkdown形式が推奨されています。理由は以下の通りです。</p>
+<blockquote>
+<ul>
+<li>Markdownは普遍的でインターネット上にMarkdownファイルが多数存在するため、LLMがよく知っている形式です。</li>
+<li>Markdownはシンプルで軽量な記法です。機能が少ないので書きやすく、モデルがコンテンツを解釈しやすいという利点があります。</li>
+<li>見出しを使って階層構造を表現できるため、プロンプト要素を明確なセクションに分けやすく、不要な部分を外しても全体の構造を保つことができます。</li>
+<li>インデントが基本的には問題にならず、ソースコードなど技術的な内容については```(バッククォート3つ)で囲んでブロック形式を利用すればOKです。</li>
+<li>ユーザーにモデルのレスポンスを直接表示したい場合にもMarkdownは簡単にレンダリングできます。</li>
+<li>Markdownのハイパーリンク機能を使えばモデルがリンクを含めた出力をしやすくなり、ソースの検証やコンテンツの再取得を自動化しやすくなります。</li>
+</ul>
+</blockquote>
+<h2 id="所感">所感</h2>
+<p>今回はLLMのプロンプトに関する基礎をまとめました。</p>
+<p>書籍の執筆時点から現在までの間でさえ、LLMの進化は凄まじく、以下のような点で変化してきました。</p>
+<ul>
+<li>コンテキストウィンドウの拡大</li>
+<li>o1のようなReasoningモデルの登場によりベストプラクティスが変化
+<ul>
+<li>思考の連鎖の指示が効果的ではなくなる</li>
+<li>few-shotよりも先にzero-shotを試す（回答例を示さない）</li>
+</ul>
+</li>
+</ul>
+<p>推論については下記を参照してください。</p>
+<p><a href="https://platform.openai.com/docs/guides/reasoning-best-practices?ref=blog.lai.so#how-to-prompt-reasoning-models-effectively">推論のベストプラクティス - OpenAI API</a></p>
+<p><a href="https://www.oreilly.co.jp/books/9784814401130/">LLMのプロンプトエンジニアリング - O’Reilly Japan</a>は基本的なLLMの仕組みを理解するうえで非常に良い書籍でしたが、少し内容が古くなってしまっている部分もあるため、各生成AIモデルのAPIを提供している企業が発表している内容や関連する資料を参考にすることをお勧めします。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
