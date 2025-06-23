@@ -414,7 +414,18 @@ OpenAIがChatGPTをリリースし、12月にはProプランがリリースさ�
 ## フロントエンドにおける状態管理とは
 
 フロントエンドにおける状態管理とは、ユーザーインターフェース（UI）のデータやその変化を一貫性を持って管理する手法を指します。  
-ここで言う「状態（State）」とは、サーバーから取得したデータ、UIの現在の表示内容など、アプリケーションの動作に影響を与える全ての情報を意味し...</description><pubDate>Mon, 30 Sep 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>良いソフトウェアを目指して設計への入門</title><link>https://www.lyricrime.com/posts/good-practice-design/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/good-practice-design/</guid><description>
+ここで言う「状態（State）」とは、サーバーから取得したデータ、UIの現在の表示内容など、アプリケーションの動作に影響を与える全ての情報を意味し...</description><pubDate>Mon, 30 Sep 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>生成AI時代に備えてGo言語を学ぶ</title><link>https://www.lyricrime.com/posts/go-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/go-init/</guid><description>
+## はじめに
+
+生成AIと相性の良い言語として、これまで中心的にTypeScriptを利用していましたが、バックエンドを書くにあたって、Go言語を使いたい場面がでてきたので、Go言語を学び始めます。
+
+生成AIと相性の良い部分として、
+
+- 言語構造がシンプルであること
+- 型があること
+- Rustほどビルドに時間がかからないこと
+
+などが挙げられます。また、Go言語を書くうえで辛い部分だっ...</description><pubDate>Sun, 22 Jun 2025 00:00:00 GMT</pubDate><category>go</category></item><item><title>良いソフトウェアを目指して設計への入門</title><link>https://www.lyricrime.com/posts/good-practice-design/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/good-practice-design/</guid><description>
 ## はじめに
 
 これまでもいくつも設計に関する記事を書いてきました。  
