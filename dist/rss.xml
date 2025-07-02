@@ -414,7 +414,14 @@ OpenAIがChatGPTをリリースし、12月にはProプランがリリースさ�
 ## フロントエンドにおける状態管理とは
 
 フロントエンドにおける状態管理とは、ユーザーインターフェース（UI）のデータやその変化を一貫性を持って管理する手法を指します。  
-ここで言う「状態（State）」とは、サーバーから取得したデータ、UIの現在の表示内容など、アプリケーションの動作に影響を与える全ての情報を意味し...</description><pubDate>Mon, 30 Sep 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>生成AI時代に備えてGo言語を学ぶ</title><link>https://www.lyricrime.com/posts/go-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/go-init/</guid><description>
+ここで言う「状態（State）」とは、サーバーから取得したデータ、UIの現在の表示内容など、アプリケーションの動作に影響を与える全ての情報を意味し...</description><pubDate>Mon, 30 Sep 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>Go言語でのドメインオブジェクト実装を考える</title><link>https://www.lyricrime.com/posts/go-domain/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/go-domain/</guid><description>
+## はじめに
+
+生成AIを前提とした業務アプリケーションの構築のために最近Goを学び始めました。
+
+Goは一般的なオブジェクト指向言語とは異なる特性を持つため、ドメインオブジェクトの実装もPHPと同じようにはいかないので、エンティティと値オブジェクトの実装について考えてみます。
+
+ドメインオブジェクトとは、ドメイン駆動設計の用語で、開発者がドメイン（業務領域）の深い知識をソフトウェアに反映させ...</description><pubDate>Mon, 30 Jun 2025 00:00:00 GMT</pubDate><category>go</category></item><item><title>生成AI時代に備えてGo言語を学ぶ</title><link>https://www.lyricrime.com/posts/go-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/go-init/</guid><description>
 ## はじめに
 
 生成AIと相性の良い言語として、これまで中心的にTypeScriptを利用していましたが、バックエンドを書くにあたって、Go言語を使いたい場面がでてきたので、Go言語を学び始めます。
