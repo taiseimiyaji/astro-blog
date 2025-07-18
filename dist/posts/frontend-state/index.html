@@ -1,14 +1,12 @@
-<!DOCTYPE html><html lang="ja"> <head><title>フロントエンドの状態管理について調べてみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-## はじめに
+<!DOCTYPE html><html lang="ja"> <head><title>フロントエンドの状態管理について調べてみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
 
 今回はフロントエンドの状態管理について調査してみます。
 
 ## フロントエンドにおける状態管理とは
 
-フロントエンドにおける状態管理とは、ユーザーインターフェース（UI）のデータやその変化を一貫性を持って管理する手法を指"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+フロントエンドにおける状態管理とは、ユーザーインターフェース（UI）のデータやその変化を一貫性を持って管理する手法を指し"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2024/09/30</div> <h1>フロントエンドの状態管理について調べてみる</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2024/09/30</div> <h1>フロントエンドの状態管理について調べてみる</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>今回はフロントエンドの状態管理について調査してみます。</p>
 <h2 id="フロントエンドにおける状態管理とは">フロントエンドにおける状態管理とは</h2>
 <p>フロントエンドにおける状態管理とは、ユーザーインターフェース（UI）のデータやその変化を一貫性を持って管理する手法を指します。<br>
@@ -53,8 +51,7 @@ UIはどうしても親子関係が入れ子になるため、親から子への
 <span class="line"><span style="color:#E1E4E8">  state: {</span></span>
 <span class="line"><span style="color:#E1E4E8">    count: </span><span style="color:#79B8FF">0</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">})</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
 <p>Stateの取得、Gettersの定義の仕方</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> store</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> Vuex.</span><span style="color:#B392F0">Store</span><span style="color:#E1E4E8">({</span></span>
 <span class="line"><span style="color:#E1E4E8">  state: {</span></span>
@@ -65,8 +62,7 @@ UIはどうしても親子関係が入れ子になるため、親から子への
 <span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> state.count </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 2</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">})</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
 <p>Mutationの定義の仕方</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> store</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> Vuex.</span><span style="color:#B392F0">Store</span><span style="color:#E1E4E8">({</span></span>
 <span class="line"><span style="color:#E1E4E8">  state: {</span></span>
@@ -77,8 +73,7 @@ UIはどうしても親子関係が入れ子になるため、親から子への
 <span class="line"><span style="color:#E1E4E8">      state.count</span><span style="color:#F97583">++</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">})</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
 <p>Actionでの非同期処理の定義の仕方</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> store</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> Vuex.</span><span style="color:#B392F0">Store</span><span style="color:#E1E4E8">({</span></span>
 <span class="line"><span style="color:#E1E4E8">  state: { count: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
@@ -90,8 +85,7 @@ UIはどうしても親子関係が入れ子になるため、親から子への
 <span class="line"><span style="color:#E1E4E8">      }, </span><span style="color:#79B8FF">1000</span><span style="color:#E1E4E8">);</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">});</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
 <h3 id="fluxとは">Fluxとは</h3>
 <p>FluxはFacebookが提唱するアプリケーションのアーキテクチャです。<br>
 Fluxは3つの要素から構成されています。</p>
@@ -158,8 +152,7 @@ Reduxが有名ですが、他にもMobXやRecoil、Zustandなどがあります�
 <span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">data) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>Loading...&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>Hello {data.name}!&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>;</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>特徴としては、下記のような点が挙げられます。</p>
 <ul>
 <li>キャッシュの有効期限を設定できる</li>
@@ -188,7 +181,6 @@ SWRと比較すると、より高度な機能を持っています。</p>
 <span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#79B8FF">React.StrictMode</span><span style="color:#E1E4E8">>,</span></span>
 <span class="line"><span style="color:#E1E4E8">  document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'root'</span><span style="color:#E1E4E8">)</span></span>
 <span class="line"><span style="color:#E1E4E8">);</span></span>
-<span class="line"></span>
 <span class="line"></span></code></pre>
 <p>データの取得</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// App.js</span></span>
@@ -215,7 +207,6 @@ SWRと比較すると、より高度な機能を持っています。</p>
 <span class="line"><span style="color:#E1E4E8">}</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> App;</span></span>
-<span class="line"></span>
 <span class="line"></span></code></pre>
 <p>useQueryの第一引数にはキーを指定します。このキーはデータのキャッシュに利用されます。<br>
 useQueryの第二引数にはデータを取得する関数を指定します。この関数は非同期関数である必要があります。<br>
@@ -224,8 +215,7 @@ useQueryの第二引数にはデータを取得する関数を指定します。
 <p>キャッシュの有効期限を設定することも可能です。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#B392F0">useQuery</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'users'</span><span style="color:#E1E4E8">, fetchUsers, {</span></span>
 <span class="line"><span style="color:#E1E4E8">  staleTime: </span><span style="color:#79B8FF">1000</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 60</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 5分間データを新鮮とみなす</span></span>
-<span class="line"><span style="color:#E1E4E8">});</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
 <p>取得だけでなく、データの更新や削除も簡単に行うことができます。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useMutation, useQueryClient } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'react-query'</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"></span>
@@ -253,8 +243,7 @@ useQueryの第二引数にはデータを取得する関数を指定します。
 <span class="line"><span style="color:#E1E4E8">      ユーザーを追加</span></span>
 <span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
 <span class="line"><span style="color:#E1E4E8">  );</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>ちなみにSWRにもuseSWRMutationというデータの更新を行うためのフックが用意されていますが、React Queryの方がより高度な機能を持っています。<br>
 シンプルさを求める場合はSWR、より高度な機能を求める場合はReact Queryを利用すると良いでしょう。</p>
 <h2 id="アプリケーション全体で持つグローバルな状態">アプリケーション全体で持つグローバルな状態</h2>

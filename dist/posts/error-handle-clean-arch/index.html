@@ -1,11 +1,9 @@
-<!DOCTYPE html><html lang="ja"> <head><title>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-## はじめに
+<!DOCTYPE html><html lang="ja"> <head><title>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
 
 業務においてクリーンアーキテクチャを意識してコードを日々書いていますが、「これってクリーンアーキテクチャの考えに沿うためにはどう書けば良いんだろう」と悩むことがあります。  
-今回はエラーハンドリングについて、クリーンア"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+今回はエラーハンドリングについて、クリーンアー"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2023/04/27</div> <h1>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2023/04/27</div> <h1>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>業務においてクリーンアーキテクチャを意識してコードを日々書いていますが、「これってクリーンアーキテクチャの考えに沿うためにはどう書けば良いんだろう」と悩むことがあります。<br>
 今回はエラーハンドリングについて、クリーンアーキテクチャに則って考えてみたいと思います。<br>
 あくまで筆者一個人のいわゆる「ぼくのかんがえたさいきょうのエラーハンドリング」なのでエラーハンドリング時の一意見として参考になれば幸いです。</p>
@@ -70,7 +68,6 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">        ];</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
 <span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span>
 <span class="line"></span></code></pre>
 <p>現状はエンティティの振る舞いとして特段思いつくエラーがないので次に進みます。</p>
 <h2 id="valueobjectentities">ValueObject(Entities)</h2>
@@ -99,8 +96,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#F97583">            throw</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> InvalidArgumentException</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'UserName must be less than '</span><span style="color:#E1E4E8">);</span></span>
 <span class="line"><span style="color:#E1E4E8">        }</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>上記のように、<code>UserName</code>クラスは以下の2つのバリデーションルールを持ちます。</p>
 <ol>
 <li>コンストラクタで渡された値が空文字ではないこと</li>
@@ -148,8 +144,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">        }</span></span>
 <span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> $output</span><span style="color:#F97583">-></span><span style="color:#B392F0">output</span><span style="color:#E1E4E8">($user);</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>自作例外クラスでは、以下のようにエラーメッセージの生成や例外に関する情報を隠蔽します。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">use</span><span style="color:#79B8FF"> RuntimeException</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"></span>
@@ -162,8 +157,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">    ) {</span></span>
 <span class="line"><span style="color:#F97583">        parent::</span><span style="color:#B392F0">__construct</span><span style="color:#E1E4E8">($message, $code, $previous);</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>例外クラスを作成すればこのように、例外固有のメッセージやステータスコード等を持つことができます。</p>
 <p>ここで、エラーメッセージはかっこよく英語で書いていますね(あとで困ることになりますのでActionの説明まで覚えておいてください)</p>
 <p><code>CreateUser</code>では、InputPortとOutputPortは単純なDTOとして使用しています。</p>
@@ -193,8 +187,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">            $userEmail</span></span>
 <span class="line"><span style="color:#E1E4E8">        );</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>Repositoryは永続化を隠蔽しますが今回は省略します。</p>
 <h2 id="actioncontrollers--json形式でレスポンスを返すまで">Action(Controllers) ~ json形式でレスポンスを返すまで</h2>
 <p>Webのバックエンドにおいて、リクエストの内容を<code>Service</code>に受け渡す役割を担うのがこのActionになります。<br>
@@ -254,21 +247,18 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">        }</span></span>
 <span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> Response</span><span style="color:#F97583">::</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">($createdUser</span><span style="color:#F97583">-></span><span style="color:#B392F0">toArray</span><span style="color:#E1E4E8">());</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>Action層より内側で発生した例外はエラーメッセージを持った状態でcatchできるので例えば、下記のように記載することもできます。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8">{</span></span>
 <span class="line"><span style="color:#6A737D">// 処理内容</span></span>
 <span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">CreateUserFailedSaveException</span><span style="color:#E1E4E8">){</span></span>
 <span class="line"><span style="color:#F97583">    throw</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> InternalServerErrorException</span><span style="color:#E1E4E8">($e</span><span style="color:#F97583">-></span><span style="color:#B392F0">getMessage</span><span style="color:#E1E4E8">());</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>ですが、この方法では内部で発生した例外メッセージ(今回は英語で記載)をそのままJSONとして返したくない場合に対応できません。<br>
 内部のエラーメッセージを変更することは、内部実装がプレゼンテーションのための知識を持つことになるため避けたい、でも例外によってエラーメッセージを分けて表示したいといったケースです。</p>
 <p>最初の例のように、エラーメッセージの内容をActionで決めてしまうのが現状良いかなと考えています。</p>
 <p>また、全く同じことが正常系の場合にも言えます。</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">return</span><span style="color:#79B8FF"> Response</span><span style="color:#F97583">::</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">($createdUser</span><span style="color:#F97583">-></span><span style="color:#B392F0">toArray</span><span style="color:#E1E4E8">());</span></span>
-<span class="line"></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">return</span><span style="color:#79B8FF"> Response</span><span style="color:#F97583">::</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">($createdUser</span><span style="color:#F97583">-></span><span style="color:#B392F0">toArray</span><span style="color:#E1E4E8">());</span></span></code></pre>
 <p>この部分ではエンティティの<code>toArray</code>メソッドの実装によって出力の形式が変わってしまいます。もちろん内容が変更された場合は出力も変更されるべきなのですが、ドメインロジックの配列に格納される順番に出力が依存してしまっているため切り離したいところです。</p>
 <p>これらの問題は、クリーンアーキテクチャにおいては依存の方向性が内側に向いているため明確な違反ではないと考えていますが、切り離したほうがより綺麗な気がします。</p>
 <p><img src="/images/clean_arch.png" alt="クリーンアーキテクチャ"></p>
@@ -281,15 +271,13 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#9ECBFF">    'title'</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> $e</span><span style="color:#F97583">-></span><span style="color:#B392F0">title</span><span style="color:#E1E4E8">(),</span></span>
 <span class="line"><span style="color:#9ECBFF">    'status'</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> $e</span><span style="color:#F97583">-></span><span style="color:#B392F0">status</span><span style="color:#E1E4E8">()</span></span>
 <span class="line"><span style="color:#9ECBFF">    'detail'</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> $e</span><span style="color:#F97583">-></span><span style="color:#B392F0">getMessage</span><span style="color:#E1E4E8">(),</span></span>
-<span class="line"><span style="color:#E1E4E8">]);</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">]);</span></span></code></pre>
 <p>だと例外のメッセージがそのまま外に漏洩するので</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">throw</span><span style="color:#79B8FF"> Response</span><span style="color:#F97583">::</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">([</span></span>
 <span class="line"><span style="color:#9ECBFF">    'title'</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> $e</span><span style="color:#F97583">-></span><span style="color:#B392F0">title</span><span style="color:#E1E4E8">(),</span></span>
 <span class="line"><span style="color:#9ECBFF">    'status'</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> $e</span><span style="color:#F97583">-></span><span style="color:#B392F0">status</span><span style="color:#E1E4E8">()</span></span>
 <span class="line"><span style="color:#9ECBFF">    'detail'</span><span style="color:#F97583"> =></span><span style="color:#9ECBFF"> '任意のメッセージ'</span><span style="color:#E1E4E8">,</span></span>
-<span class="line"><span style="color:#E1E4E8">]);</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">]);</span></span></code></pre>
 <p>のようになります。ここで、タイトルやステータスは例外クラスごとに決まるはずなのでHTTPExceptionのインスタンスを生成するタイミングで<code>detail</code>を渡してしまえばいいと思います。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#E1E4E8">    $input </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> CreateUserInput</span><span style="color:#E1E4E8">(</span></span>
@@ -298,8 +286,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">    );</span></span>
 <span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">InvalidArgumentException</span><span style="color:#E1E4E8"> $e){</span></span>
 <span class="line"><span style="color:#F97583">    throw</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> BadRequestException</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'不正なリクエストです.'</span><span style="color:#E1E4E8">);</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>HTTP用の例外クラスの実装例</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">use</span><span style="color:#79B8FF"> RuntimeException</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#F97583">use</span><span style="color:#79B8FF"> Throwable</span><span style="color:#E1E4E8">;</span></span>
@@ -338,8 +325,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">    {</span></span>
 <span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> $this</span><span style="color:#F97583">-></span><span style="color:#E1E4E8">detail;</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>例外クラスから最終的にjsonに変換する必要があるのでそのためにpresenterを使用します。もともとの例ではファサードを使用していて十分スッキリ書けてはいるので責務の分離が主目的になります。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">use</span><span style="color:#79B8FF"> Illuminate\Support\Facades\Response</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"></span>
@@ -353,8 +339,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#9ECBFF">            'detail'</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> $e</span><span style="color:#F97583">-></span><span style="color:#B392F0">detail</span><span style="color:#E1E4E8">(),</span></span>
 <span class="line"><span style="color:#E1E4E8">        ]);</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>エンティティの<code>toArray()</code>がそのまま外に漏洩することを防ぐためにpresenterを使用する場合も同様です。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">use</span><span style="color:#79B8FF"> Illuminate\Support\Facades\Response</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"></span>
@@ -368,8 +353,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#9ECBFF">            'userEmail'</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">string</span><span style="color:#E1E4E8">)$user</span><span style="color:#F97583">-></span><span style="color:#E1E4E8">userEmail</span></span>
 <span class="line"><span style="color:#E1E4E8">        ]);</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>以上を踏まえて最終的なActionは以下のような形になります。<br>
 ここまでやればクリーンアーキテクチャのかなりの部分をコードで表現できたんじゃないでしょうか。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">use</span><span style="color:#79B8FF"> Illuminate\Support\Facades\DB</span><span style="color:#E1E4E8">;</span></span>
@@ -416,8 +400,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">        }</span></span>
 <span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> UserPresenter</span><span style="color:#F97583">::</span><span style="color:#B392F0">makeJsonResponse</span><span style="color:#E1E4E8">($createdUser);</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <h2 id="バリデーションについて">バリデーションについて</h2>
 <p>Webアプリケーションを構築する際に、フレームワークで投げられる例外から、クリーンアーキテクチャ、ドメイン駆動設計に基づいて分割された様々なオブジェクトから例外がスローされます。</p>
 <p>これについての私の意見は以下のブログの内容とほぼ同じであるため、説明を譲ります。</p>

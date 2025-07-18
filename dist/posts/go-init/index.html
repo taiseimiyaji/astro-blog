@@ -1,13 +1,12 @@
-<!DOCTYPE html><html lang="ja"> <head><title>生成AI時代に備えてGo言語を学ぶ</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-## はじめに
+<!DOCTYPE html><html lang="ja"> <head><title>生成AI時代に備えてGo言語を学ぶ</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
 
 生成AIと相性の良い言語として、これまで中心的にTypeScriptを利用していましたが、バックエンドを書くにあたって、Go言語を使いたい場面がでてきたので、Go言語を学び始めます。
 
 生成AIと相性の良い部分として、
+
 "><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/06/22</div> <h1>生成AI時代に備えてGo言語を学ぶ</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/06/22</div> <h1>生成AI時代に備えてGo言語を学ぶ</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>生成AIと相性の良い言語として、これまで中心的にTypeScriptを利用していましたが、バックエンドを書くにあたって、Go言語を使いたい場面がでてきたので、Go言語を学び始めます。</p>
 <p>生成AIと相性の良い部分として、</p>
 <ul>
@@ -39,8 +38,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span># ホットリロード用のairをインストール</span></span>
 <span class="line"><span>RUN go install github.com/air-verse/air@latest</span></span>
 <span class="line"><span></span></span>
-<span class="line"><span>CMD ["air"]</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>CMD ["air"]</span></span></code></pre>
 <p>シンプルなDockerfileとcompose.yamlを用意します</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">services</span><span style="color:#E1E4E8">:</span></span>
 <span class="line"><span style="color:#85E89D">  backend</span><span style="color:#E1E4E8">:</span></span>
@@ -51,8 +49,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">"8080:8080"</span></span>
 <span class="line"><span style="color:#85E89D">    environment</span><span style="color:#E1E4E8">:</span></span>
 <span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">CGO_ENABLED=0</span></span>
-<span class="line"><span style="color:#85E89D">    tty</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#85E89D">    tty</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span></code></pre>
 <h3 id="ブラウザからの確認">ブラウザからの確認</h3>
 <p>自分がWEBエンジニアなので、技術的に理解しているものをGoでも作成してみます。</p>
 <p>最終的にWEB APIサーバーを構築することを目指すので、ブラウザに実行結果を表示してみます。</p>
@@ -72,20 +69,17 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> err </span><span style="color:#F97583">:=</span><span style="color:#E1E4E8"> http.</span><span style="color:#B392F0">ListenAndServe</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">":8080"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">nil</span><span style="color:#E1E4E8">); err </span><span style="color:#F97583">!=</span><span style="color:#79B8FF"> nil</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#B392F0">        panic</span><span style="color:#E1E4E8">(err)</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>以下の２つのパッケージを利用します。</p>
 <ul>
 <li>“fmt”: 標準出力や文字列整形を行うためのパッケージ。</li>
 <li>“net/http”: HTTPサーバーやクライアントを扱う機能を提供するパッケージ。</li>
 </ul>
 <p>このコードの状態でコンテナを立ち上げるとブラウザ側で表示されます。</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">docker</span><span style="color:#9ECBFF"> compose</span><span style="color:#9ECBFF"> up</span></span>
-<span class="line"></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">docker</span><span style="color:#9ECBFF"> compose</span><span style="color:#9ECBFF"> up</span></span></code></pre>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="go"><code><span class="line"><span style="color:#E1E4E8">    http.</span><span style="color:#B392F0">HandleFunc</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"/"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">func</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">w</span><span style="color:#B392F0"> http</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">ResponseWriter</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">r</span><span style="color:#F97583"> *</span><span style="color:#B392F0">http</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Request</span><span style="color:#E1E4E8">) {</span></span>
 <span class="line"><span style="color:#E1E4E8">        fmt.</span><span style="color:#B392F0">Fprintf</span><span style="color:#E1E4E8">(w, </span><span style="color:#9ECBFF">"Hello, Go with Docker Compose!"</span><span style="color:#E1E4E8">)</span></span>
-<span class="line"><span style="color:#E1E4E8">    })</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">    })</span></span></code></pre>
 <p>の部分ではHTTPリクエストのルーティング設定を行っています。</p>
 <ol>
 <li>http.HandleFuncの部分でパス<code>/</code>に対するリクエストが来たときに呼び出す関数を登録しています。</li>
@@ -116,8 +110,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#6A737D">    // 残りのゲッターやセッター</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>このように、PHPではクラスを使ってオブジェクトを作成します。</p>
 <p>Goにはクラスがないので、関連する情報をひとまとめにする構造体(struct)と、その構造体にメソッドを紐づけて利用してクラスっぽいことをするようです。</p>
 <p>また、特徴的な部分として、ファイル単位ではなくパッケージ単位で可視性を制御する点も特徴です。</p>
@@ -142,8 +135,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> u.id</span></span>
 <span class="line"><span style="color:#E1E4E8">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#6A737D">// その他のゲッターや振る舞いも同様に定義</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#6A737D">// その他のゲッターや振る舞いも同様に定義</span></span></code></pre>
 <h3 id="パッケージとは">パッケージとは</h3>
 <p>Goのソースコードはパッケージで構成され、同じパッケージ内のファイル同士であれば相互にプライベートなフィールドやメソッドにアクセスできます。
 ちなみに、Goではプライベートなフィールドやメソッドは小文字で始まる名前にします。</p>
@@ -175,8 +167,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#FFAB70">*</span><span style="color:#E1E4E8"> 既存の型をあとから新しいインターフェースに適合させられる（テスト用などにも便利）</span></span>
 <span class="line"><span style="color:#FFAB70">*</span><span style="color:#E1E4E8"> 型とインターフェースの明示的な階層関係を管理する必要がない</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#E1E4E8">たとえば、</span><span style="color:#79B8FF">`fmt.Fprintf`</span><span style="color:#E1E4E8"> はファイルだけでなく任意の出力先に書き込めますし、</span><span style="color:#79B8FF">`bufio`</span><span style="color:#E1E4E8"> パッケージはファイル I/O とは独立して動作します。Go のシンプルなインターフェース設計は、プログラムの構造にも大きな影響を与える生産的な仕組みです。</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">たとえば、</span><span style="color:#79B8FF">`fmt.Fprintf`</span><span style="color:#E1E4E8"> はファイルだけでなく任意の出力先に書き込めますし、</span><span style="color:#79B8FF">`bufio`</span><span style="color:#E1E4E8"> パッケージはファイル I/O とは独立して動作します。Go のシンプルなインターフェース設計は、プログラムの構造にも大きな影響を与える生産的な仕組みです。</span></span></code></pre>
 <p>この仕組みはTypeScriptの構造的型(structural typing)と似ていますね。</p>
 <p>ただ、Goの場合は型自体は名前的に定義されるので、同じメソッドを持っていても別物として扱い、インターフェースへの適合は構造的に判定されるようです。</p>
 <p>言い換えれば、「この型がインターフェースの要求するメソッドをすべて持っていれば実装済みとみなす」方式ということですね。</p>

@@ -1,12 +1,10 @@
-<!DOCTYPE html><html lang="ja"> <head><title>ChatGPTを活用しながらRailsで個人開発をしてみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-## はじめに
+<!DOCTYPE html><html lang="ja"> <head><title>ChatGPTを活用しながらRailsで個人開発をしてみる</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
 
 スマレジではLaravelをメインで使っているのですが副業で触っているRailsについては理解がまだまだ浅い部分があるため、個人開発でも触ってみたいと思います。
 
-LaravelがRailsに影響を受けているフレームワー"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+LaravelがRailsに影響を受けているフレームワーク"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2023/06/07</div> <h1>ChatGPTを活用しながらRailsで個人開発をしてみる</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2023/06/07</div> <h1>ChatGPTを活用しながらRailsで個人開発をしてみる</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>スマレジではLaravelをメインで使っているのですが副業で触っているRailsについては理解がまだまだ浅い部分があるため、個人開発でも触ってみたいと思います。</p>
 <p>LaravelがRailsに影響を受けているフレームワークでもあるため、Railsを触ることでLaravelに活かせる知見も獲得できることを期待しています。</p>
 <h2 id="個人開発で作りたいもの">個人開発で作りたいもの</h2>
@@ -24,8 +22,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <p>これ以外の情報についてはあえてそこまで構想を練らずに着手してみます。</p>
 <p>なお、本記事はすべてChat GPT4を使用していますので、課金しようか迷っている方は参考にしてみてください。</p>
 <h3 id="第一の呪文-ドメインモデルを考える">第一の呪文 ドメインモデルを考える</h3>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>あなたはプロのエンジニアです。zennというサービスのScrapsのような形でスレッド形式で読書メモを残すサービスを考えています。この場合にどのようなモデルが考えられますか。なお、ユーザーごとのログイン機能を実装する予定です。</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>あなたはプロのエンジニアです。zennというサービスのScrapsのような形でスレッド形式で読書メモを残すサービスを考えています。この場合にどのようなモデルが考えられますか。なお、ユーザーごとのログイン機能を実装する予定です。</span></span></code></pre>
 <p>回答</p>
 <blockquote>
 <p>このタイプのサービスを設計するためには、以下のようなデータモデルを考えることができます。</p>
@@ -55,8 +52,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 </a></p>
 <p>ひとまず今回は本(Book)モデルから進めてみましょう。</p>
 <h3 id="第二の呪文-本モデルbooksの作成">第二の呪文 本モデル(Books)の作成</h3>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>上記のうち、本モデルについてのCRUD処理をRails APIを用いて作成します。この場合の手順と具体的なコード例を教えてください</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>上記のうち、本モデルについてのCRUD処理をRails APIを用いて作成します。この場合の手順と具体的なコード例を教えてください</span></span></code></pre>
 <p>回答</p>
 <blockquote>
 <p>Ruby on Railsを使用して本のモデルとそのCRUD操作を作成するには以下の手順を守ります。以下の例では、コマンドラインとエディタを使用します。</p>
@@ -64,40 +60,36 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <li><strong>本のモデルの作成</strong></li>
 </ol>
 <p>まずはじめに本のモデルを作成します。ターミナルで次のコマンドを実行します。</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>rails g model Book title:string author:string publication_year:integer isbn:string</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>rails g model Book title:string author:string publication_year:integer isbn:string</span></span></code></pre>
 <p>このコマンドで<code>Book</code>という名前のモデルが作成され、それに対応するマイグレーションファイルが生成されます。モデルには、<code>title</code>, <code>author</code>, <code>publication_year</code>, <code>isbn</code>という4つの属性を追加します。</p>
 <ol start="2">
 <li><strong>データベースのマイグレーション</strong></li>
 </ol>
 <p>生成したマイグレーションファイルをデータベースに適用します。ターミナルで次のコマンドを実行します。</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>rails db:migrate</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>rails db:migrate</span></span></code></pre>
 <ol start="3">
 <li><strong>本のコントローラーの作成</strong></li>
 </ol>
 <p>次に、本のCRUD操作を処理するコントローラーを作成します。ターミナルで次のコマンドを実行します。</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>rails g controller Books</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>rails g controller Books</span></span></code></pre>
 <ol start="4">
 <li><strong>ルーティングの設定</strong></li>
 </ol>
 <p><code>config/routes.rb</code> ファイルを開き、以下のように設定します。</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ruby"><code><span class="line"><span style="color:#79B8FF">Rails</span><span style="color:#E1E4E8">.application.routes.draw </span><span style="color:#F97583">do</span></span>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ruby"><code><span class="line"><span style="color:#79B8FF">Rails</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">application</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">routes</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">draw</span><span style="color:#F97583"> do</span></span>
 <span class="line"><span style="color:#E1E4E8"> resources </span><span style="color:#79B8FF">:books</span></span>
-<span class="line"><span style="color:#F97583">end</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#F97583">end</span></span></code></pre>
 <p>これで <code>books</code> コントローラーに対するルーティングが自動で設定されます。</p>
 <ol start="5">
 <li><strong>コントローラーにCRUD操作を追加</strong></li>
 </ol>
 <p><code>app/controllers/books_controller.rb</code> ファイルを開き、CRUD操作を追加します。</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ruby"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> BooksController</span><span style="color:#F97583"> &#x3C;</span><span style="color:#B392F0"> ApplicationController</span></span>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ruby"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> BooksController</span><span style="color:#E1E4E8"> &#x3C; </span><span style="color:#B392F0">ApplicationController</span></span>
 <span class="line"><span style="color:#E1E4E8"> before_action </span><span style="color:#79B8FF">:set_book</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">only:</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">:show</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">:update</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">:destroy</span><span style="color:#E1E4E8">]</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#6A737D"> # GET /books</span></span>
 <span class="line"><span style="color:#F97583"> def</span><span style="color:#B392F0"> index</span></span>
-<span class="line"><span style="color:#E1E4E8">   @books </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Book</span><span style="color:#E1E4E8">.all</span></span>
+<span class="line"><span style="color:#E1E4E8">   @books </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Book</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">all</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#E1E4E8">   render </span><span style="color:#79B8FF">json:</span><span style="color:#E1E4E8"> @books</span></span>
 <span class="line"><span style="color:#F97583"> end</span></span>
@@ -111,37 +103,36 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span style="color:#F97583"> def</span><span style="color:#B392F0"> create</span></span>
 <span class="line"><span style="color:#E1E4E8">   @book </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Book</span><span style="color:#E1E4E8">.</span><span style="color:#F97583">new</span><span style="color:#E1E4E8">(book_params)</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F97583">   if</span><span style="color:#E1E4E8"> @book.save</span></span>
+<span class="line"><span style="color:#F97583">   if</span><span style="color:#E1E4E8"> @book.</span><span style="color:#B392F0">save</span></span>
 <span class="line"><span style="color:#E1E4E8">     render </span><span style="color:#79B8FF">json:</span><span style="color:#E1E4E8"> @book, </span><span style="color:#79B8FF">status:</span><span style="color:#79B8FF"> :created</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">location:</span><span style="color:#E1E4E8"> @book</span></span>
 <span class="line"><span style="color:#F97583">   else</span></span>
-<span class="line"><span style="color:#E1E4E8">     render </span><span style="color:#79B8FF">json:</span><span style="color:#E1E4E8"> @book.errors, </span><span style="color:#79B8FF">status:</span><span style="color:#79B8FF"> :unprocessable_entity</span></span>
+<span class="line"><span style="color:#E1E4E8">     render </span><span style="color:#79B8FF">json:</span><span style="color:#E1E4E8"> @book.</span><span style="color:#B392F0">errors</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">status:</span><span style="color:#79B8FF"> :unprocessable_entity</span></span>
 <span class="line"><span style="color:#F97583">   end</span></span>
 <span class="line"><span style="color:#F97583"> end</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#6A737D"> # PATCH/PUT /books/1</span></span>
 <span class="line"><span style="color:#F97583"> def</span><span style="color:#B392F0"> update</span></span>
-<span class="line"><span style="color:#F97583">   if</span><span style="color:#E1E4E8"> @book.update(book_params)</span></span>
+<span class="line"><span style="color:#F97583">   if</span><span style="color:#E1E4E8"> @book.</span><span style="color:#B392F0">update</span><span style="color:#E1E4E8">(book_params)</span></span>
 <span class="line"><span style="color:#E1E4E8">     render </span><span style="color:#79B8FF">json:</span><span style="color:#E1E4E8"> @book</span></span>
 <span class="line"><span style="color:#F97583">   else</span></span>
-<span class="line"><span style="color:#E1E4E8">     render </span><span style="color:#79B8FF">json:</span><span style="color:#E1E4E8"> @book.errors, </span><span style="color:#79B8FF">status:</span><span style="color:#79B8FF"> :unprocessable_entity</span></span>
+<span class="line"><span style="color:#E1E4E8">     render </span><span style="color:#79B8FF">json:</span><span style="color:#E1E4E8"> @book.</span><span style="color:#B392F0">errors</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">status:</span><span style="color:#79B8FF"> :unprocessable_entity</span></span>
 <span class="line"><span style="color:#F97583">   end</span></span>
 <span class="line"><span style="color:#F97583"> end</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#6A737D"> # DELETE /books/1</span></span>
 <span class="line"><span style="color:#F97583"> def</span><span style="color:#B392F0"> destroy</span></span>
-<span class="line"><span style="color:#E1E4E8">   @book.destroy</span></span>
+<span class="line"><span style="color:#E1E4E8">   @book.</span><span style="color:#B392F0">destroy</span></span>
 <span class="line"><span style="color:#F97583"> end</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F97583"> private</span></span>
 <span class="line"><span style="color:#F97583">   def</span><span style="color:#B392F0"> set_book</span></span>
-<span class="line"><span style="color:#E1E4E8">     @book </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Book</span><span style="color:#E1E4E8">.find(params[</span><span style="color:#79B8FF">:id</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"><span style="color:#E1E4E8">     @book </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Book</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">find</span><span style="color:#E1E4E8">(params[</span><span style="color:#79B8FF">:id</span><span style="color:#E1E4E8">])</span></span>
 <span class="line"><span style="color:#F97583">   end</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F97583">   def</span><span style="color:#B392F0"> book_params</span></span>
-<span class="line"><span style="color:#E1E4E8">     params.require(</span><span style="color:#79B8FF">:book</span><span style="color:#E1E4E8">).permit(</span><span style="color:#79B8FF">:title</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">:author</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">:publication_year</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">:isbn</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">     params.</span><span style="color:#B392F0">require</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">:book</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">permit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">:title</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">:author</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">:publication_year</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">:isbn</span><span style="color:#E1E4E8">)</span></span>
 <span class="line"><span style="color:#F97583">   end</span></span>
-<span class="line"><span style="color:#F97583">end</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#F97583">end</span></span></code></pre>
 <p>これにより、BookモデルのCRUD操作が可能になります。すべての操作はJSON形式</p>
 <p>でデータを返すように設定されています。各操作はHTTPリクエスト(GET, POST, PUT/PATCH, DELETE)と対応しています。</p>
 <p>以上が基本的な手順となります。APIの設定はアプリケーションのニーズに応じて変更することができます。また、エラーハンドリングやセキュリティの観点（認証、認可）から見た場合、さらなる改善が必要となるでしょう。</p>

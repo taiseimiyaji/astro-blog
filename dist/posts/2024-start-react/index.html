@@ -1,11 +1,9 @@
-<!DOCTYPE html><html lang="ja"> <head><title>2024年にReactを学ぶ人のための資料</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-## はじめに
+<!DOCTYPE html><html lang="ja"> <head><title>2024年にReactを学ぶ人のための資料</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
 
 2024年現在、WebフロントエンドはReactが主流となっています。  
-LaravelやRuby on Railsのようなフルスタックフレームワークの流行を過ぎ、バックエンドとフロントエンドを分離することが一般的にな"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+LaravelやRuby on Railsのようなフルスタックフレームワークの流行を過ぎ、バックエンドとフロントエンドを分離することが一般的になり"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2024/10/31</div> <h1>2024年にReactを学ぶ人のための資料</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2024/10/31</div> <h1>2024年にReactを学ぶ人のための資料</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>2024年現在、WebフロントエンドはReactが主流となっています。<br>
 LaravelやRuby on Railsのようなフルスタックフレームワークの流行を過ぎ、バックエンドとフロントエンドを分離することが一般的になりました。<br>
 今回は、すでにjQueryやLaravel、Ruby on Railsなどを触ったことがある人を対象に、Reactを学ぶための資料をまとめてみました。<br>
@@ -34,8 +32,7 @@ Reactに限らず採用できる技術についても軽く触れるので、フ
 <span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{onClick}>{label}&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">>;</span></span>
 <span class="line"><span style="color:#E1E4E8">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> Button;</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> Button;</span></span></code></pre>
 <p>上記の例では、<code>Button</code>というコンポーネントを定義しています。<br>
 Reactでは、JSXという記法を使ってコンポーネントを記述します。これは、JavaScript + XMLの略で、HTMLのような記法でコンポーネントを記述することができます。</p>
 <p>2024現在のフロントエンドでは、TypeScriptを利用して開発することが主流となっており、JSXとTypeScriptを組み合わせてTSXという記法でコンポーネントを記述することが多いです。</p>
@@ -51,8 +48,7 @@ Reactでは、JSXという記法を使ってコンポーネントを記述しま
 <span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"button"</span><span style="color:#B392F0"> onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{onClick}>{label}&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">>;</span></span>
 <span class="line"><span style="color:#E1E4E8">};</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> Button;</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> Button;</span></span></code></pre>
 <h3 id="データの流れ単方向データフロー">データの流れ(単方向データフロー)</h3>
 <p>Reactでは、ステート（state）とプロップス（props）という概念を使ってデータの流れを管理します。<br>
 ステート(State): コンポーネント内部で管理される動的なデータ。ユーザーの操作やAPIからのデータ取得など、変化するデータを管理します。
@@ -90,7 +86,6 @@ useState フックを使ってコンポーネントの状態（state）を管理
 <span class="line"><span style="color:#E1E4E8">};</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> CounterContainer;</span></span>
-<span class="line"></span>
 <span class="line"></span></code></pre>
 <p>親コンポーネント (CounterContainer) が状態 (count) を管理します。この状態は useState フックを使って定義されています。</p>
 <p>親コンポーネントは状態を子コンポーネントにpropsを通して渡します。この例では、count と increment 関数が CounterDisplay に props として渡されています。</p>
@@ -139,11 +134,9 @@ React Queryとの違いは、よりシンプルなAPIと、データ取得に特
 <span class="line"><span style="color:#E1E4E8">  );</span></span>
 <span class="line"><span style="color:#E1E4E8">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> UserList;</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> UserList;</span></span></code></pre>
 <p>上記のように、<code>useSWR</code>フックを使用してデータ取得を行います。<code>useSWR</code>は第一引数として、キーを指定します。一般的にはURLのようなかたちでキーを指定することが多いですが、エンドポイントと直接関係はなく、あくまで一意なキーとして扱われます。</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">data</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">error</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useSWR</span><span style="color:#E1E4E8">(userId </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> `/api/users/${</span><span style="color:#E1E4E8">userId</span><span style="color:#9ECBFF">}`</span><span style="color:#F97583"> :</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">, fetcher);</span></span>
-<span class="line"></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">data</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">error</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useSWR</span><span style="color:#E1E4E8">(userId </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> `/api/users/${</span><span style="color:#E1E4E8">userId</span><span style="color:#9ECBFF">}`</span><span style="color:#F97583"> :</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">, fetcher);</span></span></code></pre>
 <p>のように動的なキーを指定することもできます。</p>
 <p>useSWRからはデータの状態である<code>data</code>とエラーの状態である<code>error</code>を取得することができます。</p>
 <h3 id="zod">Zod</h3>
@@ -161,8 +154,7 @@ Zodを利用すると、オブジェクトや配列に対して、型チェッ�
 <span class="line"></span>
 <span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">result.success) {</span></span>
 <span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(result.error.errors);</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>上記の例では、<code>userSchema</code>というスキーマを定義し、<code>name</code>と<code>email</code>を持っています。<br>
 nameは1文字以上であること、emailは有効なメールアドレスであることをバリデーションしています。</p>
 <p><code>safeParse</code>メソッドを使うことで、バリデーションを行い、エラーがある場合はエラーメッセージを取得することができます。</p>
@@ -205,8 +197,7 @@ nameは1文字以上であること、emailは有効なメールアドレスで�
 <span class="line"><span style="color:#F97583">      &#x3C;</span><span style="color:#E1E4E8">button type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"submit"</span><span style="color:#F97583">></span><span style="color:#E1E4E8">Submit</span><span style="color:#F97583">&#x3C;/</span><span style="color:#E1E4E8">button</span><span style="color:#F97583">></span></span>
 <span class="line"><span style="color:#F97583">    &#x3C;/</span><span style="color:#E1E4E8">form</span><span style="color:#F97583">></span></span>
 <span class="line"><span style="color:#E1E4E8">  );</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <ol>
 <li>バリデーション: 上記の例だと、zodで定義したスキーマをresolverに指定しています。これでzodのスキーマがフォームに適用されます。</li>
 <li>register: フォームの入力フィールドを<code>&#x3C;input {...register("name")} /></code>のように登録します。これにより、フォームの状態が管理されます。</li>
@@ -270,8 +261,7 @@ nameは1文字以上であること、emailは有効なメールアドレスで�
 <span class="line"><span style="color:#E1E4E8">  fireEvent.</span><span style="color:#B392F0">click</span><span style="color:#E1E4E8">(screen.</span><span style="color:#B392F0">getByText</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#DBEDFF">click me</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">i</span><span style="color:#E1E4E8">));</span></span>
 <span class="line"><span style="color:#E1E4E8">  </span></span>
 <span class="line"><span style="color:#B392F0">  expect</span><span style="color:#E1E4E8">(handleClick).</span><span style="color:#B392F0">toHaveBeenCalledTimes</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">);</span></span>
-<span class="line"><span style="color:#E1E4E8">});</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
 <p>もちろん、ロジック部分に対してもモック等を利用したりしつつテストを書くことも可能です。</p>
 <p>担当しているプロダクトでは、フロントエンドにユニットテストを導入する際にJestを採用するかVitestを採用するかを検討しましたが、Viteに移行 + Vitestの採用の方がJestに比べると辛さが少ないと感じたため、Vitestを採用することにしました。</p>
 <p>参考: <a href="https://zenn.dev/sa2knight/articles/migrating_vitest_from_jest">Vite は使ってないけど Jest を Vitest に移行する</a></p>
@@ -326,7 +316,6 @@ nameは1文字以上であること、emailは有効なメールアドレスで�
 <span class="line"><span style="color:#E1E4E8">};</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> ServerComponent;</span></span>
-<span class="line"></span>
 <span class="line"></span></code></pre>
 <p>こうしてみてみると、ややRemixにも似ている気がしますね。</p>
 <h3 id="suspense">Suspense</h3>
@@ -348,7 +337,6 @@ nameは1文字以上であること、emailは有効なメールアドレスで�
 <span class="line"><span style="color:#E1E4E8">);</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#E1E4E8"> App;</span></span>
-<span class="line"></span>
 <span class="line"></span></code></pre>
 <h2 id="まとめ">まとめ</h2>
 <p>2024年現在、もっとも主流なフロントエンドのライブラリはReactであると言えます。<br>

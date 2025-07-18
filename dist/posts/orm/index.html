@@ -1,15 +1,12 @@
-<!DOCTYPE html><html lang="ja"> <head><title>ORM(オブジェクト関係マッピング)について</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-
-## はじめに
+<!DOCTYPE html><html lang="ja"> <head><title>ORM(オブジェクト関係マッピング)について</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
 今回はORMについて調査したいと思います。   
 また、よく比較されるクエリビルダについても調査し、その違いを理解したいと思います。
 
 ## ORMとは
 
-ORMとは、Object-Relational Mappingの"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+ORMとは、Object-Relational Mappingの略で"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/09/28</div> <h1>ORM(オブジェクト関係マッピング)について</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/09/28</div> <h1>ORM(オブジェクト関係マッピング)について</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>今回はORMについて調査したいと思います。<br>
 また、よく比較されるクエリビルダについても調査し、その違いを理解したいと思います。</p>
 <h2 id="ormとは">ORMとは</h2>
@@ -79,8 +76,7 @@ Eloquentのリレーションはクエリビルダとして機能するため、
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">&#x3C;?</span><span style="color:#79B8FF">php</span></span>
 <span class="line"><span style="color:#79B8FF">DB</span><span style="color:#F97583">::</span><span style="color:#B392F0">table</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'sample'</span><span style="color:#E1E4E8">)</span></span>
 <span class="line"><span style="color:#F97583">    -></span><span style="color:#B392F0">select</span><span style="color:#E1E4E8">()</span></span>
-<span class="line"><span style="color:#F97583">    -></span><span style="color:#B392F0">where</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">条件</span><span style="color:#E1E4E8">);</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#F97583">    -></span><span style="color:#B392F0">where</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">条件</span><span style="color:#E1E4E8">);</span></span></code></pre>
 <p>のような形で簡単にSQLライクに書けます。</p>
 <h2 id="eloquentにおけるリレーション">Eloquentにおけるリレーション</h2>
 <p>参考: <a href="https://readouble.com/laravel/8.x/ja/eloquent-relationships.html">https://readouble.com/laravel/8.x/ja/eloquent-relationships.html</a></p>
@@ -102,8 +98,7 @@ Eloquentのリレーションはクエリビルダとして機能するため、
 <span class="line"><span style="color:#E1E4E8">    {</span></span>
 <span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> $this</span><span style="color:#F97583">-></span><span style="color:#B392F0">hasOne</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Phone</span><span style="color:#F97583">::class</span><span style="color:#E1E4E8">);</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>上記のように<code>hasOne</code>メソッドを使用する。引数には関連モデルクラスの名前を渡す。</p>
 <p>逆に、<code>Phone</code>モデル空<code>User</code>モデルへアクセスできるようにする場合は<code>belongTo</code>メソッドを使用することで<code>hasOne</code>関係の逆を定義できる。</p>
 <p>あるモデルが多くの関連モデルを持つ場合、そのリレーションにおける「最新」または「最も古い」関連モデルを簡単に取得したい場合</p>
@@ -111,14 +106,12 @@ Eloquentのリレーションはクエリビルダとして機能するため、
 <span class="line"><span style="color:#6A737D">// 最新</span></span>
 <span class="line"><span style="color:#79B8FF">$this</span><span style="color:#F97583">-></span><span style="color:#B392F0">hasOne</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Phone</span><span style="color:#F97583">::class</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">latestOfMany</span><span style="color:#E1E4E8">();</span></span>
 <span class="line"><span style="color:#6A737D">// 最も古い</span></span>
-<span class="line"><span style="color:#79B8FF">$this</span><span style="color:#F97583">-></span><span style="color:#B392F0">hasOne</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Phone</span><span style="color:#F97583">::class</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">oldestOfMany</span><span style="color:#E1E4E8">();</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#79B8FF">$this</span><span style="color:#F97583">-></span><span style="color:#B392F0">hasOne</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Phone</span><span style="color:#F97583">::class</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">oldestOfMany</span><span style="color:#E1E4E8">();</span></span></code></pre>
 <p>デフォルトではソート可能なモデルの主キーに基づいて最新または最古の関連モデルを取得する。<br>
 別のソート基準を使用したい場合は<code>ofMany</code>メソッドを使用する。<br>
 引数には関連するモデルを検索する際にどの集約関数(<code>min</code>または<code>max</code>)を適用するかを指定する。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">&#x3C;?</span><span style="color:#79B8FF">php</span></span>
-<span class="line"><span style="color:#79B8FF">$this</span><span style="color:#F97583">-></span><span style="color:#B392F0">hasOne</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Order</span><span style="color:#F97583">::class</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">ofMany</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'price'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'max'</span><span style="color:#E1E4E8">);</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#79B8FF">$this</span><span style="color:#F97583">-></span><span style="color:#B392F0">hasOne</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Order</span><span style="color:#F97583">::class</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">ofMany</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'price'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'max'</span><span style="color:#E1E4E8">);</span></span></code></pre>
 <p>キー制約等は引数で指定できる。詳細は公式ドキュメントを参照</p>
 <h3 id="1対多hasmany">1対多(hasMany)</h3>
 <p><code>hasOne</code>同様の使い方ができる<code>hasMany</code>メソッドを使用する。</p>
@@ -148,8 +141,7 @@ Eloquentのリレーションはクエリビルダとして機能するため、
 <span class="line"><span style="color:#E1E4E8">    {</span></span>
 <span class="line"><span style="color:#F97583">        return</span><span style="color:#79B8FF"> $this</span><span style="color:#F97583">-></span><span style="color:#B392F0">belongsToMany</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Role</span><span style="color:#F97583">::class</span><span style="color:#E1E4E8">);</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>リレーションを定義したあと、アクセスする際は<code>roles</code>動的リレーションプロパティを使用してユーザーの役割へアクセスできます。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">&#x3C;?</span><span style="color:#79B8FF">php</span></span>
 <span class="line"><span style="color:#F97583">use</span><span style="color:#79B8FF"> App\Models\User</span><span style="color:#E1E4E8">;</span></span>
@@ -158,8 +150,7 @@ Eloquentのリレーションはクエリビルダとして機能するため、
 <span class="line"></span>
 <span class="line"><span style="color:#F97583">foreach</span><span style="color:#E1E4E8"> ($user</span><span style="color:#F97583">-></span><span style="color:#E1E4E8">roles </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> $role) {</span></span>
 <span class="line"><span style="color:#6A737D">    //</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>逆の関係も同様に<code>belongsToMany</code>を使用します。
 違いはUserモデルを参照することです。</p>
 <p>また、中間テーブルのカラムの取得には<code>pivot</code>を使用する。</p>
@@ -170,8 +161,7 @@ Eloquentのリレーションはクエリビルダとして機能するため、
 <span class="line"></span>
 <span class="line"><span style="color:#F97583">foreach</span><span style="color:#E1E4E8"> ($user</span><span style="color:#F97583">-></span><span style="color:#E1E4E8">roles </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> $role) {</span></span>
 <span class="line"><span style="color:#79B8FF">    echo</span><span style="color:#E1E4E8"> $role</span><span style="color:#F97583">-></span><span style="color:#E1E4E8">pivot</span><span style="color:#F97583">-></span><span style="color:#E1E4E8">created_at;</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <h3 id="リレーションの存在のクエリ">リレーションの存在のクエリ</h3>
 <p>モデルレコードを取得する際にリレーションの有無に基づいた結果を制約したい場合。<br>
 例えば、コメントが少なくとも1つある全てのブログ投稿を取得する場合。<br>
@@ -180,13 +170,11 @@ Eloquentのリレーションはクエリビルダとして機能するため、
 <span class="line"><span style="color:#F97583">use</span><span style="color:#79B8FF"> App\Models\Post</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#6A737D">// コメントが少なくとも1つあるすべての投稿を取得</span></span>
-<span class="line"><span style="color:#E1E4E8">$posts </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Post</span><span style="color:#F97583">::</span><span style="color:#B392F0">has</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'comments'</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">();</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">$posts </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Post</span><span style="color:#F97583">::</span><span style="color:#B392F0">has</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'comments'</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">();</span></span></code></pre>
 <p>演算子を追加してクエリのカスタマイズする事もできる。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">&#x3C;?</span><span style="color:#79B8FF">php</span></span>
 <span class="line"><span style="color:#6A737D">// コメントが３つ以上あるすべての投稿を取得</span></span>
-<span class="line"><span style="color:#E1E4E8">$posts </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Post</span><span style="color:#F97583">::</span><span style="color:#B392F0">has</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'comments'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'>='</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">();</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">$posts </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Post</span><span style="color:#F97583">::</span><span style="color:#B392F0">has</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'comments'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'>='</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">();</span></span></code></pre>
 <p><code>whereHas</code>と<code>orWhereHas</code>を使用することでコメントの内容の検査などの追加のクエリ制約を定義できる。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">&#x3C;?</span><span style="color:#79B8FF">php</span></span>
 <span class="line"><span style="color:#F97583">use</span><span style="color:#79B8FF"> Illuminate\Database\Eloquent\Builder</span><span style="color:#E1E4E8">;</span></span>
@@ -199,8 +187,7 @@ Eloquentのリレーションはクエリビルダとして機能するため、
 <span class="line"><span style="color:#6A737D">// code％と似ている単語を含むコメントが１０件以上ある投稿を取得</span></span>
 <span class="line"><span style="color:#E1E4E8">$posts </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> Post</span><span style="color:#F97583">::</span><span style="color:#B392F0">whereHas</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'comments'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">Builder</span><span style="color:#E1E4E8"> $query) {</span></span>
 <span class="line"><span style="color:#E1E4E8">    $query</span><span style="color:#F97583">-></span><span style="color:#B392F0">where</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'content'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'like'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'code%'</span><span style="color:#E1E4E8">);</span></span>
-<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#9ECBFF">'>='</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">();</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#9ECBFF">'>='</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">-></span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">();</span></span></code></pre>
 <p>以上のように、Eloquentを使用すると簡単にテーブルのリレーションを表現できます。<br>
 さらに、リレーションを表現した上で追加でSQLを発行したい場合はクエリビルダも使用する事ができるため、簡単にDB操作を行うことができます。</p>
 <h2 id="eloquentと比較したクエリビルダのメリット">Eloquentと比較したクエリビルダのメリット</h2>

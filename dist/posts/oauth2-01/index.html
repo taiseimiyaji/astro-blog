@@ -1,10 +1,8 @@
-<!DOCTYPE html><html lang="ja"> <head><title>OAuth2をおおまかに理解する</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-## はじめに
+<!DOCTYPE html><html lang="ja"> <head><title>OAuth2をおおまかに理解する</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
 
-[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/09/07/213441)で認証と認可について触れ、OpenID Connectのざっくりとした仕組みにつ"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/09/07/213441)で認証と認可について触れ、OpenID Connectのざっくりとした仕組みについ"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/09/17</div> <h1>OAuth2をおおまかに理解する</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/09/17</div> <h1>OAuth2をおおまかに理解する</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p><a href="https://taisei-miyaji.hatenadiary.com/entry/2022/09/07/213441">前回の記事</a>で認証と認可について触れ、OpenID Connectのざっくりとした仕組みについて紹介しました。<br>
 今回は認証、認可においてよく聞くOAuth2について、調査してみようと思います。<br>
 今回の記事のゴールは、「OAuthという単語を聞いたことがある」くらいのレベルから「なんとなくOAuthについて説明することができる」レベルになることです。<br>
@@ -144,12 +142,10 @@ OAuthのフローの種類によってこのエンドポイントを使用する
 
 <table><thead><tr><th>仕様書</th><th>略称</th><th>名称</th></tr></thead><tbody><tr><td>RFC7515</td><td>JWS</td><td>JSON Web Signature</td></tr><tr><td>RFC7516</td><td>JWE</td><td>JSON Web Encryption</td></tr><tr><td>RFC7517</td><td>JWK</td><td>JSON Web Key</td></tr><tr><td>RFC7518</td><td>JWA</td><td>JSON Web Algorithms</td></tr><tr><td>RFC7519</td><td>JWT</td><td>JSON Web Token</td></tr></tbody></table>
 <h3 id="jws">JWS</h3>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ヘッダー.ペイロード.署名</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ヘッダー.ペイロード.署名</span></span></code></pre>
 <p>の形式。それぞれの部分はBASE64URL形式でエンコードされています。</p>
 <p>ヘッダーについて</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">"kid"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"1e9gdk7"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"alg"</span><span style="color:#E1E4E8">:</span><span style="color:#9ECBFF">"RS256"</span><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">"kid"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"1e9gdk7"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"alg"</span><span style="color:#E1E4E8">:</span><span style="color:#9ECBFF">"RS256"</span><span style="color:#E1E4E8">}</span></span></code></pre>
 <p><code>alg</code>の部分は使用しているアルゴリズムの種類を示していて、これはRFC7518、先程の表にも出てきた<code>JWA</code>にて定義されています。</p>
 <p>ペイロードについて</p>
 <p>任意のバイト列が入ります。
@@ -157,13 +153,11 @@ OAuthのフローの種類によってこのエンドポイントを使用する
 ただ、JSONが入るように決めているのはRFC7519の<code>JWT</code>の仕様書で定められています。</p>
 <h2 id="ここまでのまとめ">ここまでのまとめ</h2>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>JWS...署名</span></span>
-<span class="line"><span>JWT...トークン</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>JWT...トークン</span></span></code></pre>
 <p>JWSを発展させたのがJWTで、更にそこから発展したのがIDトークンという関係性。</p>
 <p>ただ、JWSだけでなくJWEという形式から発展したJWTもあります。</p>
 <h3 id="jwe">JWE</h3>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ヘッダー.暗号化されたキー.初期ベクター.暗号文.認証タグ</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ヘッダー.暗号化されたキー.初期ベクター.暗号文.認証タグ</span></span></code></pre>
 <p>の形式。<code>JWS</code>同様にBASE64URL形式でエンコードされている。</p>
 <ul>
 <li>暗号化されたキーについて<br>
@@ -195,8 +189,7 @@ OAuthのフローの種類によってこのエンドポイントを使用する
 <p>二段階暗号化は、文書自体の暗号処理には共有鍵形式を使い、鍵の公開には公開鍵形式を用いることで双方の形式のいいとこどりができます。</p>
 <h2 id="二段階暗号化の際のjwe">二段階暗号化の際のJWE</h2>
 <p>ヘッダー</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">"alg"</span><span style="color:#E1E4E8">:</span><span style="color:#9ECBFF">"RSA-OAEP"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"enc"</span><span style="color:#E1E4E8">:</span><span style="color:#9ECBFF">"A256GCM"</span><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">"alg"</span><span style="color:#E1E4E8">:</span><span style="color:#9ECBFF">"RSA-OAEP"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">"enc"</span><span style="color:#E1E4E8">:</span><span style="color:#9ECBFF">"A256GCM"</span><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>のような形式。</p>
 <p><code>alg</code>が共有鍵の暗号アルゴリズム<br>
 <code>enc</code>が平文の暗号アルゴリズム</p>
@@ -206,14 +199,12 @@ OAuthのフローの種類によってこのエンドポイントを使用する
 先程出たように、<code>JWS形式のJWT</code>と<code>JWE形式のJWT</code>があります。</p>
 <h3 id="jws形式のjwt">JWS形式のJWT</h3>
 <p>JWSの形式</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ヘッダー.ペイロード.署名</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ヘッダー.ペイロード.署名</span></span></code></pre>
 <p>JSON形式で表現されたクレームの集合をBASE64URLエンコードして、JWSのペイロード部分に格納したもの。<br>
 署名をしたい場合はこちらを使用します。</p>
 <h3 id="jwe形式のjwt">JWE形式のJWT</h3>
 <p>JWEの形式</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ヘッダー.暗号化されたキー.初期ベクター.暗号文.認証タグ</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ヘッダー.暗号化されたキー.初期ベクター.暗号文.認証タグ</span></span></code></pre>
 <p>JSON形式で表現されたクレームの集合を暗号化して、暗号文をBASE64URLエンコードする。<br>
 それを暗号文部分に格納したもの。<br>
 暗号化したい場合はこちらを使用します。</p>
@@ -232,8 +223,7 @@ OAuthのフローの種類によってこのエンドポイントを使用する
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
 <span class="line"><span style="color:#79B8FF">    "クレーム名"</span><span style="color:#E1E4E8">: </span><span style="color:#FDAEB7;font-style:italic">クレーム値</span><span style="color:#E1E4E8">,</span></span>
 <span class="line"><span style="color:#79B8FF">    "クレーム名"</span><span style="color:#E1E4E8">: </span><span style="color:#FDAEB7;font-style:italic">クレーム値</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>詳細はRFC7519に記載があります。</p>
 <h2 id="所感">所感</h2>
 <p>今回は前回の復習 + OAuth2.0について大まかな流れを理解できたかと思います。<br>

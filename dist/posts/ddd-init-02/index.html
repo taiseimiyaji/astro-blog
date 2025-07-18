@@ -1,12 +1,9 @@
-<!DOCTYPE html><html lang="ja"> <head><title>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-
-## はじめに
+<!DOCTYPE html><html lang="ja"> <head><title>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
 
 [前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/11/26/181405)にて、ドメイン駆動設計への入門として、ドメインオブジェクトを紹介しました。
-今"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+今回は"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/11/30</div> <h1>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/11/30</div> <h1>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p><a href="https://taisei-miyaji.hatenadiary.com/entry/2022/11/26/181405">前回の記事</a>にて、ドメイン駆動設計への入門として、ドメインオブジェクトを紹介しました。
 今回は実際にドメインオブジェクトを利用してユースケースを組み立てていきます。<br>
 そのためのステップとして、先にいくつか便利なパターンを紹介しておきます。</p>
@@ -48,7 +45,6 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span>     */</span></span>
 <span class="line"><span>    public function save(User $user): void;</span></span>
 <span class="line"><span>}</span></span>
-<span class="line"><span></span></span>
 <span class="line"><span></span></span></code></pre>
 <p>ここで永続化したいユーザーのエンティティは以下のようなものを想定しています。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>class User</span></span>
@@ -76,8 +72,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span>    {</span></span>
 <span class="line"><span>        return $this->name;</span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>続いて、Repositoryを利用する側を考えてみます。<br>
 今回はユーザー情報の更新について考えてみます。<br>
 例えば、下記のコードでユーザー名を変更します。</p>
@@ -103,8 +98,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span>        // データストアへの永続化を行う。</span></span>
 <span class="line"><span>        $this->repository->save($user);</span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>UserIdentifier,UserNameは必要なバリデーションを実装した、値の性質を持ったValueObjectです。<br>
 Userエンティティは名前を変更するための振る舞い「changeName」を持っています。<br>
 Repositoryには再構築のための振る舞い「findById」と永続化のための振る舞い「save」を定義します。</p>
@@ -151,8 +145,7 @@ Repositoryには再構築のための振る舞い「findById」と永続化の�
 <span class="line"><span>            ])</span></span>
 <span class="line"><span>            ->save();</span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>このような形で、利用するフレームワークの機能を使用したりしてDBへのアクセスロジックをRepository内に記載します。<br>
 重要なのはフレームワークの機能やDBアクセスの複雑なロジックをドメインを表現している層に漏洩させないことです。<br>
 開発初期にDBがまだ選定されていない場合や運用中に変更となった場合でもその変更はドメインロジックには影響しなくなります。<br>
@@ -169,7 +162,6 @@ Repositoryには再構築のための振る舞い「findById」と永続化の�
 <span class="line"><span>{</span></span>
 <span class="line"><span>    public function createUser(UserName $name): User</span></span>
 <span class="line"><span>}</span></span>
-<span class="line"><span></span></span>
 <span class="line"><span></span></span></code></pre>
 <p>今回はIDの採番に<a href="https://github.com/ulid/spec">ULID</a>形式を採用します。
 IDの生成にはLaravelに含まれるSymfonyというライブラリを使用します。</p>
@@ -185,8 +177,7 @@ IDの生成にはLaravelに含まれるSymfonyというライブラリを使用�
 <span class="line"><span>            $name</span></span>
 <span class="line"><span>        );</span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>今回はフレームワークの機能に頼ったのでシンプルな処理になりましたが、他にもエンティティの生成時に発生する処理をFactoryに隠蔽できます。<br>
 例えばエンティティの生成時刻をエンティティ自身がもつような場合、現在時刻を取得してエンティティに設定するのはFactoryに書くべきです。</p>
 <p>RepositoryのときはDBに依存しないように処理を記載しました。Factoryを採用することでIDの採番や作成時刻等をDBに依存せずに記述できます。
@@ -217,8 +208,7 @@ IDの生成にはLaravelに含まれるSymfonyというライブラリを使用�
 <span class="line"><span>     * 重複をチェックする処理</span></span>
 <span class="line"><span>     */</span></span>
 <span class="line"><span>    public function isExists(User $user): bool</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>具体的な処理については割愛しますが、重複の確認を<code>UserService</code>というドメインサービス内で行います。
 このサービスを用いてユーザーの作成処理を書いてみます。また、先述したFactoryやRepositoryも使用してみましょう。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>class CreateUser</span></span>
@@ -257,8 +247,7 @@ IDの生成にはLaravelに含まれるSymfonyというライブラリを使用�
 <span class="line"><span>        $repository->save($user);</span></span>
 <span class="line"><span></span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>ドメインモデルを実装する際にはドメインオブジェクトに実装すると不自然になる振る舞いが必ず存在します。<br>
 これは特に複数のドメインオブジェクトを横断するような操作に多く見られます。<br>
 そんなときにはドメインサービスの利用を検討してください。</p>
@@ -308,8 +297,7 @@ ValueObjectやエンティティといったドメインオブジェクトは「
 <span class="line"><span>        $repository->save($user);</span></span>
 <span class="line"><span></span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>ドメインサービスとアプリケーションサービスは対象となる領域が「ドメイン」なのか「利用者の目的を達成すること」なのかという点が異なる以外は本質的には同じものです。ただし、その領域をきちんと分け、ドメインのルールがアプリケーションサービスに流出しないように実装することでドメインの変更をドメインオブジェクトのみに反映すれば良くなります。変更容易性の確保のためにも意識して振る舞いを実装しましょう。</p>
 <h2 id="まとめ">まとめ</h2>
 <p><strong>Repository</strong> … データアクセスに関するロジックをまとめるためのパターン<br>

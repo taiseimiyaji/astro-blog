@@ -1,12 +1,9 @@
-<!DOCTYPE html><html lang="ja"> <head><title>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-
-## はじめに
+<!DOCTYPE html><html lang="ja"> <head><title>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
 
 スマレジにて私が担当しているプロジェクトではドメイン駆動設計を取り入れて日々開発をしています。   
-ジョインしてからドメイン駆動設計について説明を受けたものの体系的に学べていないので書籍を一つ読みながら足りていない箇"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+ジョインしてからドメイン駆動設計について説明を受けたものの体系的に学べていないので書籍を一つ読みながら足りていない箇所を"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/11/26</div> <h1>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/11/26</div> <h1>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
 <p>スマレジにて私が担当しているプロジェクトではドメイン駆動設計を取り入れて日々開発をしています。<br>
 ジョインしてからドメイン駆動設計について説明を受けたものの体系的に学べていないので書籍を一つ読みながら足りていない箇所を補っていきます。<br>
 今回の記事は書籍の内容に沿っているつもりですが、多分に個人的な見解が含まれているため、書籍の著者の考えをきちんと把握したい場合はぜひ書籍を読んでみてください。
@@ -30,8 +27,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>ペンの値段、形、重さ、インクの色</span></span>
 <span class="line"><span>紙の材質、大きさ、色、形</span></span>
 <span class="line"><span>日報を記入する人の名前、所属、年齢</span></span>
-<span class="line"><span>日報の内容、日付、長さ...etc</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>日報の内容、日付、長さ...etc</span></span></code></pre>
 <p>こうした無数の情報の中から、日報システムに必要な情報を定義します。</p>
 <p>例えば、</p>
 <ul>
@@ -92,8 +88,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span>            throw new InvalidArgumentException('ユーザー名は20文字以下でなければならない');</span></span>
 <span class="line"><span>        }</span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>このようにクラスを用いてシステム固有の値を表現したものを値オブジェクト(ValueObject)とよびます。<br>
 例えば、システムにおける <strong>「ユーザー名」という値の長さ</strong>はドメインにおける知識です。
 適切なモデルをコードに落とし込む際に最適な値は必ずしもプリミティブな値であるとは限らないということになります。<br>
@@ -119,8 +114,7 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span>$greet = 'Hello';</span></span>
 <span class="line"><span></span></span>
 <span class="line"><span>// Helloが出力される</span></span>
-<span class="line"><span>echo $greet;</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>echo $greet;</span></span></code></pre>
 <p><code>$greet</code>という変数が変更されています。どういうことでしょう。</p>
 <p>変数というのは中身を変更する際に代入をします。<br>
 代入というのは、変数の中身を変更することであり、値自体の変更ではありません。
@@ -136,14 +130,12 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span>$name = new UserName('あなた');</span></span>
 <span class="line"><span></span></span>
 <span class="line"><span>// あなたが出力される</span></span>
-<span class="line"><span>echo $name;</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>echo $name;</span></span></code></pre>
 <p>このとき、<code>$name</code>は代入によって変更されています。つまり、どちらもUserName型の値ではありますが、インスタンスは全くの別物であり、最初に代入された値オブジェクト自体が変更されているわけではありません。</p>
 <h3 id="値は等価性によって比較される">値は等価性によって比較される</h3>
 <p>まずはプリミティブ型の値の比較について確認します。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>echo (0 == 0); // true</span></span>
-<span class="line"><span>echo (0 == 1); // false</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>echo (0 == 1); // false</span></span></code></pre>
 <p>１つ目の式の左辺の0と右辺の0は別のインスタンスですが、同じものとして扱われています。
 これは、インスタンス自身ではなく、属性によって比較されているということです。</p>
 <p>では、ValueObjectの場合にはどう表現すればよいでしょうか。
@@ -152,21 +144,18 @@ html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9
 <span class="line"><span>$name1 = new UserName('わたし');</span></span>
 <span class="line"><span>$name2 = new UserName('あなた');</span></span>
 <span class="line"><span></span></span>
-<span class="line"><span>$compareResult = $name1.value == $name2.value</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>$compareResult = $name1.value == $name2.value</span></span></code></pre>
 <p>もちろん上記のコードは動作するので一見正しくみえます。
 ただ、「ValueObjectは値」なので「値の値」にアクセスしているのは不自然な記述になります。
 数値を比較する際に</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>1.value === 2.value</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>1.value === 2.value</span></span></code></pre>
 <p>という書き方をしないことからも不自然だということがわかります。</p>
 <p>どうすればいいのかというとValueObject同士が比較できるようなメソッドを用意するのが自然な記述となります。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>private UserName $name;</span></span>
 <span class="line"><span>$name1 = new UserName('わたし');</span></span>
 <span class="line"><span>$name2 = new UserName('あなた');</span></span>
 <span class="line"><span></span></span>
-<span class="line"><span>$compareResult = $name1.equals($name2);</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>$compareResult = $name1.equals($name2);</span></span></code></pre>
 <p>この比較用メソッドを用意することの利点</p>
 <ul>
 <li>記述が自然になる</li>
@@ -210,8 +199,7 @@ ValueObjectはその属性によって識別されるオブジェクトです。
 <span class="line"><span>    {</span></span>
 <span class="line"><span>        $this->name = $name;</span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>上記のように「ユーザー名を変更する」という振る舞いをエンティティに持たせることができます。<br>
 ValueObjectと違い、属性が変わったとしてもインスタンスは同じです。<br>
 このようにエンティティの属性は変更することが許容されています。</p>
@@ -248,8 +236,7 @@ ValueObjectと違い、属性が変わったとしてもインスタンスは同
 <span class="line"><span>    {</span></span>
 <span class="line"><span>        return (string)$this->identifier === (string)$user->identifier;</span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>ValueObjectと決定的に違う点はValueObjectではすべての属性を比較の対象としていましたが、エンティティの場合は比較処理の対象が識別子のみである点です。</p>
 <h2 id="ドメインモデルから実装する際のvalueobjectとエンティティの判断基準">ドメインモデルから実装する際のValueObjectとエンティティの判断基準</h2>
 <p>ValueObjectもエンティティもドメインモデルを表現するためのドメインオブジェクトであり、非常に似通っています。<br>

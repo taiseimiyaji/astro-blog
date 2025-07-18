@@ -1,13 +1,11 @@
-<!DOCTYPE html><html lang="ja"> <head><title>LaravelのEagerLoadについて</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="
-## EagerLoadとは
+<!DOCTYPE html><html lang="ja"> <head><title>LaravelのEagerLoadについて</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## EagerLoadとは
 
 - 「Eager」は「熱心」という意味
 - ORMにおけるN+1問題を解決するために使用される
 - 先に取得したModelに対して事前にリレーションを取得する仕組み
-- Eloquentの場合はプロパティと"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+- Eloquentの場合はプロパティとし"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
 html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
-</style><script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");
-</script></head> <!-- Google tag (gtag.js) -->  <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/10/23</div> <h1>LaravelのEagerLoadについて</h1> <div class="post"> <h2 id="eagerloadとは">EagerLoadとは</h2>
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2022/10/23</div> <h1>LaravelのEagerLoadについて</h1> <div class="post"> <h2 id="eagerloadとは">EagerLoadとは</h2>
 <ul>
 <li>「Eager」は「熱心」という意味</li>
 <li>ORMにおけるN+1問題を解決するために使用される</li>
@@ -34,15 +32,13 @@ EagerLoadはその解決策ですがまずは<code>N + 1問題</code>につい�
 <span class="line"><span>    {</span></span>
 <span class="line"><span>        return $this->belongsTo('App\Author');</span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$books = App\Book::all(); // 1. すべての本を取得</span></span>
 <span class="line"><span></span></span>
 <span class="line"><span>// 2. 著者をそれぞれの本について取得</span></span>
 <span class="line"><span>foreach ($books as $book) {</span></span>
 <span class="line"><span>    echo $book->author->name;</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>上記ループでは</p>
 <ol>
 <li>まずテーブルからすべての本を取得するために1回クエリが発行される。</li>
@@ -57,28 +53,22 @@ Eloquentは、<strong>リレーションにアクセスする度にクエリを�
 <span class="line"><span></span></span>
 <span class="line"><span>foreach ($books as $book) {</span></span>
 <span class="line"><span>    echo $book->author->name;</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>上記のように<code>with</code>メソッドを使用することでクエリの発行回数を抑える事ができます。
 発行されるクエリは以下のようになります。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>select  * from books</span></span>
 <span class="line"><span></span></span>
-<span class="line"><span>select * from authors where id in (1,2,3,4,5,...)</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>select * from authors where id in (1,2,3,4,5,...)</span></span></code></pre>
 <p>複数のリレーションに対するEagerLoad</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$books = App\Book::with(['author', 'publisher'])->get();</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$books = App\Book::with(['author', 'publisher'])->get();</span></span></code></pre>
 <p>ネストしたリレーションに対するEagerLoad</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$books = App\Book::with('author.contacts')->get();</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$books = App\Book::with('author.contacts')->get();</span></span></code></pre>
 <p>特定カラムに対してのEagerLoad</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$users = App\Book::with('author:id,name')->get();</span></span>
-<span class="line"><span></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$users = App\Book::with('author:id,name')->get();</span></span></code></pre>
 <p>EagerLoad時に制約を追加する</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$users = App\User::with(['posts' => function ($query) {</span></span>
 <span class="line"><span>    $query->where('title', 'like', '%first%');</span></span>
-<span class="line"><span>}])->get();</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}])->get();</span></span></code></pre>
 <p>遅延EagerLoading
 すでに親のモデルを取得したあとにリレーションをEagerLoadしたい場合に利用します。<br>
 どのリレーションをロードするか動的に決定したい場合に便利です。</p>
@@ -86,8 +76,7 @@ Eloquentは、<strong>リレーションにアクセスする度にクエリを�
 <span class="line"><span></span></span>
 <span class="line"><span>if ($someCondition) {</span></span>
 <span class="line"><span>    $books->load('author', 'publisher');</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p><code>loadMissing</code>メソッドを使用すると、リレーションをまだロードしていない場合のみロードする事が可能です。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>public function format(Book $book)</span></span>
 <span class="line"><span>{</span></span>
@@ -97,8 +86,7 @@ Eloquentは、<strong>リレーションにアクセスする度にクエリを�
 <span class="line"><span>        'name' => $book->name,</span></span>
 <span class="line"><span>        'author' => $book->author->name</span></span>
 <span class="line"><span>    ];</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <h2 id="eloquentにおける動的プロパティについて">Eloquentにおける動的プロパティについて</h2>
 <p>例えば以下のような1対多野リレーションがあったとします。</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>&#x3C;?php</span></span>
@@ -116,12 +104,10 @@ Eloquentは、<strong>リレーションにアクセスする度にクエリを�
 <span class="line"><span>    {</span></span>
 <span class="line"><span>        return $this->hasMany('App\Comment');</span></span>
 <span class="line"><span>    }</span></span>
-<span class="line"><span>}</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>}</span></span></code></pre>
 <p>この場合に</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>$post = Post::find(1);</span></span>
-<span class="line"><span>$comments = $post->comments;</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>$comments = $post->comments;</span></span></code></pre>
 <p>のように取得すると思います。<br>
 これは<code>comments()</code>メソッドではなく<code>comments</code>という動的プロパティを返しているという点に注意が必要です。<br>
 <code>comments</code>は<code>Comment</code>モデルのインスタンスのコレクションを返します。</p>
