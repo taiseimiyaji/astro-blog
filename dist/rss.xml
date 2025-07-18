@@ -712,7 +712,9 @@ https://qiita.com/Naga...</description><pubDate>Tue, 26 Apr 2022 00:00:00 GMT</p
 
 実際、今年は技術書を読んだり、個人開発をしてはいるんですが、習慣化という点ではまだまだです。  
 
-これらをやりたい背景とし...</description><pubDate>Fri, 29 Nov 2024 00:00:00 GMT</pubDate><category>rust</category></item><item><title>MySQLのインデックスの役割と活用について</title><link>https://www.lyricrime.com/posts/sql-index/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-index/</guid><description>
+これらをやりたい背景とし...</description><pubDate>Fri, 29 Nov 2024 00:00:00 GMT</pubDate><category>rust</category></item><item><title>生成AI時代に見直すスキーマ駆動開発</title><link>https://www.lyricrime.com/posts/schema-driven-dev-ai/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/schema-driven-dev-ai/</guid><description>
+&gt; **この記事の対象読者**: フロントエンド／バックエンド開発者、技術選定に関わるリード／アーキテクト、生成AIを開発ワークフローに組み込みたいエンジニア。  
+&gt; **この記事でわかること**: スキーマ駆動開発（Schema‑Driven Development: SDD）の基本、OpenAPIからTypeSpecへの進化、Zodを活用した型安全フロントエンド、AI活用時のコンテキスト削...</description><pubDate>Fri, 18 Jul 2025 00:00:00 GMT</pubDate><category>typescript</category><category>design</category></item><item><title>MySQLのインデックスの役割と活用について</title><link>https://www.lyricrime.com/posts/sql-index/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-index/</guid><description>
 ## はじめに
 
 WEBエンジニアとなってクエリパターンの実装をする際に、SQLのパフォーマンスについて意識する場面が出てきました。   
