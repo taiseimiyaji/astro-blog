@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="ja"> <head><title>ユースケースで選ぶSPAの認証——Laravel 12の Session / Sanctum とOIDC</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## まとめ
+
+* **同一ドメインSPA × ブラウザだけ** → **Laravel Session（stateful）単独でも実装可能**。ただし**公式はSPAにはSanctum推奨**。
+* **`routes/api.php` "><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/08/11</div> <h1>ユースケースで選ぶSPAの認証——Laravel 12の Session / Sanctum とOIDC</h1> <div class="post"> <h2 id="まとめ">まとめ</h2>
+<ul>
+<li>
+<p><strong>同一ドメインSPA × ブラウザだけ</strong> → <strong>Laravel Session（stateful）単独でも実装可能</strong>。ただし<strong>公式はSPAにはSanctum推奨</strong>。</p>
+</li>
+<li>
+<p><strong><code>routes/api.php</code> を保ったままSPAを stateful にしたい</strong> or <strong>同一トップレベルドメイン内の別サブドメインSPA</strong> → <strong>Sanctum（SPAモード）</strong>。</p>
+</li>
+<li>
+<p><strong>別ドメインのSPA（例：<code>spa.example.com</code> と <code>api.other.com</code>）</strong> → <strong>Sanctum（SPA）不可</strong>。</p>
+<ul>
+<li>セッションで運用したいなら<strong>BFF</strong>で<strong>同一サイト</strong>に集約</li>
+<li>もしくは<strong>stateless</strong>（<strong>Sanctum Token</strong> / <strong>OAuth/OIDC</strong>）へ</li>
+</ul>
+</li>
+<li>
+<p><strong>モバイル / 外部クライアント</strong> → <strong>stateless</strong> が必要。<strong>Sanctum（Token）</strong> か <strong>OAuth/OIDC</strong>。</p>
+</li>
+<li>
+<p><strong>外部OIDCを使う</strong> → <strong>BFF（Code+PKCE→サーバ交換→アプリのセッション）<strong>が基本。Sanctumは</strong>必須ではない</strong>。</p>
+</li>
+</ul>
+<h2 id="はじめに">はじめに</h2>
+<p>今回はLaravelでSPAのWebアプリケーションを作成する際に利用できる認証機能を、ユースケース別の選び方という観点で整理します。Laravelには複数の手段があり、設計上の注意点も多いため混乱しがちです。そこで、要件から逆引きできる判断軸を提示します。</p>
+<h2 id="なぜここで迷うのか">なぜここで迷うのか</h2>
+<ul>
+<li>Sanctumは<strong>2つの機能</strong>（APIトークン発行とSPA認証）を提供。<strong>SPA認証はトークンを使わずセッション</strong>を使う。</li>
+<li><strong>SPA認証は同一トップレベルドメイン前提</strong>（サブドメインは可）。</li>
+<li><code>auth:sanctum</code> は<strong>自社SPAのCookieセッション</strong>と<strong>サードパーティのAPIトークン</strong>を両方受けられる設計。</li>
+<li>Laravelは<strong>XSRF-TOKEN Cookie</strong>を発行し、<strong>同一オリジン</strong>ではAxios等が<strong>X-XSRF-TOKEN</strong>を自動付与。</li>
+<li>Laravelの<strong>ブラウザ向け既定はセッションガード</strong>。一方で<strong>SPAやハイブリッドにはSanctum推奨</strong>。</li>
+</ul>
+<hr>
+<h2 id="用語の確認">用語の確認</h2>
+<h3 id="statefulセッション型">stateful（セッション型）</h3>
+<ul>
+<li><strong>概要</strong>
+ブラウザに<strong>Cookie（セッションID）</strong>、サーバに<strong>セッション状態</strong>を持たせる認証。Laravelでは <strong><code>session</code> ガード</strong>で実現。</li>
+<li><strong>どう成り立つか</strong>
+ログイン成功 → <strong>セッションに保存</strong> → 以後はCookieの<strong>セッションID</strong>でユーザー復元。CSRFは<strong>XSRF-TOKEN Cookie → X-XSRF-TOKEN</strong>で防御（SPAではAxios等の自動付与を活用）。</li>
+<li><strong>利点</strong>
+即時失効や権限変更の<strong>即反映</strong>が容易。長寿命トークンを置かないため<strong>XSS耐性</strong>が比較的高い。</li>
+<li><strong>注意点</strong>
+<strong>スケール時は共有セッションストア</strong>（Redis等）。Cookie属性（SameSite/Secure/Domain）や<strong>CORS</strong>設計が必要。</li>
+</ul>
+<h3 id="statelessトークン型">stateless（トークン型）</h3>
+<ul>
+<li><strong>位置づけ</strong>
+サーバ側にブラウザ専用状態を持たず、毎リクエストで<strong>Bearerトークン</strong>を検証。</li>
+<li><strong>どう成り立つか</strong>
+クライアントが <code>Authorization: Bearer &#x3C;token></code> を毎回送信。サーバは署名/JWKs/DB照合で<strong>都度認証</strong>。</li>
+<li><strong>利点</strong>
+<strong>多クライアント</strong>（モバイル/外部）向き。<strong>マルチリージョン/エッジ</strong>に載せやすい。</li>
+<li><strong>注意点</strong>
+<strong>失効・ローテーション・保管</strong>の運用コストが高め。長寿命トークンの<strong>漏えい対策</strong>が要。</li>
+</ul>
+<hr>
+<h2 id="sanctum認証">Sanctum認証</h2>
+<h3 id="sanctumspaモード">Sanctum（SPAモード）</h3>
+<ul>
+<li>
+<p><strong>概要</strong>
+<strong>自社SPAからのAPI</strong>を<strong>stateful（Cookie＋セッション）<strong>として扱う。<code>auth:sanctum</code> はまず</strong>認証Cookie</strong>を確認し、無ければ<strong>AuthorizationヘッダのAPIトークン</strong>を確認。</p>
+</li>
+<li>
+<p><strong>実現方法（概略）</strong></p>
+<ol>
+<li><code>config/sanctum.php</code> で <strong><code>stateful</code> ドメイン</strong>を設定</li>
+<li><code>bootstrap/app.php</code> で <strong><code>statefulApi()</code></strong> を有効化</li>
+<li>初回に <strong><code>/sanctum/csrf-cookie</code></strong> でXSRF初期化</li>
+<li>以降は<strong>セッションCookie＋CSRF</strong>で認証（Axiosは <code>withCredentials</code> / <code>withXSRFToken</code> を推奨）</li>
+</ol>
+</li>
+<li>
+<p><strong>要件・注意</strong></p>
+<ul>
+<li><strong>同一トップレベルドメイン必須</strong>。<strong>サブドメインは可</strong>だが、<strong>異なるレジストラブルドメインは不可</strong>。</li>
+<li>リクエストには <strong><code>Accept: application/json</code></strong> と <strong><code>Origin</code> または <code>Referer</code></strong> を付与。</li>
+<li>クロス<strong>サブドメイン</strong>でCookieを共有する場合は <code>SESSION_DOMAIN</code> やCookie属性・CORS設定を適切に。</li>
+</ul>
+</li>
+</ul>
+<h3 id="sanctumtokenモード">Sanctum（Tokenモード）</h3>
+<ul>
+<li>
+<p><strong>概要</strong>
+GitHubのPATのような<strong>APIトークン</strong>を発行し、<strong>Bearer</strong>でAPI認証する<strong>軽量トークン方式</strong>（非JWTでも可）。</p>
+</li>
+<li>
+<p><strong>実現方法（概略）</strong></p>
+<ol>
+<li>ユーザーに <code>HasApiTokens</code> を付与</li>
+<li><code>createToken()</code> で発行（<strong>DBにはSHA-256でハッシュ保存</strong>／<strong>平文は発行時のみ表示</strong>）</li>
+<li>ルートを <code>auth:sanctum</code> で保護</li>
+</ol>
+</li>
+<li>
+<p><strong>使いどころ</strong>
+<strong>モバイル/外部クライアント</strong>や社内APIの<strong>シンプルなトークン配布</strong>に適合。<strong>自社SPAの認証には使わず</strong>、<strong>SPAはSanctumのSPA機能</strong>を使う。</p>
+</li>
+</ul>
+<hr>
+<h2 id="分岐フロー">分岐フロー</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Q1: 自社ブラウザSPAだけ？</span></span>
+<span class="line"><span> ├─ Yes → Q2</span></span>
+<span class="line"><span> └─ No（外部/モバイルあり） → stateless要件 → Sanctum Token or OAuth/OIDC</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Q2: 同一トップレベルドメイン内で出せる？</span></span>
+<span class="line"><span> ├─ Yes（同一サイト or サブドメイン）→ Laravel Session（最小） or Sanctum（SPA）※api.php維持なら推奨</span></span>
+<span class="line"><span> └─ No（別レジストラブルドメイン）→ Sanctum（SPA）不可</span></span>
+<span class="line"><span>        → BFFで同一サイト化（セッション運用） or stateless（Sanctum Token / OAuth/OIDC）</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>補足: OIDC採用？ → BFFなら最終的にアプリのセッションで運用（Sanctum必須ではない）</span></span></code></pre>
+<h2 id="迷いがちなポイント">迷いがちなポイント</h2>
+<ul>
+<li><strong>「JS（SPA）ならSanctum必須？」</strong> → <strong>必須ではない</strong>。<strong>同一ドメインならセッションのみでも可能</strong>。ただし<strong>公式はSPAにはSanctum推奨</strong>。</li>
+<li><strong>「自社SPA向けAPI」とは？」</strong> → <strong>自分たちが配信するブラウザSPAからの呼び出し</strong>（第三者やモバイルは含まない）。</li>
+<li><strong>CSRFはどう効く？</strong> → Laravelが<strong>XSRF-TOKEN Cookie</strong>を付与。<strong>同一オリジン</strong>ではAxios等が<strong>X-XSRF-TOKEN</strong>を自動付与。<strong>クロスサブドメイン</strong>では <code>withCredentials</code> 等の設定＋Sanctum側のstateful設定が必要。</li>
+<li><strong>即時失効を重視するなら？</strong> → <strong>stateful</strong>が楽。<code>auth:sanctum</code> 運用でもCookie側で即時無効化しやすい。</li>
+</ul>
+<h2 id="まとめ-1">まとめ</h2>
+<ul>
+<li>
+<p><strong>誰が（自社/外部/モバイル）</strong> × <strong>どこから（同一サイト/サブドメイン/別ドメイン）</strong> × **運用要件（即時失効/拡張性）**で選ぶ。</p>
+</li>
+<li>
+<p>迷ったら：</p>
+<ul>
+<li><strong>同一サイトSPA</strong> → まずは<strong>セッション</strong>、<code>api</code>維持や拡張性重視なら<strong>Sanctum（SPA）</strong>。</li>
+<li><strong>別レジストラブルドメイン</strong> → <strong>BFFで同一サイト化</strong> or <strong>stateless</strong>（Sanctum Token / OAuth/OIDC）。</li>
+<li><strong>多クライアント</strong> → <strong>stateless</strong>前提（Sanctum Token / OAuth/OIDC）。</li>
+</ul>
+</li>
+</ul> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
