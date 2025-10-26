@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="ja"> <head><title>Reactフォームの基本｜制御・非制御の違いとReact Hook Formの正しい使い分け</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+今回はReactの制御コンポーネントと非制御コンポーネントについて紹介します。
+
+Reactのコンポーネントを作成していく上で、Vueの場合とは違い、レンダリングのタイミングをより細かく把握しておく必要があります。
+
+その"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/10/25</div> <h1>Reactフォームの基本｜制御・非制御の違いとReact Hook Formの正しい使い分け</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>今回はReactの制御コンポーネントと非制御コンポーネントについて紹介します。</p>
+<p>Reactのコンポーネントを作成していく上で、Vueの場合とは違い、レンダリングのタイミングをより細かく把握しておく必要があります。</p>
+<p>その際に重要になってくるのが制御コンポーネントと非制御コンポーネントの違いです。</p>
+<h2 id="現在の公式ドキュメント上の制御コンポーネントと非制御コンポーネント">現在の公式ドキュメント上の制御コンポーネントと非制御コンポーネント</h2>
+<p><a href="https://ja.react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components">コンポーネント間で state を共有する – React</a></p>
+<p>現在の公式ドキュメントを見ると、制御コンポーネントと非制御コンポーネントの違いが以下のように書かれています。</p>
+<ul>
+<li>制御コンポーネント
+<ul>
+<li>重要な情報がローカルstateではなくpropsによって駆動される</li>
+<li>親コンポーネントがその振る舞いを完全に指定することができる</li>
+</ul>
+</li>
+<li>非制御コンポーネント
+<ul>
+<li>ローカルstateを持つコンポーネント</li>
+<li>親コンポーネントが振る舞いを指定することができない</li>
+</ul>
+</li>
+</ul>
+<p>非制御コンポーネントは、propsが少なくて済むので簡単に利用できる反面、柔軟性がないというデメリットがあります。
+一方、制御コンポーネントは、propsが多くなるので、より複雑なコンポーネントを作成することができます。</p>
+<h2 id="旧公式ドキュメント上の制御コンポーネントと非制御コンポーネント今回の説明対象">旧公式ドキュメント上の制御コンポーネントと非制御コンポーネント(今回の説明対象)</h2>
+<p>今回の記事で説明するのは、旧公式ドキュメント上の制御コンポーネントと非制御コンポーネントです。</p>
+<p><a href="https://ja.legacy.reactjs.org/docs/forms.html#controlled-components">フォーム – React</a></p>
+<p>旧公式ドキュメントに書かれているフォームの文脈での制御コンポーネントと非制御コンポーネントの違いを簡単にまとめると以下のようになります。</p>
+<ul>
+<li>制御コンポーネント
+<ul>
+<li>フォームデータの”信頼できる唯一の情報源(single source of truth)“をReactのstateで管理する</li>
+<li>つまりUIは常にstateを反映</li>
+<li>即時バリデーション、入力マスク、依存フィールドの連動が得意</li>
+</ul>
+</li>
+<li>非制御コンポーネント
+<ul>
+<li>フォームデータの”信頼できる唯一の情報源(single source of truth)“をDOM要素で管理する</li>
+<li>必要な場合はrefを使ってDOM要素を参照する</li>
+</ul>
+</li>
+</ul>
+<p>現在のReact公式ドキュメントでは独立した説明ページはなく、<code>&#x3C;input></code>や<code>ref</code>の節などに非制御相当の内容が書かれています。
+どちらが正しい、といったものではなく、Reactのコンポーネント文脈、フォームの文脈によって若干定義範囲が異なるものという認識です。</p>
+<h2 id="制御コンポーネントと非制御コンポーネントで変わるレンダリングのタイミング">制御コンポーネントと非制御コンポーネントで変わるレンダリングのタイミング</h2>
+<p>制御コンポーネントでは、入力のたびに<code>onChange</code>が発火し、親コンポーネント、もしくはコンポーネント内で管理しているstateを更新します。Reactは状態が更新されたタイミングで再レンダーが行われ、DOM反映というループが走ることになります。
+依存するUI、つまりエラーメッセージや活性制御なども即時反映されます。</p>
+<p>一方、非制御では値はDOMが保持し、タイピング中はReactの再レンダーは原則発生しません。フォーム送信、refでの明示的な読み取り、watchでの管理など必要な箇所だけ更新されることになります。制御コンポーネントと比べるとレンダリング回数が少なくなるためパフォーマンスが向上する傾向にあります。</p>
+<p>ただし、React18で並行レンダリングが導入されたりと制御だからといってパフォーマンスが極端に悪いわけではなくなっています。大規模、高頻度の入力であれば体感できるレベルの差が出ることもありますが、小~中規模の場合は差が小さい場合もあります。</p>
+<p>※ここでいう <code>render</code>はReactの文脈でたびたび登場しますが、React初学者には馴染みのない言葉かもしれません。ここでは、Reactが管理している関数コンポーネントを実行し、React要素(仮想DOM相当の構造)を生成する段階のことを指します。このタイミングではまだ実DOMに反映されているわけではなく、レンダー後のcommitフェーズで実DOMに反映されることになります。
+広義のレンダリングの場合は実DOMへの反映を含めることもありますが、ここではDOM反映を分けて説明しています。</p>
+<h2 id="react-hook-formはどっち">React Hook Formはどっち？</h2>
+<p>Reactにおけるフォーム実装の主流な選択肢として、React Hook Formがあります。<br>
+React初学者にも選択されがちなライブラリですが、React Hook Formは非制御中心です。</p>
+<p>ネイティブ入力は<code>register</code>で<code>ref</code>を結びつけ、入力中はReactを無駄に再レンダーさせないような設計になっています。</p>
+<p>値が必要になった時だけ<code>watch</code>/<code>useWatch</code>で購読することで描画を更新します。これにより大規模フォームでもパフォーマンスが向上し、バリデーションなどは<code>resolver</code>を利用することでzodなどのバリデーションライブラリと統合して疎結合に実装が可能です。</p>
+<p>かつ、必要な箇所は<code>Controller</code>を利用することで制御コンポーネントとして振る舞うようになっています。</p>
+<p>つまり、「基本的には非制御、必要な箇所は明示的に制御を採用」という設計思想になっています。</p>
+<p>なお、React Hook Formには設計上問題がある部分もあるため、理解した上で選択するようにしましょう。特に型安全性や、これまで説明した非制御前提によるSSOTの崩壊などがあります。アプリ全体のSSOTを上位stateにおく設計と比べるとRHFはフォーム側にSSOTを寄せるため、同一データを上位で扱いたい場合はうまく同期する必要があります。SSOTというのはSingle Source of Truthの略で、信頼できる唯一の信頼源と訳されることもあります。ここでは、フロントエンドの情報源として利用できるものを一つにするということです。利用しているUIコンポーネントの設計と整合性をとる必要があるため、適切に<code>Controller</code>を使う必要があります。</p>
+<h2 id="実装で気をつけるアンチパターン">実装で気をつけるアンチパターン</h2>
+<h3 id="1valueを渡しているのにonchangeを渡さない">1)<code>value</code>を渡しているのに、<code>onChange</code>を渡さない</h3>
+<ul>
+<li><strong>症状</strong>: 入力が反映されず、事実上読み取り専用になる</li>
+<li><strong>原因</strong>: <code>value</code>を渡した時点で制御コンポーネントになるため、更新ハンドラがないと値が変更できない。</li>
+<li><strong>対処</strong>: 制御にする場合と非制御にする場合をしっかり分ける
+<ul>
+<li>制御にする場合、<code>value</code>と<code>onChange</code>をセットで渡す</li>
+<li>非制御にする場合、<code>defaultValue</code>のみにして<code>value</code>は渡さない。RHFの場合は<code>register</code>を使う</li>
+</ul>
+</li>
+</ul>
+<h3 id="2レンダー途中で制御非制御を行き来する">2)レンダー途中で制御、非制御を行き来する</h3>
+<ul>
+<li><strong>症状</strong>: コンソールに “A component is changing an uncontrolled input to be controlled” 警告が出る。入力が消えたり、反映されない。</li>
+<li><strong>原因</strong>: 同一フィールドで value の有無が切り替わると React の仮定が崩れる。</li>
+<li><strong>対処</strong>: どちらかに揃える。制御で通すなら初期値は ”（undefined を避ける）、非制御なら常に defaultValue。</li>
+</ul>
+<h3 id="3-同じフィールドを親は制御子は非制御で二重管理する">3) 同じフィールドを「親は制御」「子は非制御」で二重管理する</h3>
+<ul>
+<li>
+<p><strong>症状</strong>: 表示値と送信値がズレる／どちらが正か分からない。</p>
+</li>
+<li>
+<p><strong>原因</strong>: SSOT（唯一の情報源）が分裂し、更新タイミングが競合する。</p>
+</li>
+<li>
+<p><strong>対処</strong>: 片方に統一する。</p>
+<ul>
+<li><strong>親で制御</strong>: <code>value</code>/<code>onChange</code> を親が一元管理。</li>
+<li><strong>RHF で非制御</strong>: <code>register</code> で管理し、親は <code>onSubmit</code> で収集。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-key-の付け替えで意図せず再マウントされる">4) <code>key</code> の付け替えで意図せず再マウントされる</h3>
+<ul>
+<li><strong>症状</strong>: 入力が消える／フォーカスや IME が切れる。</li>
+<li><strong>原因</strong>: <code>key</code> 変更は別要素扱いになり、内部 state が初期化される。</li>
+<li><strong>対処</strong>: 意味のない <code>key</code> を外す。リセット目的なら **RHF の <code>reset()</code> / <code>resetField()</code>*- や状態初期化関数を使う。</li>
+</ul>
+<h3 id="5-すべてのタイピングを上位-state-にリフトアップ過度な制御">5) すべてのタイピングを上位 state にリフトアップ（過度な制御）</h3>
+<ul>
+<li><strong>症状</strong>: 大規模フォームでカクつく／再レンダー波及。</li>
+<li><strong>原因</strong>: 入力ごとに親が再レンダーし、子も巻き込まれる。</li>
+<li><strong>対処</strong>: *<em>非制御 + 局所購読</em>- に寄せる。RHF の <code>register</code> を基本とし、必要箇所のみ <code>Controller</code> で制御化。</li>
+</ul>
+<h3 id="6-rhf-で同一フィールドに-register-と-controller-を併用">6) RHF で同一フィールドに <code>register</code> と <code>Controller</code> を併用</h3>
+<ul>
+<li><strong>症状</strong>: 値・バリデーションが二重発火／不整合。</li>
+<li><strong>原因</strong>: 同じ <code>name</code> に複数のデータソースが紐づく。</li>
+<li><strong>対処</strong>: <strong>役割分担を厳守</strong>。ネイティブ要素は <code>register</code>、サードパーティ制御入力は <code>Controller</code>。</li>
+</ul>
+<h3 id="7-カスタム入力コンポーネントが-ref-を正しくフォワードしない">7) カスタム入力コンポーネントが <code>ref</code> を正しくフォワードしない</h3>
+<ul>
+<li><strong>症状</strong>: <code>register</code> してもフォーカスや値取得が不安定。</li>
+<li><strong>原因</strong>: RHF は <code>ref</code> で要素を把握するが、<code>forwardRef</code> 未実装で到達しない。</li>
+<li><strong>対処</strong>: <code>forwardRef</code> を実装し、<strong>実 DOM 要素</strong>（<code>&#x3C;input></code> 等）に <code>ref</code> が届くようにする。</li>
+</ul>
+<h3 id="8-defaultvalue-と-value-を同時に指定する">8) <code>defaultValue</code> と <code>value</code> を同時に指定する</h3>
+<ul>
+<li><strong>症状</strong>: 初期値が効かない／警告が出る。</li>
+<li><strong>原因</strong>: 制御（<code>value</code>）が優先され、<code>defaultValue</code> は無視される。</li>
+<li><strong>対処</strong>: <strong>どちらか片方</strong>にする。制御なら <code>value</code> のみ、非制御なら <code>defaultValue</code> のみ。</li>
+</ul>
+<h3 id="9-rhf-の-watch-を乱用コンポーネント全域で購読">9) RHF の <code>watch</code> を乱用（コンポーネント全域で購読）</h3>
+<ul>
+<li><strong>症状</strong>: 逆に再レンダー過多で重くなる。</li>
+<li><strong>原因</strong>: 広域購読により小さな変更でも全体が再描画。</li>
+<li><strong>対処</strong>: <code>useWatch({ name })</code> で<strong>必要フィールドのみ局所購読</strong>。派生値は <code>useMemo</code> で最小化。</li>
+</ul>
+<h3 id="10-送信後に-再フェッチ--と-楽観的更新--を同時に行う">10) 送信後に *<em>再フェッチ</em>- と *<em>楽観的更新</em>- を同時に行う</h3>
+<ul>
+<li><strong>症状</strong>: 値が一瞬戻る／チラつく／二重更新。</li>
+<li><strong>原因</strong>: 反映順の競合とキャッシュの競合。</li>
+<li><strong>対処</strong>: <strong>方針を一つに統一</strong>。基本は再フェッチで真実に寄せ、重い API のときのみ楽観的更新＋整合チェック。</li>
+</ul>
+<h3 id="11-表示専用の派生値まで-state-に保持する">11) 表示専用の派生値まで state に保持する</h3>
+<ul>
+<li><strong>症状</strong>: 不要な同期・再レンダー・不一致。</li>
+<li><strong>原因</strong>: 冗長な state は同期コストを生む。</li>
+<li><strong>対処</strong>: 元データから<strong>都度算出</strong>（<code>useMemo</code>）。どうしても必要な最小限のみ state 化。</li>
+</ul>
+<h3 id="12-フォームのリセット目的でコンポーネントを再マウントする">12) フォームのリセット目的でコンポーネントを再マウントする</h3>
+<ul>
+<li><strong>症状</strong>: 重い／スクロールやフォーカスが飛ぶ。</li>
+<li><strong>原因</strong>: 再マウントは DOM・RHF の全資源を作り直す。</li>
+<li><strong>対処</strong>: RHF の **<code>reset()</code> / <code>resetField()</code>*- を使い、UI を保ったまま値だけ初期化。</li>
+</ul> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
