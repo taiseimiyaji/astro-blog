@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="ja"> <head><title>Reactのメモ化について</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+今回はReactを書くうえで役立つmemo化について調査します。Vueなどの他のフレームワークと比較すると最適化を行わないとパフォーマンス差を感じることがあったりしますが、どこまで最適化をやればいいのか、いつやればいいのか"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/10/30</div> <h1>Reactのメモ化について</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>今回はReactを書くうえで役立つmemo化について調査します。Vueなどの他のフレームワークと比較すると最適化を行わないとパフォーマンス差を感じることがあったりしますが、どこまで最適化をやればいいのか、いつやればいいのか、どうやってやるのかについてまとめます。</p>
+<h2 id="対象読者">対象読者</h2>
+<ul>
+<li>React初学者 ~ 中級者</li>
+<li>バックエンドをメインにしているが、フロントエンドでReactを利用しているエンジニア</li>
+</ul>
+<h2 id="結論">結論</h2>
+<p>Reactでは最適化は有効性がある箇所に必要なだけ書く、でまずは十分。React Compilerの登場によって純粋なコンポーネント設計ができていれば自動で最適化される。</p>
+<p>ただし、レンダリングの仕組みに影響するため、正しいコードを書いていないとmemo化によって実行順序などに影響するためバグが発生する可能性あり。React Compilerの導入後は十分な動作確認が必要。</p>
+<h2 id="そもそもなぜ最適化するのか">そもそもなぜ最適化するのか</h2>
+<p>再レンダー = 悪、というわけではありません。そもそもReactにおけるレンダーとは、「UIをどう描くかを計算する段階」を意味します。実DOMへの反映は別の段階で行われます。レンダー回数が増えても必ずしも遅いとは限らないですが、重い計算や巨大なリスト、不要な再生成が絡むと体感の劣化を招きます。</p>
+<p>つまり、基本的には計測によって重たい箇所、いわゆるホットスポットを特定し、最適化を行うというアプローチが望ましいです。</p>
+<ul>
+<li>レンダー … 現在のprops/stateからUIを記述した仮想DOMを生成する</li>
+<li>コミット … 仮想DOMの差分を実DOMに反映する</li>
+</ul>
+<p>という棲み分けになっており、memo化は主に「レンダーの繰り返し計算」や「子の再レンダー」を抑えるための技術です。</p>
+<h2 id="memo化の基本的な方法">memo化の基本的な方法</h2>
+<h3 id="reactmemocomponent">React.memo(Component)</h3>
+<p>親が再レンダーしても、新旧propsがObject.isで等価と判定される場合は子を再レンダーしないようになります。</p>
+<p>特に、子コンポーネントが重たい場合や大きなリストの行、高頻度で親が再レンダーする境界などで利用すると効果的です。</p>
+<p>反対に、子が毎回新しい参照を受け取る場合など等価比較に失敗する場合や子が軽い場合にはほとんど効果がないと言えます。</p>
+<h3 id="usememofactory-deps">useMemo(factory, deps)</h3>
+<p>再レンダー間での計算結果をキャッシュします。依存が変わった時だけfactoryが再実行され、新しい値を返します。</p>
+<p>ほとんどの場合で十分に高速なため、重たい計算部分にのみ適用します。</p>
+<h3 id="usecallbackfn-deps">useCallback(fn, deps)</h3>
+<p>関数参照自体をmemo化します。「memo化した子に渡すハンドラ」や、useEffect/useMemoの依存配列に置く関数が安定します。</p>
+<p>React.memoでmemo化した子に渡す関数は、等価判定されますが、毎回新しい関数参照を渡すと子が再レンダーされてしまうため、useCallbackで安定化させる必要があります。
+React.memoでメモ化していない場合に利用しても再レンダリングされてしまう点に注意してください。</p>
+<h2 id="memo化の注意点">memo化の注意点</h2>
+<h3 id="useeffectの利用">useEffectの利用</h3>
+<p>useEffectは依存の同値性をチェックして再実行するかどうかを決めています。useMemoやuseCallbackで依存を安定化させると、意図したタイミングで実行されなくなるなど実行タイミングが変更されるため、正しく依存を厳密に書いたり、Effect自体を不要にするなどして対応する必要があります。</p>
+<p>原則として、propsから計算可能な値を別のuseStateにコピーするようなことをしてしまうと、整合性が崩れやすいです。多くの場合はEffectで同期する処理は不要です。</p>
+<h3 id="不要な最適化">不要な最適化</h3>
+<p>目に見えるボトルネックがないような軽量のコンポーネントに最適化は不要です。useMemoやuseCallback自体にもオーバーヘッドがあったり、コードが複雑化するというコストがあるため、まずは計測を行い、必要な箇所に対して最適化していきましょう。</p>
+<h3 id="境界を明確にする">境界を明確にする</h3>
+<p>ライブラリの公開コンポーネントなど、再利用されるほど効果が高くなります。効果が大きいと予想される箇所から最適化しましょう。</p>
+<h2 id="react-compilerとは">React Compilerとは</h2>
+<h3 id="何をしてくれるのか">何をしてくれるのか</h3>
+<p>Reactのコードをビルド時に解析し、自動的にmemo化してくれます。これにより、手間をかけることなく再計算や再レンダーを最小化し、パフォーマンスを向上させます。</p>
+<p>Reactらしいコードを正しく書けていれば、多くの場合、コードを書き換えずに導入できます。</p>
+<p>特にReact.memoと同等程度の最適化を自動で適用してくれるため、多くのケースで不要になります。</p>
+<p><a href="https://ja.react.dev/reference/react/memo">memo – React</a></p>
+<h3 id="導入する上での棲み分け">導入する上での棲み分け</h3>
+<p>React Compilerを利用する前提では、まず設計をあるべき形に整えることが重要です。具体的には以下の点に注意します。</p>
+<ul>
+<li>レンダーが純粋になるように書く</li>
+<li>外部ミューテーションを避ける</li>
+<li>副作用を適切に分離する</li>
+</ul>
+<p>手動でのmemo化はピンポイントかつ最小限にしていきます。特に重たい計算にuseMemoを使うようにします。</p>
+<p>すでにmemo化している箇所は共存可能なので、基本的にはそのままで問題ないです。</p>
+<p>React Compilerの導入によってどれくらい効果があるのかを計測したり、設計を純粋に保ちつつ、E2Eテストやリグレッションテストなどでの動作の担保も重要です。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>Renderは要素ツリー、つまり仮想DOMを生成する計算段階、Commitは実DOMへの反映</li>
+<li>useMemo: 再レンダー間で計算結果をキャッシュするイメージ</li>
+<li>useCallback: 関数参照をキャッシュするイメージ。React.memoと組み合わせて使うことが多い</li>
+<li>React.memo: 親の再レンダー時に子の再レンダーを防ぐ。</li>
+<li>React Compiler: Reactコードをビルド時に解析し、自動的にmemo化してくれる。手動でのmemo化はピンポイントかつ最小限にできる。</li>
+</ul>
+<h3 id="余談">余談</h3>
+<p>最近のReactの公式ドキュメントをみると仮想DOMや実DOMという表現がなくなっており、レンダーとコミットの概念にフォーカスしているように見えます。React Compilerの登場もあり、Reactの内部実装がより抽象化されてきている印象があります。</p>
+<p>useCallbackは内部的にはuseMemoのシンタックスシュガーです。また、memo化したとしても必ずReactがそれを利用するわけでもないので、注意してください。</p>
+<p>巨大リストの最適化という文脈でのReact.memoの利用を紹介しましたが、react-windowに代表される仮想化も有力な選択肢です。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
