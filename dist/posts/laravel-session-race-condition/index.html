@@ -1,0 +1,331 @@
+<!DOCTYPE html><html lang="ja"> <head><title>LaravelのセッションとReact Queryで踏みがちなレースコンディションの話</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+「POSTでセッションに値を保存したはずなのに、すぐ後のページで `null` になっている」
+
+セッションを使ってページをまたぐデータの受け渡しなどを実装していると、たまにこんな **「保存したはずの値が消える」現象**"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/11/30</div> <h1>LaravelのセッションとReact Queryで踏みがちなレースコンディションの話</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>「POSTでセッションに値を保存したはずなのに、すぐ後のページで <code>null</code> になっている」</p>
+<p>セッションを使ってページをまたぐデータの受け渡しなどを実装していると、たまにこんな <strong>「保存したはずの値が消える」現象</strong> に出会います。</p>
+<p>しかもログを見ると：</p>
+<ul>
+<li>保存APIの中ではちゃんと値が入っている</li>
+<li>直後にセッションから再取得してもちゃんと入っている</li>
+<li>なのに、次のページのGETでは <code>null</code> になっている</li>
+</ul>
+<p>という、かなり不可解な状態になります。</p>
+<p>この記事では、実際に遭遇したケースを元に、</p>
+<ul>
+<li>Laravelのセッションミドルウェアがどう動いているか</li>
+<li><strong>GETエンドポイントでもセッションが保存される</strong> という落とし穴</li>
+<li>React Queryの楽観的更新（<code>onMutate</code>）と依存クエリの組み合わせでどうレースが発生するか</li>
+<li>どう防ぐ・緩和するか</li>
+</ul>
+<p>についてまとめます。</p>
+<hr>
+<h2 id="1-何が起きていたか">1. 何が起きていたか</h2>
+<p>現象を抽象化すると、以下のようなフローで発生していました。</p>
+<ol>
+<li>ページAで、セッションに「状態オブジェクト」を保存するAPI（<code>PUT /state</code>）を叩く</li>
+<li>保存が成功したので、ページBに遷移する</li>
+<li>ページBは初期表示で <code>GET /state</code> を叩き、セッションから状態を読む</li>
+<li><strong>このとき、保存したオブジェクトの一部（例：<code>updated_value</code>）が <code>null</code> になっている</strong></li>
+</ol>
+<p>API側のログを見ると：</p>
+<ul>
+<li><code>PUT /state</code> の中では受け取った値は正しい</li>
+<li>セッションに <code>put()</code> → 直後に <code>find()</code> しても値は入っている</li>
+<li>しかし、その後の <code>GET /state</code> では同じキーの値が <code>null</code> になっている（変更前に戻っている）</li>
+</ul>
+<p>つまり、</p>
+<blockquote>
+<p>「保存 → 再取得」まではOKなのに、<strong>その後どこかでセッションの値が巻き戻されている</strong></p>
+</blockquote>
+<p>ように見えます。</p>
+<hr>
+<h2 id="2-laravelのセッションミドルウェアの動き">2. Laravelのセッションミドルウェアの動き</h2>
+<p>まず、Laravelの <code>StartSession</code> ミドルウェアがどう動いているかを整理します。</p>
+<p>ざっくり言うと、各リクエストで以下の処理が行われます。</p>
+<ol>
+<li><strong>リクエスト開始時</strong>
+<ul>
+<li>セッションハンドラからデータを読み込み、メモリ上（<code>$request->session()</code>）に展開する
+（ファイルドライバなら <code>read(session_id)</code> → <code>unserialize</code> した配列）</li>
+</ul>
+</li>
+<li><strong>アプリケーション処理</strong>
+<ul>
+<li>コントローラやミドルウェアが <code>session()->get()</code> / <code>session()->put()</code> する</li>
+</ul>
+</li>
+<li><strong>リクエスト終了時</strong>
+<ul>
+<li>メモリ上のセッション状態をまとめて <code>write(session_id, serialized_value)</code> する</li>
+</ul>
+</li>
+</ol>
+<p>重要なのは、</p>
+<blockquote>
+<p><strong>「最後に終わったリクエストのセッション状態が“正”としてストレージに残る」</strong></p>
+</blockquote>
+<p>という性質です。</p>
+<h3 id="21-getでもセッションは保存される">2.1 GETでもセッションは保存される</h3>
+<p>ここが今回のキモですが、</p>
+<ul>
+<li>コントローラが何も <code>session()->put()</code> していない <strong>ただのGETリクエストであっても</strong></li>
+<li>リクエスト開始時点のセッションを読み込み、</li>
+<li>リクエスト終了時に、<strong>そのまま</strong>ハンドラに <code>write()</code> します</li>
+</ul>
+<p>つまり、</p>
+<blockquote>
+<p>「読むだけのつもりのGETリクエスト」が、結果的に <strong>古いセッション状態をストレージに書き戻す（上書きする）</strong> ことがあります。</p>
+</blockquote>
+<hr>
+<h2 id="3-レースコンディションのタイムライン">3. レースコンディションのタイムライン</h2>
+<p>次に、実際に起きていた競合状態（レースコンディション）をタイムラインで追ってみます。</p>
+<h3 id="31-2本のリクエストが並行するとどうなるか">3.1 2本のリクエストが並行するとどうなるか</h3>
+<p>例として、以下の2つのリクエストがほぼ同時に走るとします。</p>
+<ul>
+<li><strong>Request A</strong>: <code>PUT /state</code>（状態を更新するAPI）</li>
+<li><strong>Request B</strong>: <code>GET /something</code>（別リソースの一覧取得APIなど）
+<ul>
+<li>コントローラ内ではセッションを読むだけだが、<code>StartSession</code>は有効</li>
+</ul>
+</li>
+</ul>
+<p>これらは同じ <code>session_id</code> を持っています。</p>
+<h4 id="タイミング例">タイミング例</h4>
+<ol>
+<li><strong>Request B (GET) 開始</strong>
+<ul>
+<li>開始時点のセッション：<code>state.value = null</code></li>
+<li>ミドルウェアがこの状態をメモリに読み込む</li>
+</ul>
+</li>
+<li><strong>Request A (PUT) 開始</strong>
+<ul>
+<li>開始時点ではまだ <code>state.value = null</code></li>
+<li>アプリケーション内で <code>state.value = "new_value"</code> に更新し、処理を終える</li>
+</ul>
+</li>
+<li><strong>Request A 終了</strong>
+<ul>
+<li><code>StartSession</code> がメモリ上のセッション（<code>value = "new_value"</code>）を書き戻す</li>
+<li>この時点ではストレージ上も <code>"new_value"</code> に更新されている</li>
+</ul>
+</li>
+<li><strong>少し遅れて Request B 終了</strong>
+<ul>
+<li>しかし、Request B が持っているメモリ上のセッションは <strong>開始時点のまま（<code>value = null</code>）</strong></li>
+<li><code>StartSession</code> は「このリクエスト（B）のメモリ上のセッション」をストレージに書き戻す</li>
+<li>結果、ストレージ上の値が <strong><code>value = null</code> に巻き戻る</strong></li>
+</ul>
+</li>
+</ol>
+<p>このあと <code>GET /state</code> を叩くと、
+「PUTで更新したはずの <code>value</code> がnull」になって返ってくる、というわけです。</p>
+<hr>
+<h2 id="4-react-queryとの組み合わせでなぜ頻発したか">4. React Queryとの組み合わせでなぜ頻発したか</h2>
+<p>ここまでの話だと、
+「いやでもそんな都合よく並列リクエストなんてそうそう起きないのでは？」
+と思うかもしれません。</p>
+<p>今回のポイントは <strong>React Queryの楽観的更新（<code>onMutate</code>）と依存クエリ</strong> の組み合わせでした。</p>
+<h3 id="41-状態保存mutationと楽観的更新">4.1 状態保存mutationと楽観的更新</h3>
+<p>状態オブジェクトを更新するmutationを、React Queryで次のように書いていたとします。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> useStateMutation</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> queryClient</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> useQueryClient</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> key</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#9ECBFF">'state'</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#B392F0"> useMutation</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">        mutationKey: [</span><span style="color:#9ECBFF">'state-mutation'</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#B392F0">        mutationFn</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">payload</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> api.</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/state'</span><span style="color:#E1E4E8">, payload),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">        onMutate</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">next</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">            // 1. 既存のクエリをキャンセル</span></span>
+<span class="line"><span style="color:#F97583">            await</span><span style="color:#E1E4E8"> queryClient.</span><span style="color:#B392F0">cancelQueries</span><span style="color:#E1E4E8">({ queryKey: key });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // 2. 現在の値を退避</span></span>
+<span class="line"><span style="color:#F97583">            const</span><span style="color:#79B8FF"> prev</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> queryClient.</span><span style="color:#B392F0">getQueryData</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">State</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">>(key) </span><span style="color:#F97583">??</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">            // 3. 🔴 サーバレスポンスを待たずにキャッシュを書き換える</span></span>
+<span class="line"><span style="color:#E1E4E8">            queryClient.</span><span style="color:#B392F0">setQueryData</span><span style="color:#E1E4E8">(key, next);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> { prev };</span></span>
+<span class="line"><span style="color:#E1E4E8">        },</span></span>
+<span class="line"><span style="color:#6A737D">        // onError, onSuccess, onSettled ... など</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<ul>
+<li>ユーザーが操作して <code>mutate</code> を呼ぶ</li>
+<li><code>onMutate</code> で <strong>即座にキャッシュを書き換える</strong> ため、
+<ul>
+<li>コンポーネントから見ると「保存前から state が新しい値に変わっている」ように見えます</li>
+</ul>
+</li>
+</ul>
+<h3 id="42-依存クエリがsnapshotをキーにするパターン">4.2 依存クエリがSnapshotをキーにするパターン</h3>
+<p>別のコンポーネントが、<code>state</code> を元に何かの一覧を取得しているとします。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> SomeComponent</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">state</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">state</span><span style="color:#F97583">:</span><span style="color:#B392F0"> State</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // stateの中身が変わるとキーが変わる</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> snapshotKey</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(state?.condition </span><span style="color:#F97583">??</span><span style="color:#E1E4E8"> {});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">data</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#B392F0"> useQuery</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">        queryKey: [</span><span style="color:#9ECBFF">'items'</span><span style="color:#E1E4E8">, snapshotKey],</span></span>
+<span class="line"><span style="color:#B392F0">        queryFn</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> api.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/items'</span><span style="color:#E1E4E8">, { params: { </span><span style="color:#6A737D">/* state に依存した条件 */</span><span style="color:#E1E4E8"> } }),</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // ...</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>こういう構成だと、</p>
+<ul>
+<li><code>state</code> が変わる → <code>snapshotKey</code> が変わる</li>
+<li>→ React Query が <code>['items', snapshotKey]</code> のクエリを新規に発行</li>
+<li>→ <strong>新しい条件で <code>/items</code> GET が飛ぶ</strong></li>
+</ul>
+<p>ここで問題になるのは、</p>
+<blockquote>
+<p><code>state</code> が変わるのが「サーバ保存後」ではなく、
+<strong>「<code>onMutate</code>タイミング（サーバ保存前）」である</strong></p>
+</blockquote>
+<p>という点です。</p>
+<h3 id="43-結果として発生していたこと">4.3 結果として発生していたこと</h3>
+<p>これらを組み合わせると、以下のような流れになります。</p>
+<ol>
+<li>画面で保存アクションを実行する</li>
+<li>mutation が発火し、<code>onMutate</code> でローカルの <code>state</code> キャッシュが即座に更新される</li>
+<li>それを参照している別コンポーネントの <code>snapshotKey</code> が変わる</li>
+<li>React Query が <code>/items</code> の GET を即座にフェッチしに行く</li>
+<li><strong>この <code>/items</code> GET と、保存処理の <code>/state</code> PUT が、サーバ側では同一セッションで並行する</strong></li>
+<li>先ほどのセッションのタイムライン通り、
+<ul>
+<li>PUTで更新したセッションが、</li>
+<li>あとから終わったGETにより <strong>古い状態で書き戻される</strong></li>
+</ul>
+</li>
+</ol>
+<p>これが「保存したはずなのに、次の画面でnull」が起きていた正体でした。</p>
+<hr>
+<h2 id="5-対策案フロントエンド">5. 対策案（フロントエンド）</h2>
+<h3 id="51-楽観的更新の使いどころを絞る">5.1 楽観的更新の使いどころを絞る</h3>
+<p>少なくとも「セッションで保持する状態オブジェクト」を更新するmutationについては、</p>
+<ul>
+<li><strong><code>onMutate</code>で <code>setQueryData</code> しない</strong></li>
+<li>サーバ保存完了後にだけキャッシュを更新する</li>
+</ul>
+<p>という設計が安全です。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> useStateMutation</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> queryClient</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> useQueryClient</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> key</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#9ECBFF">'state'</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#B392F0"> useMutation</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">        mutationKey: [</span><span style="color:#9ECBFF">'state-mutation'</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#B392F0">        mutationFn</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">payload</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> api.</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/state'</span><span style="color:#E1E4E8">, payload),</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">        // onMutate は使わない or ローカルUIの表示制御だけにとどめる</span></span>
+<span class="line"><span style="color:#B392F0">        onSuccess</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">            // サーバが確定させたstateだけをキャッシュに反映</span></span>
+<span class="line"><span style="color:#E1E4E8">            queryClient.</span><span style="color:#B392F0">setQueryData</span><span style="color:#E1E4E8">(key, data.state);</span></span>
+<span class="line"><span style="color:#E1E4E8">        },</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p><strong>ポイント：</strong></p>
+<blockquote>
+<p>「QueryKeyに影響する値」は、<strong>サーバ確定後のものだけを使う</strong></p>
+</blockquote>
+<p>ようにすると、「サーバ保存前に依存クエリのGETを飛ばしてしまう」パターンを避けやすくなります。</p>
+<h3 id="52-依存クエリの-enabled-をきちんと設計する">5.2 依存クエリの <code>enabled</code> をきちんと設計する</h3>
+<p>今回のように、</p>
+<ul>
+<li>裏側でコンポーネントはマウントされている</li>
+<li>でも「今この瞬間、この一覧取得は不要」というケース</li>
+</ul>
+<p>では、<code>useQuery</code> に <code>enabled</code> を付けるのが有効です。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> useItems</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">params</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Params</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">enabled</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> boolean</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> snapshotKey</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(params);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#B392F0"> useQuery</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">        queryKey: [</span><span style="color:#9ECBFF">'items'</span><span style="color:#E1E4E8">, snapshotKey],</span></span>
+<span class="line"><span style="color:#B392F0">        queryFn</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> api.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/items'</span><span style="color:#E1E4E8">, { params }),</span></span>
+<span class="line"><span style="color:#E1E4E8">        enabled, </span><span style="color:#6A737D">// false の間はfetchもrefetchもしない</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>「いつフェッチするべきか？」「いつは絶対にフェッチしなくてよいか？」を意識して <code>enabled</code> を設計すると、<strong>不要なGETリクエスト自体を抑制</strong> でき、セッション巻き戻りのリスクを減らせます。</p>
+<hr>
+<h2 id="6-対策案バックエンド">6. 対策案（バックエンド）</h2>
+<p>フロント側を直せば今回のような症状はかなり減りますが、理屈の上では「別タブ」や「複数リクエスト」が同時に走れば、同種の問題はやはり起こり得ます。</p>
+<h3 id="61-セッションから専用テーブルへの移行">6.1 セッションから専用テーブルへの移行</h3>
+<p>根本的に安全側に寄せるなら、</p>
+<ul>
+<li>「進行中の状態」をセッションではなく <strong>専用テーブル（DB）</strong> で管理する</li>
+</ul>
+<p>という選択肢が確実です。</p>
+<ul>
+<li>テーブル例：<code>draft_states</code>（ユーザーID + 状態種別などをキーにする）</li>
+<li>楽観ロック：
+<ul>
+<li><code>version</code> カラムを持たせ、<code>version</code> を条件に <code>UPDATE</code> する</li>
+</ul>
+</li>
+<li>悲観ロック：
+<ul>
+<li>重要な更新だけ <code>SELECT ... FOR UPDATE</code> してから更新</li>
+</ul>
+</li>
+</ul>
+<p>これなら、</p>
+<blockquote>
+<p>「最後に終わったHTTPリクエストが正」という
+セッション特有の挙動から切り離せる</p>
+</blockquote>
+<p>のが最大のメリットです。</p>
+<h3 id="62-laravelの-session-blocking-の活用オプション">6.2 Laravelの Session Blocking の活用（オプション）</h3>
+<p>Laravelには、「同一セッションのリクエストを直列化する」ための機能（Session Blocking）があり、対応ドライバ（RedisやMemcachedなど）を使っていれば利用できます。</p>
+<p>これを使うと、同一セッションIDに対してリクエストが <strong>同時に走らなくなる（ロック待ちになる）</strong> ため、「古いGETがあとからセッションを書き戻す」という問題は物理的に起きにくくなります。</p>
+<p>ただし、</p>
+<ul>
+<li>全ルートに適用するとパフォーマンスに影響が出る可能性がある</li>
+<li>どのルートに適用するかの設計が必要</li>
+</ul>
+<p>といったトレードオフはあります。</p>
+<hr>
+<h2 id="7-まとめ">7. まとめ</h2>
+<p>今回の話を一文でまとめると、</p>
+<blockquote>
+<p><strong>「セッション + 並列リクエスト + React Queryの楽観更新」は、思った以上に簡単にレースコンディションを起こす</strong></p>
+</blockquote>
+<p>ということです。</p>
+<ul>
+<li>Laravelの <code>StartSession</code> は <strong>GETでもセッションを書き戻す</strong></li>
+<li>同一セッションで複数リクエストが並列すると、
+<ul>
+<li>「最後に終わったリクエスト」のセッション状態が残る</li>
+</ul>
+</li>
+<li>React Queryの <code>onMutate</code> でキャッシュを書き換えると、
+<ul>
+<li><strong>サーバ保存前に依存クエリのGETが飛ぶ</strong> ことがある</li>
+</ul>
+</li>
+<li>そのGETが「古い状態」を保持したまま終了すると、
+<ul>
+<li>セッションが古い値で上書きされ、保存した値が消えたように見える</li>
+</ul>
+</li>
+</ul>
+<p>対策としては以下の通りです。</p>
+<ul>
+<li><strong>フロントエンド：</strong>
+<ul>
+<li>「セッションに紐づく状態」を扱うmutationでは、安易に <code>onMutate</code> でQueryKeyに影響する値を変えない</li>
+<li>依存クエリは <code>enabled</code> などで発火条件を厳密にする</li>
+</ul>
+</li>
+<li><strong>バックエンド：</strong>
+<ul>
+<li>状態をセッションから専用テーブルに寄せ、DBのロックメカニズムで整合性を取る</li>
+<li>場合によっては Session Blocking で並列リクエスト自体を抑制する</li>
+</ul>
+</li>
+</ul>
+<p>「セッションの挙動」と「React Queryの挙動」をそれぞれ単体で理解していても、組み合わさった時にこういう事故が起きる、というのはなかなか気づきにくいポイントだと思います。</p>
+<p>「保存したはずの値が、たまにだけ消える」「ログを見ると、保存APIの中ではちゃんと入っているのに…」という現象に悩まされている場合は、<strong>セッション・並列リクエスト・楽観的更新の組み合わせ</strong> を一度疑ってみてください。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
