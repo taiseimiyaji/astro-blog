@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="ja"> <head><title>npmサプライチェーン攻撃への対策と考察</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+2025年に複数回npmを標的としたサプライチェーン攻撃が発生しました。
+
+8月のNx、9月のShai-Hulud攻撃に続き、11月末ごろにも同様の攻撃が発生しています。
+
+今回の記事では、攻撃の概要と取り急ぎの対策、およ"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/12/28</div> <h1>npmサプライチェーン攻撃への対策と考察</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>2025年に複数回npmを標的としたサプライチェーン攻撃が発生しました。</p>
+<p>8月のNx、9月のShai-Hulud攻撃に続き、11月末ごろにも同様の攻撃が発生しています。</p>
+<p>今回の記事では、攻撃の概要と取り急ぎの対策、および今後開発者がどうやって攻撃に備えるべきかを考察します。</p>
+<h2 id="2025年8月-nxs1ngularity攻撃">2025年8月 Nx(s1ngularity)攻撃</h2>
+<blockquote>
+<p>2025年8月26日、「s1ngularity」攻撃と呼ばれる悪意のあるNxパッケージによって引き起こされた大規模なサプライチェーン攻撃が発生しました。
+発端はGitHub Actionsワークフローの脆弱性を突いて悪意のあるNxパッケージが数時間にわたり公開されたことです。</p>
+</blockquote>
+<blockquote>
+<p>この攻撃により、Nxビルドシステムを利用していた多くの開発者の機密情報が盗まれ、さらに一部のユーザーのプライベートGitHubリポジトリが強制的に公開されるという被害も発生したと報告されています。</p>
+</blockquote>
+<p>NxはJavaScript/TypeScriptのモノレポ管理ツールで、多くの企業で利用されています。実行タイミングとしてはpostinstallスクリプトで悪意のあるコードが実行される仕組みになっていました。postinstallについては後述します。</p>
+<p>参考: <a href="https://zenn.dev/sun_asterisk/articles/nx_s1ngularity">Nx「s1ngularity」攻撃でAIはどのように利用されたか</a></p>
+<h2 id="2025年9月-shai-hulud攻撃">2025年9月 Shai-Hulud攻撃①</h2>
+<p>攻撃者はnpmのメンテナの認証情報をフィッシング攻撃で盗み、アカウントを乗っ取って悪意のあるパッケージを更新した可能性が高いと言われています。</p>
+<p>悪意のあるパッケージが<code>npm install</code>などでインストールされる際に実行されるスクリプトによってnpmトークンやGitHub PAT、ローカルの.envファイルなどに書かれたクラウドサービスの認証情報などが収集され、攻撃者に送信される仕組みになっていました。</p>
+<p>npmトークンが盗まれることによって、感染した開発者が管理する別パッケージも改ざんしてpublishされてしまい、感染が指数関数的に増えたと言われています。</p>
+<p>基本的な流れは以下の通りです。</p>
+<ol>
+<li>
+<p>改ざんされた正規パッケージが npm に公開される（メンテナのアカウント侵害などが前提）。</p>
+</li>
+<li>
+<p>package.json に preinstall で setup_bun.js（または類似名）を起動するよう仕込まれる。</p>
+</li>
+<li>
+<p>setup_bun.js が Bun ランタイムの有無を確認し、無ければインストールして実行環境を整える（正規のインストール手順に似せる）。</p>
+</li>
+<li>
+<p>bun_environment.js（メインペイロード）が起動し、CI/CD 環境判定を行う。CIなら即時実行、開発者端末ならバックグラウンド化して「npm install が速く終わったように見せる」など、ステルス性を上げる挙動が報告されています。</p>
+</li>
+<li>
+<p>GitHub / npm / AWS・GCP・Azure の認証情報やシークレットを探索・窃取し、公開 GitHub リポジトリ等へ流出させる。</p>
+</li>
+<li>
+<p>盗んだトークンを使い、被害者が管理するパッケージへ 自動的にバックドア挿入→再 publishして自己増殖する。</p>
+</li>
+</ol>
+<h2 id="2025年11月-shai-hulud攻撃">2025年11月 Shai-Hulud攻撃②</h2>
+<p>11月末にも同様の攻撃が発生しました。こちらも同様にnpmメンテナのアカウントが乗っ取られ、悪意のあるコードが含まれたパッケージが公開されました。</p>
+<p>攻撃の手法自体は9月の攻撃とほぼ同様ですが、攻撃コードはpreinstall段階で実行されるように仕込まれており、より早い段階で感染が広がる可能性がありました。</p>
+<p>クラウドの認証情報の窃取に加えて、Secrets ManagerやKey Vaultなどの秘匿サービス経由で認証情報を取得しようとするコードも含まれていたようです。</p>
+<p>また、破壊的挙動として、感染後攻撃に失敗した場合などにホームディレクトリを破壊するようなスクリプトが存在するという報告もあるようです。</p>
+<h2 id="preinstallpostinstallスクリプトとは">preinstall/postinstallスクリプトとは</h2>
+<p>npmにはインストール時に自動実行されるスクリプト機構があり、Shai-Hulud攻撃ではこれを悪用しています。</p>
+<ul>
+<li>postinstall: パッケージのインストールが完了した直後に実行されるスクリプト</li>
+<li>preinstall: パッケージのインストールが始まる直前に実行されるスクリプト</li>
+</ul>
+<p>基本的な仕組みとして、package.jsonのscriptsフィールドに<code>build</code>を書くと、<code>npm run build</code>コマンドで実行できるようになります。加えて<code>prebuild</code>コマンドを定義すると、<code>build</code>コマンドの前に自動的に実行されるようになります。</p>
+<p>このような仕組みを利用すると<code>preinstall</code>や<code>postinstall</code>といった特別な名前をつけると、インストール時に自動的に実行されるようになります。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  "scripts"</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    "preinstall"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"echo Preinstall script executed"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">    "postinstall"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"echo Postinstall script executed"</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="考えられる被害まとめ">考えられる被害まとめ</h2>
+<ul>
+<li>
+<p>機密情報の漏洩</p>
+<ul>
+<li>CI/CD環境の認証情報の流出によって、改ざんされたコードが本番環境にデプロイされる</li>
+<li>自分がメンテナンスしているnpmパッケージが改ざんされ、さらに感染を広げる</li>
+</ul>
+</li>
+<li>
+<p>ホームディレクトリが破壊される</p>
+</li>
+</ul>
+<h2 id="対策">対策</h2>
+<p>取り急ぎの対策として、侵害の疑いが少しでもあれば、感染していない端末からnpmトークンやGitHub PAT、クラウドの認証情報をローテーションすることが重要です。</p>
+<p>該当攻撃を受けているかどうかの確認として、複数の分析結果から、<code>setup_bun.js</code>や<code>bun_environment.js</code>といったファイル名が使われていることが多いようです。これらのファイルが含まれているパッケージをインストールしていないか確認することも有効です。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">rg</span><span style="color:#79B8FF"> -n</span><span style="color:#9ECBFF"> "setup_bun\.js|bun_environment\.js|set_bun\.js|shai[-_ ]?hulud|POSTINSTALL_BG|bundle\.js"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#9ECBFF">  package-lock.json</span><span style="color:#9ECBFF"> pnpm-lock.yaml</span><span style="color:#9ECBFF"> yarn.lock</span><span style="color:#9ECBFF"> node_modules</span><span style="color:#9ECBFF"> .github/workflows</span><span style="color:#79B8FF"> -S</span></span></code></pre>
+<p>新しいpublic repositoryとして、Shai-Huludを説明文に含むパッケージが勝手に作られていないかも確認しておきましょう</p>
+<h2 id="予防再発防止への考察">予防・再発防止への考察</h2>
+<p>サプライチェーン攻撃によって攻撃者にメリットのあることを考えておくと対策の方法が見えてきます。</p>
+<p>任意の処理が実行できますが、多くの場合、機密情報や認証情報を盗む、データを壊したり、ロックをかけて身代金を要求するなどが主な目的になります。</p>
+<p>被害者に気づかれない場合はリソースを仮想通貨のマイニングに使うなども考えられます。</p>
+<h3 id="コンテナでの開発">コンテナでの開発</h3>
+<p>OSSでは混入経路がどうであれ、一定のリスクを背負っており、攻撃を完全に防ぐことは困難です。</p>
+<p>開発者としては感染への完全な予防よりも、感染してもリスクを抑える方向にシフトすることが重要です。</p>
+<p>その代表的な対策として、開発環境をコンテナ化する方法があります。</p>
+<p>自分のPC上でのスクリプト実行の場合、.envなどのファイルだけでなく、普段利用しているDesktopフォルダなどにもアクセスできてしまいます。</p>
+<p>開発環境を丸ごとコンテナなどの技術によって仮想化することで、ホストOSへの影響を抑えることができます。代表的な技術としてVirtualBoxやDocker、DevContainersなどがあります。</p>
+<h3 id="lockファイルの利用">lockファイルの利用</h3>
+<p>PHPにおいてはComposer、JavaScriptエコシステムにおいてはpackage-lock.jsonやyarn.lock、pnpm-lock.yamlなどのロックファイルを利用することがサプライチェーン攻撃に対しては基本的な対策になります。</p>
+<p>サプライチェーン攻撃においては、ある日突然、依存パッケージの最新版が汚染されることが多いため、最新の依存をインストールし続けるよりも、ロックファイルを用いた運用の方が依存の更新タイミングをコントロールできるため、安全性が高まります。</p>
+<h3 id="npmの場合はpnpmを検討する">npmの場合はpnpmを検討する</h3>
+<p>npmに限った対策ですが、pnpmを利用することで攻撃の可能性を少し減らすことができます。</p>
+<p>いわゆるゼロデイ攻撃と呼ばれるまだ公になっていない攻撃に対しては修正が間に合わない可能性が高く、防御的な仕組みを利用することが重要です。</p>
+<p>pnpmの場合は<code>minimumReleaseAge</code>を設定することで、公開から一定時間が経っていないバージョンはインストールをしない、という設定が可能です。</p>
+<p>例えばShai-Hulud攻撃の場合は攻撃から発覚まで数日間でした。悪意のあるパッケージは多くのケースで公開から数日以内にコミュニティなどで発見されています。その後、セキュリティパッチなどによって修正されます。</p>
+<p>数日間のバッファを作ることで多少ゼロデイ攻撃のリスクを減らすことができると言えます。</p>
+<p>また、<code>ignore-scripts</code>オプションを利用することで、preinstall/postinstallスクリプトの実行自体を抑止することも可能です。</p>
+<p>本来スクリプトが必要なパッケージについてはホワイトリスト形式での許可ができるため、より安全に実行することができます。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://blog.jxck.io/entries/2025-09-20/mitigate-risk-of-oss-dependencies.html">サプライチェーン攻撃への防御策 | blog.jxck.io</a></li>
+<li><a href="https://zenn.dev/hand_dot/articles/04542a91bc432e">【npm】11月21日以降にnpm installした人へ - Shai-Hulud感染チェック &#x26; 多層防御ガイド</a></li>
+<li><a href="https://zenn.dev/azu/articles/ad168118524135">npmパッケージ/GitHub Actionsを利用する側/公開する側でサプライチェーン攻撃を防ぐためにやることメモ</a></li>
+</ul> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
