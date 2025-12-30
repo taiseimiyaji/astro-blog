@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="ja"> <head><title>npmからpnpmへ移行によるサプライチェーン攻撃対策</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+npmはJavaScriptエコシステムでスタンダードとなっているパッケージマネージャーですが、近年のサプライチェーン攻撃の増加に伴い、pnpmへの移行を検討しています。
+
+今回は公式ドキュメントを参考にしつつ、npmから"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2025/12/30</div> <h1>npmからpnpmへ移行によるサプライチェーン攻撃対策</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>npmはJavaScriptエコシステムでスタンダードとなっているパッケージマネージャーですが、近年のサプライチェーン攻撃の増加に伴い、pnpmへの移行を検討しています。</p>
+<p>今回は公式ドキュメントを参考にしつつ、npmからpnpmへ移行する手順と注意点をまとめます。</p>
+<p>npmサプライチェーン攻撃については前回の記事にまとめています。</p>
+<p>参考: <a href="https://www.lyricrime.com/posts/anti-npm-supply-chain-attack/">npmサプライチェーン攻撃への対策と考察</a></p>
+<h2 id="pnpmとは">pnpmとは</h2>
+<p>公式サイト: <a href="https://pnpm.io/ja/">Fast, disk space efficient package manager | pnpm</a></p>
+<p>npmと比べた場合のpnpmのメリットについても公式でページが用意されています。</p>
+<ul>
+<li><a href="https://pnpm.io/ja/motivation">Fast, disk space efficient package manager | pnpm</a></li>
+</ul>
+<p>翻訳がわかりづらいので、要点をまとめると以下の通りです。</p>
+<h3 id="1-ディスク容量の節約">1. ディスク容量の節約</h3>
+<p>npmの場合、同じ依存関係を使うプロジェクトが複数ある場合に、各プロジェクトごとに依存関係のコピーが保存されます。</p>
+<p>pnpmの場合は依存関係は一か所に保存され、異なるバージョンの場合は更新されたファイルだけが追加されます。全体がコピーされるわけではありません。
+つまり、パッケージのファイルは一か所に保存され、インストール時はそこからハードリンクされるため、追加のディスク領域を消費しない仕組みです。</p>
+<p>結果として、プロジェクト数、依存関係数が増えたとしてもディスク容量を節約でき、結果としてインストールも非常に高速になります。</p>
+<h3 id="2-インストール速度の向上">2. インストール速度の向上</h3>
+<p>npmの場合は「解決 -> 取得 -> node_modulesへの書き込み」の順番でインストールされます。</p>
+<p>pnpmの場合は</p>
+<ol>
+<li>依存関係の解決</li>
+<li>ディレクトリ構造の計算</li>
+<li>依存関係をリンク</li>
+</ol>
+<p>の順番でインストールされ、依存関係の取得とリンクが並列で行われるため、全体として高速になると説明されています。</p>
+<h3 id="3-フラットではないnode_modulesを作る">3. フラットではないnode_modulesを作る</h3>
+<p>npmやYarn Classicの場合は、node_modulesがフラットな構造になりますが、この方法ではプロジェクトが直接依存していない依存関係に対してもアクセスできるようになります。</p>
+<p>pnpmはデフォルトでシンボリックリンクを利用して、プロジェクトの直接の依存関係のみをモジュールディレクトリ直下に追加します。
+なお、ツールがシンボリックリンクと相性が悪い場合はnodeLinker設定をhoistedにすることで、npmやYarn Classicと同様のフラットな構造に変更できます。</p>
+<h2 id="npmサプライチェーン攻撃に対するpnpmの優位性">npmサプライチェーン攻撃に対するpnpmの優位性</h2>
+<p>こちらも公式サイトに記載がありますが、翻訳がまだ存在しないようなので要点をまとめます。</p>
+<p><a href="https://pnpm.io/ja/supply-chain-security">サプライチェーン攻撃の軽減 | pnpm</a></p>
+<h3 id="概要">概要</h3>
+<p>npmパッケージがマルウェア混入などによって侵害された状態で公開されることがあり、検出、削除までには数時間から数日の時間がかかることがあります。検出までの時間には常に一定の時間がかかり、いわゆるゼロデイ攻撃を防ぐことはできないとされていますが、pnpmにはリスクを最小限に抑えるための設定や仕組みがあります。</p>
+<h3 id="危険なインストール前後のスクリプトのブロック">危険なインストール前後のスクリプトのブロック</h3>
+<p>これまで報告されているサプライチェーン攻撃の手法として、preinstall/postinstallスクリプトを利用して悪意のあるコードを実行する方法があります。pnpm v10では、依存関係に含まれる <code>postinstall</code> の自動実行をデフォルトで無効化しています。もちろん、意図的に有効化する <code>dangerouslyAllowAllBuilds</code> オプションも存在しますが、基本的には <code>allowBuilds</code> オプションで個別に許可する形式を推奨しています。</p>
+<p>これにより、過去にビルド不要だった依存が、侵害されたバージョンの公開で突然悪意あるスクリプトを実行することを回避できます。</p>
+<p>仕組み上、<code>postinstall</code> を元から持っている信頼済みのパッケージの更新を防ぐことはできませんが、一定のリスク低減には寄与します。</p>
+<h3 id="異常な推移依存の防止">異常な推移依存の防止</h3>
+<p><code>blockExoticSubdeps=true</code> を設定することで、推移依存がgitリポジトリや直接tarball URLなどの「exotic sources」を使うのを防止します。</p>
+<p>推移依存が信頼できるソースからのみ解決されることを保証します。</p>
+<p>公式サイトに書かれているのはこれだけですが、推移依存について説明しておきます。</p>
+<p><strong>まず「推移的依存関係」とは</strong></p>
+<p>あなたのプロジェクトが直接入れている依存（直接依存）だけでなく、その依存がさらに別の依存を持っている場合があります。</p>
+<p>あなたのプロジェクト → A（直接依存）</p>
+<p>A → B（推移依存 / 間接依存）</p>
+<p>B → C（さらに推移依存）</p>
+<p>このBやCが「推移的依存関係」です。</p>
+<p>つまり、自分が直接指定していない依存が勝手にGitや直接URLからコードを取ってくるのを禁止する仕組みがpnpmには用意されている、ということですね。</p>
+<h3 id="依存更新を遅らせる">依存更新を遅らせる</h3>
+<p>多くの場合、セキュリティ攻撃は数時間から数日程度で検出され、対策のパッチがリリースされます。つまり、依存関係の更新を最新版の更新からある程度時間を空けてから行うことで、攻撃に巻き込まれるリスクを下げることができます。</p>
+<p>pnpmでは、<code>minimumReleaseAge</code> を設定することで、「公開後、pnpmがそのバージョンをインストール可能になるまでの最小経過時間（分）」を指定することができます。</p>
+<h3 id="trustpolicyによる信頼レベル低下の拒否">trustPolicyによる「信頼レベル低下」の拒否</h3>
+<p>pnpmでは、<code>trustPolicy</code> を利用でき、<code>no-downgrade</code> に設定することで過去のリリースより信頼レベルが下がったパッケージがインストールされることを防ぎます。
+例外的に許可したい場合は <code>trustPolicyExclude</code> を利用できます。</p>
+<p>trustPolicyについても説明しておきます。</p>
+<p>公式サイトでは下記のページに解説があります。</p>
+<p><a href="https://pnpm.io/blog/2025/12/05/newsroom-npm-supply-chain-security">npmのサプライチェーン攻撃からニュースルームを守る方法 | pnpm</a></p>
+<p>npm側にも解説があります。</p>
+<p><a href="https://docs.npmjs.com/trusted-publishers">npm パッケージの信頼できる公開 | npm ドキュメント</a></p>
+<p>pnpmでは、パッケージの信頼レベルを次のような段階で評価しています。</p>
+<ol>
+<li>Trusted Publisher</li>
+</ol>
+<p>例: GitHub ActionsなどのCI/CDからOIDCを使う「trusted publishing」でpublishされ、かつnpmのprovenanceが付く場合</p>
+<ol start="2">
+<li>Provenance（来歴証明）</li>
+</ol>
+<p>CI/CDからの署名付きattestation（来歴情報）が付与されている場合</p>
+<ol start="3">
+<li>No Trust Evidence（証拠なし）</li>
+</ol>
+<p>ユーザー名/パスワードまたはトークン認証などで公開され、provenanceなどの信頼根拠がない状態</p>
+<p>サプライチェーン攻撃の特徴として、攻撃者がnpmメンテナのアカウントを乗っ取って悪意のあるパッケージを公開するケースがあります。この場合、メンテナの認証情報は盗めても、CI/CDで利用するOIDC側の権限までは取れていないことが多く、その場合にはtrusted publisherやprovenanceが付与されていない状態で公開されることが多いため、信頼レベルが下がります。</p>
+<p>つまり、<code>no-downgrade</code> を設定することで、「いつもは強い手段（trusted publishing / provenance）で出しているはずのパッケージが、急に弱い手段で出てきた」場合にインストールを止めることができます。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>npmからpnpmへの移行によって、高速化するだけでなく、多くの攻撃に対するリスクを低減することができそうです。</p>
+<p>また、pnpm公式サイトの最後にlockfileの利用による予期せぬ更新を避けるべきという記述もあり、こちらはnpmでも同様に実現できる手段です。多くのプロジェクトでは行われていますが、古めのプロジェクトなど、漏れがないかを年末の棚卸しとして確認しておきましょう。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
