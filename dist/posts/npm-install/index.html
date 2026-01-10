@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="ja"> <head><title>npm install は必ずしも package-lock.json を書き換えない</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+`npm install` と `npm ci` の違いを「package-lock.json を書き換えるかどうか」として認識していました。
+
+誤解の内容: 
+
+- `npm install`はpackage-lock."><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2026/01/09</div> <h1>npm install は必ずしも package-lock.json を書き換えない</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p><code>npm install</code> と <code>npm ci</code> の違いを「package-lock.json を書き換えるかどうか」として認識していました。</p>
+<p>誤解の内容:</p>
+<ul>
+<li><code>npm install</code>はpackage-lock.jsonを書き換えて最新の依存関係でインストールする</li>
+<li><code>npm ci</code>はpackage-lock.jsonを参照して依存関係をインストールするのでpackage-lock.jsonを書き換えない</li>
+</ul>
+<p>結論から言うと、<code>npm ci</code> は <strong>「絶対に lockfile を書き換えない」</strong> のに対して、<code>npm install</code> は <strong>「条件次第で書き換える（が、常に書き換えるわけではない）」</strong> です。</p>
+<p>もっというと、package-lock.jsonがある場合は先に確認し、package.jsonとの整合性を確認します。整合性が取れていない場合にpackage-lock.jsonを書き換えるか、エラー終了するかがコマンドによって異なります。</p>
+<p><a href="https://docs.npmjs.com/cli/v11/commands/npm-ci">npm-ci | npm Docs</a></p>
+<h2 id="npm-ci-の定義公式">npm ci の定義（公式）</h2>
+<p>公式ドキュメントでは <code>npm ci</code> は「CI/自動環境向けのクリーンインストール」、「依存関係のクリーンインストール」という位置づけです。</p>
+<ul>
+<li>既存の <code>package-lock.json</code>（または <code>npm-shrinkwrap.json</code>）が必須</li>
+<li><code>package.json</code> と lockfile が一致していない場合、lockfile を更新せずエラー終了</li>
+<li>既存の <code>node_modules</code> があれば 削除してから インストール</li>
+<li><code>package.json</code> も “あらゆる package-lock.json” にも一切書き込まない</li>
+</ul>
+<h3 id="npm-shrinkwrapjson-とは">npm-shrinkwrap.json とは</h3>
+<p>npm-shrinkwrap.jsonはざっくりいうとパッケージの公開時にロックファイルとして使用されるファイルです。</p>
+<p>このファイルが存在している場合、package-lock.jsonが無視されて、npm-shrinkwrap.jsonが優先されます。</p>
+<p>パッケージを公開するときにロックファイルが含められるので、ユーザー側での依存関係の変更ができないようになります。</p>
+<p>特殊なユースケースでの利用が考えられますが、基本的にpackage-lock.jsonを利用するべきです。</p>
+<h2 id="npm-install-の定義公式">npm install の定義（公式）</h2>
+<p>一方 <code>npm install</code> は、依存関係のインストールだけでなく <strong>lockfile の生成/更新にも関わる</strong> コマンドです。
+公式の <code>package-lock.json</code> の説明にはこうあります。</p>
+<ul>
+<li><code>package-lock.json</code> は、npm が <code>node_modules</code> ツリー か <code>package.json</code> を変更する操作で自動生成される</li>
+<li>古い lockfile（npm v6 以前など）を検出すると、インストール過程で 不足情報を埋めるために自動更新される</li>
+</ul>
+<p>ここが重要で、<strong><code>npm install</code> は “必要があれば” lockfile を更新しますが、必要がなければ更新しないこともあり得る</strong>、という理解になります。</p>
+<h2 id="npm-install-でも書き換えない場合">npm install でも書き換えない場合</h2>
+<h3 id="1-依存ツリーが変わらないlockfile更新が不要">1) 依存ツリーが変わらない（＝lockfile更新が不要）</h3>
+<p><code>package-lock.json</code> は「npm が <code>node_modules</code> ツリーや <code>package.json</code> を変更したときに生成される」という定義です。
+逆に言えば、<strong>結果としてツリーやメタ情報の差分が発生しないケースでは、lockfile が更新されない</strong>ことがあります。</p>
+<p>実務的には、例えば</p>
+<ul>
+<li>すでに <code>node_modules</code> が期待通りで、追加/更新が起きない</li>
+<li>lockfile が現行フォーマットで、補完が不要</li>
+</ul>
+<p>のようなときに「<code>npm install</code> したのに lockfile が変わらない」可能性があります。</p>
+<h3 id="2---no-save--savefalse-にしている">2) <code>--no-save</code> / <code>save=false</code> にしている</h3>
+<p>そもそも意図的に設定でコントロールすることができます。</p>
+<p>公式ドキュメント では <code>save=false</code>（≒ <code>--no-save</code>）の場合、“package-lock.json を書かない” と書かれています。</p>
+<h3 id="3-package-lockfalseまたは---no-package-lockにしている">3) <code>package-lock=false</code>（または <code>--no-package-lock</code>）にしている</h3>
+<p>同様に変更しない設定が他にもあります。</p>
+<p>公式ドキュメント では <code>package-lock</code> 設定が false の場合、lockfile は無視され、書き込まれないという記述もあります。</p>
+<h2 id="ci-ではどっちを使うべきか">CI ではどっちを使うべきか</h2>
+<p>npm の公式説明の通り、<strong>CI/自動環境は基本 <code>npm ci</code> が想定</strong>です。</p>
+<p>ややこしいのはciというのはエイリアスからもわかるようにclean installの意味合いだと思われるんですが、継続的インテグレーションの意味のCIとかぶってしまっているのでややこしいですね。</p>
+<p>まあ勘違いしたとしても正しい使い方がされるので困ることはなさそうですが。</p>
+<ul>
+<li>CIで「同じ依存を確実に入れたい」→ <code>npm ci</code></li>
+<li>ローカルで「依存を追加/更新し、lockfile を更新したい」→ <code>npm install</code>（必要なら <code>npm install &#x3C;pkg></code>）</li>
+</ul>
+<p>という使い分けになります。</p>
+<h2 id="直近の変更注意点npm-v1162-以降の-in-sync-問題">直近の変更・注意点（npm v11.6.2 以降の “in sync” 問題）</h2>
+<p>「直近で変わった/荒れている挙動」として、<strong>npm v11.6.2 前後で <code>npm ci</code> が “package.json と lockfile が in sync ではない” として失敗する</strong> という報告が複数あります。</p>
+<p><a href="https://github.com/npm/cli/issues/8669">[BC BREAK] version 11.6.2 breaks CI · Issue #8669 · npm/cli</a></p>
+<p>この手の問題は、<code>npm ci</code> の定義そのものが変わったというより、<strong>lockfile 生成側（install/update）との整合が崩れて “ci が厳密に見て落とす”</strong> 挙動になるようです。</p>
+<p><a href="https://github.com/npm/cli/issues/8726">[BUG] <code>npm ci</code> fails because <code>npm install</code> produces an out-of-sync lockfile (regression since v7.0.9) · Issue #8726 · npm/cli</a></p>
+<p><strong>現実的な対策</strong>：</p>
+<ul>
+<li>CI で使う npm を <strong>明示的に固定</strong>する（Node 同梱 npm をそのまま使わず、toolchain 管理する）</li>
+<li>lockfile を生成したときのフラグ（例：<code>--legacy-peer-deps</code> 等）を CI 側でも揃える</li>
+<li><code>npm ci</code> が落ちたら、まずはローカルで <code>npm install</code> → 差分が出るか確認し、意図せぬ設定（<code>save=false</code>, <code>package-lock=false</code>）が混ざっていないか確認</li>
+</ul>
+<h2 id="npm豆知識">npm豆知識</h2>
+<p>公式ドキュメントを眺めていて、なんとなくの挙動は予想していたものの、ドキュメントでしっかり確認していなかった部分をまとめます。</p>
+<h3 id="git上のリポジトリのインストールにおけるgit-clone">Git上のリポジトリのインストールにおけるGit Clone</h3>
+<p>通常のレジストリのパッケージの場合は範囲指定しますが、これらは設定されたレジストリから解決されます。</p>
+<p>実態としては「gzipped tarball(.tgz)」をダウンロードして展開する形式です。</p>
+<p>tarball URLを直接指定することもできます。</p>
+<p>Git URLの場合は少し特殊で、<code>git clone</code>を行って取得する形式です。</p>
+<p>末尾に<code>#&#x3C;commit-ish></code>を指定することで、特定のコミットを指定することもできます。</p>
+<p><code>#semver:&#x3C;range></code>という形式だとリモートのtagを探索することもできます。</p>
+<p>また、サブモジュールがある場合はそちらも一緒にcloneされます。</p>
+<h3 id="devdependencies-の扱いについて">devDependencies の扱いについて</h3>
+<p>NODE_ENVがproductionの場合にインストールされない認識だったdevDependenciesですが、実際には設定のomitの値がNODE_ENV依存になっているようです。</p>
+<p>omit=devの場合、devDependenciesを無視するようになっており、このデフォルト値がNODE_ENVの値によって変わります。</p>
+<p>環境変数によらずインストールを抑制したい場合には <code>npm ci --omit=dev</code> を指定することで抑制できます。</p>
+<h3 id="依存関係の調査に-npm-explain-が便利">依存関係の調査に <code>npm explain</code> が便利</h3>
+<p><code>npm explain &#x3C;package></code> を実行することで、依存関係の詳細を確認できます。</p>
+<p>どの経路で依存関係に含まれたかを説明してくれるため、トラブルシュートに使えそうです。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>今回はnpm install周りの挙動について調査しました。</p>
+<p>案外公式ドキュメントを読まないままタスクランナーなどを利用するだけになっている現場も多いと思うので、一度公式ドキュメントを読んでみると意外な発見があるかもしれません。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
