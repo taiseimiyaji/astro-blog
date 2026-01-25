@@ -1,56 +1,119 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>2022年のお盆は帰省バイク旅</title><link>https://www.lyricrime.com/posts/2022-08-touring/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2022-08-touring/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>npm install は必ずしも package-lock.json を書き換えない</title><link>https://www.lyricrime.com/posts/npm-install/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/npm-install/</guid><description>## はじめに
 
-スマレジに入社してかもう少しで半年が経とうとしていることに驚いています。   
-このブログも開設から半年が近づいています。   
-ふと、弊社のブログ制度は月一本までプライベートな内容がOKだったことを思い出したので今年のお盆の予定について書いてみたいと思います。   
+`npm install` と `npm ci` の違いを「package-lock.json を書き換えるかどうか」として認識していました。
 
-## 帰省
-実家が高知県のため、帰省となると結構遠いので交通手段に悩みます。
-バイクを購入してからは結構バイク...</description><pubDate>Sat, 13 Aug 2022 00:00:00 GMT</pubDate><category>private</category></item><item><title>2022年の振り返り</title><link>https://www.lyricrime.com/posts/2022-end/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2022-end/</guid><description>## はじめに
-2022年もあっという間に終わってしまいました。   
-ここ数年の中で一番人生に大きな変化があった一年間ですし、とてもいい出会いが多かった一年間でもありました。   
-当初考えていた2022年の目標を踏まえて、一年間を振り返りながら、来年の目標を考える記事にしようかなと思います。   
-組み込み、かつテスターやツール制作等開発以外の業務がメインだったこれまでのキャリアからWEBエン...</description><pubDate>Sat, 31 Dec 2022 00:00:00 GMT</pubDate><category>private</category></item><item><title>2022上半期を振り返ってみる(その他最近の雑記)</title><link>https://www.lyricrime.com/posts/2022-first-half/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2022-first-half/</guid><description>## はじめに
+誤解の内容: 
 
-私が株式会社スマレジに入社したのは2022年の3月でした。早いことにもう半年以上が経ちます。   
-エンジニアとして働き始めたのは前職からなので数年の経験があることになりますが、スマレジに入社してからの半年間はかなり濃いものでした。   
-今回は日常業務をこなす以外にこの半年で取り組んだことや、業務を通しての変化等、半年を振り返ってみたいと思います。   
-また、最近気になってい...</description><pubDate>Thu, 27 Oct 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>2023年の振り返り</title><link>https://www.lyricrime.com/posts/2023-end/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2023-end/</guid><description>## はじめに
+- `npm install`はpackage-lock.jsonを書き換えて最新の依存関係でインストールする
+- `npm ci`はpackage-lock.jsonを参照して依存関係をインストールするのでpacka...</description><pubDate>Fri, 09 Jan 2026 00:00:00 GMT</pubDate><category>npm</category></item><item><title>npmからpnpmへ移行によるサプライチェーン攻撃対策</title><link>https://www.lyricrime.com/posts/migrate-npm-to-pnpm/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/migrate-npm-to-pnpm/</guid><description>## はじめに
 
-2023年もあっという間に大晦日になりました。  
-今年は、エンジニアとして仕事面でも成長でき、プライベートも充実した一年間でした。  
-今年一年間力をいれて取り組んできたことと、来年取り組んでいきたいことをまとめてみたいと思います。
+npmはJavaScriptエコシステムでスタンダードとなっているパッケージマネージャーですが、近年のサプライチェーン攻撃の増加に伴い、pnpmへの移行を検討しています。
 
-## 2023年の目標と達成度
+今回は公式ドキュメントを参考にしつつ、npmからpnpmへ移行する手順と注意点をまとめます。
 
-2023年当初に立てた目標と達成度は以下の通りです。
+npmサプライチェーン攻撃については前回の記事にまとめています。
 
-### 資格
+参考: [npmサプライチェーン攻撃への対策...</description><pubDate>Tue, 30 Dec 2025 00:00:00 GMT</pubDate><category>javascript</category><category>npm</category><category>pnpm</category></item><item><title>npmサプライチェーン攻撃への対策と考察</title><link>https://www.lyricrime.com/posts/anti-npm-supply-chain-attack/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/anti-npm-supply-chain-attack/</guid><description>## はじめに
 
-- DBスペシャリスト  
+2025年に複数回npmを標的としたサプライチェーン攻撃が発生しました。
 
-残念なが...</description><pubDate>Sun, 31 Dec 2023 00:00:00 GMT</pubDate><category>private</category></item><item><title>「勉強法の勉強会」参加レポと個人的な所感まとめ</title><link>https://www.lyricrime.com/posts/2023-05-15-learning/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2023-05-15-learning/</guid><description>## はじめに
+8月のNx、9月のShai-Hulud攻撃に続き、11月末ごろにも同様の攻撃が発生しています。
 
-久しぶりに社外の勉強会イベントに視聴者として参加してきました!  
-今回参加したのはゆめみ x とらラボ!主催の「勉強法の勉強会」です。  
-勉強会ってこんなにメモ取るのが忙しかったっけ?と感じるくらい自分に刺さる濃い勉強会だったのでその参加レポと個人的な所感や活用法をまとめてみたいと思います。  
+今回の記事では、攻撃の概要と取り急ぎの対策、および今後開発者がどうやって攻撃に備えるべきかを考察します。
 
-今回はLTの中でも特に印象に残っている以下の4つの発表についてまとめていきます...</description><pubDate>Mon, 15 May 2023 00:00:00 GMT</pubDate><category>LT</category></item><item><title>2024年の抱負</title><link>https://www.lyricrime.com/posts/2024-start/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2024-start/</guid><description>## はじめに
+## 2025年8月 Nx(s1ngularity)攻撃
 
-ぼちぼちスマレジに入社して二年が経とうとしています。  
-入社してから、必死にいろんなことに取り組んできた二年間でしたが、今年の目標も言語化しておきたいと思います。  
+&gt; 2025年8月26日、「s1ngul...</description><pubDate>Sun, 28 Dec 2025 00:00:00 GMT</pubDate><category>security</category><category>npm</category></item><item><title>LaravelのセッションとReact Queryで踏みがちなレースコンディションの話</title><link>https://www.lyricrime.com/posts/laravel-session-race-condition/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-session-race-condition/</guid><description>## はじめに
 
-## 2024年の目標
+「POSTでセッションに値を保存したはずなのに、すぐ後のページで `null` になっている」
 
-今年達成したいなあと思っていることは、大きく分けると個人で取り組むことと、組織的に取り組むことの二種類に分けられます。
-それぞれについて、具体的に取り組みたいことを言語化してみます。
-...</description><pubDate>Wed, 31 Jan 2024 00:00:00 GMT</pubDate><category>private</category></item><item><title>2025年を振り返って現状の生成AIを活用した開発の現在地を確認する</title><link>https://www.lyricrime.com/posts/2025-11-ai-dev/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2025-11-ai-dev/</guid><description>## はじめに
+セッションを使ってページをまたぐデータの受け渡しなどを実装していると、たまにこんな **「保存したはずの値が消える」現象** に出会います。
+
+しかもログを見ると：
+
+  * 保存APIの中ではちゃんと値が入っている
+  * 直後にセッションから再取得してもちゃんと入っている
+  *...</description><pubDate>Sun, 30 Nov 2025 00:00:00 GMT</pubDate><category>Laravel</category><category>React Query</category></item><item><title>2025年を振り返って現状の生成AIを活用した開発の現在地を確認する</title><link>https://www.lyricrime.com/posts/2025-11-ai-dev/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2025-11-ai-dev/</guid><description>## はじめに
 
 今回は、2025年を通して個人的に取り組んできた「生成AIを活用した開発」を振り返り、その現在地を確認します。
 
 また、さまざまな企業で生成AIの活用が進む中で、ある程度試行錯誤した企業が揃って似たような課題を抱えている現状を確認し、今後の開発における課題感を整理します。
 
-今後、生成AIによる開発が当たり前になるかもしれませんが、現状はまだ試行錯誤を繰り返している段階です。後々...</description><pubDate>Mon, 24 Nov 2025 00:00:00 GMT</pubDate></item><item><title>生成AI時代のエンジニアのインプット方法の考察</title><link>https://www.lyricrime.com/posts/2025-llm-input/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2025-llm-input/</guid><description>## はじめに
+今後、生成AIによる開発が当たり前になるかもしれませんが、現状はまだ試行錯誤を繰り返している段階です。後々...</description><pubDate>Mon, 24 Nov 2025 00:00:00 GMT</pubDate></item><item><title>Reactのメモ化について</title><link>https://www.lyricrime.com/posts/react-memo/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/react-memo/</guid><description>## はじめに
+
+今回はReactを書くうえで役立つmemo化について調査します。Vueなどの他のフレームワークと比較すると最適化を行わないとパフォーマンス差を感じることがあったりしますが、どこまで最適化をやればいいのか、いつやればいいのか、どうやってやるのかについてまとめます。
+
+## 対象読者
+
+- React初学者 ~ 中級者
+- バックエンドをメインにしているが、フロントエンドでReact...</description><pubDate>Thu, 30 Oct 2025 00:00:00 GMT</pubDate><category>React</category></item><item><title>Reactフォームの基本｜制御・非制御の違いとReact Hook Formの正しい使い分け</title><link>https://www.lyricrime.com/posts/react-controlled-components/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/react-controlled-components/</guid><description>## はじめに
+
+今回はReactの制御コンポーネントと非制御コンポーネントについて紹介します。
+
+Reactのコンポーネントを作成していく上で、Vueの場合とは違い、レンダリングのタイミングをより細かく把握しておく必要があります。
+
+その際に重要になってくるのが制御コンポーネントと非制御コンポーネントの違いです。
+
+## 現在の公式ドキュメント上の制御コンポーネントと非制御コンポーネント
+
+[コ...</description><pubDate>Sat, 25 Oct 2025 00:00:00 GMT</pubDate><category>react</category></item><item><title>ドメインサービスとの付き合い方</title><link>https://www.lyricrime.com/posts/domain-service-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/domain-service-01/</guid><description>## はじめに
+
+今回は、ドメイン駆動設計を勉強し始めたひとや、プロジェクトで活用し始めた人がつまずきやすいドメインサービスについてまとめます。  
+エンティティや値オブジェクトと比べてドメインサービスはイメージが湧きにくいかもしれません。
+今回は、原著を確認しつつ、筆者なりのドメインサービスの扱い方をまとめます。
+
+あくまで筆者なりの解釈なので、実装の一例として参考にしていただければと思います。...</description><pubDate>Tue, 30 Sep 2025 00:00:00 GMT</pubDate><category>DDD</category><category>Sevrvice</category></item><item><title>AIxGASで業務を改善する第一歩を踏み出そう</title><link>https://www.lyricrime.com/posts/script-for-non-enginner/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/script-for-non-enginner/</guid><description>## 想定読者
+
+  - プログラミング未経験 or 初心者の方
+  - 社内の業務担当者(総務、人事、経理、営業など)
+  - 業務改善に興味がある方
+  - AIに興味があるが、どう活用すれば良いかわからない方
+
+## この記事のゴール
+
+  - AIを活用して自分自身で業務を効率化する最初の体験をする
+  - AIに渡す情報を整理できるようになる
+  - GASの雛形をAIに作成してもらい、...</description><pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate><category>ai</category><category>gas</category><category>業務改善</category></item><item><title>エンジニアのためのコミュニケーション実践!</title><link>https://www.lyricrime.com/posts/communication-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/communication-init/</guid><description>---------------------
+
+## コミュニケーションとはなにか
+
+この記事ではコミュニケーションを「**自分の理解を、相手に合わせてわかりやすく届ける行為**」と定義します。
+目的は、相手の意思決定を **早く・正確に・気持ちよく** 進めること。
+
+ポイントは「**伝える側ではなく、受け手に届いてはじめて成立**」するということ。相手・状況・手段に応じて、表現や粒度、順序を調整...</description><pubDate>Fri, 15 Aug 2025 00:00:00 GMT</pubDate><category>communication</category></item><item><title>ユースケースで選ぶSPAの認証——Laravel 12の Session / Sanctum とOIDC</title><link>https://www.lyricrime.com/posts/laravel-auth/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-auth/</guid><description>## まとめ
+
+* **同一ドメインSPA × ブラウザだけ** → **Laravel Session（stateful）単独でも実装可能**。ただし**公式はSPAにはSanctum推奨**。
+* **`routes/api.php` を保ったままSPAを stateful にしたい** or **同一トップレベルドメイン内の別サブドメインSPA** → **Sanctum（SPAモード）**...</description><pubDate>Mon, 11 Aug 2025 00:00:00 GMT</pubDate><category>laravel</category><category>auth</category></item><item><title>論理削除の問題点と資料のまとめ</title><link>https://www.lyricrime.com/posts/anti-soft-delete/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/anti-soft-delete/</guid><description>## はじめに
+
+度々SNS上でエンジニア界隈でいろんなトピックが話題に上がりますが、ここ最近は論理削除の是非が話題です。  
+これまでブログにまとめたことがないトピックだったので、いろんな参考資料やブログをもとに、論理削除の是非について考えてみようと思います。
+
+こういったトピックはほとんどすべてのアプリケーションで問題になるため、対象となる人口がそもそも多かったり、その是非が人によって分かれる...</description><pubDate>Tue, 29 Jul 2025 00:00:00 GMT</pubDate><category>design</category></item><item><title>生成AI時代に見直すスキーマ駆動開発</title><link>https://www.lyricrime.com/posts/schema-driven-dev-ai/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/schema-driven-dev-ai/</guid><description>&gt; **この記事の対象読者**: フロントエンド／バックエンド開発者、技術選定に関わるリード／アーキテクト、生成AIを開発ワークフローに組み込みたいエンジニア。  
+&gt; **この記事でわかること**: スキーマ駆動開発（Schema‑Driven Development: SDD）の基本、OpenAPIからTypeSpecへの進化、Zodを活用した型安全フロントエンド、AI活用時のコンテキスト削減...</description><pubDate>Fri, 18 Jul 2025 00:00:00 GMT</pubDate><category>typescript</category><category>design</category></item><item><title>Go言語でのドメインオブジェクト実装を考える</title><link>https://www.lyricrime.com/posts/go-domain/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/go-domain/</guid><description>## はじめに
+
+生成AIを前提とした業務アプリケーションの構築のために最近Goを学び始めました。
+
+Goは一般的なオブジェクト指向言語とは異なる特性を持つため、ドメインオブジェクトの実装もPHPと同じようにはいかないので、エンティティと値オブジェクトの実装について考えてみます。
+
+ドメインオブジェクトとは、ドメイン駆動設計の用語で、開発者がドメイン（業務領域）の深い知識をソフトウェアに反映させ、...</description><pubDate>Mon, 30 Jun 2025 00:00:00 GMT</pubDate><category>go</category></item><item><title>生成AI時代に備えてGo言語を学ぶ</title><link>https://www.lyricrime.com/posts/go-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/go-init/</guid><description>## はじめに
+
+生成AIと相性の良い言語として、これまで中心的にTypeScriptを利用していましたが、バックエンドを書くにあたって、Go言語を使いたい場面がでてきたので、Go言語を学び始めます。
+
+生成AIと相性の良い部分として、
+
+- 言語構造がシンプルであること
+- 型があること
+- Rustほどビルドに時間がかからないこと
+
+などが挙げられます。また、Go言語を書くうえで辛い部分だった...</description><pubDate>Sun, 22 Jun 2025 00:00:00 GMT</pubDate><category>go</category></item><item><title>生成AIを活用するためのプロンプトの基礎 - 「LLMのプロンプトエンジニアリング」を読んで</title><link>https://www.lyricrime.com/posts/prompt-engineer-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/prompt-engineer-init/</guid><description>## はじめに
+
+ここ一年で生成AIの進化は凄まじく、3ヶ月も経てばほとんどの知識が古くなってしまう状態です。
+
+しかし、それでも基本となるLLMの仕組みは変わっておらず、だからこそ効果的なプロンプトの基礎も変わっていません。
+
+この記事では、LLMの仕組みのざっくりとした雰囲気を押さえつつ、効果的なプロンプトを根拠を持って書けるようになるために必要なことをまとめます。
+
+少しでも仕組みを理解する...</description><pubDate>Thu, 29 May 2025 00:00:00 GMT</pubDate><category>AI</category></item><item><title>生成AI時代のエンジニアのインプット方法の考察</title><link>https://www.lyricrime.com/posts/2025-llm-input/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2025-llm-input/</guid><description>## はじめに
 
 この記事は生成AI時代のエンジニアのインプット方法の考察です。
 
@@ -60,34 +123,69 @@
 
 これまでの学習方法のまとめとこれから生成AIを活用した事例をまとめていきます。
 
-## 従来の方法...</description><pubDate>Sat, 17 May 2025 00:00:00 GMT</pubDate></item><item><title>Qiita ConferenceとラクスのLT会を聞いてみた</title><link>https://www.lyricrime.com/posts/2022-06-LT/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2022-06-LT/</guid><description>## はじめに
-ここ最近、エンジニア向けの社外イベントを聞いてみようと思い、いろいろ参加してみました。
+## 従来の方法...</description><pubDate>Sat, 17 May 2025 00:00:00 GMT</pubDate></item><item><title>業務アプリケーションにおけるIDの種類と選択</title><link>https://www.lyricrime.com/posts/id-selection/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/id-selection/</guid><description>## はじめに
 
-株式会社ラクス主催のLT会二つとQiita Conferenceです。
+今回は、業務でWebアプリケーションを構築する際や、外部サービスのAPI等に利用されるIDの種類と、それらをどう選ぶかについて考えてみます。
 
-いつもは自分で勉強したことをまとめることが多いのですが、今回はイベントレポのような形でまとめたいと思います。
-業務に関係のあることを中心に勉強している日々が続いていたので社外のイベントに参加して刺激をもらうのもたまにはい...</description><pubDate>Fri, 24 Jun 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>システムの権限方式について</title><link>https://www.lyricrime.com/posts/access-control/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/access-control/</guid><description>## はじめに
+## そもそもIDとは
 
-今回はシステムのアクセス制御、つまりユーザーの操作権限の管理のしくみを考えていきます。
+そもそもIDとはなんでしょうか？
 
-## 管理者フラグ形式
+日本語だと「識別子」であり、リソースが一意であることを保証するためのラベルです。
 
-最も簡単に実装できる方法です。  
-ユーザーテーブルに管理者フラグを実装し、管理者の場合は権限を持つように実装します。
+Webアプリケーションでは自動で採番された連番のINT型の値を思い浮かべる方も多いと思います...</description><pubDate>Sat, 26 Apr 2025 00:00:00 GMT</pubDate></item><item><title>バックエンドエンジニアから見るVite入門</title><link>https://www.lyricrime.com/posts/vite-for-backend/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/vite-for-backend/</guid><description>## はじめに
 
-- メリットはシンプルな実装となること。
-- デメリットはユーザーごとに権限を設定できないこと。
+Laravelを自身の技術スタックの中心として使用してきた私ですが、以前はフロントエンドのassetのビルドにはwebpackを用いていました。
 
-「このユーザーにはこの操作のみを許可したい」...</description><pubDate>Thu, 17 Nov 2022 00:00:00 GMT</pubDate><category>design</category></item><item><title>アジャイル開発への入門 アジャイルの価値観とプロジェクトの開始</title><link>https://www.lyricrime.com/posts/agile-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/agile-init/</guid><description>## はじめに
+LaravelではLaravel Mixを用いてWebpackを簡単に扱うことができていました。
 
-現在の開発チームでは、アジャイル開発を採用しています。しかし、私を含めて、きちんとアジャイル開発を理解している人は少ないと思います。  
-プロダクト開発が問題なく進んでいるのであれば、大きな問題はないのかもしれませんが、いくつかの課題を感じるようになったので今一度アジャイル開発について学び直してみることにしました。  
-現在のチームで感じている課題や、一般的に想像できる仮想課題に...</description><pubDate>Wed, 24 Jul 2024 00:00:00 GMT</pubDate><category>agile</category><category>scrum</category></item><item><title>論理削除の問題点と資料のまとめ</title><link>https://www.lyricrime.com/posts/anti-soft-delete/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/anti-soft-delete/</guid><description>## はじめに
+しかし、Webpackの開発終了やフロントエンドでのビルドツールの選択肢の増加に伴って、Laravel9からViteが公式標準のビルド...</description><pubDate>Fri, 04 Apr 2025 00:00:00 GMT</pubDate><category>Vite</category><category>Backend</category></item><item><title>WEBサイトにおけるRSSの仕組みとNext.js・Astro.jsでの実装</title><link>https://www.lyricrime.com/posts/rss-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/rss-init/</guid><description>## はじめに
 
-度々SNS上でエンジニア界隈でいろんなトピックが話題に上がりますが、ここ最近は論理削除の是非が話題です。  
-これまでブログにまとめたことがないトピックだったので、いろんな参考資料やブログをもとに、論理削除の是非について考えてみようと思います。
+インターネット上の情報は長らく検索エンジンによって検索可能でしたが、段々と広告やサイトのクオリティの低下が目立つようになり、生成AIの出現とともに直接WEB上のサイトを閲覧する機会が減りつつあります。
 
-こういったトピックはほとんどすべてのアプリケーションで問題になるため、対象となる人口がそもそも多かったり、その是非が人によって分かれる...</description><pubDate>Tue, 29 Jul 2025 00:00:00 GMT</pubDate><category>design</category></item><item><title>自社SaaSで働くということと「設計」の目指すところ</title><link>https://www.lyricrime.com/posts/application-engineer-design/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/application-engineer-design/</guid><description>## 対象読者
+一方で、信憑性の高い情報や興味深い仮説をブログで公開している方も多くいるため、効率的にそれらを収集したいという思いがあります。
+
+そのための技術として、RSSとその関連技術につい...</description><pubDate>Mon, 24 Mar 2025 00:00:00 GMT</pubDate><category>RSS</category></item><item><title>LaravelでSPAアプリケーションを構築する際に考えないといけないこと</title><link>https://www.lyricrime.com/posts/laravel-spa-2025/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-spa-2025/</guid><description>## はじめに
+
+今回は、Laravel12でスターターキット周りの変更があったり、LivewireのバージョンアップがあったりとLaravelのフロント周辺の変更を踏まえつつ、2025年にLaravelで業務アプリを構築する際に考慮することをまとめてみたいと思います。
+
+## 技術選定の基準
+
+私が業務アプリを構築する際に技術選定を行う際に考慮することをまずはまとめます。
+
+### 規模の把握
+...</description><pubDate>Thu, 20 Mar 2025 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>成長のために自宅環境を整え始める</title><link>https://www.lyricrime.com/posts/my-home-environment/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/my-home-environment/</guid><description>## はじめに
+
+久しぶりに技術ではないプライベート記事です。  
+とはいえ、間接的に仕事に関係していますが。
+
+これまで、ある程度のリモートワーク環境を整えてきました。  
+
+例えば、以下のようなものを購入しました。
+
+| 項目 | 購入物 |
+| --- | --- |
+| モニター | LGの安物モニター x3 |
+| マウス | LogicoolのMX Master 3 |
+| キーボード...</description><pubDate>Fri, 28 Feb 2025 00:00:00 GMT</pubDate><category>private</category></item><item><title>CSSの基礎を復習する - ボックスモデル</title><link>https://www.lyricrime.com/posts/css-box-model/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/css-box-model/</guid><description>## はじめに
+
+今回はCSSの基礎の復習とキャッチアップを中心とした記事です。  
+近年のWeb開発では、フロントエンドとバックエンドは明確に分離されつつも、どちらも区別せずに同じチームで取り組むことも増えてきました。  
+プロダクトエンジニアとも呼ばれたりしますが、単純な技術だけでなく、UI/UXのデザインやドメインの知識までプロダクトに関連することはすべて解決する姿勢が求められます。
+
+個人...</description><pubDate>Sat, 22 Feb 2025 00:00:00 GMT</pubDate><category>css</category></item><item><title>Mockeryで学ぶMockとSpyの違いとつかいかた</title><link>https://www.lyricrime.com/posts/unittest-mock-spy/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/unittest-mock-spy/</guid><description>## はじめに
+
+単体テストにおいてテストダブルを用いることは、コードの設計品質を保つうえで、抽象に依存させる大きな動機になるため、コード本体の品質を上げることに繋がります。
+
+テストダブルのなかでも、外部リソースや他のクラスへの依存を切り離せる「モック（Mock）」と、呼び出しを記録して後から検証できる「スパイ（Spy）」はしばしば混同されがちな概念です。
+
+PHPでモックを扱うライブラリとして...</description><pubDate>Fri, 31 Jan 2025 00:00:00 GMT</pubDate><category>UnitTest</category></item><item><title>良いソフトウェアを目指して設計への入門</title><link>https://www.lyricrime.com/posts/good-practice-design/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/good-practice-design/</guid><description>## はじめに
+
+これまでもいくつも設計に関する記事を書いてきました。  
+今回は設計が大事なのはわかったけど何から始めればいいの?という方向けに、設計への入門としてのアプローチをまとめてみました。  
+初学者のときに知っておきたかったことを中心にまとめているので、設計に興味がある方はぜひ参考にしてみてください。  
+
+ここでの設計とは、ソフトウェアの設計、特にコードを書くうえでのソフトウェア構造...</description><pubDate>Sat, 25 Jan 2025 00:00:00 GMT</pubDate><category>design</category></item><item><title>自社SaaSで働くということと「設計」の目指すところ</title><link>https://www.lyricrime.com/posts/application-engineer-design/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/application-engineer-design/</guid><description>## 対象読者
 
 - 自社SaaS以外の業種から自社SaaSを提供する企業に転職する人、転職した人
 - 自社SaaSを提供する企業に就職を考えている人
@@ -95,58 +193,25 @@
 ## はじめに
 
 これから自社SaaS企業に入社する方が今後行う業務においては、単に動作するアプリケーションを作るだけでなく、そのアプリケーションを長期的に保守・運用し続けることになります。  
-リリースした後も頻繁に機能改善やバグ修正、ビジネス...</description><pubDate>Fri, 27 Dec 2024 00:00:00 GMT</pubDate><category>design</category></item><item><title>ブログを書き始めて一年が経った話</title><link>https://www.lyricrime.com/posts/blog-1year/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/blog-1year/</guid><description>## はじめに
+リリースした後も頻繁に機能改善やバグ修正、ビジネス...</description><pubDate>Fri, 27 Dec 2024 00:00:00 GMT</pubDate><category>design</category></item><item><title>エンジニアの言語化能力と知識獲得のプロセスの考察</title><link>https://www.lyricrime.com/posts/engineer-verbalize/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/engineer-verbalize/</guid><description>## はじめに
 
-今回は具体的な技術の内容ではなく、本ブログについて思うところをまとめたいと思います。  
-週に一本のペースで欠かすことなく、またそれなりの分量も記事を一年間継続して書けたかなと思います。  
-継続のために弊社スマレジのブログ手当の存在は結構大きかったです。  
+OpenAIがChatGPTをリリースし、12月にはProプランがリリースされ、ますますエンジニアとしての価値が問われる時代になってきたなあと感じています。  
 
-## まとめ
+今回の記事はポエム的な要素も含まれています。
 
-- とりあえずアウトプットしよう
-- 質はアウトプットしてから考えよう
+そんな中で、職業エンジニアが価値を出し続けるためには、なんとなくの理解ではなく、根本を理解することやその理解から仕組みを作れることが求められるようになりました。
 
-## 技術発信のジレンマ
+また、...</description><pubDate>Thu, 19 Dec 2024 00:00:00 GMT</pubDate><category>verbalize</category></item><item><title>2024年末の今、Rustに入門してみる</title><link>https://www.lyricrime.com/posts/rust-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/rust-init/</guid><description>## はじめに
 
-...</description><pubDate>Wed, 22 Mar 2023 00:00:00 GMT</pubDate><category>blog</category></item><item><title>エンジニアのためのコミュニケーション実践!</title><link>https://www.lyricrime.com/posts/communication-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/communication-init/</guid><description>---------------------
+今回はRustへの入門記事です。  
 
-## コミュニケーションとはなにか
+2024年の抱負として、技術書を読んだり、個人開発を習慣化したりといったことを目標にしていました。
 
-この記事ではコミュニケーションを「**自分の理解を、相手に合わせてわかりやすく届ける行為**」と定義します。
-目的は、相手の意思決定を **早く・正確に・気持ちよく** 進めること。
+[2024年の抱負](https://www.lyricrime.com/posts/2024-start/)
 
-ポイントは「**伝える側ではなく、受け手に届いてはじめて成立**」するということ。相手・状況・手段に応じて、表現や粒度、順序を調整...</description><pubDate>Fri, 15 Aug 2025 00:00:00 GMT</pubDate><category>communication</category></item><item><title>クリーンアーキテクチャについて</title><link>https://www.lyricrime.com/posts/crean-architecture/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/crean-architecture/</guid><description>![picture 1](/images/8dbc4e9ea504ae68caeebf7261788baa807accda93f08a9ea19197b22ac05696.png)  
-## 参考
-[実装クリーンアーキテクチャ](https://qiita.com/nrslib/items/a5f902c4defc83bd46b8)   
-[クリーンアーキテクチャ完全に理解した](https://...</description><pubDate>Mon, 21 Mar 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>データベース知識基礎まとめ</title><link>https://www.lyricrime.com/posts/database-fundation/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/database-fundation/</guid><description>## はじめに
-今回はデータベース周りを勉強するにあたって頻出する単語や知識についてまとめていきたいと思います。   
-現在データベース周りに課題を感じていて、チーム内で話していても自分のデータベース周りの知識が足りていないなと感じているため直近の課題だと思っています。   
-今回は以下の内容についてまとめていきます。   
+実際、今年は技術書を読んだり、個人開発をしてはいるんですが、習慣化という点ではまだまだです。  
 
-- ORM
-- トランザクション
-- ACID
-- N + 1問題
-
-...</description><pubDate>Fri, 05 Aug 2022 00:00:00 GMT</pubDate><category>DB</category></item><item><title>DDD(Domain Driven Design: ドメイン駆動設計)を布教したい</title><link>https://www.lyricrime.com/posts/ddd-penetration/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ddd-penetration/</guid><description>## はじめに
-
-今回はドメイン駆動設計を布教する際に押さえておくことを整理して記事にしたいと思います。  
-
-この記事では、DDDの概要を整理するとともに、DDDの採用におけるメリットを整理していきます。
-
-これから勉強する人、そもそもDDDに興味がない人がすこしでもDDDに対して興味を持っていただければと思います。
-
-DDDについて学習し、批判的な意見を持てるころには、設計への知見が深まってい...</description><pubDate>Tue, 31 Oct 2023 00:00:00 GMT</pubDate><category>DDD</category></item><item><title>DB基礎 物理設計周り</title><link>https://www.lyricrime.com/posts/db-specialist-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/db-specialist-02/</guid><description>## はじめに
-
-今回は、DBスペシャリスト試験への対策として、物理設計周りの基礎的な用語についてまとめていきます。
-
-## WALプロトコル
-
-WALプロトコルは、Write Ahead Logの略で、データベースのトランザクション処理において、データの更新前にログを書き込むことを指します。
-
-基本的な動作は以下の2点です。
-
-- データベースの更新は、まずその操作をログに書き込む(更新前ログ)...</description><pubDate>Sat, 30 Sep 2023 00:00:00 GMT</pubDate><category>DB</category></item><item><title>データベースのマイグレーション時にインデックスを削除する場合に注意すべき外部キー制約とインデックスの依存関係</title><link>https://www.lyricrime.com/posts/composite-unique-key-index/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/composite-unique-key-index/</guid><description>## はじめに
+これらをやりたい背景として...</description><pubDate>Fri, 29 Nov 2024 00:00:00 GMT</pubDate><category>rust</category></item><item><title>データベースのマイグレーション時にインデックスを削除する場合に注意すべき外部キー制約とインデックスの依存関係</title><link>https://www.lyricrime.com/posts/composite-unique-key-index/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/composite-unique-key-index/</guid><description>## はじめに
 
 今回は業務のなかで少しつまづいたポイントについて自分の備忘録としてまとめたいと思います。  
 
@@ -160,47 +225,122 @@ MySQLにおける外部キー制約作成時の既存インデックスの利用
 ## TL;DR
 
 - 特定のインデックスを削除する場合、特定の外部キー制約がインデックスを必要としている場合にエラーになる
-- 外部...</description><pubDate>Sat, 16 Nov 2024 00:00:00 GMT</pubDate><category>database</category></item><item><title>DB基礎 正規化と関係演算</title><link>https://www.lyricrime.com/posts/db-specialist-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/db-specialist-01/</guid><description>## はじめに
-
-今回は実施まであと10日に迫ったIPAのDBスペシャリスト試験への対策としてDBの基礎的な部分の復習をしていきます。  
-本業に加えて副業、個人開発等も行いながらのため対策の時間をなかなか捻出できていませんが、受験申し込みはしたので試験当日はしっかり受験会場には行きたいと思います。  
-
-### RDB（関係データベース）の基本概念の簡単な紹介
-
-関係データベース（RDB: Re...</description><pubDate>Thu, 28 Sep 2023 00:00:00 GMT</pubDate><category>DB</category></item><item><title>DDD(Domain Driven Design: ドメイン駆動設計)について</title><link>https://www.lyricrime.com/posts/ddd/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ddd/</guid><description>## 参考文献   
-[ドメイン駆動設計の用語と解説(抜粋版)](https://qiita.com/nunulk/items/84438605eb4d75dbef00)   
-[DDD難民に捧げるDomain-Driven Designのエッセンス](https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/index.html)   
-...</description><pubDate>Wed, 18 May 2022 00:00:00 GMT</pubDate><category>DDD</category></item><item><title>2024年にReactを学ぶ人のための資料</title><link>https://www.lyricrime.com/posts/2024-start-react/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2024-start-react/</guid><description>## はじめに
+- 外部...</description><pubDate>Sat, 16 Nov 2024 00:00:00 GMT</pubDate><category>database</category></item><item><title>2024年にReactを学ぶ人のための資料</title><link>https://www.lyricrime.com/posts/2024-start-react/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2024-start-react/</guid><description>## はじめに
 
 2024年現在、WebフロントエンドはReactが主流となっています。  
 LaravelやRuby on Railsのようなフルスタックフレームワークの流行を過ぎ、バックエンドとフロントエンドを分離することが一般的になりました。  
-今回は、すでにjQueryやLaravel、Ruby on Railsなどを触ったことがある人を対象に、Reactを学ぶための資料をまとめてみまし...</description><pubDate>Thu, 31 Oct 2024 00:00:00 GMT</pubDate><category>React</category></item><item><title>npmサプライチェーン攻撃への対策と考察</title><link>https://www.lyricrime.com/posts/anti-npm-supply-chain-attack/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/anti-npm-supply-chain-attack/</guid><description>## はじめに
+今回は、すでにjQueryやLaravel、Ruby on Railsなどを触ったことがある人を対象に、Reactを学ぶための資料をまとめてみまし...</description><pubDate>Thu, 31 Oct 2024 00:00:00 GMT</pubDate><category>React</category></item><item><title>プログラミングとカードゲームは実は似ている説</title><link>https://www.lyricrime.com/posts/programming-cardgame/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/programming-cardgame/</guid><description>## はじめに
 
-2025年に複数回npmを標的としたサプライチェーン攻撃が発生しました。
+今回は完全にポエムです。  
+SNSなどでよく見かける、「エンジニアに向いている人は〇〇な人だ!」という投稿を見ることがあります。  
+たとえば、「数学が得意な人はエンジニアに向いている」とか、反対に「実は文系の方がプログラミングに向いている」といったものがあります。  
+他にも、「コミュニケーション能力がある人」や「集中力がある人」といった、それは大抵の仕事でも必要だろと思われ...</description><pubDate>Fri, 25 Oct 2024 00:00:00 GMT</pubDate><category>poem</category></item><item><title>フロントエンドの状態管理について調べてみる</title><link>https://www.lyricrime.com/posts/frontend-state/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/frontend-state/</guid><description>## はじめに
 
-8月のNx、9月のShai-Hulud攻撃に続き、11月末ごろにも同様の攻撃が発生しています。
+今回はフロントエンドの状態管理について調査してみます。
 
-今回の記事では、攻撃の概要と取り急ぎの対策、および今後開発者がどうやって攻撃に備えるべきかを考察します。
+## フロントエンドにおける状態管理とは
 
-## 2025年8月 Nx(s1ngularity)攻撃
+フロントエンドにおける状態管理とは、ユーザーインターフェース（UI）のデータやその変化を一貫性を持って管理する手法を指します。  
+ここで言う「状態（State）」とは、サーバーから取得したデータ、UIの現在の表示内容など、アプリケーションの動作に影響を与える全ての情報を意味しま...</description><pubDate>Mon, 30 Sep 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>tRPCへの入門</title><link>https://www.lyricrime.com/posts/trpc-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/trpc-init/</guid><description>## はじめに
 
-&gt; 2025年8月26日、「s1ngul...</description><pubDate>Sun, 28 Dec 2025 00:00:00 GMT</pubDate><category>security</category><category>npm</category></item><item><title>CSSの基礎を復習する - ボックスモデル</title><link>https://www.lyricrime.com/posts/css-box-model/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/css-box-model/</guid><description>## はじめに
+今回はtRPCという技術について調査してみます。  
+なにもわからない状態からのやってみた系記事になります。  
+概念の理解や個人的な感想を中心に書いていきます。  
+実際に導入する際には公式サイトを参照することをおすすめします。  
 
-今回はCSSの基礎の復習とキャッチアップを中心とした記事です。  
-近年のWeb開発では、フロントエンドとバックエンドは明確に分離されつつも、どちらも区別せずに同じチームで取り組むことも増えてきました。  
-プロダクトエンジニアとも呼ばれたりしますが、単純な技術だけでなく、UI/UXのデザインやドメインの知識までプロダクトに関連することはすべて解決する姿勢が求められます。
+## tRPCとは
 
-個人...</description><pubDate>Sat, 22 Feb 2025 00:00:00 GMT</pubDate><category>css</category></item><item><title>フロントエンド入門 宣言的UIと命令的UI</title><link>https://www.lyricrime.com/posts/declarative-ui/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/declarative-ui/</guid><description>## 宣言的UIと命令的UI
+そもそもRPCとは?については[こちらのQiita記事](https://qiita.com/il-m-yamagishi...</description><pubDate>Mon, 23 Sep 2024 00:00:00 GMT</pubDate><category>tRPC</category></item><item><title>OpenAPIの理解とその活用方法を考える</title><link>https://www.lyricrime.com/posts/open-api/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/open-api/</guid><description>## はじめに
+
+今回はWeb APIの仕様書として広く使われているOpenAPIについて調査してみます。
+
+## OpenAPIとは
+
+OpenAPI(旧Swagger)はREST APUのAPI記述形式です。
+
+公式ドキュメントによると、次の内容を記述できると書かれています。
+
+- 利用可能なエンドポイント(/users)と書くエンドポイントでの操作(GET /users, POST/user...</description><pubDate>Wed, 28 Aug 2024 00:00:00 GMT</pubDate><category>OpenAPI</category></item><item><title>「データモデリングでドメインを駆動する」を読む その１ システムの分類と残</title><link>https://www.lyricrime.com/posts/data-modeling-domain-driven-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/data-modeling-domain-driven-01/</guid><description>## はじめに
+
+今回は杉本 啓さんの「データモデリングでドメインを駆動する」(以降書籍と呼びます)を読んでいきます。  
+これまでの記事で、ドメイン駆動設計の基本的な思想や設計手法については書いてきましたが、実際に基幹システムを例にしてデータモデリングを行うとなると、どのように進めていけばよいのか、また、どのような視点でデータモデリングを行うべきなのか、といったことについては深く考えることができ...</description><pubDate>Tue, 20 Aug 2024 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>アジャイル開発への入門 アジャイルの価値観とプロジェクトの開始</title><link>https://www.lyricrime.com/posts/agile-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/agile-init/</guid><description>## はじめに
+
+現在の開発チームでは、アジャイル開発を採用しています。しかし、私を含めて、きちんとアジャイル開発を理解している人は少ないと思います。  
+プロダクト開発が問題なく進んでいるのであれば、大きな問題はないのかもしれませんが、いくつかの課題を感じるようになったので今一度アジャイル開発について学び直してみることにしました。  
+現在のチームで感じている課題や、一般的に想像できる仮想課題に...</description><pubDate>Wed, 24 Jul 2024 00:00:00 GMT</pubDate><category>agile</category><category>scrum</category></item><item><title>スクラム入門　ユーザーストーリーとストーリーポイント</title><link>https://www.lyricrime.com/posts/storypoint/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/storypoint/</guid><description>## はじめに
+
+スクラム開発において、ストーリーポイントという単位でタスクの見積もりを行います。
+
+今回の記事では、アジャイル開発における見積もりの方法と登場する独自の概念についてまとめます。
+
+## ユーザーストーリーとは
+
+アジャイル開発においてはタスクの内容を示す概念として、ユーザーストーリーが使われます。  
+アジャイルにおいて重要視されるのは「人」であり、ユーザーストーリーではエンドユ...</description><pubDate>Tue, 23 Jul 2024 00:00:00 GMT</pubDate><category>scrum</category></item><item><title>フロントエンド入門 宣言的UIと命令的UI</title><link>https://www.lyricrime.com/posts/declarative-ui/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/declarative-ui/</guid><description>## 宣言的UIと命令的UI
 
 前回の記事で一通りWebフロントエンドの歴史を整理したところで、宣言的UIと命令的UIについて整理していきたいと思います。  
 本記事では、フロントエンドの歴史において特に象徴的なjQueryからReactへの移行を中心に整理していきます。  
-命令的UIと宣言的UIの違いとその利点、欠点について整理しどのようにして現在のフロントエンド開発が進化してきたのかを探りま...</description><pubDate>Sun, 30 Jun 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>astroに入門してみる</title><link>https://www.lyricrime.com/posts/astro-tutorial/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/astro-tutorial/</guid><description>## はじめに
+命令的UIと宣言的UIの違いとその利点、欠点について整理しどのようにして現在のフロントエンド開発が進化してきたのかを探りま...</description><pubDate>Sun, 30 Jun 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>フロントエンド入門 フロントエンドの歴史</title><link>https://www.lyricrime.com/posts/frontend-history-2024/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/frontend-history-2024/</guid><description>## はじめに
 
-最近フロントエンドへの自身の理解の甘さを感じるようになってきました。  
-ここ最近TypeScriptなどフロントエンドに関係する記事をいくつか公開しましたが、そろそろ実際になにか作ってみようと感じるようになりました。  
-そこで今回は気になっていた`astro`というフレームワークを触ってみようと思います。  
-題材としては、自作ブログにしたいと思います。  
-目的はブログ記事...</description><pubDate>Sat, 04 Feb 2023 00:00:00 GMT</pubDate><category>Astro</category></item><item><title>最初からちゃんといろんなことを検討して設計しろ VS 爆速でプロトタイプ作った方がいろんな問題可視化されて結果的に早いだろ</title><link>https://www.lyricrime.com/posts/design-vs-prot/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/design-vs-prot/</guid><description>## はじめに
+ありがたいことに、Webエンジニアになって2年と少しが経ちました。  
+初めの頃はバックエンドを中心に業務を行っていましたが、徐々にフロントエンドの面からもプロダクトの改善を進めていくことが増えました。  
+今回は、フロントエンドの入門として、フロントエンドの歴史を整理していきたいと思います。  
+
+## フロントエンドの歴史
+
+私自身のエンジニア歴がWebの発展の歴史と比べると...</description><pubDate>Sun, 30 Jun 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>HTMLタグとアクセシビリティ、コンポーネント化について考える</title><link>https://www.lyricrime.com/posts/html-tags/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/html-tags/</guid><description>## はじめに
+
+最近、個人的なプロジェクトのコードをNext.jsで書きながらキャッチアップをしています。  
+普段の業務では、すでにコンポーネント化されたUIを組み合わせて利用することが多く、基本的なコンポーネントを1から作ることはないのですが、個人で開発する場合には、コンポーネント化したくなる場面があり、その方針や基準に悩む機会が増えました。  
+今回は、基本的なHTMLタグを復習しつつ、コ...</description><pubDate>Thu, 30 May 2024 00:00:00 GMT</pubDate><category>html</category></item><item><title>React Hook Form + zodでシンプルなフォーム実装</title><link>https://www.lyricrime.com/posts/react-hook-form/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/react-hook-form/</guid><description>## はじめに
+
+今回はreact-hook-formを使ってみます。業務ではVue3を中心に利用していますが、副業として稼働する際や、個人開発でreactを使うことが多いので、関連したライブラリのキャッチアップ目的で記事にしました。
+
+## react-hook-formとは
+
+Reactアプリケーションでフォームを簡単に扱うためのライブラリです。  
+バリデーションやエラー処理を簡単に行うこと...</description><pubDate>Sun, 26 May 2024 00:00:00 GMT</pubDate><category>react</category></item><item><title>SQLiteとLaravel11でのカラム削除の挙動でつまづいた話</title><link>https://www.lyricrime.com/posts/sqlite-laravel-column-delete/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sqlite-laravel-column-delete/</guid><description>## はじめに
+
+今回は2024年3月12日にリリースされたLaravel11のうち、移行時につまづいたSQLiteの仕様についてまとめます。
+
+[Laravel Upgrade Guide](https://laravel.com/docs/11.x/upgrade)
+
+## 概要
+
+Laravel11ではSQLiteは3.35.0以上のバージョンが必須となりました。  
+この3.35.0という...</description><pubDate>Thu, 25 Apr 2024 00:00:00 GMT</pubDate><category>SQLite</category><category>Laravel</category></item><item><title>DRY原則とそのトレードオフ</title><link>https://www.lyricrime.com/posts/dry-principle/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/dry-principle/</guid><description>## はじめに
+
+おそらくもっとも有名なソフトウェア工学の原則の1つに、DRY（Don&apos;t Repeat Yourself）原則があります。DRY原則は、同じコードを何度も書かないようにすることを目指しています。この記事では、DRY原則の重要性とそのトレードオフについて考えてみます。
+
+## 参考
+
+[ソフトウェア設計のトレードオフと誤り](https://www.oreilly.co.jp//b...</description><pubDate>Tue, 09 Apr 2024 00:00:00 GMT</pubDate><category>principal</category></item><item><title>「世界一流エンジニアの思考法」から学ぶエンジニアが持つべきメンタルモデル</title><link>https://www.lyricrime.com/posts/how-world-class-engineers-think/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/how-world-class-engineers-think/</guid><description>## はじめに
+
+今回は「世界一流エンジニアの思考法」を読んで、エンジニアが持つべきメンタルモデルについて考えてみます。
+
+結構流行りの本なので、要約記事も多く存在しますが、個人的に重要だと感じた部分をピックアップして個人的な所感をまとめてみます。
+
+## 「理解に時間をかける」を実践する
+
+私たち職業プログラマは、日々新しい技術と対峙し、複雑な問題を解決するために努力しています。この過程でしばし...</description><pubDate>Sun, 31 Mar 2024 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>駆け出しエンジニアからジュニア・ミドルレベルへの成長の道のり</title><link>https://www.lyricrime.com/posts/engineer-onboarding-for-junior/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/engineer-onboarding-for-junior/</guid><description>## はじめに
+
+エンジニアとしてのキャリアをスタートしたばかりの方が、ジュニアレベルやミドルレベルのエンジニアとして活躍するために必要なスキルや知識について考えてみます。  
+この記事はWEB領域のエンジニアを対象としています。
+
+## 前提
+
+前提として、私の知っている範囲のことしか書けませんが、弊社スマレジのエンジニアとして活躍できるレベルを目標としています。  
+スマレジでは、バックエンド...</description><pubDate>Thu, 07 Mar 2024 00:00:00 GMT</pubDate><category>onboarding</category></item><item><title>Next.jsのServerActionsを試してみる</title><link>https://www.lyricrime.com/posts/next-server-actions-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/next-server-actions-01/</guid><description>## はじめに
+
+ここ最近あまり手を動かして新しいものを作成することができていなかったので、今回はNext.jsのServerActionsを試して見たいと思います。
+
+まずは簡単なTodoリストの作成から始めてみます。
+
+## 開発方針
+
+個人開発ですが、先にデプロイの方法を考えてから開発を始めてみます。
+
+今回選択したデプロイ先はVercelのHobbyプラン + PlanetScaleです。...</description><pubDate>Thu, 29 Feb 2024 00:00:00 GMT</pubDate><category>Next.js</category></item><item><title>最初からちゃんといろんなことを検討して設計しろ VS 爆速でプロトタイプ作った方がいろんな問題可視化されて結果的に早いだろ</title><link>https://www.lyricrime.com/posts/design-vs-prot/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/design-vs-prot/</guid><description>## はじめに
 
 社内slackのtimesチャンネルでふと思ったことを書き込んだところ、複数の方から反応があったので個人的な意見をまとめてみました。  
 
@@ -210,19 +350,172 @@ LaravelやRuby on Railsのようなフルスタックフレームワークの流
 
 です。  
 
-この記事では、上記テーマについていただいた反応を踏まえて、私自...</description><pubDate>Fri, 16 Feb 2024 00:00:00 GMT</pubDate><category>idea</category></item><item><title>プログラミングにおける「DI」二種類の違いとは。依存性注入と依存性逆転について</title><link>https://www.lyricrime.com/posts/di/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/di/</guid><description># 依存性注入と依存性逆転について
+この記事では、上記テーマについていただいた反応を踏まえて、私自...</description><pubDate>Fri, 16 Feb 2024 00:00:00 GMT</pubDate><category>idea</category></item><item><title>2024年の抱負</title><link>https://www.lyricrime.com/posts/2024-start/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2024-start/</guid><description>## はじめに
 
-## はじめに
-エンジニアになって初めて人に知識を伝えるという場面がありました。  
-これまでチーム内ではたいてい自分が一番技術的に拙い部分が多かったので少しうれしくもありますが、正しくわかりやすく伝えるために勉強してきたことを棚卸しするとともに現時点での考えを整理していきたいと思います。
+ぼちぼちスマレジに入社して二年が経とうとしています。  
+入社してから、必死にいろんなことに取り組んできた二年間でしたが、今年の目標も言語化しておきたいと思います。  
 
-## DIとは
+## 2024年の目標
 
-プログラミングの文脈で登場する**DI**という単...</description><pubDate>Tue, 06 Dec 2022 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>Dockerを雰囲気ではなく理解して使う</title><link>https://www.lyricrime.com/posts/docker-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/docker-02/</guid><description>## はじめに
+今年達成したいなあと思っていることは、大きく分けると個人で取り組むことと、組織的に取り組むことの二種類に分けられます。
+それぞれについて、具体的に取り組みたいことを言語化してみます。
+...</description><pubDate>Wed, 31 Jan 2024 00:00:00 GMT</pubDate><category>private</category></item><item><title>「t-wadaさんが後世に残したい、実録レガシーコード改善」を聞いて得た気づきメモ</title><link>https://www.lyricrime.com/posts/actual-legacy-code-improvement/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/actual-legacy-code-improvement/</guid><description>## はじめに
 
-以前Dockerについてごく簡単に[まとめた記事](https://taisei-miyaji.hatenadiary.com/entry/2022/03/02/230306)を書きましたが、Webエンジニアになって一年が経とうとしているので改めてDockerについてまとめようと思います。  
-公式ドキュメントを自分なりに解釈してまとめたいと思います。  
-Dockerについての...</description><pubDate>Sat, 11 Feb 2023 00:00:00 GMT</pubDate><category>Docker</category></item><item><title>Dotfilesを作ってみる</title><link>https://www.lyricrime.com/posts/dotfiles/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/dotfiles/</guid><description>## 参考
+個人的なエンジニアとしての強みとして、テストやレガシーコード改善を武器にしていきたいと考えて日々プログラミングと向き合っています。  
+そんな中、t-wadaさんが後世に残したい、実録レガシーコード改善というイベントの再放送に参加し、自身のテストに関する解像度がさらに上がりました。  
+また、テストの考え方を人に伝える上でとてもいい表現をされていたので、そのあたりをメモ的に残して...</description><pubDate>Tue, 30 Jan 2024 00:00:00 GMT</pubDate><category>study</category></item><item><title>2023年の振り返り</title><link>https://www.lyricrime.com/posts/2023-end/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2023-end/</guid><description>## はじめに
+
+2023年もあっという間に大晦日になりました。  
+今年は、エンジニアとして仕事面でも成長でき、プライベートも充実した一年間でした。  
+今年一年間力をいれて取り組んできたことと、来年取り組んでいきたいことをまとめてみたいと思います。
+
+## 2023年の目標と達成度
+
+2023年当初に立てた目標と達成度は以下の通りです。
+
+### 資格
+
+- DBスペシャリスト  
+
+残念なが...</description><pubDate>Sun, 31 Dec 2023 00:00:00 GMT</pubDate><category>private</category></item><item><title>PHPの例外入門!</title><link>https://www.lyricrime.com/posts/php-exception/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/php-exception/</guid><description>## はじめに
+
+PHPやLaravelを使って開発をしていると、例外処理という言葉をよく耳にします。  
+前半は例外処理について、初学者を対象に解説していきます。(PHPにはこういう機構があるよといった入門的な部分)  
+後半はPHP,Laravelの例外の概要と、筆者の考える実践パターンをいくつか紹介します。  
+
+## 対象読者
+
+- ジュニアエンジニアで、PHP/Laravelを使った開発...</description><pubDate>Tue, 28 Nov 2023 00:00:00 GMT</pubDate><category>PHP</category></item><item><title>Mockeryを使った引数の検証方法まとめ</title><link>https://www.lyricrime.com/posts/mockery-with/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/mockery-with/</guid><description>## はじめに
+
+プログラミングをしていて、誰しもわからない箇所やメソッドの使い方がわからなくて調べる事があると思います。  
+今回、私は一度引っかかったことにもう一度引っかかって、さらに思い出すまでに時間がかかったのでメモとして残しておきます。  
+
+また、mockeryはとても直感的に使用できるライブラリではあるんですが、日本語での情報が少なく、今回問題を解決しようとして自分が以前書いた記事を...</description><pubDate>Mon, 13 Nov 2023 00:00:00 GMT</pubDate><category>test</category></item><item><title>社内勉強会レポ 2023-11-10 GraphQL</title><link>https://www.lyricrime.com/posts/study-2023-11-10/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/study-2023-11-10/</guid><description>## はじめに
+
+今回は社内勉強会のレポートです。  
+定期的に社内のエンジニアで集まって勉強会を行っています。  
+勉強会のノリとしてはだいぶ緩く、お題はなんでもいいんですが参加者が気になっている技術などについてあまり前準備なく、みんなで調べて見解を共有するという感じのものです。  
+具体的に質問や議論があればそれらをテーマにすることもありますが、社内勉強会では参加するメンバーが別々のプロジェク...</description><pubDate>Fri, 10 Nov 2023 00:00:00 GMT</pubDate><category>study</category></item><item><title>DDD(Domain Driven Design: ドメイン駆動設計)を布教したい</title><link>https://www.lyricrime.com/posts/ddd-penetration/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ddd-penetration/</guid><description>## はじめに
+
+今回はドメイン駆動設計を布教する際に押さえておくことを整理して記事にしたいと思います。  
+
+この記事では、DDDの概要を整理するとともに、DDDの採用におけるメリットを整理していきます。
+
+これから勉強する人、そもそもDDDに興味がない人がすこしでもDDDに対して興味を持っていただければと思います。
+
+DDDについて学習し、批判的な意見を持てるころには、設計への知見が深まってい...</description><pubDate>Tue, 31 Oct 2023 00:00:00 GMT</pubDate><category>DDD</category></item><item><title>「プログラマー脳」を読んで得たエッセンス</title><link>https://www.lyricrime.com/posts/programmer-brain-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/programmer-brain-01/</guid><description>## はじめに
+
+今回は、書籍「[プログラマー脳 ～優れたプログラマーになるための認知科学に基づくアプローチ](https://www.amazon.co.jp/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9E%E3%83%BC%E8%84%B3-%EF%BD%9E%E5%84%AA%E3%82%8C%E3%81%9F%E3%83%97%E3%83%AD%...</description><pubDate>Mon, 30 Oct 2023 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>DB基礎 物理設計周り</title><link>https://www.lyricrime.com/posts/db-specialist-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/db-specialist-02/</guid><description>## はじめに
+
+今回は、DBスペシャリスト試験への対策として、物理設計周りの基礎的な用語についてまとめていきます。
+
+## WALプロトコル
+
+WALプロトコルは、Write Ahead Logの略で、データベースのトランザクション処理において、データの更新前にログを書き込むことを指します。
+
+基本的な動作は以下の2点です。
+
+- データベースの更新は、まずその操作をログに書き込む(更新前ログ)...</description><pubDate>Sat, 30 Sep 2023 00:00:00 GMT</pubDate><category>DB</category></item><item><title>DB基礎 正規化と関係演算</title><link>https://www.lyricrime.com/posts/db-specialist-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/db-specialist-01/</guid><description>## はじめに
+
+今回は実施まであと10日に迫ったIPAのDBスペシャリスト試験への対策としてDBの基礎的な部分の復習をしていきます。  
+本業に加えて副業、個人開発等も行いながらのため対策の時間をなかなか捻出できていませんが、受験申し込みはしたので試験当日はしっかり受験会場には行きたいと思います。  
+
+### RDB（関係データベース）の基本概念の簡単な紹介
+
+関係データベース（RDB: Re...</description><pubDate>Thu, 28 Sep 2023 00:00:00 GMT</pubDate><category>DB</category></item><item><title>linuxの基本的なコマンドを復習する</title><link>https://www.lyricrime.com/posts/linux-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/linux-02/</guid><description>## はじめに
+
+前回の記事でLinuxの簡単な操作について復習しました。
+
+今回はよく使うコマンドについてオプション等を含めて再確認しながら、知らない部分をキャッチアップしていきます。
+
+## ls
+
+`ファイルやディレクトリを一覧表示する`
+
+```bash
+ls [ディレクトリまたはファイル]
+```
+
+のような形で指定します。
+
+- ディレクトリを引数にした場合はそのディレクトリの中に含ま...</description><pubDate>Sat, 26 Aug 2023 00:00:00 GMT</pubDate><category>linux</category></item><item><title>linuxの操作を復習する</title><link>https://www.lyricrime.com/posts/linux-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/linux-01/</guid><description>## はじめに
+
+WEBエンジニアにとってLinuxの操作は避けては通れない基本操作の一つです。  
+情報系の学校を卒業していたり、新卒でエンジニアになった場合は研修等で身につける機会があると思いますが、私のように専門の違う学校を卒業し、他業種からの転職でエンジニアになった場合は実務の中で覚えていく場合も多いかと思います。  
+今回は、休暇中に改めてLinuxについて学習してみたのでその内容を学習...</description><pubDate>Fri, 25 Aug 2023 00:00:00 GMT</pubDate><category>linux</category></item><item><title>Renovate + GitLab CI を使ってパッケージの依存関係を自動更新する</title><link>https://www.lyricrime.com/posts/renovate-bot-for-gitlab/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/renovate-bot-for-gitlab/</guid><description>## Renovateとは
+
+依存関係の自動アップデートツールです。
+
+[公式サイトはこちら](https://docs.renovatebot.com/)
+
+有名なのはdependabotですが、dependabotの場合は手動でalertsの内容を確認し、ローカルで`npm audit fix`や`composer update`を実行します。  
+その後、修正内容をコミットしてプッシュする必...</description><pubDate>Fri, 28 Jul 2023 00:00:00 GMT</pubDate><category>Renovate</category><category>GitLab</category><category>CI</category></item><item><title>LaravelにおけるRepositoryについて再考してみる</title><link>https://www.lyricrime.com/posts/laravel-repository/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-repository/</guid><description>## はじめに
+
+ここ最近、ツイッター上でLaravelにおいてのRepositoryの実装についての記事や意見をいくつか見かけました。  
+それらの記事や意見の内容を整理しつつ、自分なりにLaravelにおけるRepositoryの実装について再考してみたいと思います。  
+
+## Repositoryとは
+
+Repositoryは「エリック・エヴァンスのドメイン駆動設計」において紹介されている...</description><pubDate>Fri, 21 Jul 2023 00:00:00 GMT</pubDate><category>Laravel</category><category>Repository</category></item><item><title>ReactのuseEffectをきちんと理解する</title><link>https://www.lyricrime.com/posts/react-use-effect/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/react-use-effect/</guid><description>## はじめに
+
+最近ReactやNext.jsを触る機会が多いのですが、スマレジでの業務で使用しているわけではないため、キャッチアップがおろそかになっているなあと感じています。  
+今回は、Reactに触れる上で必須かつVueとの違いにおいて重要な仕組みであるuseEffectについて公式サイトを確認してみます。  
+
+## useEffectとは何か
+
+公式サイトにあるuseEffectの呼び...</description><pubDate>Mon, 26 Jun 2023 00:00:00 GMT</pubDate><category>react</category><category>useEffect</category></item><item><title>ChatGPTを活用しながらRailsで個人開発をしてみる</title><link>https://www.lyricrime.com/posts/rails-book-shelves-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/rails-book-shelves-01/</guid><description>## はじめに
+
+スマレジではLaravelをメインで使っているのですが副業で触っているRailsについては理解がまだまだ浅い部分があるため、個人開発でも触ってみたいと思います。
+
+LaravelがRailsに影響を受けているフレームワークでもあるため、Railsを触ることでLaravelに活かせる知見も獲得できることを期待しています。
+
+## 個人開発で作りたいもの
+
+以前の参加した勉強会で、技...</description><pubDate>Wed, 07 Jun 2023 00:00:00 GMT</pubDate><category>Rails</category><category>chatGPT</category></item><item><title>OIDCを使用したクライアントシークレットなしでのソーシャルログイン実装について調査してみる</title><link>https://www.lyricrime.com/posts/oidc-login/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/oidc-login/</guid><description>## はじめに
+
+最近OpenID Connect(OIDC)を使用したログインを実装するにあたって、implecit flowを用いる方法があることを教えてもらったので調査した結果をまとめてみます。
+
+関連するRFCや信頼できそうな記事、理解しやすい記事を含めたいと思います。
+
+参考: [OIDCのImplicit FlowでClientSecretを使わずにID連携する](https://ze...</description><pubDate>Sun, 28 May 2023 00:00:00 GMT</pubDate><category>OIDC</category></item><item><title>「勉強法の勉強会」参加レポと個人的な所感まとめ</title><link>https://www.lyricrime.com/posts/2023-05-15-learning/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2023-05-15-learning/</guid><description>## はじめに
+
+久しぶりに社外の勉強会イベントに視聴者として参加してきました!  
+今回参加したのはゆめみ x とらラボ!主催の「勉強法の勉強会」です。  
+勉強会ってこんなにメモ取るのが忙しかったっけ?と感じるくらい自分に刺さる濃い勉強会だったのでその参加レポと個人的な所感や活用法をまとめてみたいと思います。  
+
+今回はLTの中でも特に印象に残っている以下の4つの発表についてまとめていきます...</description><pubDate>Mon, 15 May 2023 00:00:00 GMT</pubDate><category>LT</category></item><item><title>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</title><link>https://www.lyricrime.com/posts/error-handle-clean-arch/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/error-handle-clean-arch/</guid><description>## はじめに
+
+業務においてクリーンアーキテクチャを意識してコードを日々書いていますが、「これってクリーンアーキテクチャの考えに沿うためにはどう書けば良いんだろう」と悩むことがあります。  
+今回はエラーハンドリングについて、クリーンアーキテクチャに則って考えてみたいと思います。  
+あくまで筆者一個人のいわゆる「ぼくのかんがえたさいきょうのエラーハンドリング」なのでエラーハンドリング時の一意見...</description><pubDate>Thu, 27 Apr 2023 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>ブログを書き始めて一年が経った話</title><link>https://www.lyricrime.com/posts/blog-1year/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/blog-1year/</guid><description>## はじめに
+
+今回は具体的な技術の内容ではなく、本ブログについて思うところをまとめたいと思います。  
+週に一本のペースで欠かすことなく、またそれなりの分量も記事を一年間継続して書けたかなと思います。  
+継続のために弊社スマレジのブログ手当の存在は結構大きかったです。  
+
+## まとめ
+
+- とりあえずアウトプットしよう
+- 質はアウトプットしてから考えよう
+
+## 技術発信のジレンマ
+
+...</description><pubDate>Wed, 22 Mar 2023 00:00:00 GMT</pubDate><category>blog</category></item><item><title>ToDoリスト作成の振りかえり</title><link>https://www.lyricrime.com/posts/todo-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/todo-02/</guid><description>## はじめに
+
+WEBエンジニアになってすぐに作り始めたリポジトリがある程度まで動作するようになったので今回はそこから得られた学びをまとめておきたいと思います。  
+以前も少し触れましたが、このブログを書き始めて一年間がたちました。かなり気合を入れて毎週記事を書いてきたのですが、そろそろアウトプットを中心とした記事も混ぜていこうかなと思います。  
+例えば今回は、技術についてだけでなく、いろいろ...</description><pubDate>Sat, 18 Mar 2023 00:00:00 GMT</pubDate><category>個人開発</category></item><item><title>TypeScriptのジェネリクス</title><link>https://www.lyricrime.com/posts/typescript-generics/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-generics/</guid><description>## はじめに
+
+今回はTypeScriptのジェネリクスについてです。JavaScriptがある程度かければTypeScriptでつまづく箇所は結構少ないとは思いますが、つまづいたのがジェネリクスという概念でした。  
+今回はジェネリクスの仕組みと何を解決できるのかについて調査してみます。  
+
+## ジェネリクスとは
+
+型の安全性とコードの共通化を両立するための仕組み
+
+抽象的な型引数を使用し...</description><pubDate>Sun, 12 Mar 2023 00:00:00 GMT</pubDate><category>TypeScript</category></item><item><title>「チームで働くエンジニアの心構え」について新人だった頃から意識してきたことを言語化してみる</title><link>https://www.lyricrime.com/posts/google-team/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/google-team/</guid><description>## はじめに
+
+今回は書籍「[Googleのソフトウェアエンジニアリング ―持続可能なプログラミングを支える技術、文化、プロセス](https://www.amazon.co.jp/Google%E3%81%AE%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3...</description><pubDate>Mon, 27 Feb 2023 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>Dotfilesを作ってみる</title><link>https://www.lyricrime.com/posts/dotfiles/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/dotfiles/</guid><description>## 参考
 
 https://qiita.com/yutkat/items/c6c7584d9795799ee164  
 https://dev.classmethod.jp/articles/joined-mac-dotfiles-customize/  
@@ -231,69 +524,11 @@ https://dev.classmethod.jp/articles/joined-mac-dotfiles-customize/
 
 今週M2 Pro Mac mini(2023)を購入しました!
 
-2023モデルのM2チップ搭載Mac miniは最小構...</description><pubDate>Mon, 20 Feb 2023 00:00:00 GMT</pubDate><category>個人開発</category></item><item><title>できる限りドキュメントメンテナンスコストを下げたい [Doxygen] [phpDocumentor]</title><link>https://www.lyricrime.com/posts/doxygen/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/doxygen/</guid><description>## はじめに(長めの前置き)
-大前提として、「コードは必ず変更される」ことはエンジニアであれば理解されていると思います。   
-経験上、コードを書いて1回切りの「作り捨て」にすることはまずありません。   
-自分が変更するかもしれませんし、他人が変更することもあるでしょう。   
-よく「三日後の自分は他人」とも言いますが、そう考えるとほとんどの場合、書いたコードを変更するのは「他人」ということに...</description><pubDate>Fri, 13 May 2022 00:00:00 GMT</pubDate><category>document</category></item><item><title>DRY原則とそのトレードオフ</title><link>https://www.lyricrime.com/posts/dry-principle/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/dry-principle/</guid><description>## はじめに
+2023モデルのM2チップ搭載Mac miniは最小構...</description><pubDate>Mon, 20 Feb 2023 00:00:00 GMT</pubDate><category>個人開発</category></item><item><title>Dockerを雰囲気ではなく理解して使う</title><link>https://www.lyricrime.com/posts/docker-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/docker-02/</guid><description>## はじめに
 
-おそらくもっとも有名なソフトウェア工学の原則の1つに、DRY（Don&apos;t Repeat Yourself）原則があります。DRY原則は、同じコードを何度も書かないようにすることを目指しています。この記事では、DRY原則の重要性とそのトレードオフについて考えてみます。
-
-## 参考
-
-[ソフトウェア設計のトレードオフと誤り](https://www.oreilly.co.jp//b...</description><pubDate>Tue, 09 Apr 2024 00:00:00 GMT</pubDate><category>principal</category></item><item><title>駆け出しエンジニアからジュニア・ミドルレベルへの成長の道のり</title><link>https://www.lyricrime.com/posts/engineer-onboarding-for-junior/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/engineer-onboarding-for-junior/</guid><description>## はじめに
-
-エンジニアとしてのキャリアをスタートしたばかりの方が、ジュニアレベルやミドルレベルのエンジニアとして活躍するために必要なスキルや知識について考えてみます。  
-この記事はWEB領域のエンジニアを対象としています。
-
-## 前提
-
-前提として、私の知っている範囲のことしか書けませんが、弊社スマレジのエンジニアとして活躍できるレベルを目標としています。  
-スマレジでは、バックエンド...</description><pubDate>Thu, 07 Mar 2024 00:00:00 GMT</pubDate><category>onboarding</category></item><item><title>エンジニアの言語化能力と知識獲得のプロセスの考察</title><link>https://www.lyricrime.com/posts/engineer-verbalize/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/engineer-verbalize/</guid><description>## はじめに
-
-OpenAIがChatGPTをリリースし、12月にはProプランがリリースされ、ますますエンジニアとしての価値が問われる時代になってきたなあと感じています。  
-
-今回の記事はポエム的な要素も含まれています。
-
-そんな中で、職業エンジニアが価値を出し続けるためには、なんとなくの理解ではなく、根本を理解することやその理解から仕組みを作れることが求められるようになりました。
-
-また、...</description><pubDate>Thu, 19 Dec 2024 00:00:00 GMT</pubDate><category>verbalize</category></item><item><title>フロントエンド入門 フロントエンドの歴史</title><link>https://www.lyricrime.com/posts/frontend-history-2024/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/frontend-history-2024/</guid><description>## はじめに
-
-ありがたいことに、Webエンジニアになって2年と少しが経ちました。  
-初めの頃はバックエンドを中心に業務を行っていましたが、徐々にフロントエンドの面からもプロダクトの改善を進めていくことが増えました。  
-今回は、フロントエンドの入門として、フロントエンドの歴史を整理していきたいと思います。  
-
-## フロントエンドの歴史
-
-私自身のエンジニア歴がWebの発展の歴史と比べると...</description><pubDate>Sun, 30 Jun 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>フロントエンドの状態管理について調べてみる</title><link>https://www.lyricrime.com/posts/frontend-state/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/frontend-state/</guid><description>## はじめに
-
-今回はフロントエンドの状態管理について調査してみます。
-
-## フロントエンドにおける状態管理とは
-
-フロントエンドにおける状態管理とは、ユーザーインターフェース（UI）のデータやその変化を一貫性を持って管理する手法を指します。  
-ここで言う「状態（State）」とは、サーバーから取得したデータ、UIの現在の表示内容など、アプリケーションの動作に影響を与える全ての情報を意味しま...</description><pubDate>Mon, 30 Sep 2024 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>良いソフトウェアを目指して設計への入門</title><link>https://www.lyricrime.com/posts/good-practice-design/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/good-practice-design/</guid><description>## はじめに
-
-これまでもいくつも設計に関する記事を書いてきました。  
-今回は設計が大事なのはわかったけど何から始めればいいの?という方向けに、設計への入門としてのアプローチをまとめてみました。  
-初学者のときに知っておきたかったことを中心にまとめているので、設計に興味がある方はぜひ参考にしてみてください。  
-
-ここでの設計とは、ソフトウェアの設計、特にコードを書くうえでのソフトウェア構造...</description><pubDate>Sat, 25 Jan 2025 00:00:00 GMT</pubDate><category>design</category></item><item><title>「チームで働くエンジニアの心構え」について新人だった頃から意識してきたことを言語化してみる</title><link>https://www.lyricrime.com/posts/google-team/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/google-team/</guid><description>## はじめに
-
-今回は書籍「[Googleのソフトウェアエンジニアリング ―持続可能なプログラミングを支える技術、文化、プロセス](https://www.amazon.co.jp/Google%E3%81%AE%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3...</description><pubDate>Mon, 27 Feb 2023 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>業務アプリケーションにおけるIDの種類と選択</title><link>https://www.lyricrime.com/posts/id-selection/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/id-selection/</guid><description>## はじめに
-
-今回は、業務でWebアプリケーションを構築する際や、外部サービスのAPI等に利用されるIDの種類と、それらをどう選ぶかについて考えてみます。
-
-## そもそもIDとは
-
-そもそもIDとはなんでしょうか？
-
-日本語だと「識別子」であり、リソースが一意であることを保証するためのラベルです。
-
-Webアプリケーションでは自動で採番された連番のINT型の値を思い浮かべる方も多いと思います...</description><pubDate>Sat, 26 Apr 2025 00:00:00 GMT</pubDate></item><item><title>クリーンアーキテクチャのUseCaseにおけるInput,Outputについて</title><link>https://www.lyricrime.com/posts/inputport/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/inputport/</guid><description>## はじめに
-クリーンアーキテクチャにやっとの思いでなれ始めているこの頃ですが、日頃業務で実装をしていくにあたって疑問に感じることがあります。   
-とはいえ大抵のドメインでは既存の実装に倣ってしまうこともあるんですが、自分の感じた疑問については自分の中で答えを出していきたい性格なのでこの機会にできるだけ言語化しておきたいと思います。   
-クリーンアーキテクチャについては以前ブログ記事にもした...</description><pubDate>Sun, 16 Oct 2022 00:00:00 GMT</pubDate><category>design</category></item><item><title>Docker Composeについて</title><link>https://www.lyricrime.com/posts/docker-compose/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/docker-compose/</guid><description>## はじめに
+以前Dockerについてごく簡単に[まとめた記事](https://taisei-miyaji.hatenadiary.com/entry/2022/03/02/230306)を書きましたが、Webエンジニアになって一年が経とうとしているので改めてDockerについてまとめようと思います。  
+公式ドキュメントを自分なりに解釈してまとめたいと思います。  
+Dockerについての...</description><pubDate>Sat, 11 Feb 2023 00:00:00 GMT</pubDate><category>Docker</category></item><item><title>Docker Composeについて</title><link>https://www.lyricrime.com/posts/docker-compose/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/docker-compose/</guid><description>## はじめに
 
 前回の記事でDockerについて調査した続きです。  
 今回は実際にアプリを作成するとなると使うことになるであろう`Docker Compose`について調査します。  
@@ -302,23 +537,95 @@ Webアプリケーションでは自動で採番された連番のINT型の値�
 
 ## Docker Composeとは
 
-複数コンテナのアプリケーションを定義、共有するためのツールで...</description><pubDate>Sat, 11 Feb 2023 00:00:00 GMT</pubDate><category>Docker</category></item><item><title>HTMLタグとアクセシビリティ、コンポーネント化について考える</title><link>https://www.lyricrime.com/posts/html-tags/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/html-tags/</guid><description>## はじめに
+複数コンテナのアプリケーションを定義、共有するためのツールで...</description><pubDate>Sat, 11 Feb 2023 00:00:00 GMT</pubDate><category>Docker</category></item><item><title>astroに入門してみる</title><link>https://www.lyricrime.com/posts/astro-tutorial/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/astro-tutorial/</guid><description>## はじめに
 
-最近、個人的なプロジェクトのコードをNext.jsで書きながらキャッチアップをしています。  
-普段の業務では、すでにコンポーネント化されたUIを組み合わせて利用することが多く、基本的なコンポーネントを1から作ることはないのですが、個人で開発する場合には、コンポーネント化したくなる場面があり、その方針や基準に悩む機会が増えました。  
-今回は、基本的なHTMLタグを復習しつつ、コ...</description><pubDate>Thu, 30 May 2024 00:00:00 GMT</pubDate><category>html</category></item><item><title>Go言語でのドメインオブジェクト実装を考える</title><link>https://www.lyricrime.com/posts/go-domain/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/go-domain/</guid><description>## はじめに
+最近フロントエンドへの自身の理解の甘さを感じるようになってきました。  
+ここ最近TypeScriptなどフロントエンドに関係する記事をいくつか公開しましたが、そろそろ実際になにか作ってみようと感じるようになりました。  
+そこで今回は気になっていた`astro`というフレームワークを触ってみようと思います。  
+題材としては、自作ブログにしたいと思います。  
+目的はブログ記事...</description><pubDate>Sat, 04 Feb 2023 00:00:00 GMT</pubDate><category>Astro</category></item><item><title>TypeScriptの型について</title><link>https://www.lyricrime.com/posts/typescript-type/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-type/</guid><description>## TypeScriptの型付け
 
-生成AIを前提とした業務アプリケーションの構築のために最近Goを学び始めました。
+TypeScriptはJavaScriptに対して型を付与するという思想で仕様が定められています。   
+TypeScriptでは型を付与する方法として、様々な方法が用意されていますが、どこまで利用するかは費用対効果を考えながら行う必要があります。   
 
-Goは一般的なオブジェクト指向言語とは異なる特性を持つため、ドメインオブジェクトの実装もPHPと同じようにはいかないので、エンティティと値オブジェクトの実装について考えてみます。
+## any型 最もゆるい型付け
 
-ドメインオブジェクトとは、ドメイン駆動設計の用語で、開発者がドメイン（業務領域）の深い知識をソフトウェアに反映させ、...</description><pubDate>Mon, 30 Jun 2025 00:00:00 GMT</pubDate><category>go</category></item><item><title>JavaScriptにおける非同期処理について</title><link>https://www.lyricrime.com/posts/javascript-axios/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/javascript-axios/</guid><description>## はじめに
+```TypeScript
+function example(arg...</description><pubDate>Sun, 29 Jan 2023 00:00:00 GMT</pubDate><category>TypeScript</category></item><item><title>TypeScriptでAtCoderに挑戦してみる</title><link>https://www.lyricrime.com/posts/typescript-atcoder/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-atcoder/</guid><description>## はじめに
+
+スマレジでは、副業が可能です。   
+https://corp.smaregi.jp/recruit/culture/workstyle.php   
+
+個人的に最近、副業にも挑戦しようかなと考え始めています。   
+副業に割ける稼働時間的には週10h程度となりそうなので、比較的タスクを細かくしやすいフロントエンドの案件を中心に探していたりします。   
+担当するプロダクト的には...</description><pubDate>Tue, 17 Jan 2023 00:00:00 GMT</pubDate><category>TypeScript</category></item><item><title>積読解消　「レガシーコード改善ガイド」を読んでリファクタリングの知識をつける</title><link>https://www.lyricrime.com/posts/regacy-memo/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/regacy-memo/</guid><description>## はじめに
+自チームで担当しているプロダクトでは常にリファクタリングを意識した開発を行っています。  
+なかにはかなりレガシーなプロダクトもあり、その改善への指針として書籍「レガシーコード改善ガイド」を購入していました。  
+去年の秋頃に買ったんですがしばらく放置していたため、年明けのこのタイミングで積読の解消をしていきます。  
+
+## 対象書籍
+[レガシーコード改善ガイド](https:/...</description><pubDate>Sat, 14 Jan 2023 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>JavaScriptにおけるクラスとTypeScriptにおけるクラスについて</title><link>https://www.lyricrime.com/posts/typescript-class/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-class/</guid><description>## はじめに
+今回はES2015から変更されたJavaScriptのオブジェクト指向構文についてまとめたいと思います。   
+また、最近TypeScriptについて個人開発等で導入し始めているので違いを意識しながら理解していきたいと思います。
+
+## 参考書籍
+今回の記事は今読んでいるJavaScriptおよびTypeScriptの書籍を比較しながら書きました。   
+
+[改訂新版JavaScr...</description><pubDate>Sun, 08 Jan 2023 00:00:00 GMT</pubDate><category>TypeScript</category></item><item><title>2022年の振り返り</title><link>https://www.lyricrime.com/posts/2022-end/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2022-end/</guid><description>## はじめに
+2022年もあっという間に終わってしまいました。   
+ここ数年の中で一番人生に大きな変化があった一年間ですし、とてもいい出会いが多かった一年間でもありました。   
+当初考えていた2022年の目標を踏まえて、一年間を振り返りながら、来年の目標を考える記事にしようかなと思います。   
+組み込み、かつテスターやツール制作等開発以外の業務がメインだったこれまでのキャリアからWEBエン...</description><pubDate>Sat, 31 Dec 2022 00:00:00 GMT</pubDate><category>private</category></item><item><title>TypeScriptに入門する</title><link>https://www.lyricrime.com/posts/typescript-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-init/</guid><description>## はじめに
+前回の記事同様直近の大きな課題感を感じているのはフロントエンド技術です。  
+今回はその中でも最近主流となっているTypeScriptに入門してみます。  
+私のエンジニア人生はC言語から始まっているので静的型付けで書けないJSに違和感をずっと感じていたため、個人開発等で導入し、ゆくゆくは社内のプロダクトもどんどん移行していきたいなと感じています。  
+今回は備忘録としてJavaS...</description><pubDate>Sun, 25 Dec 2022 00:00:00 GMT</pubDate><category>TypeScript</category></item><item><title>JavaScriptにおける非同期処理について</title><link>https://www.lyricrime.com/posts/javascript-axios/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/javascript-axios/</guid><description>## はじめに
 
 今までの学習内容でフロントエンドにあまり触れてなかったので今回はJavaScriptについて改めて理解をしていこうと思います。  
-JavaScriptに対する個人的な理解度はある程度文法や言語思想は理解できているもののJavaScriptらしい部分や歴史的な部分、いわゆるその言語の特性を理解できているとは言えないレベルだなと感じているため、今回は非同期処理について改めて調査して...</description><pubDate>Sun, 18 Dec 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>ユースケースで選ぶSPAの認証——Laravel 12の Session / Sanctum とOIDC</title><link>https://www.lyricrime.com/posts/laravel-auth/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-auth/</guid><description>## まとめ
+JavaScriptに対する個人的な理解度はある程度文法や言語思想は理解できているもののJavaScriptらしい部分や歴史的な部分、いわゆるその言語の特性を理解できているとは言えないレベルだなと感じているため、今回は非同期処理について改めて調査して...</description><pubDate>Sun, 18 Dec 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>プログラミングにおける「DI」二種類の違いとは。依存性注入と依存性逆転について</title><link>https://www.lyricrime.com/posts/di/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/di/</guid><description># 依存性注入と依存性逆転について
 
-* **同一ドメインSPA × ブラウザだけ** → **Laravel Session（stateful）単独でも実装可能**。ただし**公式はSPAにはSanctum推奨**。
-* **`routes/api.php` を保ったままSPAを stateful にしたい** or **同一トップレベルドメイン内の別サブドメインSPA** → **Sanctum（SPAモード）**...</description><pubDate>Mon, 11 Aug 2025 00:00:00 GMT</pubDate><category>laravel</category><category>auth</category></item><item><title>LaravelのEagerLoadについて</title><link>https://www.lyricrime.com/posts/laravel-eagerload/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-eagerload/</guid><description>## EagerLoadとは
+## はじめに
+エンジニアになって初めて人に知識を伝えるという場面がありました。  
+これまでチーム内ではたいてい自分が一番技術的に拙い部分が多かったので少しうれしくもありますが、正しくわかりやすく伝えるために勉強してきたことを棚卸しするとともに現時点での考えを整理していきたいと思います。
+
+## DIとは
+
+プログラミングの文脈で登場する**DI**という単...</description><pubDate>Tue, 06 Dec 2022 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</title><link>https://www.lyricrime.com/posts/ddd-init-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ddd-init-02/</guid><description>## はじめに
+
+[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/11/26/181405)にて、ドメイン駆動設計への入門として、ドメインオブジェクトを紹介しました。
+今回は実際にドメインオブジェクトを利用してユースケースを組み立てていきます。  
+そのためのステップとして、先にいくつか便利なパターンを紹介しておきます。  
+
+今回...</description><pubDate>Wed, 30 Nov 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</title><link>https://www.lyricrime.com/posts/ddd-init-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ddd-init-01/</guid><description>## はじめに
+
+スマレジにて私が担当しているプロジェクトではドメイン駆動設計を取り入れて日々開発をしています。   
+ジョインしてからドメイン駆動設計について説明を受けたものの体系的に学べていないので書籍を一つ読みながら足りていない箇所を補っていきます。   
+今回の記事は書籍の内容に沿っているつもりですが、多分に個人的な見解が含まれているため、書籍の著者の考えをきちんと把握したい場合はぜひ書籍...</description><pubDate>Sat, 26 Nov 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>システムの権限方式について</title><link>https://www.lyricrime.com/posts/access-control/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/access-control/</guid><description>## はじめに
+
+今回はシステムのアクセス制御、つまりユーザーの操作権限の管理のしくみを考えていきます。
+
+## 管理者フラグ形式
+
+最も簡単に実装できる方法です。  
+ユーザーテーブルに管理者フラグを実装し、管理者の場合は権限を持つように実装します。
+
+- メリットはシンプルな実装となること。
+- デメリットはユーザーごとに権限を設定できないこと。
+
+「このユーザーにはこの操作のみを許可したい」...</description><pubDate>Thu, 17 Nov 2022 00:00:00 GMT</pubDate><category>design</category></item><item><title>ソフトウェアのユニットテストにおけるモック化を巡った派閥と費用対効果について考えてみる回</title><link>https://www.lyricrime.com/posts/unittest-faction/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/unittest-faction/</guid><description>## はじめに
+以前からたびたびソフトウェアのユニットテストに関する記事を公開してきました。
+
+過去記事  
+- [ユニットテストについて考えてみる。PHPUnitでモックを使用して小さいユニットテストを書く。](https://taisei-miyaji.hatenadiary.com/entry/2022/07/15/205958)   
+- [Mockeryの基本的な使い方](https:/...</description><pubDate>Tue, 08 Nov 2022 00:00:00 GMT</pubDate><category>UnitTest</category></item><item><title>再帰的なデータ構造で閉包テーブルを使用したToDoリストを作ってみる ~その1~ 目標設定とDB設計</title><link>https://www.lyricrime.com/posts/todo-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/todo-01/</guid><description>## はじめに
+
+[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/10/27/232126)で半年間の振り返りをしました。このブログも約半年間継続できていろんなことをインプットできているかなと思います。
+そろそろアウトプットとしてゴリゴリ実装したいなという気持ちになっているので、インプットと並行してなにか個人開発に挑戦してみようかと...</description><pubDate>Sat, 05 Nov 2022 00:00:00 GMT</pubDate><category>個人開発</category></item><item><title>2022上半期を振り返ってみる(その他最近の雑記)</title><link>https://www.lyricrime.com/posts/2022-first-half/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2022-first-half/</guid><description>## はじめに
+
+私が株式会社スマレジに入社したのは2022年の3月でした。早いことにもう半年以上が経ちます。   
+エンジニアとして働き始めたのは前職からなので数年の経験があることになりますが、スマレジに入社してからの半年間はかなり濃いものでした。   
+今回は日常業務をこなす以外にこの半年で取り組んだことや、業務を通しての変化等、半年を振り返ってみたいと思います。   
+また、最近気になってい...</description><pubDate>Thu, 27 Oct 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>LaravelのEagerLoadについて</title><link>https://www.lyricrime.com/posts/laravel-eagerload/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-eagerload/</guid><description>## EagerLoadとは
 
 - 「Eager」は「熱心」という意味
 - ORMにおけるN+1問題を解決するために使用される
@@ -326,48 +633,84 @@ JavaScriptに対する個人的な理解度はある程度文法や言語思想�
 - Eloquentの場合はプロパティとしてリレーションにアクセスする場合に行われる。
 
 ## 例
-まずは[公式サイト](https://readouble.com/laravel/7.x/ja/elo...</description><pubDate>Sun, 23 Oct 2022 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>ドメインサービスとの付き合い方</title><link>https://www.lyricrime.com/posts/domain-service-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/domain-service-01/</guid><description>## はじめに
+まずは[公式サイト](https://readouble.com/laravel/7.x/ja/elo...</description><pubDate>Sun, 23 Oct 2022 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>クリーンアーキテクチャのUseCaseにおけるInput,Outputについて</title><link>https://www.lyricrime.com/posts/inputport/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/inputport/</guid><description>## はじめに
+クリーンアーキテクチャにやっとの思いでなれ始めているこの頃ですが、日頃業務で実装をしていくにあたって疑問に感じることがあります。   
+とはいえ大抵のドメインでは既存の実装に倣ってしまうこともあるんですが、自分の感じた疑問については自分の中で答えを出していきたい性格なのでこの機会にできるだけ言語化しておきたいと思います。   
+クリーンアーキテクチャについては以前ブログ記事にもした...</description><pubDate>Sun, 16 Oct 2022 00:00:00 GMT</pubDate><category>design</category></item><item><title>JavaScriptの基本の復習</title><link>https://www.lyricrime.com/posts/javascript-tutorial/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/javascript-tutorial/</guid><description># 
 
-今回は、ドメイン駆動設計を勉強し始めたひとや、プロジェクトで活用し始めた人がつまずきやすいドメインサービスについてまとめます。  
-エンティティや値オブジェクトと比べてドメインサービスはイメージが湧きにくいかもしれません。
-今回は、原著を確認しつつ、筆者なりのドメインサービスの扱い方をまとめます。
+## はじめに
+https://gihyo.jp/book/2016/978-4-7741-8411-1
 
-あくまで筆者なりの解釈なので、実装の一例として参考にしていただければと思います。...</description><pubDate>Tue, 30 Sep 2025 00:00:00 GMT</pubDate><category>DDD</category><category>Sevrvice</category></item><item><title>生成AI時代に備えてGo言語を学ぶ</title><link>https://www.lyricrime.com/posts/go-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/go-init/</guid><description>## はじめに
+本を読んだ感想や内容の簡単なまとめを書きます。丸写しではなくあくまでも自分用のメモなので細かい箇所については書籍をご確認ください。
+JavaScriptの言語仕様についてのまとめになるので、全てを網羅することはできませんが、基本的な構文と僕が普段しない書き方等について調査したいと思い...</description><pubDate>Sat, 08 Oct 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>ORM(オブジェクト関係マッピング)について</title><link>https://www.lyricrime.com/posts/orm/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/orm/</guid><description>## はじめに
+今回はORMについて調査したいと思います。   
+また、よく比較されるクエリビルダについても調査し、その違いを理解したいと思います。
 
-生成AIと相性の良い言語として、これまで中心的にTypeScriptを利用していましたが、バックエンドを書くにあたって、Go言語を使いたい場面がでてきたので、Go言語を学び始めます。
+## ORMとは
 
-生成AIと相性の良い部分として、
+ORMとは、Object-Relational Mappingの略です。
 
-- 言語構造がシンプルであること
-- 型があること
-- Rustほどビルドに時間がかからないこと
+データベースとオブジェクト指向プログラミングの間のデータを変換するもの。   
+つまり、データベースに対するデータの操作をオブジェクト指向型言語の操作方...</description><pubDate>Wed, 28 Sep 2022 00:00:00 GMT</pubDate><category>DB</category></item><item><title>OAuth2.0のフローについて</title><link>https://www.lyricrime.com/posts/oauth2-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/oauth2-02/</guid><description>## はじめに
 
-などが挙げられます。また、Go言語を書くうえで辛い部分だった...</description><pubDate>Sun, 22 Jun 2025 00:00:00 GMT</pubDate><category>go</category></item><item><title>LaravelにおけるRepositoryについて再考してみる</title><link>https://www.lyricrime.com/posts/laravel-repository/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-repository/</guid><description>## はじめに
+[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/09/17/161016)でOAuthについて紹介しました。
 
-ここ最近、ツイッター上でLaravelにおいてのRepositoryの実装についての記事や意見をいくつか見かけました。  
-それらの記事や意見の内容を整理しつつ、自分なりにLaravelにおけるRepositoryの実装について再考してみたいと思います。  
+今回はOAuthに関する[RFC 6749](https://www.rfc-editor.org/rfc/rfc6749)において定義されている認証のフローについて調査してまとめていきたいと思います。
+...</description><pubDate>Sun, 25 Sep 2022 00:00:00 GMT</pubDate><category>OAuth2</category></item><item><title>OAuth2をおおまかに理解する</title><link>https://www.lyricrime.com/posts/oauth2-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/oauth2-01/</guid><description>## はじめに
 
-## Repositoryとは
+[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/09/07/213441)で認証と認可について触れ、OpenID Connectのざっくりとした仕組みについて紹介しました。   
+今回は認証、認可においてよく聞くOAuth2について、調査してみようと思います。   
+今回の記事のゴールは、「OAuthという単語を聞...</description><pubDate>Sat, 17 Sep 2022 00:00:00 GMT</pubDate><category>OAuth2</category></item><item><title>OpenID Connectについて</title><link>https://www.lyricrime.com/posts/open-id-connect/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/open-id-connect/</guid><description>### はじめに
+今回はOpenID Connectについてです。   
+認証の仕組みについて理解に乏しい部分があったため、調査したいと思います。   
+今回はOpenID Connectを利用した認証の流れについて理解することを目的としています。   
+暗号化やデータの形式については今回理解したいスコープとは異なるため、またの機会に調査しようと思います。   
 
-Repositoryは「エリック・エヴァンスのドメイン駆動設計」において紹介されている...</description><pubDate>Fri, 21 Jul 2023 00:00:00 GMT</pubDate><category>Laravel</category><category>Repository</category></item><item><title>Laravel Mixについて</title><link>https://www.lyricrime.com/posts/laravel-mix/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-mix/</guid><description>## 参考
+## OpenID Connec...</description><pubDate>Wed, 07 Sep 2022 00:00:00 GMT</pubDate><category>OIDC</category></item><item><title>SQLアンチパターンを読んでいく_その3</title><link>https://www.lyricrime.com/posts/sql-anti-03/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-anti-03/</guid><description>## はじめに
+今回も引き続き「SQLアンチパターン」を読み進めていきます。   
+今回から第二部「データベース物理設計のアンチパターン」についてまとめます。
 
-https://readouble.com/laravel/6.x/ja/mix.html   
-https://qiita.com/minato-naka/items/bfc3bbd9a388084e6f17   
-https://qiita.com/kamykn/items/45fb4690ace32216ca25
-https://qiita.com/minato-naka/it...</description><pubDate>Thu, 21 Apr 2022 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>エラーハンドリングをクリーンアーキテクチャで書く場合に意識すること</title><link>https://www.lyricrime.com/posts/error-handle-clean-arch/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/error-handle-clean-arch/</guid><description>## はじめに
+## ラウンディングエラー(丸め誤差)
 
-業務においてクリーンアーキテクチャを意識してコードを日々書いていますが、「これってクリーンアーキテクチャの考えに沿うためにはどう書けば良いんだろう」と悩むことがあります。  
-今回はエラーハンドリングについて、クリーンアーキテクチャに則って考えてみたいと思います。  
-あくまで筆者一個人のいわゆる「ぼくのかんがえたさいきょうのエラーハンドリング」なのでエラーハンドリング時の一意見...</description><pubDate>Thu, 27 Apr 2023 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>LaravelでSPAアプリケーションを構築する際に考えないといけないこと</title><link>https://www.lyricrime.com/posts/laravel-spa-2025/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-spa-2025/</guid><description>## はじめに
+### 目的: 整数の代わりに小数値を使用する
+小数を扱いたい場合、かつ計算の精度が求められるパターンを想定。
 
-今回は、Laravel12でスターターキット周りの変更があったり、LivewireのバージョンアップがあったりとLaravelのフロント周辺の変更を踏まえつつ、2025年にLaravelで業務アプリを構築する際に考慮することをまとめてみたいと思います。
+### アンチパターン: FLOATデータ型を用いる
 
-## 技術選定の基準
+### 問題点
+「10進数...</description><pubDate>Wed, 31 Aug 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>SQLアンチパターンを読んでいく_その2</title><link>https://www.lyricrime.com/posts/sql-anti-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-anti-02/</guid><description>## はじめに
+今回も引き続き「SQLアンチパターン」を読み進めていきます。   
+前回より見返した時にわかりやすくなるよう文量を減らしてまとめていきたいと思います。   
+[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/08/19/230714)
 
-私が業務アプリを構築する際に技術選定を行う際に考慮することをまずはまとめます。
+## IDリクワイアド(とりあえずID)
 
-### 規模の把握
-...</description><pubDate>Thu, 20 Mar 2025 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>LocalStorageとは</title><link>https://www.lyricrime.com/posts/localstorage/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/localstorage/</guid><description>## LocalStorageとは
+例: 記事のタグと記事の関連付けを表現...</description><pubDate>Sat, 27 Aug 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>SQLアンチパターンを読んでいく_その1</title><link>https://www.lyricrime.com/posts/sql-anti-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-anti-01/</guid><description># SQLアンチパターンを読んでいく_その1
+
+## はじめに
+SQLについて最近学び始め、実際に業務で使用する際に避けるべきアンチパターンを前もって知っておくために「SQLアンチパターン」という書籍を購入しました。   
+さまざまなところで耳にする評価の高い本という印象があります。
+
+## アンチパターンとは
+「問題の解決を意図しながらも、しばしば他の問題を生じさせてしまうような技法」のことです...</description><pubDate>Fri, 19 Aug 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>2022年のお盆は帰省バイク旅</title><link>https://www.lyricrime.com/posts/2022-08-touring/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2022-08-touring/</guid><description>## はじめに
+
+スマレジに入社してかもう少しで半年が経とうとしていることに驚いています。   
+このブログも開設から半年が近づいています。   
+ふと、弊社のブログ制度は月一本までプライベートな内容がOKだったことを思い出したので今年のお盆の予定について書いてみたいと思います。   
+
+## 帰省
+実家が高知県のため、帰省となると結構遠いので交通手段に悩みます。
+バイクを購入してからは結構バイク...</description><pubDate>Sat, 13 Aug 2022 00:00:00 GMT</pubDate><category>private</category></item><item><title>データベース知識基礎まとめ</title><link>https://www.lyricrime.com/posts/database-fundation/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/database-fundation/</guid><description>## はじめに
+今回はデータベース周りを勉強するにあたって頻出する単語や知識についてまとめていきたいと思います。   
+現在データベース周りに課題を感じていて、チーム内で話していても自分のデータベース周りの知識が足りていないなと感じているため直近の課題だと思っています。   
+今回は以下の内容についてまとめていきます。   
+
+- ORM
+- トランザクション
+- ACID
+- N + 1問題
+
+...</description><pubDate>Fri, 05 Aug 2022 00:00:00 GMT</pubDate><category>DB</category></item><item><title>LocalStorageとは</title><link>https://www.lyricrime.com/posts/localstorage/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/localstorage/</guid><description>## LocalStorageとは
 参考:
 https://developer.mozilla.org/ja/docs/Web/API/Web_Storage_API
 
@@ -381,34 +724,7 @@ WebStorageAPIの一種
 
 ### sessionStorage
 
-- セッシ...</description><pubDate>Thu, 28 Jul 2022 00:00:00 GMT</pubDate></item><item><title>LT会用のスライドを楽に作って楽に管理したい</title><link>https://www.lyricrime.com/posts/marp-slides/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/marp-slides/</guid><description>## はじめに
-弊社では現在、月一回のペースで社内LT会を行なっています。   
-毎回観覧側として参加していましたが、入社して三ヶ月が経ち、自分でも発表してみようと思いました。   
-そこで必要なのが発表スライドです。   
-とは言ってもLT、つまりLightning Talksなので簡単なものでも大丈夫です。   
-スライドを用意するためのツールをいろいろ考えていて、その中でも今回はgithub...</description><pubDate>Fri, 01 Jul 2022 00:00:00 GMT</pubDate><category>LT</category></item><item><title>npmからpnpmへ移行によるサプライチェーン攻撃対策</title><link>https://www.lyricrime.com/posts/migrate-npm-to-pnpm/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/migrate-npm-to-pnpm/</guid><description>## はじめに
-
-npmはJavaScriptエコシステムでスタンダードとなっているパッケージマネージャーですが、近年のサプライチェーン攻撃の増加に伴い、pnpmへの移行を検討しています。
-
-今回は公式ドキュメントを参考にしつつ、npmからpnpmへ移行する手順と注意点をまとめます。
-
-npmサプライチェーン攻撃については前回の記事にまとめています。
-
-参考: [npmサプライチェーン攻撃への対策...</description><pubDate>Tue, 30 Dec 2025 00:00:00 GMT</pubDate><category>javascript</category><category>npm</category><category>pnpm</category></item><item><title>LaravelのセッションとReact Queryで踏みがちなレースコンディションの話</title><link>https://www.lyricrime.com/posts/laravel-session-race-condition/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-session-race-condition/</guid><description>## はじめに
-
-「POSTでセッションに値を保存したはずなのに、すぐ後のページで `null` になっている」
-
-セッションを使ってページをまたぐデータの受け渡しなどを実装していると、たまにこんな **「保存したはずの値が消える」現象** に出会います。
-
-しかもログを見ると：
-
-  * 保存APIの中ではちゃんと値が入っている
-  * 直後にセッションから再取得してもちゃんと入っている
-  *...</description><pubDate>Sun, 30 Nov 2025 00:00:00 GMT</pubDate><category>Laravel</category><category>React Query</category></item><item><title>マイグレーションについて</title><link>https://www.lyricrime.com/posts/migration/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/migration/</guid><description>## 参考
-
-https://readouble.com/laravel/8.x/ja/migrations.html#column-method-integer
-
-https://tohokuaiki.hateblo.jp/entry/2016/12/26/%E3%80%8CLaravel%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9...</description><pubDate>Fri, 06 May 2022 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>Mockeryの基本的な使い方</title><link>https://www.lyricrime.com/posts/mockery/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/mockery/</guid><description>## はじめに
+- セッシ...</description><pubDate>Thu, 28 Jul 2022 00:00:00 GMT</pubDate></item><item><title>Mockeryの基本的な使い方</title><link>https://www.lyricrime.com/posts/mockery/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/mockery/</guid><description>## はじめに
 前回の記事でユニットテストについて書きました。
 今回は前回にも使用したMockeryというフレームワークについて少し掘り下げてみたいと思います。
 
@@ -420,237 +736,7 @@ https://readouble.com/mockery/1.0/ja/index.html
 
 PHPUnit公式
 
-https://...</description><pubDate>Fri, 22 Jul 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>Mockeryを使った引数の検証方法まとめ</title><link>https://www.lyricrime.com/posts/mockery-with/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/mockery-with/</guid><description>## はじめに
-
-プログラミングをしていて、誰しもわからない箇所やメソッドの使い方がわからなくて調べる事があると思います。  
-今回、私は一度引っかかったことにもう一度引っかかって、さらに思い出すまでに時間がかかったのでメモとして残しておきます。  
-
-また、mockeryはとても直感的に使用できるライブラリではあるんですが、日本語での情報が少なく、今回問題を解決しようとして自分が以前書いた記事を...</description><pubDate>Mon, 13 Nov 2023 00:00:00 GMT</pubDate><category>test</category></item><item><title>MVCモデルについて</title><link>https://www.lyricrime.com/posts/mvc/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/mvc/</guid><description># MVCモデルについて
-## MVCとは
-ソフトウェアを**Model**,**View**,**Controller**の3要素の組み合わせでシステムを構築していく考え方。   
-
-## Model
-- ビジネスロジックを担当するシステムの本体部分
-- データの変更をViewに通知する(Observerパターンを使うこともある)
-## View
-- 表示、入出力といった部分を担当する。
-- M...</description><pubDate>Fri, 18 Mar 2022 00:00:00 GMT</pubDate></item><item><title>成長のために自宅環境を整え始める</title><link>https://www.lyricrime.com/posts/my-home-environment/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/my-home-environment/</guid><description>## はじめに
-
-久しぶりに技術ではないプライベート記事です。  
-とはいえ、間接的に仕事に関係していますが。
-
-これまで、ある程度のリモートワーク環境を整えてきました。  
-
-例えば、以下のようなものを購入しました。
-
-| 項目 | 購入物 |
-| --- | --- |
-| モニター | LGの安物モニター x3 |
-| マウス | LogicoolのMX Master 3 |
-| キーボード...</description><pubDate>Fri, 28 Feb 2025 00:00:00 GMT</pubDate><category>private</category></item><item><title>Next.jsのServerActionsを試してみる</title><link>https://www.lyricrime.com/posts/next-server-actions-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/next-server-actions-01/</guid><description>## はじめに
-
-ここ最近あまり手を動かして新しいものを作成することができていなかったので、今回はNext.jsのServerActionsを試して見たいと思います。
-
-まずは簡単なTodoリストの作成から始めてみます。
-
-## 開発方針
-
-個人開発ですが、先にデプロイの方法を考えてから開発を始めてみます。
-
-今回選択したデプロイ先はVercelのHobbyプラン + PlanetScaleです。...</description><pubDate>Thu, 29 Feb 2024 00:00:00 GMT</pubDate><category>Next.js</category></item><item><title>npm install は必ずしも package-lock.json を書き換えない</title><link>https://www.lyricrime.com/posts/npm-install/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/npm-install/</guid><description>## はじめに
-
-`npm install` と `npm ci` の違いを「package-lock.json を書き換えるかどうか」として認識していました。
-
-誤解の内容: 
-
-- `npm install`はpackage-lock.jsonを書き換えて最新の依存関係でインストールする
-- `npm ci`はpackage-lock.jsonを参照して依存関係をインストールするのでpacka...</description><pubDate>Fri, 09 Jan 2026 00:00:00 GMT</pubDate><category>npm</category></item><item><title>OAuth2をおおまかに理解する</title><link>https://www.lyricrime.com/posts/oauth2-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/oauth2-01/</guid><description>## はじめに
-
-[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/09/07/213441)で認証と認可について触れ、OpenID Connectのざっくりとした仕組みについて紹介しました。   
-今回は認証、認可においてよく聞くOAuth2について、調査してみようと思います。   
-今回の記事のゴールは、「OAuthという単語を聞...</description><pubDate>Sat, 17 Sep 2022 00:00:00 GMT</pubDate><category>OAuth2</category></item><item><title>OAuth2.0のフローについて</title><link>https://www.lyricrime.com/posts/oauth2-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/oauth2-02/</guid><description>## はじめに
-
-[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/09/17/161016)でOAuthについて紹介しました。
-
-今回はOAuthに関する[RFC 6749](https://www.rfc-editor.org/rfc/rfc6749)において定義されている認証のフローについて調査してまとめていきたいと思います。
-...</description><pubDate>Sun, 25 Sep 2022 00:00:00 GMT</pubDate><category>OAuth2</category></item><item><title>OIDCを使用したクライアントシークレットなしでのソーシャルログイン実装について調査してみる</title><link>https://www.lyricrime.com/posts/oidc-login/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/oidc-login/</guid><description>## はじめに
-
-最近OpenID Connect(OIDC)を使用したログインを実装するにあたって、implecit flowを用いる方法があることを教えてもらったので調査した結果をまとめてみます。
-
-関連するRFCや信頼できそうな記事、理解しやすい記事を含めたいと思います。
-
-参考: [OIDCのImplicit FlowでClientSecretを使わずにID連携する](https://ze...</description><pubDate>Sun, 28 May 2023 00:00:00 GMT</pubDate><category>OIDC</category></item><item><title>OpenAPIの理解とその活用方法を考える</title><link>https://www.lyricrime.com/posts/open-api/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/open-api/</guid><description>## はじめに
-
-今回はWeb APIの仕様書として広く使われているOpenAPIについて調査してみます。
-
-## OpenAPIとは
-
-OpenAPI(旧Swagger)はREST APUのAPI記述形式です。
-
-公式ドキュメントによると、次の内容を記述できると書かれています。
-
-- 利用可能なエンドポイント(/users)と書くエンドポイントでの操作(GET /users, POST/user...</description><pubDate>Wed, 28 Aug 2024 00:00:00 GMT</pubDate><category>OpenAPI</category></item><item><title>OpenID Connectについて</title><link>https://www.lyricrime.com/posts/open-id-connect/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/open-id-connect/</guid><description>### はじめに
-今回はOpenID Connectについてです。   
-認証の仕組みについて理解に乏しい部分があったため、調査したいと思います。   
-今回はOpenID Connectを利用した認証の流れについて理解することを目的としています。   
-暗号化やデータの形式については今回理解したいスコープとは異なるため、またの機会に調査しようと思います。   
-
-## OpenID Connec...</description><pubDate>Wed, 07 Sep 2022 00:00:00 GMT</pubDate><category>OIDC</category></item><item><title>ORM(オブジェクト関係マッピング)について</title><link>https://www.lyricrime.com/posts/orm/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/orm/</guid><description>## はじめに
-今回はORMについて調査したいと思います。   
-また、よく比較されるクエリビルダについても調査し、その違いを理解したいと思います。
-
-## ORMとは
-
-ORMとは、Object-Relational Mappingの略です。
-
-データベースとオブジェクト指向プログラミングの間のデータを変換するもの。   
-つまり、データベースに対するデータの操作をオブジェクト指向型言語の操作方...</description><pubDate>Wed, 28 Sep 2022 00:00:00 GMT</pubDate><category>DB</category></item><item><title>プログラミングとカードゲームは実は似ている説</title><link>https://www.lyricrime.com/posts/programming-cardgame/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/programming-cardgame/</guid><description>## はじめに
-
-今回は完全にポエムです。  
-SNSなどでよく見かける、「エンジニアに向いている人は〇〇な人だ!」という投稿を見ることがあります。  
-たとえば、「数学が得意な人はエンジニアに向いている」とか、反対に「実は文系の方がプログラミングに向いている」といったものがあります。  
-他にも、「コミュニケーション能力がある人」や「集中力がある人」といった、それは大抵の仕事でも必要だろと思われ...</description><pubDate>Fri, 25 Oct 2024 00:00:00 GMT</pubDate><category>poem</category></item><item><title>生成AIを活用するためのプロンプトの基礎 - 「LLMのプロンプトエンジニアリング」を読んで</title><link>https://www.lyricrime.com/posts/prompt-engineer-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/prompt-engineer-init/</guid><description>## はじめに
-
-ここ一年で生成AIの進化は凄まじく、3ヶ月も経てばほとんどの知識が古くなってしまう状態です。
-
-しかし、それでも基本となるLLMの仕組みは変わっておらず、だからこそ効果的なプロンプトの基礎も変わっていません。
-
-この記事では、LLMの仕組みのざっくりとした雰囲気を押さえつつ、効果的なプロンプトを根拠を持って書けるようになるために必要なことをまとめます。
-
-少しでも仕組みを理解する...</description><pubDate>Thu, 29 May 2025 00:00:00 GMT</pubDate><category>AI</category></item><item><title>Reactフォームの基本｜制御・非制御の違いとReact Hook Formの正しい使い分け</title><link>https://www.lyricrime.com/posts/react-controlled-components/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/react-controlled-components/</guid><description>## はじめに
-
-今回はReactの制御コンポーネントと非制御コンポーネントについて紹介します。
-
-Reactのコンポーネントを作成していく上で、Vueの場合とは違い、レンダリングのタイミングをより細かく把握しておく必要があります。
-
-その際に重要になってくるのが制御コンポーネントと非制御コンポーネントの違いです。
-
-## 現在の公式ドキュメント上の制御コンポーネントと非制御コンポーネント
-
-[コ...</description><pubDate>Sat, 25 Oct 2025 00:00:00 GMT</pubDate><category>react</category></item><item><title>React Hook Form + zodでシンプルなフォーム実装</title><link>https://www.lyricrime.com/posts/react-hook-form/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/react-hook-form/</guid><description>## はじめに
-
-今回はreact-hook-formを使ってみます。業務ではVue3を中心に利用していますが、副業として稼働する際や、個人開発でreactを使うことが多いので、関連したライブラリのキャッチアップ目的で記事にしました。
-
-## react-hook-formとは
-
-Reactアプリケーションでフォームを簡単に扱うためのライブラリです。  
-バリデーションやエラー処理を簡単に行うこと...</description><pubDate>Sun, 26 May 2024 00:00:00 GMT</pubDate><category>react</category></item><item><title>Reactのメモ化について</title><link>https://www.lyricrime.com/posts/react-memo/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/react-memo/</guid><description>## はじめに
-
-今回はReactを書くうえで役立つmemo化について調査します。Vueなどの他のフレームワークと比較すると最適化を行わないとパフォーマンス差を感じることがあったりしますが、どこまで最適化をやればいいのか、いつやればいいのか、どうやってやるのかについてまとめます。
-
-## 対象読者
-
-- React初学者 ~ 中級者
-- バックエンドをメインにしているが、フロントエンドでReact...</description><pubDate>Thu, 30 Oct 2025 00:00:00 GMT</pubDate><category>React</category></item><item><title>ReactのuseEffectをきちんと理解する</title><link>https://www.lyricrime.com/posts/react-use-effect/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/react-use-effect/</guid><description>## はじめに
-
-最近ReactやNext.jsを触る機会が多いのですが、スマレジでの業務で使用しているわけではないため、キャッチアップがおろそかになっているなあと感じています。  
-今回は、Reactに触れる上で必須かつVueとの違いにおいて重要な仕組みであるuseEffectについて公式サイトを確認してみます。  
-
-## useEffectとは何か
-
-公式サイトにあるuseEffectの呼び...</description><pubDate>Mon, 26 Jun 2023 00:00:00 GMT</pubDate><category>react</category><category>useEffect</category></item><item><title>積読解消　「レガシーコード改善ガイド」を読んでリファクタリングの知識をつける</title><link>https://www.lyricrime.com/posts/regacy-memo/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/regacy-memo/</guid><description>## はじめに
-自チームで担当しているプロダクトでは常にリファクタリングを意識した開発を行っています。  
-なかにはかなりレガシーなプロダクトもあり、その改善への指針として書籍「レガシーコード改善ガイド」を購入していました。  
-去年の秋頃に買ったんですがしばらく放置していたため、年明けのこのタイミングで積読の解消をしていきます。  
-
-## 対象書籍
-[レガシーコード改善ガイド](https:/...</description><pubDate>Sat, 14 Jan 2023 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>Renovate + GitLab CI を使ってパッケージの依存関係を自動更新する</title><link>https://www.lyricrime.com/posts/renovate-bot-for-gitlab/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/renovate-bot-for-gitlab/</guid><description>## Renovateとは
-
-依存関係の自動アップデートツールです。
-
-[公式サイトはこちら](https://docs.renovatebot.com/)
-
-有名なのはdependabotですが、dependabotの場合は手動でalertsの内容を確認し、ローカルで`npm audit fix`や`composer update`を実行します。  
-その後、修正内容をコミットしてプッシュする必...</description><pubDate>Fri, 28 Jul 2023 00:00:00 GMT</pubDate><category>Renovate</category><category>GitLab</category><category>CI</category></item><item><title>RESTful APIとは</title><link>https://www.lyricrime.com/posts/restful-api/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/restful-api/</guid><description>## 参考
-https://lukesilvia.hatenablog.com/entry/20091025/p1
-https://qiita.com/NagaokaKenichi/items/0647c30ef596cedf4bf2
-https://qiita.com/NagaokaKenichi/items/df4c8455ab527aeacf02
-https://qiita.com/Naga...</description><pubDate>Tue, 26 Apr 2022 00:00:00 GMT</pubDate><category>REST</category></item><item><title>WEBサイトにおけるRSSの仕組みとNext.js・Astro.jsでの実装</title><link>https://www.lyricrime.com/posts/rss-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/rss-init/</guid><description>## はじめに
-
-インターネット上の情報は長らく検索エンジンによって検索可能でしたが、段々と広告やサイトのクオリティの低下が目立つようになり、生成AIの出現とともに直接WEB上のサイトを閲覧する機会が減りつつあります。
-
-一方で、信憑性の高い情報や興味深い仮説をブログで公開している方も多くいるため、効率的にそれらを収集したいという思いがあります。
-
-そのための技術として、RSSとその関連技術につい...</description><pubDate>Mon, 24 Mar 2025 00:00:00 GMT</pubDate><category>RSS</category></item><item><title>AIxGASで業務を改善する第一歩を踏み出そう</title><link>https://www.lyricrime.com/posts/script-for-non-enginner/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/script-for-non-enginner/</guid><description>## 想定読者
-
-  - プログラミング未経験 or 初心者の方
-  - 社内の業務担当者(総務、人事、経理、営業など)
-  - 業務改善に興味がある方
-  - AIに興味があるが、どう活用すれば良いかわからない方
-
-## この記事のゴール
-
-  - AIを活用して自分自身で業務を効率化する最初の体験をする
-  - AIに渡す情報を整理できるようになる
-  - GASの雛形をAIに作成してもらい、...</description><pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate><category>ai</category><category>gas</category><category>業務改善</category></item><item><title>PHPの例外入門!</title><link>https://www.lyricrime.com/posts/php-exception/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/php-exception/</guid><description>## はじめに
-
-PHPやLaravelを使って開発をしていると、例外処理という言葉をよく耳にします。  
-前半は例外処理について、初学者を対象に解説していきます。(PHPにはこういう機構があるよといった入門的な部分)  
-後半はPHP,Laravelの例外の概要と、筆者の考える実践パターンをいくつか紹介します。  
-
-## 対象読者
-
-- ジュニアエンジニアで、PHP/Laravelを使った開発...</description><pubDate>Tue, 28 Nov 2023 00:00:00 GMT</pubDate><category>PHP</category></item><item><title>2024年末の今、Rustに入門してみる</title><link>https://www.lyricrime.com/posts/rust-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/rust-init/</guid><description>## はじめに
-
-今回はRustへの入門記事です。  
-
-2024年の抱負として、技術書を読んだり、個人開発を習慣化したりといったことを目標にしていました。
-
-[2024年の抱負](https://www.lyricrime.com/posts/2024-start/)
-
-実際、今年は技術書を読んだり、個人開発をしてはいるんですが、習慣化という点ではまだまだです。  
-
-これらをやりたい背景として...</description><pubDate>Fri, 29 Nov 2024 00:00:00 GMT</pubDate><category>rust</category></item><item><title>MySQLのインデックスの役割と活用について</title><link>https://www.lyricrime.com/posts/sql-index/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-index/</guid><description>## はじめに
-
-WEBエンジニアとなってクエリパターンの実装をする際に、SQLのパフォーマンスについて意識する場面が出てきました。   
-その際にインデックスが貼られていないカラムのソートのパフォーマンスについて指摘をいただく機会があったのでこの機会に調査してまとめたいと思います。   
-WEB開発の基本としてのSQLがまだまだ足りていないと感じているのでできるだけキャッチアップしたいと考えて記...</description><pubDate>Thu, 16 Jun 2022 00:00:00 GMT</pubDate><category>MySQL</category></item><item><title>SQLiteとLaravel11でのカラム削除の挙動でつまづいた話</title><link>https://www.lyricrime.com/posts/sqlite-laravel-column-delete/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sqlite-laravel-column-delete/</guid><description>## はじめに
-
-今回は2024年3月12日にリリースされたLaravel11のうち、移行時につまづいたSQLiteの仕様についてまとめます。
-
-[Laravel Upgrade Guide](https://laravel.com/docs/11.x/upgrade)
-
-## 概要
-
-Laravel11ではSQLiteは3.35.0以上のバージョンが必須となりました。  
-この3.35.0という...</description><pubDate>Thu, 25 Apr 2024 00:00:00 GMT</pubDate><category>SQLite</category><category>Laravel</category></item><item><title>スクラム入門　ユーザーストーリーとストーリーポイント</title><link>https://www.lyricrime.com/posts/storypoint/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/storypoint/</guid><description>## はじめに
-
-スクラム開発において、ストーリーポイントという単位でタスクの見積もりを行います。
-
-今回の記事では、アジャイル開発における見積もりの方法と登場する独自の概念についてまとめます。
-
-## ユーザーストーリーとは
-
-アジャイル開発においてはタスクの内容を示す概念として、ユーザーストーリーが使われます。  
-アジャイルにおいて重要視されるのは「人」であり、ユーザーストーリーではエンドユ...</description><pubDate>Tue, 23 Jul 2024 00:00:00 GMT</pubDate><category>scrum</category></item><item><title>bash,zshにおける設定ファイルの読み込み順序について</title><link>https://www.lyricrime.com/posts/terminal-setting/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/terminal-setting/</guid><description>## bashとzsh
-Macユーザーの場合はどちらかを使用している人が多いのではと思います。   
-`MacOS X Catalina`以前はbash、以降はzshが標準のシェルです。
-
-以下のサイトによると、
-
-https://kanasys.com/tech/803
-
-&gt; MacOS Xは当初tcshであったのがv10.3 Pantherよりbashに変更された
-
-らしいです。
-
-bashは...</description><pubDate>Wed, 06 Apr 2022 00:00:00 GMT</pubDate><category>setting</category></item><item><title>ToDoリスト作成の振りかえり</title><link>https://www.lyricrime.com/posts/todo-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/todo-02/</guid><description>## はじめに
-
-WEBエンジニアになってすぐに作り始めたリポジトリがある程度まで動作するようになったので今回はそこから得られた学びをまとめておきたいと思います。  
-以前も少し触れましたが、このブログを書き始めて一年間がたちました。かなり気合を入れて毎週記事を書いてきたのですが、そろそろアウトプットを中心とした記事も混ぜていこうかなと思います。  
-例えば今回は、技術についてだけでなく、いろいろ...</description><pubDate>Sat, 18 Mar 2023 00:00:00 GMT</pubDate><category>個人開発</category></item><item><title>再帰的なデータ構造で閉包テーブルを使用したToDoリストを作ってみる ~その1~ 目標設定とDB設計</title><link>https://www.lyricrime.com/posts/todo-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/todo-01/</guid><description>## はじめに
-
-[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/10/27/232126)で半年間の振り返りをしました。このブログも約半年間継続できていろんなことをインプットできているかなと思います。
-そろそろアウトプットとしてゴリゴリ実装したいなという気持ちになっているので、インプットと並行してなにか個人開発に挑戦してみようかと...</description><pubDate>Sat, 05 Nov 2022 00:00:00 GMT</pubDate><category>個人開発</category></item><item><title>tRPCへの入門</title><link>https://www.lyricrime.com/posts/trpc-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/trpc-init/</guid><description>## はじめに
-
-今回はtRPCという技術について調査してみます。  
-なにもわからない状態からのやってみた系記事になります。  
-概念の理解や個人的な感想を中心に書いていきます。  
-実際に導入する際には公式サイトを参照することをおすすめします。  
-
-## tRPCとは
-
-そもそもRPCとは?については[こちらのQiita記事](https://qiita.com/il-m-yamagishi...</description><pubDate>Mon, 23 Sep 2024 00:00:00 GMT</pubDate><category>tRPC</category></item><item><title>ユニットテストについて考えてみる。PHPUnitでモックを使用して小さいユニットテストを書く。</title><link>https://www.lyricrime.com/posts/unit-test-mock/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/unit-test-mock/</guid><description># クリーンアーキテクチャにおけるユニットテスト
+https://...</description><pubDate>Fri, 22 Jul 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>ユニットテストについて考えてみる。PHPUnitでモックを使用して小さいユニットテストを書く。</title><link>https://www.lyricrime.com/posts/unit-test-mock/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/unit-test-mock/</guid><description># クリーンアーキテクチャにおけるユニットテスト
 
 ## はじめに
 前回の記事でユニットテストに関する知識を調査したのでよければ参照してください。
@@ -669,118 +755,22 @@ WEBエンジニアになってすぐに作り始めたリポジトリがある�
 ここ最近はユニットテストのことばかり考えている時間が長い気がしています。   
 先日、チーム内でユニットテストについて自分の考えを話して議論したので、まとめたいと思います。   
 前職はウォーターフォールでテスト工程の間(一ヶ月くらい？)はテストしかしないような期間があったりしました。   
-弊社に入...</description><pubDate>Sat, 09 Jul 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>ソフトウェアのユニットテストにおけるモック化を巡った派閥と費用対効果について考えてみる回</title><link>https://www.lyricrime.com/posts/unittest-faction/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/unittest-faction/</guid><description>## はじめに
-以前からたびたびソフトウェアのユニットテストに関する記事を公開してきました。
+弊社に入...</description><pubDate>Sat, 09 Jul 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>LT会用のスライドを楽に作って楽に管理したい</title><link>https://www.lyricrime.com/posts/marp-slides/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/marp-slides/</guid><description>## はじめに
+弊社では現在、月一回のペースで社内LT会を行なっています。   
+毎回観覧側として参加していましたが、入社して三ヶ月が経ち、自分でも発表してみようと思いました。   
+そこで必要なのが発表スライドです。   
+とは言ってもLT、つまりLightning Talksなので簡単なものでも大丈夫です。   
+スライドを用意するためのツールをいろいろ考えていて、その中でも今回はgithub...</description><pubDate>Fri, 01 Jul 2022 00:00:00 GMT</pubDate><category>LT</category></item><item><title>Qiita ConferenceとラクスのLT会を聞いてみた</title><link>https://www.lyricrime.com/posts/2022-06-LT/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2022-06-LT/</guid><description>## はじめに
+ここ最近、エンジニア向けの社外イベントを聞いてみようと思い、いろいろ参加してみました。
 
-過去記事  
-- [ユニットテストについて考えてみる。PHPUnitでモックを使用して小さいユニットテストを書く。](https://taisei-miyaji.hatenadiary.com/entry/2022/07/15/205958)   
-- [Mockeryの基本的な使い方](https:/...</description><pubDate>Tue, 08 Nov 2022 00:00:00 GMT</pubDate><category>UnitTest</category></item><item><title>ChatGPTを活用しながらRailsで個人開発をしてみる</title><link>https://www.lyricrime.com/posts/rails-book-shelves-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/rails-book-shelves-01/</guid><description>## はじめに
+株式会社ラクス主催のLT会二つとQiita Conferenceです。
 
-スマレジではLaravelをメインで使っているのですが副業で触っているRailsについては理解がまだまだ浅い部分があるため、個人開発でも触ってみたいと思います。
+いつもは自分で勉強したことをまとめることが多いのですが、今回はイベントレポのような形でまとめたいと思います。
+業務に関係のあることを中心に勉強している日々が続いていたので社外のイベントに参加して刺激をもらうのもたまにはい...</description><pubDate>Fri, 24 Jun 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>MySQLのインデックスの役割と活用について</title><link>https://www.lyricrime.com/posts/sql-index/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-index/</guid><description>## はじめに
 
-LaravelがRailsに影響を受けているフレームワークでもあるため、Railsを触ることでLaravelに活かせる知見も獲得できることを期待しています。
-
-## 個人開発で作りたいもの
-
-以前の参加した勉強会で、技...</description><pubDate>Wed, 07 Jun 2023 00:00:00 GMT</pubDate><category>Rails</category><category>chatGPT</category></item><item><title>Mockeryで学ぶMockとSpyの違いとつかいかた</title><link>https://www.lyricrime.com/posts/unittest-mock-spy/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/unittest-mock-spy/</guid><description>## はじめに
-
-単体テストにおいてテストダブルを用いることは、コードの設計品質を保つうえで、抽象に依存させる大きな動機になるため、コード本体の品質を上げることに繋がります。
-
-テストダブルのなかでも、外部リソースや他のクラスへの依存を切り離せる「モック（Mock）」と、呼び出しを記録して後から検証できる「スパイ（Spy）」はしばしば混同されがちな概念です。
-
-PHPでモックを扱うライブラリとして...</description><pubDate>Fri, 31 Jan 2025 00:00:00 GMT</pubDate><category>UnitTest</category></item><item><title>生成AI時代に見直すスキーマ駆動開発</title><link>https://www.lyricrime.com/posts/schema-driven-dev-ai/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/schema-driven-dev-ai/</guid><description>&gt; **この記事の対象読者**: フロントエンド／バックエンド開発者、技術選定に関わるリード／アーキテクト、生成AIを開発ワークフローに組み込みたいエンジニア。  
-&gt; **この記事でわかること**: スキーマ駆動開発（Schema‑Driven Development: SDD）の基本、OpenAPIからTypeSpecへの進化、Zodを活用した型安全フロントエンド、AI活用時のコンテキスト削減...</description><pubDate>Fri, 18 Jul 2025 00:00:00 GMT</pubDate><category>typescript</category><category>design</category></item><item><title>「オブジェクト指向とは」を理解するためのValueObject</title><link>https://www.lyricrime.com/posts/value-object/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/value-object/</guid><description>## はじめに
-この記事では、ValueObjectの簡単な解説と、「他人にオブジェクト指向を説明する際にはValueObjectやDDDの話に触れた方が伝わりやすいんじゃない？」という個人の意見について書きました。
-
-僕は前職では基本的にC言語、VBAでの開発を行なっていました。   
-業務の合間にテストコードを生成するためのツールなどをPythonを用いて行なっていました。   
-プログラミン...</description><pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate><category>OOP</category></item><item><title>バックエンドエンジニアから見るVite入門</title><link>https://www.lyricrime.com/posts/vite-for-backend/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/vite-for-backend/</guid><description>## はじめに
-
-Laravelを自身の技術スタックの中心として使用してきた私ですが、以前はフロントエンドのassetのビルドにはwebpackを用いていました。
-
-LaravelではLaravel Mixを用いてWebpackを簡単に扱うことができていました。
-
-しかし、Webpackの開発終了やフロントエンドでのビルドツールの選択肢の増加に伴って、Laravel9からViteが公式標準のビルド...</description><pubDate>Fri, 04 Apr 2025 00:00:00 GMT</pubDate><category>Vite</category><category>Backend</category></item><item><title>XSSとSQLインジェクションについて</title><link>https://www.lyricrime.com/posts/xss-sql-injection/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/xss-sql-injection/</guid><description>## XSSとは
-Webアプリケーションの脆弱性を利用して行われるサイバー攻撃の1つ。   
-入力フォームなどに悪質なサイトへ誘導するスクリプトを埋め込みます。   
-悪質なサイトに誘導されると、ユーザーのブラウザ上で不正なスクリプトが実行されます。   
-攻撃の種類はマルウェア感染や個人情報の漏えい、フィッシング詐欺などがあります。   
-もともとのサイトから悪質なサイトへ跨いでスクリプトが実行...</description><pubDate>Thu, 31 Mar 2022 00:00:00 GMT</pubDate><category>security</category></item><item><title>「データモデリングでドメインを駆動する」を読む その１ システムの分類と残</title><link>https://www.lyricrime.com/posts/data-modeling-domain-driven-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/data-modeling-domain-driven-01/</guid><description>## はじめに
-
-今回は杉本 啓さんの「データモデリングでドメインを駆動する」(以降書籍と呼びます)を読んでいきます。  
-これまでの記事で、ドメイン駆動設計の基本的な思想や設計手法については書いてきましたが、実際に基幹システムを例にしてデータモデリングを行うとなると、どのように進めていけばよいのか、また、どのような視点でデータモデリングを行うべきなのか、といったことについては深く考えることができ...</description><pubDate>Tue, 20 Aug 2024 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>「ドメイン駆動設計入門」を読む その１ ドメインオブジェクト編</title><link>https://www.lyricrime.com/posts/ddd-init-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ddd-init-01/</guid><description>## はじめに
-
-スマレジにて私が担当しているプロジェクトではドメイン駆動設計を取り入れて日々開発をしています。   
-ジョインしてからドメイン駆動設計について説明を受けたものの体系的に学べていないので書籍を一つ読みながら足りていない箇所を補っていきます。   
-今回の記事は書籍の内容に沿っているつもりですが、多分に個人的な見解が含まれているため、書籍の著者の考えをきちんと把握したい場合はぜひ書籍...</description><pubDate>Sat, 26 Nov 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>「ドメイン駆動設計入門」を読む その2 ユースケースを組み立てるためのパターン編</title><link>https://www.lyricrime.com/posts/ddd-init-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ddd-init-02/</guid><description>## はじめに
-
-[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/11/26/181405)にて、ドメイン駆動設計への入門として、ドメインオブジェクトを紹介しました。
-今回は実際にドメインオブジェクトを利用してユースケースを組み立てていきます。  
-そのためのステップとして、先にいくつか便利なパターンを紹介しておきます。  
-
-今回...</description><pubDate>Wed, 30 Nov 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>「世界一流エンジニアの思考法」から学ぶエンジニアが持つべきメンタルモデル</title><link>https://www.lyricrime.com/posts/how-world-class-engineers-think/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/how-world-class-engineers-think/</guid><description>## はじめに
-
-今回は「世界一流エンジニアの思考法」を読んで、エンジニアが持つべきメンタルモデルについて考えてみます。
-
-結構流行りの本なので、要約記事も多く存在しますが、個人的に重要だと感じた部分をピックアップして個人的な所感をまとめてみます。
-
-## 「理解に時間をかける」を実践する
-
-私たち職業プログラマは、日々新しい技術と対峙し、複雑な問題を解決するために努力しています。この過程でしばし...</description><pubDate>Sun, 31 Mar 2024 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>JavaScriptの基本の復習</title><link>https://www.lyricrime.com/posts/javascript-tutorial/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/javascript-tutorial/</guid><description># 
-
-## はじめに
-https://gihyo.jp/book/2016/978-4-7741-8411-1
-
-本を読んだ感想や内容の簡単なまとめを書きます。丸写しではなくあくまでも自分用のメモなので細かい箇所については書籍をご確認ください。
-JavaScriptの言語仕様についてのまとめになるので、全てを網羅することはできませんが、基本的な構文と僕が普段しない書き方等について調査したいと思い...</description><pubDate>Sat, 08 Oct 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>linuxの操作を復習する</title><link>https://www.lyricrime.com/posts/linux-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/linux-01/</guid><description>## はじめに
-
-WEBエンジニアにとってLinuxの操作は避けては通れない基本操作の一つです。  
-情報系の学校を卒業していたり、新卒でエンジニアになった場合は研修等で身につける機会があると思いますが、私のように専門の違う学校を卒業し、他業種からの転職でエンジニアになった場合は実務の中で覚えていく場合も多いかと思います。  
-今回は、休暇中に改めてLinuxについて学習してみたのでその内容を学習...</description><pubDate>Fri, 25 Aug 2023 00:00:00 GMT</pubDate><category>linux</category></item><item><title>linuxの基本的なコマンドを復習する</title><link>https://www.lyricrime.com/posts/linux-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/linux-02/</guid><description>## はじめに
-
-前回の記事でLinuxの簡単な操作について復習しました。
-
-今回はよく使うコマンドについてオプション等を含めて再確認しながら、知らない部分をキャッチアップしていきます。
-
-## ls
-
-`ファイルやディレクトリを一覧表示する`
-
-```bash
-ls [ディレクトリまたはファイル]
-```
-
-のような形で指定します。
-
-- ディレクトリを引数にした場合はそのディレクトリの中に含ま...</description><pubDate>Sat, 26 Aug 2023 00:00:00 GMT</pubDate><category>linux</category></item><item><title>「プログラマー脳」を読んで得たエッセンス</title><link>https://www.lyricrime.com/posts/programmer-brain-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/programmer-brain-01/</guid><description>## はじめに
-
-今回は、書籍「[プログラマー脳 ～優れたプログラマーになるための認知科学に基づくアプローチ](https://www.amazon.co.jp/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9E%E3%83%BC%E8%84%B3-%EF%BD%9E%E5%84%AA%E3%82%8C%E3%81%9F%E3%83%97%E3%83%AD%...</description><pubDate>Mon, 30 Oct 2023 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>SQLアンチパターンを読んでいく_その1</title><link>https://www.lyricrime.com/posts/sql-anti-01/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-anti-01/</guid><description># SQLアンチパターンを読んでいく_その1
-
-## はじめに
-SQLについて最近学び始め、実際に業務で使用する際に避けるべきアンチパターンを前もって知っておくために「SQLアンチパターン」という書籍を購入しました。   
-さまざまなところで耳にする評価の高い本という印象があります。
-
-## アンチパターンとは
-「問題の解決を意図しながらも、しばしば他の問題を生じさせてしまうような技法」のことです...</description><pubDate>Fri, 19 Aug 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>SQLアンチパターンを読んでいく_その2</title><link>https://www.lyricrime.com/posts/sql-anti-02/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-anti-02/</guid><description>## はじめに
-今回も引き続き「SQLアンチパターン」を読み進めていきます。   
-前回より見返した時にわかりやすくなるよう文量を減らしてまとめていきたいと思います。   
-[前回の記事](https://taisei-miyaji.hatenadiary.com/entry/2022/08/19/230714)
-
-## IDリクワイアド(とりあえずID)
-
-例: 記事のタグと記事の関連付けを表現...</description><pubDate>Sat, 27 Aug 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>SQLアンチパターンを読んでいく_その3</title><link>https://www.lyricrime.com/posts/sql-anti-03/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/sql-anti-03/</guid><description>## はじめに
-今回も引き続き「SQLアンチパターン」を読み進めていきます。   
-今回から第二部「データベース物理設計のアンチパターン」についてまとめます。
-
-## ラウンディングエラー(丸め誤差)
-
-### 目的: 整数の代わりに小数値を使用する
-小数を扱いたい場合、かつ計算の精度が求められるパターンを想定。
-
-### アンチパターン: FLOATデータ型を用いる
-
-### 問題点
-「10進数...</description><pubDate>Wed, 31 Aug 2022 00:00:00 GMT</pubDate><category>BookReview</category></item><item><title>「Webを支える技術」を読んで</title><link>https://www.lyricrime.com/posts/web-tech/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/web-tech/</guid><description># 「Webを支える技術」を読んで
+WEBエンジニアとなってクエリパターンの実装をする際に、SQLのパフォーマンスについて意識する場面が出てきました。   
+その際にインデックスが貼られていないカラムのソートのパフォーマンスについて指摘をいただく機会があったのでこの機会に調査してまとめたいと思います。   
+WEB開発の基本としてのSQLがまだまだ足りていないと感じているのでできるだけキャッチアップしたいと考えて記...</description><pubDate>Thu, 16 Jun 2022 00:00:00 GMT</pubDate><category>MySQL</category></item><item><title>「Webを支える技術」を読んで</title><link>https://www.lyricrime.com/posts/web-tech/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/web-tech/</guid><description># 「Webを支える技術」を読んで
 
 ## はじめに
 個人的に技術書を読む機会が最近多くなりつつあるので、その内容をまとめるとともに感じたことやわからないことなどをまとめていきたいと思います。
@@ -797,52 +787,62 @@ https://www.amazon.co.jp/Web%E3%82%92%E6%94%AF%...</description><pubDate>Fri, 10
 以下通称デザインパターン本   
 GoFのデザインパターン本と呼ばれる原典
 
-https:...</description><pubDate>Thu, 02 Jun 2022 00:00:00 GMT</pubDate><category>Design</category></item><item><title>ボーイスカウトの規則　Boy Scout Rule</title><link>https://www.lyricrime.com/posts/boy-scout/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/boy-scout/</guid><description>## 参考文献
+https:...</description><pubDate>Thu, 02 Jun 2022 00:00:00 GMT</pubDate><category>Design</category></item><item><title>「オブジェクト指向とは」を理解するためのValueObject</title><link>https://www.lyricrime.com/posts/value-object/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/value-object/</guid><description>## はじめに
+この記事では、ValueObjectの簡単な解説と、「他人にオブジェクト指向を説明する際にはValueObjectやDDDの話に触れた方が伝わりやすいんじゃない？」という個人の意見について書きました。
+
+僕は前職では基本的にC言語、VBAでの開発を行なっていました。   
+業務の合間にテストコードを生成するためのツールなどをPythonを用いて行なっていました。   
+プログラミン...</description><pubDate>Mon, 23 May 2022 00:00:00 GMT</pubDate><category>OOP</category></item><item><title>DDD(Domain Driven Design: ドメイン駆動設計)について</title><link>https://www.lyricrime.com/posts/ddd/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ddd/</guid><description>## 参考文献   
+[ドメイン駆動設計の用語と解説(抜粋版)](https://qiita.com/nunulk/items/84438605eb4d75dbef00)   
+[DDD難民に捧げるDomain-Driven Designのエッセンス](https://www.ogis-ri.co.jp/otc/hiroba/technical/DDDEssence/index.html)   
+...</description><pubDate>Wed, 18 May 2022 00:00:00 GMT</pubDate><category>DDD</category></item><item><title>できる限りドキュメントメンテナンスコストを下げたい [Doxygen] [phpDocumentor]</title><link>https://www.lyricrime.com/posts/doxygen/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/doxygen/</guid><description>## はじめに(長めの前置き)
+大前提として、「コードは必ず変更される」ことはエンジニアであれば理解されていると思います。   
+経験上、コードを書いて1回切りの「作り捨て」にすることはまずありません。   
+自分が変更するかもしれませんし、他人が変更することもあるでしょう。   
+よく「三日後の自分は他人」とも言いますが、そう考えるとほとんどの場合、書いたコードを変更するのは「他人」ということに...</description><pubDate>Fri, 13 May 2022 00:00:00 GMT</pubDate><category>document</category></item><item><title>マイグレーションについて</title><link>https://www.lyricrime.com/posts/migration/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/migration/</guid><description>## 参考
+
+https://readouble.com/laravel/8.x/ja/migrations.html#column-method-integer
+
+https://tohokuaiki.hateblo.jp/entry/2016/12/26/%E3%80%8CLaravel%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9...</description><pubDate>Fri, 06 May 2022 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>RESTful APIとは</title><link>https://www.lyricrime.com/posts/restful-api/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/restful-api/</guid><description>## 参考
+https://lukesilvia.hatenablog.com/entry/20091025/p1
+https://qiita.com/NagaokaKenichi/items/0647c30ef596cedf4bf2
+https://qiita.com/NagaokaKenichi/items/df4c8455ab527aeacf02
+https://qiita.com/Naga...</description><pubDate>Tue, 26 Apr 2022 00:00:00 GMT</pubDate><category>REST</category></item><item><title>Laravel Mixについて</title><link>https://www.lyricrime.com/posts/laravel-mix/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/laravel-mix/</guid><description>## 参考
+
+https://readouble.com/laravel/6.x/ja/mix.html   
+https://qiita.com/minato-naka/items/bfc3bbd9a388084e6f17   
+https://qiita.com/kamykn/items/45fb4690ace32216ca25
+https://qiita.com/minato-naka/it...</description><pubDate>Thu, 21 Apr 2022 00:00:00 GMT</pubDate><category>Laravel</category></item><item><title>bash,zshにおける設定ファイルの読み込み順序について</title><link>https://www.lyricrime.com/posts/terminal-setting/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/terminal-setting/</guid><description>## bashとzsh
+Macユーザーの場合はどちらかを使用している人が多いのではと思います。   
+`MacOS X Catalina`以前はbash、以降はzshが標準のシェルです。
+
+以下のサイトによると、
+
+https://kanasys.com/tech/803
+
+&gt; MacOS Xは当初tcshであったのがv10.3 Pantherよりbashに変更された
+
+らしいです。
+
+bashは...</description><pubDate>Wed, 06 Apr 2022 00:00:00 GMT</pubDate><category>setting</category></item><item><title>XSSとSQLインジェクションについて</title><link>https://www.lyricrime.com/posts/xss-sql-injection/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/xss-sql-injection/</guid><description>## XSSとは
+Webアプリケーションの脆弱性を利用して行われるサイバー攻撃の1つ。   
+入力フォームなどに悪質なサイトへ誘導するスクリプトを埋め込みます。   
+悪質なサイトに誘導されると、ユーザーのブラウザ上で不正なスクリプトが実行されます。   
+攻撃の種類はマルウェア感染や個人情報の漏えい、フィッシング詐欺などがあります。   
+もともとのサイトから悪質なサイトへ跨いでスクリプトが実行...</description><pubDate>Thu, 31 Mar 2022 00:00:00 GMT</pubDate><category>security</category></item><item><title>ボーイスカウトの規則　Boy Scout Rule</title><link>https://www.lyricrime.com/posts/boy-scout/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/boy-scout/</guid><description>## 参考文献
 [プリンシプルオブプログラミング](https://www.amazon.co.jp/dp/B071V7MY82/ref=dp-kindle-redirect?_encoding=UTF8&amp;btkr=1)
 
 ## 背景
-参考文献に挙げた書籍はこの業界に入って一番初めに買った技術関連の書籍で今でも定期的に読み返しますがまだまだ身に付いてはいないと感じるのでひとつずつ深掘りしていこうと...</description><pubDate>Mon, 28 Mar 2022 00:00:00 GMT</pubDate><category>principle</category></item><item><title>「t-wadaさんが後世に残したい、実録レガシーコード改善」を聞いて得た気づきメモ</title><link>https://www.lyricrime.com/posts/actual-legacy-code-improvement/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/actual-legacy-code-improvement/</guid><description>## はじめに
+参考文献に挙げた書籍はこの業界に入って一番初めに買った技術関連の書籍で今でも定期的に読み返しますがまだまだ身に付いてはいないと感じるのでひとつずつ深掘りしていこうと...</description><pubDate>Mon, 28 Mar 2022 00:00:00 GMT</pubDate><category>principle</category></item><item><title>クリーンアーキテクチャについて</title><link>https://www.lyricrime.com/posts/crean-architecture/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/crean-architecture/</guid><description>![picture 1](/images/8dbc4e9ea504ae68caeebf7261788baa807accda93f08a9ea19197b22ac05696.png)  
+## 参考
+[実装クリーンアーキテクチャ](https://qiita.com/nrslib/items/a5f902c4defc83bd46b8)   
+[クリーンアーキテクチャ完全に理解した](https://...</description><pubDate>Mon, 21 Mar 2022 00:00:00 GMT</pubDate><category>test</category></item><item><title>MVCモデルについて</title><link>https://www.lyricrime.com/posts/mvc/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/mvc/</guid><description># MVCモデルについて
+## MVCとは
+ソフトウェアを**Model**,**View**,**Controller**の3要素の組み合わせでシステムを構築していく考え方。   
 
-個人的なエンジニアとしての強みとして、テストやレガシーコード改善を武器にしていきたいと考えて日々プログラミングと向き合っています。  
-そんな中、t-wadaさんが後世に残したい、実録レガシーコード改善というイベントの再放送に参加し、自身のテストに関する解像度がさらに上がりました。  
-また、テストの考え方を人に伝える上でとてもいい表現をされていたので、そのあたりをメモ的に残して...</description><pubDate>Tue, 30 Jan 2024 00:00:00 GMT</pubDate><category>study</category></item><item><title>社内勉強会レポ 2023-11-10 GraphQL</title><link>https://www.lyricrime.com/posts/study-2023-11-10/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/study-2023-11-10/</guid><description>## はじめに
-
-今回は社内勉強会のレポートです。  
-定期的に社内のエンジニアで集まって勉強会を行っています。  
-勉強会のノリとしてはだいぶ緩く、お題はなんでもいいんですが参加者が気になっている技術などについてあまり前準備なく、みんなで調べて見解を共有するという感じのものです。  
-具体的に質問や議論があればそれらをテーマにすることもありますが、社内勉強会では参加するメンバーが別々のプロジェク...</description><pubDate>Fri, 10 Nov 2023 00:00:00 GMT</pubDate><category>study</category></item><item><title>TypeScriptでAtCoderに挑戦してみる</title><link>https://www.lyricrime.com/posts/typescript-atcoder/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-atcoder/</guid><description>## はじめに
-
-スマレジでは、副業が可能です。   
-https://corp.smaregi.jp/recruit/culture/workstyle.php   
-
-個人的に最近、副業にも挑戦しようかなと考え始めています。   
-副業に割ける稼働時間的には週10h程度となりそうなので、比較的タスクを細かくしやすいフロントエンドの案件を中心に探していたりします。   
-担当するプロダクト的には...</description><pubDate>Tue, 17 Jan 2023 00:00:00 GMT</pubDate><category>TypeScript</category></item><item><title>JavaScriptにおけるクラスとTypeScriptにおけるクラスについて</title><link>https://www.lyricrime.com/posts/typescript-class/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-class/</guid><description>## はじめに
-今回はES2015から変更されたJavaScriptのオブジェクト指向構文についてまとめたいと思います。   
-また、最近TypeScriptについて個人開発等で導入し始めているので違いを意識しながら理解していきたいと思います。
-
-## 参考書籍
-今回の記事は今読んでいるJavaScriptおよびTypeScriptの書籍を比較しながら書きました。   
-
-[改訂新版JavaScr...</description><pubDate>Sun, 08 Jan 2023 00:00:00 GMT</pubDate><category>TypeScript</category></item><item><title>TypeScriptのジェネリクス</title><link>https://www.lyricrime.com/posts/typescript-generics/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-generics/</guid><description>## はじめに
-
-今回はTypeScriptのジェネリクスについてです。JavaScriptがある程度かければTypeScriptでつまづく箇所は結構少ないとは思いますが、つまづいたのがジェネリクスという概念でした。  
-今回はジェネリクスの仕組みと何を解決できるのかについて調査してみます。  
-
-## ジェネリクスとは
-
-型の安全性とコードの共通化を両立するための仕組み
-
-抽象的な型引数を使用し...</description><pubDate>Sun, 12 Mar 2023 00:00:00 GMT</pubDate><category>TypeScript</category></item><item><title>TypeScriptに入門する</title><link>https://www.lyricrime.com/posts/typescript-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-init/</guid><description>## はじめに
-前回の記事同様直近の大きな課題感を感じているのはフロントエンド技術です。  
-今回はその中でも最近主流となっているTypeScriptに入門してみます。  
-私のエンジニア人生はC言語から始まっているので静的型付けで書けないJSに違和感をずっと感じていたため、個人開発等で導入し、ゆくゆくは社内のプロダクトもどんどん移行していきたいなと感じています。  
-今回は備忘録としてJavaS...</description><pubDate>Sun, 25 Dec 2022 00:00:00 GMT</pubDate><category>TypeScript</category></item><item><title>TypeScriptの型について</title><link>https://www.lyricrime.com/posts/typescript-type/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/typescript-type/</guid><description>## TypeScriptの型付け
-
-TypeScriptはJavaScriptに対して型を付与するという思想で仕様が定められています。   
-TypeScriptでは型を付与する方法として、様々な方法が用意されていますが、どこまで利用するかは費用対効果を考えながら行う必要があります。   
-
-## any型 最もゆるい型付け
-
-```TypeScript
-function example(arg...</description><pubDate>Sun, 29 Jan 2023 00:00:00 GMT</pubDate><category>TypeScript</category></item></channel></rss>
+## Model
+- ビジネスロジックを担当するシステムの本体部分
+- データの変更をViewに通知する(Observerパターンを使うこともある)
+## View
+- 表示、入出力といった部分を担当する。
+- M...</description><pubDate>Fri, 18 Mar 2022 00:00:00 GMT</pubDate></item></channel></rss>
