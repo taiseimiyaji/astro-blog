@@ -16,8 +16,8 @@ const posts = postOrderByCreatedAt(blogEntries);
 
 declare global {
     interface Window {
-        dataLayer: any[];
-        gtag: (command: string, targetOrData: string | Date, params?: any) => void;
+        dataLayer: unknown[];
+        gtag: (...args: unknown[]) => void;
     }
 }
 ---
@@ -34,7 +34,7 @@ declare global {
 <script>
     window.dataLayer = window.dataLayer || [];
 
-    function gtag(...args: any[]) {
+    function gtag(...args: unknown[]) {
         window.dataLayer.push(args);
     }
 
