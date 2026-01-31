@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="ja"> <head><title>生成AI時代の開発組織の変化への考察</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="### はじめに
+
+生成AIの普及によって、設計・実装・テスト・ドキュメント作成まで、開発の「手を動かす」部分、いわゆるプロセス自体は明確に速くなりました。
+
+一方で、リリース頻度が上がっているはずなのに、事業としての成果が比例してこないと"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2026/01/31</div> <h1>生成AI時代の開発組織の変化への考察</h1> <div class="post"> <h3 id="はじめに">はじめに</h3>
+<p>生成AIの普及によって、設計・実装・テスト・ドキュメント作成まで、開発の「手を動かす」部分、いわゆるプロセス自体は明確に速くなりました。</p>
+<p>一方で、リリース頻度が上がっているはずなのに、事業としての成果が比例してこないといった「加速しているのに進んでいない」という違和感を持つ場面も増えた気がします。<br>
+この記事は、具体的な手法を断定するのではなく、**「AIが効き始めた今、どこが詰まりやすくなっているのか」**を言語化するための整理です。</p>
+<p>少しポエム寄りな部分もありますが、現場の会話を前に進めるための材料になればと思います。</p>
+<h3 id="対象読者">対象読者</h3>
+<ul>
+<li>生成AIを開発に取り入れ、実装速度の向上を実感し始めている方</li>
+<li>スクラムなどのアジャイルを回しているが、成果につながりにくい違和感がある方</li>
+<li>見積もりや計画の会話が噛み合わず、疲弊しているエンジニアやPdM、マネージャー</li>
+</ul>
+<h2 id="参考資料">参考資料</h2>
+<p>今回の記事は多くの参考資料の内容を踏まえて構成しています。個人の見解と参考資料の内容を混ぜつつ、私なりに解釈した内容であることをご了承ください。</p>
+<ul>
+<li><a href="https://speakerdeck.com/takaking22/toward-agile-teams-in-the-age-of-ai">AI時代のアジャイルチームを目指して ー スクラムというコンフォートゾーンからの脱却 ー / Toward Agile Teams in the Age of AI - Speaker Deck</a></li>
+<li><a href="https://www.seangoedecke.com/how-i-estimate-work/">How I estimate work as a staff software engineer</a></li>
+<li><a href="https://speakerdeck.com/murabayashi/requirements">エンジニアとして関わる要件と仕様(公開用) - Speaker Deck</a></li>
+<li><a href="https://www.docswell.com/s/yohhatu/KN9YYL-2026-01-07-084924#p1">よくわからないことが多い場合の計画づくりのコツ | ドクセル</a></li>
+<li><a href="https://www.docswell.com/s/yohhatu/Z1R8YP-2025-04-19-171500">よくわからないことが多い場合の計画づくり(アジャイルな計画づくり) | ドクセル</a></li>
+<li><a href="https://speakerdeck.com/aki_iinuma/autopututonoy-karayuzajia-zhi-noy-he-gasonnanijian-dan-nidekitaraku-lao-sinai-number-rsgt2026">「アウトプット脳からユーザー価値脳へ」がそんなに簡単にできたら苦労しない #RSGT2026 - Speaker Deck</a></li>
+</ul>
+<h3 id="速く作れるのになぜ事業は進まないのか">速く作れるのに、なぜ事業は進まないのか？</h3>
+<p>生成AIで「作る」のは速くなりました。これは誰もが認める変化です。しかし、現場では次のような「詰まり」が目立つようになっています。</p>
+<ul>
+<li>作業は早くこなせるようになっているはずなのに、優先順位がいつまでも決まらない</li>
+<li>レビュー・承認・会議待ちといった「待機時間」の比重が増えた</li>
+<li>「成果」の定義が、チケットの消化（アウトプット）なのか、事業への寄与（価値）なのか曖昧なまま走り続けている</li>
+</ul>
+<p>AIによって「実装の遅さ」という開発組織の抱える課題が解消に向かいつつある一方、それ以外の場所にある摩擦が、組織のボトルネックとして浮かび上がってきました。</p>
+<h3 id="1-aiは増幅器">1. AIは「増幅器」</h3>
+<p>生成AIは増幅器であるという言説を聞いたことがないでしょうか？シニアエンジニアはより良いコードを素早く量産できるようになった一方で、元々いいコードが書けないエンジニアは高速で負債を量産してしまう現状を指しています。
+組織においても同様で、生成AIは、組織の弱点を自動で直してくれるツールではなく、むしろ <code>増幅器</code> として働きます。</p>
+<ul>
+<li>もともと判断が速い組織は、実装の加速がそのまま事業の前進につながる</li>
+<li>もともと合意形成が重い組織は、実装が速くなるほど決定の遅さが際立ち、実装に取りかかれない</li>
+</ul>
+<p>個人の生産性が上がっても、組織全体のリードタイムが短縮されないのは、この増幅器が組織の構造的な歪みを解消できていないからです。</p>
+<p>従来は仕様が決まるまでの間、開発チームは他にも実装したり、リファクタリングしたりといった作業が大量にあったため、決定の遅さが目立ちにくい面がありました。しかし、AIによって「作る」部分が高速化されると、決定の遅さがそのままリードタイムに直結します。</p>
+<h3 id="2-スクラムがコンフォートゾーン化する">2. スクラムが「コンフォートゾーン」化する</h3>
+<p>次に、プロダクトチームで取り組むスクラムについて考えてみます。<br>
+スクラムは本来、不確実性の中で「学習」を繰り返すための枠組みです。<br>
+AI関係なく、スクラムにおいては運用が慣習化するほど、「枠組みを回していること」自体が目的化しがちです。</p>
+<ul>
+<li>レトロスペクティブが「単なる会話の場」になる
+話してスッキリして終わり、というパターンです。本来は次のスプリントで「試し」、その結果を「更新」することで学習が進みますが、アクションが継続されないと学びは蓄積されません。</li>
+<li>スプリントゴールが「バックログの詰め合わせ」になる
+「今週やるチケット一覧」がゴールになると、プロダクトをどうしたいかという狙いが消えます。スプリントが学習の単位ではなく、単なる作業処理のサイクルになってしまいます。</li>
+</ul>
+<p>これらの課題は、生成AIが登場する以前から存在していましたが、AIで実装が加速するほど、この課題によるダメージは大きくなります。速く回っているのに、何も学べていない状態は顕在化しやすくなりました。</p>
+<h3 id="3-ボトルネックは意思決定の構造ではないか">3. ボトルネックは意思決定の構造ではないか</h3>
+<p>開発のスループットが上がったとき、次に詰まるのは「技術」ではなく「組織構造」です。</p>
+<p>具体的には、以下のような課題がある開発そしきをよく見かけます。</p>
+<ul>
+<li>権限と責任の不一致： 誰が決めるのか曖昧で、会議を繰り返さないと何も進まない。</li>
+<li>役割の壁： 「それはPMの仕事」「それはエンジニアの領分」という境界線でボールが止まり、リードタイムが伸びる。</li>
+<li>評価制度のラグ： 評価が「アウトプット（作った量）」に寄っていると、誰も「価値（効いた結果）」に責任を持たなくなる。</li>
+</ul>
+<p>ボトルネックが技術的な部分にない場合、エンジニアが次に解消するべき課題は技術の外側にあることを認識する必要があります。</p>
+<h3 id="4-詰まりを解消するための具体策">4. 詰まりを解消するための具体策</h3>
+<p>では構造的な詰まりに対し、私たちはどのような視点を持つべきでしょうか。</p>
+<ul>
+<li>小さな単位で動く： 人月の神話などで言われている通り、人数が増えるほど合意コストは指数関数的に増えます。生成AIによって労働集約部分が解消されると次は意思決定の摩擦を最小化する小さい単位のチーム編成が重要になります。</li>
+<li>役割の境界を無くしていく： 「誰の仕事か」で止まる時間を減らす。責務分担は必要ですが、境界が硬すぎると待ち時間が増えてしまい、生成AIによって他工程のリードタイムが短縮されているため、致命的なボトルネックになります。</li>
+<li>マネジメントの再定義： マネージャーの役割が「進捗管理」だった時代は生成AIによって終わります。進捗は生成AIによって加速され、管理するメリットが薄れ、不確実性の増加によってコストだけが膨らみます。マネージャーは権限の整理、責任の設計といった ボトルネックの除去 へシフトしていく必要があります。</li>
+</ul>
+<h3 id="5-計画は当てない更新し続ける">5. 計画は「当てない」。更新し続ける</h3>
+<p>ソフトウェア開発は、原因と結果が事後にしか見えない「複雑（Complex）」な問題領域です。この前提に立つと、そもそも「完璧な計画を立て、それを守る」というモデルは破綻しています。。</p>
+<blockquote>
+<p>計画は「当てるもの」ではなく、経験と学びによって「更新し続ける活動」そのものである。</p>
+</blockquote>
+<p>実務では、計画を分離して考えることが重要です。</p>
+<p>計画の意味について考えてみましょう。何のために計画を立てて守るんでしょうか？</p>
+<p>ビジネスの意思決定を支援するため?リリースに伴う作業の整理などビジネスを成り立たせるため?様々な理由があると思いますが、本当にそれらを実現するために、どの作業がいつ開始して、いつ完了するかといった詳細なスケジュールが必要でしょうか？</p>
+<p>多くの場合、詳細なスケジュールは不要です。必要なのは、<strong>いつまでに何を達成したいのか</strong>という大まかな方向性と、そのために<strong>何を検証し、学び、更新していくのか</strong>というプロセスです。</p>
+<p>そのため、計画は3つのレベルに分けて考えてみましょう。</p>
+<ul>
+<li>長期ゴール： 6ヶ月〜1年先に達成したい大きな目標</li>
+<li>中期マイルストーン： 1〜3ヶ月先に達成したい</li>
+<li>短期の詳細： 1〜2週間のスプリントで達成したい具体的なタスク</li>
+</ul>
+<p>これらの計画を立てた上で「わからないことリスト」を管理するのも有効です。
+ソフトウェア開発はよく不確実性があると言われますが、チーム内で何が不確実で、いつまでに、どうすれば検証できるのか。これを言語化しチーム内で認識を揃えることで、不確実性を管理することができます。</p>
+<h3 id="6-見積もりは未来予測ではなく交渉の道具">6. 見積もりは未来予測ではなく「交渉の道具」</h3>
+<p>そもそも見積もり通りに進まないことを問題視している人もよく見かけます。</p>
+<p>これは前提から間違えていて、見積もりというのはそもそも「未来予測」ではなく、「交渉の道具」です。</p>
+<p>令和になった現在でさえ、一週間、一ヶ月先の天気予報すら外れることがあるのに、我々エンジニアが半年、一年先のプロジェクトの状況を正確に当てることなど不可能で、あくまでも現時点での予測に過ぎません。</p>
+<p>見積もりは占いではないということをまずは関係者で認識を持ちましょう。</p>
+<p>組織が見積もりを求める真の理由は、技術的な予測が欲しいからではなく、**「意思決定の材料」**が欲しいからです。</p>
+<p>例えば、以下のような判断をビジネスサイドとしてはしたいために技術的な見積もりを求めています。</p>
+<ul>
+<li>どこに投資すべきか</li>
+<li>何を優先し、何を捨てるべきか</li>
+</ul>
+<p>そのためにエンジニアが提示できる内容は決して占いの結果ではないはずです。例えば、以下のような情報を提示できるとどうでしょうか。</p>
+<ul>
+<li>前提: 仕様、リソース、スコープ</li>
+<li>リスク: 技術的な不確実性</li>
+<li>選択肢: 実現しうる範囲</li>
+<li>トレードオフ: 将来を見据えたコストとメリットの比較</li>
+</ul>
+<p>見積もりを通して何を合意できたかこそが重要です。</p>
+<p>これらの認識をビジネスサイドを含めて合わせていくことで、見積もりを有効な判断材料として活用できるだけでなく、見積もりに対する不毛な議論も減らせるはずです。</p>
+<p>ここでいう不毛な議論とは、例えば以下のようなものです。</p>
+<ul>
+<li>技術的な見積もりが外れたことを責める</li>
+<li>見積もりを絶対視し、変更を拒む</li>
+<li>ビジネスサイドが過剰な要求をし、技術サイドが防御的すぎる見積もりを出す</li>
+<li>技術サイドが無理な目標としての計画を立てざるを得ない</li>
+<li>技術サイドが建前のスケジュールと本音のスケジュールを二重管理する</li>
+</ul>
+<p>本当に自分たちがやりたいことは見積もりを100%当てることなのか、プロダクトを通してユーザーに価値を提供することなのか、改めて考えてみることをお勧めします。</p>
+<h3 id="7-アウトプット脳と価値脳の衝突">7. 「アウトプット脳」と「価値脳」の衝突</h3>
+<p>本当に重要なことはユーザーに価値を提供することだとわかっていながら、なぜ組織はいつも「アウトプット」ばかり追ってしまうのでしょうか。</p>
+<p>理由はシンプルで、<strong>アウトプットは測定しやすく、価値は測定しにくいから</strong>です。</p>
+<p>リリースした事実は即座にカウントできますが、それがユーザーにどう効いたかは遅れて現れます。この時間差が、組織を測定可能な確かなもの、つまりアウトプット重視へと引き戻してしまいます。この断絶を個人の熱量で埋めるのには限界があります。</p>
+<h3 id="8-断絶を埋める3つの仕組み">8. 断絶を埋める3つの仕組み</h3>
+<p>価値志向の文化を定着させるには、精神論ではなく仕組みが必要です。</p>
+<ul>
+<li>8.1 実験の設計： 全てのリリースを「機能追加」ではなく「ユーザーの行動変容に関する仮説検証」と定義し直す。</li>
+<li>8.2 会話の設計： 定例の報告順序を、「何を作ったか」ではなく「ユーザーにどんな変化があったか（あるいはまだ起きていないか）」から始めるよう強制的に固定する。</li>
+<li>8.3 KPIの設計： KPIを単なるノルマではなく、先行指標、つまり兆しから事業指標までを繋ぐ仮説の連鎖（KPIチェーン）として扱う。</li>
+</ul>
+<h3 id="9-エンジニアが仕様設計に積極的に関与し当事者になる">9. エンジニアが仕様設計に積極的に関与し、当事者になる</h3>
+<p>AI時代、エンジニアが決まった仕様を実装するだけ、といった分業モデルは機能しません。<br>
+なぜなら、将来にわたって発生する複雑性のコスト、いわゆる本来の意味での <strong>技術的負債</strong> を最も解像度高く理解しているのは、コードを書くエンジニア自身だからです。</p>
+<p>これは、仕様実現によるメリットと複雑性によるコストのトレードオフ関係を最も理解しているのはエンジニアであるということを意味します。</p>
+<p>つまりエンジニアは仕様の段階から対話に関与し、「仕様と設計の往復」を自ら回す必要があります。</p>
+<p>じゃあマネージャーは必要ないか、というとそうではないと考えています。</p>
+<p>PMの領域を奪うことではありません。PMはプロダクトに対して何を実現するべきか、といったアイデアを出して最終的な意思決定をします。エンジニアはプロダクトが持つ「複雑性」を管理し、持続可能な価値を守るためのプロとしてトレードオフの説明責任を果たし、意思決定を支援します。</p>
+<h3 id="10-まとめ">10. まとめ</h3>
+<p>生成AIによっていわゆる作るプロセス全体がが加速したことで、私たちは否応なしに次の課題に向き合わされています。</p>
+<ul>
+<li>私たちは何を「成果」と呼ぶのか</li>
+<li>誰が、何を、どの速度で決めるのか</li>
+<li>不確実性とどう対話し、組織としてどう学習するのか</li>
+</ul>
+<p>これまで複雑性、不確実性に向き合うためのフレームワークであったスクラムでさえも、形式的な運用では効果が発揮しづらくなっており、組織の構造的な課題を解消しない限り、AIの恩恵を最大化できないことが明らかになってきました。</p>
+<p>AI導入の成否は、結局のところ「組織が学習能力を取り戻せるか」にかかっています。速く作れる時代であればあるほど、小さく、早く学べない組織は、凄まじいスピードで「間違った場所」へと向かってしまうからです。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>

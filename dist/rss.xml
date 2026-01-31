@@ -1,4 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>npm install は必ずしも package-lock.json を書き換えない</title><link>https://www.lyricrime.com/posts/npm-install/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/npm-install/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>生成AI時代の開発組織の変化への考察</title><link>https://www.lyricrime.com/posts/2026-ai-organization/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-ai-organization/</guid><description>### はじめに
+
+生成AIの普及によって、設計・実装・テスト・ドキュメント作成まで、開発の「手を動かす」部分、いわゆるプロセス自体は明確に速くなりました。
+
+一方で、リリース頻度が上がっているはずなのに、事業としての成果が比例してこないといった「加速しているのに進んでいない」という違和感を持つ場面も増えた気がします。  
+この記事は、具体的な手法を断定するのではなく、**「AIが効き始めた今、ど...</description><pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate><category>management</category><category>agile</category><category>ai</category></item><item><title>npm install は必ずしも package-lock.json を書き換えない</title><link>https://www.lyricrime.com/posts/npm-install/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/npm-install/</guid><description>## はじめに
 
 `npm install` と `npm ci` の違いを「package-lock.json を書き換えるかどうか」として認識していました。
 
