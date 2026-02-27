@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>生成AI時代の開発組織の変化への考察</title><link>https://www.lyricrime.com/posts/2026-ai-organization/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-ai-organization/</guid><description>### はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>「スタッフエンジニア　マネジメントを超えるリーダーシップ」の読書メモ</title><link>https://www.lyricrime.com/posts/staff-engineer/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/staff-engineer/</guid><description>## はじめに
+
+今回は、「スタッフエンジニア　マネジメントを超えるリーダーシップ」の読書メモです。
+
+[スタッフエンジニア　マネジメントを超えるリーダーシップ | 日経BOOKプラス](https://bookplus.nikkei.com/atcl/catalog/23/04/07/00760/)
+
+## 前置き: 現在の自分の立ち位置の認知
+
+この本を読むにあたっての自分の立ち位置を考えてみ...</description><pubDate>Thu, 26 Feb 2026 00:00:00 GMT</pubDate></item><item><title>生成AI時代の開発組織の変化への考察</title><link>https://www.lyricrime.com/posts/2026-ai-organization/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-ai-organization/</guid><description>### はじめに
 
 生成AIの普及によって、設計・実装・テスト・ドキュメント作成まで、開発の「手を動かす」部分、いわゆるプロセス自体は明確に速くなりました。
 
