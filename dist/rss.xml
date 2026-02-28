@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>「スタッフエンジニア　マネジメントを超えるリーダーシップ」の読書メモ</title><link>https://www.lyricrime.com/posts/staff-engineer/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/staff-engineer/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>MCPやAgent Skillsあれこれ</title><link>https://www.lyricrime.com/posts/2026-mcp-skills/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-mcp-skills/</guid><description>## はじめに
+
+生成AIを使った業務が当たり前になってしばらく経ちますが、たまにMCPやAgent Skillsを知らない人や活用できていない人を見かけるので、関連する公式ドキュメントをまとめつつ、簡単に解説した記事を書いておきます。  
+
+仕組みとして理解していても、ローカルMCPとリモートMCPの違い、Agent Skillsとの違いや認証情報の扱い、サードパーティ製ツールの利用の際の注意な...</description><pubDate>Sat, 28 Feb 2026 00:00:00 GMT</pubDate><category>ai</category></item><item><title>「スタッフエンジニア　マネジメントを超えるリーダーシップ」の読書メモ</title><link>https://www.lyricrime.com/posts/staff-engineer/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/staff-engineer/</guid><description>## はじめに
 
 今回は、「スタッフエンジニア　マネジメントを超えるリーダーシップ」の読書メモです。
 
