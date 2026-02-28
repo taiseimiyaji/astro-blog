@@ -17,8 +17,6 @@ jobs:
           token: ${{ secrets.COPY_ACCESS_TOKEN }}
       - name: delete article
         run: rm -rf src/content/blog/Article
-      - name: delete images
-        run: rm -rf public/images
       - name: create folder
         run: mkdir -p src/content/blog/Article
       - name: create images folder
@@ -26,7 +24,7 @@ jobs:
       - name: copy article
         run: cp -n -r blog_article/Article/* src/content/blog/Article
       - name: copy images
-        run: cp -n -r blog_article/images/* public/images
+        run: cp -r blog_article/images/* public/images
       - name: clean repository
         run: rm -rf blog_article
       - name: npm install
