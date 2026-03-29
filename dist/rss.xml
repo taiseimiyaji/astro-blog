@@ -5,7 +5,12 @@
 もちろん、現実にはそう単純ではない。セキュリティ、業務の複雑さ、責任の所在、既存システムとの統合など、さまざまな理由から、従来のSaaSや開発体制がそのまま生き残る領域もある。逆に、急速に置き換わる領域もある。
 
 ただ、それでもひとつだけかなりはっきり言えることがある。
-**僕たちエンジニアリングチームの前提は、す...</description><pubDate>Sun, 29 Mar 2026 00:00:00 GMT</pubDate><category>ai</category><category>engineering</category><category>career</category><category>organization</category></item><item><title>MCPやAgent Skillsあれこれ</title><link>https://www.lyricrime.com/posts/2026-mcp-skills/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-mcp-skills/</guid><description>## はじめに
+**僕たちエンジニアリングチームの前提は、す...</description><pubDate>Sun, 29 Mar 2026 00:00:00 GMT</pubDate><category>ai</category><category>engineering</category><category>career</category><category>organization</category></item><item><title>エンジニア視点からビジネスサイドへ。生成AIを使って業務効率化する時に考えること</title><link>https://www.lyricrime.com/posts/ai-agent-for-business-side/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-agent-for-business-side/</guid><description>## はじめに
+
+最近、生成AIの進化によって、以前ならエンジニアに依頼しなければできなかったようなちょっとしたツール作成やデータ処理が、個人でも手軽に試せる時代になりました。
+
+一方で、「AIを使って何か効率化したい」という目的先行の発想だけでは、実際の業務においてうまくいかないことも多いと感じています。
+たとえば、そもそもAIを使わなくても解決できる課題にわざわざAIを持ち込んでしまったり、一...</description><pubDate>Sun, 29 Mar 2026 00:00:00 GMT</pubDate><category>ai</category></item><item><title>MCPやAgent Skillsあれこれ</title><link>https://www.lyricrime.com/posts/2026-mcp-skills/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-mcp-skills/</guid><description>## はじめに
 
 生成AIを使った業務が当たり前になってしばらく経ちますが、たまにMCPやAgent Skillsを知らない人や活用できていない人を見かけるので、関連する公式ドキュメントをまとめつつ、簡単に解説した記事を書いておきます。  
 
