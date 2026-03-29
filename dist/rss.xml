@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>MCPやAgent Skillsあれこれ</title><link>https://www.lyricrime.com/posts/2026-mcp-skills/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-mcp-skills/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>2026年、従来のエンジニアの終わりとこれから</title><link>https://www.lyricrime.com/posts/2026-ai-team/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-ai-team/</guid><description>## はじめに
+
+「SaaS is Dead」が話題になってから数ヶ月が経った。
+
+もちろん、現実にはそう単純ではない。セキュリティ、業務の複雑さ、責任の所在、既存システムとの統合など、さまざまな理由から、従来のSaaSや開発体制がそのまま生き残る領域もある。逆に、急速に置き換わる領域もある。
+
+ただ、それでもひとつだけかなりはっきり言えることがある。
+**僕たちエンジニアリングチームの前提は、す...</description><pubDate>Sun, 29 Mar 2026 00:00:00 GMT</pubDate><category>ai</category><category>engineering</category><category>career</category><category>organization</category></item><item><title>MCPやAgent Skillsあれこれ</title><link>https://www.lyricrime.com/posts/2026-mcp-skills/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-mcp-skills/</guid><description>## はじめに
 
 生成AIを使った業務が当たり前になってしばらく経ちますが、たまにMCPやAgent Skillsを知らない人や活用できていない人を見かけるので、関連する公式ドキュメントをまとめつつ、簡単に解説した記事を書いておきます。  
 
