@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>2026年、従来のエンジニアの終わりとこれから</title><link>https://www.lyricrime.com/posts/2026-ai-team/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-ai-team/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI時代に重要になるのは、作る力ではなく「検証」する力</title><link>https://www.lyricrime.com/posts/software-verification/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/software-verification/</guid><description>## はじめに
+
+生成AIによって、ソフトウェア開発の速度は明らかに上がっています。
+
+実装、調査、テストコードの生成、ドキュメント作成、リファクタリングなど、これまで人間が時間をかけていた作業の多くを、AIが支援、代替できるようになり、企業としても代替に動くのが2026年の中心的な動きになると思います。
+
+「作ること」のコストは今後さらに下がっていくと思います。しかし、作るコストが下がったからと...</description><pubDate>Wed, 29 Apr 2026 00:00:00 GMT</pubDate><category>ai</category></item><item><title>2026年、従来のエンジニアの終わりとこれから</title><link>https://www.lyricrime.com/posts/2026-ai-team/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-ai-team/</guid><description>## はじめに
 
 「SaaS is Dead」が話題になってから数ヶ月が経った。
 
