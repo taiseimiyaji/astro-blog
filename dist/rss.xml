@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI時代に重要になるのは、作る力ではなく「検証」する力</title><link>https://www.lyricrime.com/posts/software-verification/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/software-verification/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>バックエンドの考え方から見るフロントエンドのアーキテクチャ設計</title><link>https://www.lyricrime.com/posts/backend-to-frontend-architecture/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/backend-to-frontend-architecture/</guid><description>## はじめに
+
+弊社では、バックエンドエンジニアがフロントエンドのコードを書くことがよくあります。
+
+それ自体は悪いことではありません。むしろ、業務仕様やデータ構造を理解しているバックエンドエンジニアがフロントエンドまで触れることで、実装の速度が上がる場面も多いです。
+
+特に今後はフロントエンドだけに閉じたエンジニアはAIによって淘汰される可能性が高くなってくると考えており、ドメインについて深い...</description><pubDate>Thu, 30 Apr 2026 00:00:00 GMT</pubDate><category>frontend</category></item><item><title>AI時代に重要になるのは、作る力ではなく「検証」する力</title><link>https://www.lyricrime.com/posts/software-verification/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/software-verification/</guid><description>## はじめに
 
 生成AIによって、ソフトウェア開発の速度は明らかに上がっています。
 
