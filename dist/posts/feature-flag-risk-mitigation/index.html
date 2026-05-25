@@ -1,0 +1,455 @@
+<!DOCTYPE html><html lang="ja"> <head><title>FeatureFlagによるリスク低減の仕組みを考えてAIを使っても最小限のリスクでどんどんリリースする</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+生成AIによる開発が一般的になり、実装そのものの速度は大きく上がってきました。
+
+それなりにAIを活用できている開発組織においては人間がゼロからコードを書くというより、AIに実装させ、人間が方針を決め、レビューし、必要に応"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div> Blog</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2026/05/25</div> <h1>FeatureFlagによるリスク低減の仕組みを考えてAIを使っても最小限のリスクでどんどんリリースする</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>生成AIによる開発が一般的になり、実装そのものの速度は大きく上がってきました。</p>
+<p>それなりにAIを活用できている開発組織においては人間がゼロからコードを書くというより、AIに実装させ、人間が方針を決め、レビューし、必要に応じて修正する、という開発スタイルが一般的になってきているのではないでしょうか。</p>
+<p>一方で、コードを書く速度が上がったからといって、ソフトウェアのリスクが消えるわけではありません。</p>
+<p>むしろ、変更量が増えることで、レビュー、QA、リリース判定、障害対応といった「確認する側」の工程が相対的にボトルネックになりやすくなっています。これは確認側の口数が、実装する側に比べて生成AIによる恩恵を受けづらいことが原因の一つだと考えられます。</p>
+<p>これまで人間が書いていたコードをAIが生成するようになったことでリスクが増えた、と言われることがあります。しかし、本質的には、人間が書いてもAIが書いてもバグは入り得ます。重要なのは、誰がコードを書いたかではなく、その変更をどのように安全に本番へ届けるかです。</p>
+<p>これまで直接コードを書いていた人が、いわゆる管理職のように、直接コードを書くことがなくなって成果物のチェック役に回ったとも言えます。</p>
+<p>たとえば、DORAでは、ソフトウェアデリバリーのパフォーマンスを見る指標として、デプロイ頻度、変更のリードタイム、変更失敗率、復旧時間などが扱われています。つまり、単にリリース頻度を上げるだけではなく、変更が失敗したときの影響や復旧も含めて考える必要があります。</p>
+<p>言い換えれば、確認に工数をかける度合いとリリースの頻度などの度合いを鑑みて、リスクをどのようにコントロールするかが重要になってきます。</p>
+<p>この記事では、そもそも100%の確認は不可能であるという前提に立ちます。</p>
+<p>そのうえで、リリースを高頻度にし、1回あたりの変更を小さくし、影響範囲を限定し、問題が起きたらすぐ止められる仕組みとしてFeatureFlagを考えていきます。</p>
+<p>特にMartin Fowlerの記事にあるFeature Toggleの考え方を参考にしながら、AI時代のリリースリスク低減にFeatureFlagをどう活用できるかを整理します。Feature Toggleは、ユーザーに新機能を速く、かつ安全に届けるためのパターンとして説明されています。</p>
+<h2 id="1-ai時代にリリースリスクが問題になる理由">1. AI時代にリリースリスクが問題になる理由</h2>
+<p>AIを使うことで、実装速度は上がります。</p>
+<p>これまで数日かかっていた実装が数時間で終わることもありますし、細かい修正やリファクタリングもAIに任せやすくなりました。結果として、1人のエンジニアが扱える変更量は増えていきます。</p>
+<p>しかし、AIが高速化しているのは現状では実装工程に集中しています。</p>
+<p>仕様が正しいか、既存機能に影響しないか、本番データで問題が起きないか、ユーザーが期待通りに使えるか、障害時にすぐ戻せるか、といった点は自動的には解決されません。</p>
+<p>むしろ、変更量が増えるほど、これらの項目を確認すべき対象自体も増えます。</p>
+<p>たとえば、AIによって以下のような変更が短時間で作れるようになります。</p>
+<ul>
+<li>新しい画面の追加</li>
+<li>既存UIの刷新</li>
+<li>APIレスポンス構造の変更</li>
+<li>DBアクセス処理の変更</li>
+<li>外部API連携の追加</li>
+<li>バッチ処理の最適化</li>
+<li>権限制御の修正</li>
+<li>リファクタリング</li>
+</ul>
+<p>これらは開発効率の面では非常に強力です。</p>
+<p>しかし、変更が本番に出た瞬間、そこには必ずリスクがあります。</p>
+<p>Google SRE WorkbookのCanary Releaseの章でも、変更は実世界の入力やトラフィックにさらされるまで未知のリスクを持つため、小さな範囲に出して安全性を確認する考え方が説明されています。</p>
+<p>AI時代のリスクは、「AIが間違えること」そのものだけではありません。より大きな問題は、AIによって増えた変更量を、従来のリリースプロセスで扱いきれなくなることです。</p>
+<p>人間がすべての差分を細かく読み、QAがすべてのパターンを確認し、問題がないと判断してから本番に出す。このやり方は、変更量が少ないうちは機能します。</p>
+<p>しかし、AIによって実装スピードが上がると、確認工程だけが追いつかなくなります。</p>
+<p>その結果、次のどちらかに偏りやすくなります。</p>
+<ol>
+<li>1つ目は、確認がボトルネックになり、リリースできない状態です。</li>
+<li>2つ目は、確認が薄くなり、リスクが高いまま本番に出てしまう状態です。</li>
+</ol>
+<p>1つ目はAIで実装は終わっているのに、レビュー待ち、QA待ち、リリース判定待ちが積み上がり、結局ユーザーに価値が届かない状態です。</p>
+<p>2つ目はAIによって変更が増えたにもかかわらず、従来と同じ感覚でリリースしてしまい、想定外の障害や問い合わせ増加につながる状態です。</p>
+<p>どちらも望ましくありません。必要なのは、確認を無限に厚くすることではなく、変更を小さく出し、影響範囲を制御し、問題があればすぐ止められる構造です。</p>
+<p>AI時代に必要なのは、AIが書いたコードを人間が全部読んで安心することではなく、変更を安全に本番へ流すための仕組みになりました。</p>
+<h2 id="2-100確認してからリリースすることの限界">2. 100%確認してからリリースすることの限界</h2>
+<p>理想を言えば、すべてのリリース前にすべてのリスクを確認できるのが一番安全です。</p>
+<p>しかし、現実にはそれはほぼ不可能です。これはAIの登場以前から存在していた問題ですが、AIによって変更量が増えることで、より顕著になっています。</p>
+<p>ソフトウェアには、事前に確認しきれない要素が多くあります。</p>
+<p>もちろん、テストやレビューが不要という話ではありません。</p>
+<p>むしろ、AI時代においてもテストやレビューは重要です。ただし、それらを「リスクをゼロにするための手段」と考えるのは無理があります。リスクはゼロにすることはできません。</p>
+<p>できるのは、リスクを見つけやすくし、影響範囲を小さくし、問題が起きたときに早く止められるようにすることです。言い換えるとリスクをコントロールすることです。</p>
+<p>ここで重要になるのが、リリース単位の小ささです。</p>
+<p>1回のリリースに大量の変更が含まれていると、問題が起きたときに原因を特定しづらくなる、問題が大きくなる、復旧に時間がかかる、ということが起きやすくなります。</p>
+<p>たとえば、以下のようなリリースがあったとします。</p>
+<ul>
+<li>予約画面のUI刷新</li>
+<li>APIレスポンス変更</li>
+<li>権限制御の変更</li>
+<li>DBカラム追加</li>
+<li>通知処理の変更</li>
+<li>外部サービス連携の追加</li>
+</ul>
+<p>この状態で本番障害が起きた場合、どの変更が原因なのかをすぐに判断するのは難しくなります。</p>
+<p>一方で、変更が小さく、公開範囲も限定されていれば、問題の切り分けはかなり楽になります。</p>
+<p>リリース頻度が低い組織では、1回あたりのリリースが大きくなりがちです。</p>
+<p>「安全のためにリリース頻度を下げる」という判断は、一見すると正しそうに見えます。しかし、リリース頻度が下がることで、1回あたりの変更量が増え、結果的にリリースのリスクが高くなることがあります。</p>
+<p>AI時代により重要となる戦略として、安全なリリースを行うためには壊れる可能性を前提に、壊れても影響を限定でき、すぐ戻せるリリースの仕組みを用意する必要があります。</p>
+<p>そのためには、以下のような考え方が必要になります。</p>
+<ul>
+<li>1回の変更を小さくする</li>
+<li>変更を早くmain/masterに統合する</li>
+<li>デプロイとリリースを分離する</li>
+<li>最初から全ユーザーに出さない</li>
+<li>問題が起きたら即座に止められるようにする</li>
+<li>リリース後の状態を観測する</li>
+</ul>
+<p>FeatureFlagは、この考え方を実現するための手段の一つとして非常に有効です。</p>
+<h2 id="3-featureflagとは何か">3. FeatureFlagとは何か</h2>
+<p>FeatureFlagとは、コードを変更せずに機能の有効・無効を切り替える仕組みです。大体2009年ごろから使われ始めた考え方で、Flickrの技術ブログなどで近しい概念が登場したようです。</p>
+<p><a href="https://code.flickr.net/2009/12/02/flipping-out">Flipping Out | code.flickr.com</a></p>
+<p>その後Martin Fowlerのブログによって概念が整理され、分類の整理と業界への浸透が進みました。<br>
+Feature Toggle、Feature Flag、Feature Switchなど、いくつか呼び方はありますが、基本的には同じ考え方です。</p>
+<p>Martin FowlerのFeature Toggleの記事では、Feature Toggleはシステムの振る舞いをコード変更なしで変えるための強力な手法として説明されています。ただし同時に、Toggleは複雑性を持ち込むため、用途ごとの分類を考慮することが重要だとも述べられています。</p>
+<p>非常に単純な例で言えば、以下のようなものです。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> ($featureFlag</span><span style="color:#F97583">-></span><span style="color:#B392F0">enabled</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'new_reservation_flow'</span><span style="color:#E1E4E8">, $user)) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> $this</span><span style="color:#F97583">-></span><span style="color:#B392F0">newReservationFlow</span><span style="color:#E1E4E8">($request);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">return</span><span style="color:#79B8FF"> $this</span><span style="color:#F97583">-></span><span style="color:#B392F0">oldReservationFlow</span><span style="color:#E1E4E8">($request);</span></span></code></pre>
+<p>フロントエンドであれば、次のような形になります。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (flags.newReservationFlow) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#79B8FF">NewReservationFlow</span><span style="color:#E1E4E8"> />;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#79B8FF">OldReservationFlow</span><span style="color:#E1E4E8"> />;</span></span></code></pre>
+<p>これだけを見ると、単なるif文ですが、本質は、デプロイとリリースを分離することにあります。</p>
+<p>FeatureFlagがない場合、基本的にはコードを本番環境にデプロイした瞬間に、全ユーザーへ機能が公開されます。</p>
+<p>merge → deploy → 全ユーザーに公開</p>
+<p>一方でFeatureFlagがある場合、コードは本番環境にデプロイされているが、まだユーザーには公開されていない、という状態を作れます。</p>
+<p>merge → deploy → flag OFF → 社内ON → 一部ユーザーON → 全体ON</p>
+<p>この違いは非常に大きいです。</p>
+<p>コードを本番に置くことと、ユーザーに機能を見せることを分けられるからです。</p>
+<p>これにより、たとえば以下のようなことが可能になります。</p>
+<ul>
+<li>本番環境にコードを置いたまま、ユーザーには非公開にする</li>
+<li>社内ユーザーだけ新機能を使えるようにする</li>
+<li>特定のβユーザーだけに公開する</li>
+<li>5%、25%、50%、100%のユーザーを対象にするように段階公開する</li>
+<li>問題が起きたらFeatureFlagをOFFにして機能を止める</li>
+<li>ビジネス上の公開タイミングとデプロイタイミングを分ける</li>
+</ul>
+<p>つまりFeatureFlagは、単なる実装テクニックではなく、リリース制御の仕組みです。</p>
+<p>AI時代においては、実装速度が上がるぶん、この「安全に出すための制御」がより重要になります。</p>
+<p>また、FeatureFlagは自作もできますが、近年はOpenFeatureのように標準化の動きもあります。OpenFeatureは、特定ベンダーに依存しないFeature FlaggingのAPI仕様を提供するプロジェクトで、Feature Flag管理ツールや自社実装を共通インターフェースで扱うことを目的としています。</p>
+<h2 id="4-featureflagで低減できるリスク">4. FeatureFlagで低減できるリスク</h2>
+<h3 id="影響範囲を限定できる">影響範囲を限定できる</h3>
+<p>いきなり全ユーザーに公開しなくてよくなります。</p>
+<p>たとえば、新しい予約画面を出す場合でも、最初から全体公開する必要はありません。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>1. 開発者だけON</span></span>
+<span class="line"><span>2. QA担当者だけON</span></span>
+<span class="line"><span>3. 社内ユーザーだけON</span></span>
+<span class="line"><span>4. 特定のテスト店舗だけON</span></span>
+<span class="line"><span>5. βユーザーだけON</span></span>
+<span class="line"><span>6. 5%のユーザーだけON</span></span>
+<span class="line"><span>7. 25%、50%、100%と拡大</span></span></code></pre>
+<p>問題が起きても、影響範囲はその時点の公開対象に限定されます。</p>
+<p>「全員に出してから気づく」のではなく、「小さく出して気づく」状態を作れます。</p>
+<h3 id="問題が起きたときにすぐ止められる">問題が起きたときにすぐ止められる</h3>
+<p>本番障害時に、コードのrevertや再デプロイを待つのは重いです。</p>
+<ul>
+<li>CI/CDを待つ必要がある</li>
+<li>デプロイに時間がかかる</li>
+<li>DB変更と整合しない場合がある</li>
+<li>キャッシュやキューに影響が残る</li>
+<li>緊急対応中に追加のミスが起きやすい</li>
+</ul>
+<p>FeatureFlagがあれば、コードを戻さずに機能だけをOFFにできます。</p>
+<p>特に、次のような機能では有効です。</p>
+<ul>
+<li>新しいUI</li>
+<li>重い集計処理</li>
+<li>外部API連携</li>
+<li>非同期ジョブ</li>
+<li>AIによる提案機能</li>
+<li>新しい検索処理</li>
+</ul>
+<p>たとえば外部API連携が不安定になった場合、その連携だけを止められれば、サービス全体への影響を抑えられます。</p>
+<p>この用途のFeatureFlagは、リリース制御というよりkill switchに近いです。</p>
+<h3 id="デプロイとリリースを分離できる">デプロイとリリースを分離できる</h3>
+<p>未公開の機能でも、flag OFFの状態でmainに統合できます。</p>
+<p>つまり、コードは早く統合し、公開タイミングだけを後で制御できます。</p>
+<p>FeatureFlagがない場合、未完成の機能はmainに入れづらくなります。その結果、長期間のfeature branchが生まれます。</p>
+<p>長いブランチは、次の問題を起こします。</p>
+<ul>
+<li>コンフリクトが増える</li>
+<li>レビュー差分が大きくなる</li>
+<li>結合時の不具合が増える</li>
+<li>リリース単位が大きくなる</li>
+</ul>
+<p>FeatureFlagを使えば、変更を小さく統合し続けながら、公開だけを制御できます。</p>
+<p>AIで実装速度が上がるほど、差分を長くブランチに閉じ込めるリスクは大きくなります。</p>
+<p>早く統合し、小さくデプロイし、公開はFeatureFlagで制御する。</p>
+<p>この流れは、AI時代の開発フローと相性がよいです。</p>
+<h3 id="段階的に学習できる">段階的に学習できる</h3>
+<p>新機能は、作った時点では仮説です。特にWEB開発などはこの不確実性に向き合うためにアジャイル開発などさまざまな手法が生まれてきました。</p>
+<p>ユーザーが使うか、問い合わせが増えないか、性能に問題がないかは、実際に出さないとわからないことがあります。</p>
+<p>FeatureFlagを使えば、小さく出して観測できます。</p>
+<ul>
+<li>フラグONのユーザーだけエラー率が高くないか</li>
+<li>新UIの利用率は想定通りか</li>
+<li>問い合わせが増えていないか</li>
+<li>レイテンシが悪化していないか</li>
+<li>CVが下がっていないか</li>
+<li>想定外の操作ログが出ていないか</li>
+</ul>
+<p>一気に全体公開するのではなく、観測しながら公開範囲を広げる。</p>
+<p>FeatureFlagは、安全装置であり、学習のための仕組みでもあります。</p>
+<h2 id="5-featureflagの種類">5. FeatureFlagの種類</h2>
+<p>FeatureFlagは、用途によって性質が違います。</p>
+<p>Martin Fowlerの記事では、Feature Toggleを複数の種類に分けて考えています。</p>
+<p>代表的な分類は次の4つです。</p>
+<ul>
+<li>Release Toggle</li>
+<li>Experiment Toggle</li>
+<li>Ops Toggle</li>
+<li>Permission Toggle</li>
+</ul>
+<p>すべてを同じON/OFF設定として扱うと、運用が破綻しやすくなります。</p>
+<h3 id="release-toggle">Release Toggle</h3>
+<p>Release Toggleは、未公開の機能を本番コードに含めつつ、ユーザーにはまだ見せないためのフラグです。</p>
+<p>目的は、デプロイとリリースの分離です。</p>
+<p>コードはmainに統合し、本番にもデプロイする。しかし、FeatureFlagがOFFなのでユーザーには見えない。</p>
+<p>その後、社内確認や段階公開を経て、全体公開します。Release Toggleは基本的に一時的なものです。</p>
+<p>全体公開が終わったら、古い実装とフラグ分岐を削除します。</p>
+<h3 id="experiment-toggle">Experiment Toggle</h3>
+<p>Experiment Toggleは、A/Bテストや効果検証のためのフラグです。</p>
+<p>ボタン文言を変えるとCVが上がるのか。</p>
+<p>レイアウトを変えると離脱率が下がるのか。</p>
+<p>こうした仮説検証に使います。</p>
+<p>Experiment Toggleでは、ON/OFFだけでは不十分です。</p>
+<p>どのユーザーにどのバリエーションを出したか、その結果どうなったかを計測する必要があります。</p>
+<p>そのため、ログ設計や分析基盤とセットで扱います。</p>
+<h3 id="ops-toggle">Ops Toggle</h3>
+<p>Ops Toggleは、運用や障害対応のためのフラグです。</p>
+<p>例です。</p>
+<p>外部APIが不安定なときに連携を止める。</p>
+<p>負荷が高いときに重い集計処理を止める。</p>
+<p>AI提案機能が不安定なときに一時停止する。</p>
+<p>こうした用途で使います。</p>
+<p>Ops Toggleは、Release Toggleと違って長期的に残る場合があります。</p>
+<p>障害対応や負荷制御のスイッチとして価値があるからです。</p>
+<p>ただし、長く残すなら運用ルールが必要です。</p>
+<ul>
+<li>誰がOFFにできるのか</li>
+<li>OFFにすると何が止まるのか</li>
+<li>OFF時にユーザーにはどう見えるのか</li>
+<li>復旧時に誰がONに戻すのか</li>
+</ul>
+<p>ここが曖昧なOps Toggleは、障害時に混乱を生みます。</p>
+<h3 id="permission-toggle">Permission Toggle</h3>
+<p>Permission Toggleは、特定のユーザー、組織、契約プラン、権限に応じて機能を出し分けるためのフラグです。</p>
+<p>βユーザーだけに新機能を出す。</p>
+<p>特定プランだけに高度な機能を出す。</p>
+<p>管理者だけに新しい設定画面を出す。</p>
+<p>こうした用途で使います。</p>
+<p>ただし、Permission Toggleを権限制御そのものとして扱うのは危険です。</p>
+<p>フロントエンドでボタンを隠しても、APIを直接叩けるなら制御できていません。</p>
+<p>課金、権限、データアクセスに関わるものは、必ずバックエンドで認可します。</p>
+<p>Permission Toggleは「見せ方の制御」であり、セキュリティ上の認可とは分けて考えるべきです。</p>
+<h3 id="種類ごとに寿命が違う">種類ごとに寿命が違う</h3>
+<p>FeatureFlagは、種類ごとに寿命が違います。</p>
+<p>Release Toggleは短命にします。</p>
+<p>Experiment Toggleも、検証が終われば削除するか正式実装に統合します。</p>
+<p>Ops ToggleやPermission Toggleは、長く残る場合があります。</p>
+<p>この違いを無視すると、削除すべきフラグが残り続けたり、残すべき運用スイッチが雑に消されたりします。</p>
+<p>そのため、作成時点で種類を明確にします。</p>
+<p>たとえば以下のような形です。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>name: reservation_calendar_v2</span></span>
+<span class="line"><span>type: release</span></span>
+<span class="line"><span>owner: reservation-team</span></span>
+<span class="line"><span>created_at: 2026-05-25</span></span>
+<span class="line"><span>expected_cleanup_date: 2026-06-30</span></span>
+<span class="line"><span>description: 新しい予約カレンダー画面への切り替え</span></span></code></pre>
+<p>FeatureFlagは、作ることよりも、管理し、消すことのほうが重要です。</p>
+<h3 id="自分たちの場合">自分たちの場合</h3>
+<p>上記の分類はあくまで一例です。自分たちの開発するアプリケーションの場合、どのようなFeatureFlagが必要かを考える必要があります。</p>
+<p>自分たちの場合は、Release ToggleとExperiment Toggleが重要度が高そうだったため、テナントごとのIDに紐づく形で、ON/OFFを切り替えられるようなFeatureFlagの仕組みを実装しました。</p>
+<p>一旦シンプルなフラグ実装を選択し、必要度が上がればUnleashなどの成熟したツールの導入も検討する、という方針で進めています。</p>
+<h2 id="6-featureflagを安全に運用するための設計">6. FeatureFlagを安全に運用するための設計</h2>
+<p>FeatureFlagは、入れるだけでは安全になりません。</p>
+<p>雑に導入すると、分岐が増え、状態が複雑になり、誰も消せないフラグが残りかねないので設計と運用が必要です。</p>
+<h3 id="フラグの単位は独立して止めたい単位にする">フラグの単位は「独立して止めたい単位」にする</h3>
+<p>フラグの粒度は、粗すぎても細かすぎても問題です。</p>
+<p>粗すぎると、一部だけ止めたいときに止められません。細かすぎると、管理できません。</p>
+<p>たとえば、予約機能全体を1つのフラグにするとします。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>reservation_renewal</span></span></code></pre>
+<p>この中に、カレンダー、プラン選択、オプション選択、確認画面、通知処理まで含めると、新しいカレンダーだけ止めたい場合に困ります。</p>
+<p>その場合は、次のように分けたほうが扱いやすくなります。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>reservation_calendar_v2</span></span>
+<span class="line"><span>reservation_plan_selector_v2</span></span>
+<span class="line"><span>reservation_option_selector_v2</span></span>
+<span class="line"><span>reservation_confirm_screen_v2</span></span>
+<span class="line"><span>reservation_notification_v2</span></span></code></pre>
+<p>ただ、細かすぎると管理が煩雑になります。自分たちの場合は障害じの独立単位でフラグを切る運用を選択しました。つまり基準は、障害時に独立して止めたいかどうかです。</p>
+<p>FeatureFlagは機能単位ではなく、リスク単位で設計するのがよいと考えています。</p>
+<h3 id="フラグ自体の状態と機能の公開状態を分ける">フラグ自体の状態と、機能の公開状態を分ける</h3>
+<p><code>active</code> や <code>enabled</code> に複数の意味を持たせると混乱します。</p>
+<p>たとえば、<code>enabled = true</code> は何を意味するのでしょうか。</p>
+<ul>
+<li>フラグ管理対象として有効</li>
+<li>機能が全ユーザーに公開されている</li>
+<li>デフォルトでON</li>
+<li>一部ユーザーだけON</li>
+<li>kill switchが解除されている</li>
+<li>正式リリース済み</li>
+</ul>
+<p>これらが混ざると、運用時に判断できなくなります。</p>
+<p>そのため、管理状態と評価結果を分けます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>FeatureFlagの管理状態:</span></span>
+<span class="line"><span>- active</span></span>
+<span class="line"><span>- archived</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>機能の評価結果:</span></span>
+<span class="line"><span>- enabled</span></span>
+<span class="line"><span>- disabled</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>公開ルール:</span></span>
+<span class="line"><span>- default off</span></span>
+<span class="line"><span>- internal users only</span></span>
+<span class="line"><span>- beta users only</span></span>
+<span class="line"><span>- percentage rollout</span></span>
+<span class="line"><span>- all users</span></span></code></pre>
+<p>「フラグがactiveである」ことと、「ユーザーに機能が公開されている」ことは別です。</p>
+<p>activeなフラグでも、対象ユーザーへの評価結果はdisabledかもしれません。</p>
+<p>正式リリース済みで全員に公開されているなら、フラグ分岐自体を消す判断も必要です。</p>
+<h3 id="フラグには所有者と削除期限を持たせる">フラグには所有者と削除期限を持たせる</h3>
+<p>FeatureFlagは、作った瞬間から負債になる可能性があります。</p>
+<p>リスクを下げるために必要な負債ですが、使い終わったあとも残ると保守性を下げます。</p>
+<p>最低限、次の情報は持たせたいです。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>name</span></span>
+<span class="line"><span>type</span></span>
+<span class="line"><span>owner</span></span>
+<span class="line"><span>created_at</span></span>
+<span class="line"><span>expected_cleanup_date</span></span>
+<span class="line"><span>related_issue</span></span>
+<span class="line"><span>description</span></span>
+<span class="line"><span>rollout_status</span></span></code></pre>
+<p>特に重要なのは、ownerとexpected_cleanup_dateです。</p>
+<p>誰が責任を持つのか。</p>
+<p>いつ削除する予定なのか。</p>
+<p>これがないフラグは、誰も消せなくなります。</p>
+<p>Release Toggleであれば、作成時点で削除用Issueを作るのがよいです。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>1. FeatureFlagを作る</span></span>
+<span class="line"><span>2. flag OFFで実装をmainに入れる</span></span>
+<span class="line"><span>3. 社内・一部ユーザーに段階公開する</span></span>
+<span class="line"><span>4. 全体公開する</span></span>
+<span class="line"><span>5. 旧実装とFeatureFlag分岐を削除する</span></span></code></pre>
+<p>FeatureFlagはリスクを減らす仕組みですが、削除されないFeatureFlagは将来のリスクになります。</p>
+<h3 id="監視ログアラートとセットで運用する">監視・ログ・アラートとセットで運用する</h3>
+<p>段階公開しても、状態を観測できなければ意味がありません。</p>
+<p>5%に公開しても、その5%で何が起きているかわからなければ、ただの遅い全体公開です。</p>
+<p>FeatureFlagを使うなら、次の情報を見られるようにします。</p>
+<ul>
+<li>フラグON/OFFごとのエラー率</li>
+<li>フラグON/OFFごとのレイテンシ</li>
+<li>対象機能の利用率</li>
+<li>問い合わせ数</li>
+<li>CV</li>
+<li>外部API失敗率</li>
+<li>例外ログ</li>
+<li>対象ユーザー数</li>
+<li>段階公開の履歴</li>
+</ul>
+<p>特に重要なのは、ONのユーザーとOFFのユーザーを比較できることです。</p>
+<p>ONのユーザーだけエラー率が高いなら、その機能が原因である可能性が高くなります。</p>
+<p>また、停止基準も事前に決めます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>- エラー率が通常時の2倍を超えたらOFF</span></span>
+<span class="line"><span>- 外部API失敗率が10%を超えたらOFF</span></span>
+<span class="line"><span>- 問い合わせが一定数を超えたらロールアウト停止</span></span>
+<span class="line"><span>- レイテンシp95が基準値を超えたら段階公開を止める</span></span></code></pre>
+<p>FeatureFlagは、観測とセットで初めてリスク低減になります。</p>
+<h2 id="7-featureflag導入時のアンチパターン">7. FeatureFlag導入時のアンチパターン</h2>
+<p>FeatureFlagは強力ですが、誤用すると逆にリスクになります。</p>
+<p>代表的なアンチパターンを整理します。</p>
+<h3 id="何でもfeatureflagにする">何でもFeatureFlagにする</h3>
+<p>すべての変更にFeatureFlagを付けると管理不能になります。</p>
+<p>軽微な文言修正、スタイル調整、小さなリファクタリングまでフラグ化する必要はありません。</p>
+<p>FeatureFlagを使うべきなのは、次のような変更です。</p>
+<ul>
+<li>ユーザー影響が大きい</li>
+<li>段階公開したい</li>
+<li>問題時に個別で止めたい</li>
+<li>戻すのが難しい</li>
+<li>外部APIに依存している</li>
+<li>性能影響が読みにくい</li>
+<li>公開タイミングを制御したい</li>
+<li>βユーザーや特定顧客に限定公開したい</li>
+</ul>
+<p>FeatureFlagは、何でも隠すための仕組みではありません。</p>
+<p>リスクを制御するための仕組みです。</p>
+<h3 id="フラグが削除されない">フラグが削除されない</h3>
+<p>FeatureFlagの典型的な問題は、削除されないことです。</p>
+<p>一時的なつもりで作ったフラグが、いつの間にか誰も意味を知らない状態で残り続けます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> ($featureFlag</span><span style="color:#F97583">-></span><span style="color:#B392F0">enabled</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'new_flow'</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 新しい処理</span></span>
+<span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 古い処理</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>この分岐が何ヶ月も残ると、誰も安全に触れなくなります。</p>
+<p>フラグが残ることで、次の問題が起きます。</p>
+<ul>
+<li>コードが読みにくくなる</li>
+<li>テストパターンが増える</li>
+<li>どちらの分岐が使われているかわからなくなる</li>
+<li>古い実装を消せなくなる</li>
+<li>新しい変更がさらに複雑になる</li>
+<li>障害時の切り分けが難しくなる</li>
+</ul>
+<p>Release Toggleは、全体公開が完了したら削除します。</p>
+<p>FeatureFlagは、作るときに削除まで計画するべきです。</p>
+<h3 id="フラグの意味が曖昧">フラグの意味が曖昧</h3>
+<p><code>enabled_new_feature</code> や <code>use_v2</code> のような雑な命名は、時間が経つと意味がわからなくなります。</p>
+<p>いつ消してよいのか。何のためのフラグなのかがわからないフラグは危険です。</p>
+<p>対策としては、名前だけでなく、説明も持たせます。</p>
+<p>FeatureFlagは運用で使うものです。</p>
+<p>人間が読んで理解できることが重要です。</p>
+<h3 id="フロントエンドだけで制御する">フロントエンドだけで制御する</h3>
+<p>UIの出し分けだけなら、フロントエンドのFeatureFlagで十分な場合もあります。</p>
+<p>しかし、権限、課金、データ更新、外部API実行に関わるものをフロントエンドだけで制御してはいけません。</p>
+<p>フロントエンドでボタンを非表示にしても、APIを直接叩けるなら制御できていません。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (flags.advancedReport) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> &#x3C;</span><span style="color:#79B8FF">AdvancedReportButton</span><span style="color:#E1E4E8"> />;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>バックエンド側でも必ず認可します。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="php"><code><span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8"> $user</span><span style="color:#F97583">-></span><span style="color:#B392F0">canUseAdvancedReport</span><span style="color:#E1E4E8">()) {</span></span>
+<span class="line"><span style="color:#B392F0">    abort</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">403</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>FeatureFlagは権限制御の代替ではありません。</p>
+<p>特にPermission Toggleでは、プロダクト上の出し分けとセキュリティ上の認可を分けて考える必要があります。</p>
+<h3 id="db変更をfeatureflagだけで安全にしようとする">DB変更をFeatureFlagだけで安全にしようとする</h3>
+<p>FeatureFlagは万能ではありません。</p>
+<p>特にDB変更を伴う場合は注意が必要です。</p>
+<p>FeatureFlagで新機能をOFFにできても、互換性のないDB変更は簡単には戻せません。</p>
+<p>たとえば、既存カラムを削除したあとに問題が起きても、FeatureFlagをOFFにするだけでは復旧できません。</p>
+<p>DB変更は段階的に行います。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>1. 新カラムを追加する</span></span>
+<span class="line"><span>2. 旧コードでも新コードでも動く状態にする</span></span>
+<span class="line"><span>3. 必要であれば新旧両方に書き込む</span></span>
+<span class="line"><span>4. 読み取りを新カラムに切り替える</span></span>
+<span class="line"><span>5. 問題がないことを確認する</span></span>
+<span class="line"><span>6. 古いカラムや古い処理を削除する</span></span></code></pre>
+<p>FeatureFlagは、切り替えポイントの制御には有効です。</p>
+<p>しかし、互換性のないDB変更を安全にしてくれるわけではありません。</p>
+<p>FeatureFlagはリリース制御の仕組みであり、すべての設計ミスを吸収する魔法ではありません。</p>
+<h2 id="8-まとめ">8. まとめ</h2>
+<ul>
+<li>AIによって、ソフトウェア開発の速度は上がる</li>
+<li>AIが生成したコードであっても、人間が書いたコードであっても、本番で問題は起こり得ます。</li>
+<li>AIによって開発速度が上がるため、問題の発生自体も加速する</li>
+<li>実装速度はAIの恩恵を受けているが、確認作業は恩恵を受けづらく、限界がある</li>
+<li>元より、全てのテストは不可能だったのでテスト以外でのリスクコントロールが重要になる</li>
+</ul>
+<p>FeatureFlagを使うことで、次のようなリリースが可能。</p>
+<ul>
+<li>デプロイとリリースを分離する</li>
+<li>いきなり全ユーザーに公開しない</li>
+<li>社内ユーザーやβユーザーだけに公開する</li>
+<li>段階的にロールアウトする</li>
+<li>問題が起きたらすぐOFFにする</li>
+<li>フラグON/OFFごとに状態を観測する</li>
+<li>リリース後に学習しながら改善する</li>
+</ul>
+<p>FeatureFlagは、AI時代における安全なリリースのための重要な仕組み。
+ただし、FeatureFlag自体にも設計と運用が必要</p>
+<ul>
+<li>フラグの種類を明確にする</li>
+<li>Release Toggleは短命にする</li>
+<li>Ops ToggleやPermission Toggleは運用ルールを明確にする</li>
+<li>ownerと削除期限を持たせる</li>
+<li>フラグの単位はリスク単位で設計する</li>
+<li>監視やログとセットで運用する</li>
+<li>DB変更の安全性は別途設計する</li>
+</ul>
+<p>つまり、テストの限界を超えた部分についてはリスクをコントロールできるリリースフローの設計が重要で、FeatureFlagはそのための現実的で強力な手段のひとつになり得る。</p>
+<ul>
+<li>AI時代に必要なのは、AIが書いたコードを人間がすべて読んで安心することではない</li>
+<li>小さく出し、観測し、問題があればすぐ止められる構造を作ること</li>
+</ul>
+<p>AIによって実装が速くなる時代だからこそ、リリースを安全にするための設計に投資する価値がある。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>

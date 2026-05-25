@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>バックエンドの考え方から見るフロントエンドのアーキテクチャ設計</title><link>https://www.lyricrime.com/posts/backend-to-frontend-architecture/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/backend-to-frontend-architecture/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>FeatureFlagによるリスク低減の仕組みを考えてAIを使っても最小限のリスクでどんどんリリースする</title><link>https://www.lyricrime.com/posts/feature-flag-risk-mitigation/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/feature-flag-risk-mitigation/</guid><description>## はじめに
+
+生成AIによる開発が一般的になり、実装そのものの速度は大きく上がってきました。
+
+それなりにAIを活用できている開発組織においては人間がゼロからコードを書くというより、AIに実装させ、人間が方針を決め、レビューし、必要に応じて修正する、という開発スタイルが一般的になってきているのではないでしょうか。
+
+一方で、コードを書く速度が上がったからといって、ソフトウェアのリスクが消えるわ...</description><pubDate>Mon, 25 May 2026 00:00:00 GMT</pubDate><category>feature-flag</category></item><item><title>バックエンドの考え方から見るフロントエンドのアーキテクチャ設計</title><link>https://www.lyricrime.com/posts/backend-to-frontend-architecture/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/backend-to-frontend-architecture/</guid><description>## はじめに
 
 弊社では、バックエンドエンジニアがフロントエンドのコードを書くことがよくあります。
 
