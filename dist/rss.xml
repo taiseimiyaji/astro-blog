@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>FeatureFlagによるリスク低減の仕組みを考えてAIを使っても最小限のリスクでどんどんリリースする</title><link>https://www.lyricrime.com/posts/feature-flag-risk-mitigation/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/feature-flag-risk-mitigation/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI活用を個人技で終わらせないために ①AI活用の組織適用のアイデアと実施</title><link>https://www.lyricrime.com/posts/ai-individuals-to-org-1/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-individuals-to-org-1/</guid><description>## はじめに
+
+AI活用を個人で工夫するフェーズが段々と終わり始め、組織への導入や活用、それによる開発フロー上の課題の顕在化など徐々にフェーズが変わってきていると感じます。
+
+関連して個人的に幾つのトピックについて考えていることがありますが、散らばり始めているので少しずつ整理するメモ書きをします。
+
+個別の内容についてはまた後日深掘りして別記事にするかもしれません。今回は100%手書きで生成AI...</description><pubDate>Sun, 31 May 2026 00:00:00 GMT</pubDate><category>ai</category></item><item><title>FeatureFlagによるリスク低減の仕組みを考えてAIを使っても最小限のリスクでどんどんリリースする</title><link>https://www.lyricrime.com/posts/feature-flag-risk-mitigation/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/feature-flag-risk-mitigation/</guid><description>## はじめに
 
 生成AIによる開発が一般的になり、実装そのものの速度は大きく上がってきました。
 
