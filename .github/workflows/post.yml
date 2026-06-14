@@ -8,23 +8,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: clone blog-article
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: taiseimiyaji/blog_article
           path: blog_article
           token: ${{ secrets.COPY_ACCESS_TOKEN }}
       - name: delete article
         run: rm -rf src/content/blog/Article
+      - name: delete note
+        run: rm -rf public/note
       - name: create folder
         run: mkdir -p src/content/blog/Article
+      - name: create note folder
+        run: mkdir -p public/note
       - name: create images folder
         run: mkdir -p public/images
       - name: copy article
-        run: cp -n -r blog_article/Article/* src/content/blog/Article
+        run: rsync -a --exclude 'note/' blog_article/Article/ src/content/blog/Article/
+      - name: copy note
+        run: |
+          if [ -d blog_article/Article/note ]; then
+            rsync -a --include '*/' --include '*.html' --exclude '*' blog_article/Article/note/ public/note/
+          fi
       - name: copy images
-        run: cp -r blog_article/images/* public/images
+        run: |
+          if [ -d blog_article/images ]; then
+            cp -r blog_article/images/. public/images/
+          fi
       - name: clean repository
         run: rm -rf blog_article
       - name: npm install
@@ -32,12 +44,12 @@ jobs:
       - name: build
         run: npm run build
       - name: create pr
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.COPY_ACCESS_TOKEN }}
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          commit-message: 'copy Articles'
-          branch: copy_Articles
+          commit-message: 'copy Articles and notes'
+          branch: copy_Articles_and_notes
           branch-suffix: timestamp
           delete-branch: true
-          title: 'updated Articles'
+          title: 'updated Articles and notes'
