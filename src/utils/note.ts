@@ -99,7 +99,7 @@ export function getNoteEntries(): NoteEntry[] {
 			return {
 				title: getTitle(html, filePath),
 				date: getDate(html, relativePath),
-				href: `/note/${relativePath}/`,
+				href: `/note/${relativePath}`,
 				slug,
 				body,
 				description: getDescription(body),
