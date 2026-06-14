@@ -1,0 +1,41 @@
+---
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+import { getNoteEntries } from "../../utils/note";
+import "../../styles/index.scss";
+import "../../styles/slug.scss";
+import "../../styles/note.scss";
+
+export function getStaticPaths() {
+	return getNoteEntries().map((note) => ({
+		params: { slug: note.slug.join("/") },
+		props: { note },
+	}));
+}
+
+const { note } = Astro.props;
+---
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="description" content={note.description} />
+		<title>{note.title} | Lyricrime.com</title>
+	</head>
+	<body>
+		<main>
+			<Header />
+			<div class="content">
+				<div class="date">{note.date.replaceAll("-", "/")}</div>
+				<h1>{note.title}</h1>
+				{note.tags.length > 0 && (
+					<div class="note-tags">
+						{note.tags.map((tag) => <span>{tag}</span>)}
+					</div>
+				)}
+				<article class="note-post post" set:html={note.body} />
+			</div>
+			<Footer />
+		</main>
+	</body>
+</html>
