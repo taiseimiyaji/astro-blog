@@ -1,0 +1,99 @@
+---
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+import "../../styles/index.scss";
+
+type NoteEntry = {
+	title: string;
+	date: string;
+	href: string;
+};
+
+const noteRoot = fileURLToPath(new URL("../../../public/note", import.meta.url));
+
+function findHtmlFiles(directory: string): string[] {
+	if (!existsSync(directory)) {
+		return [];
+	}
+
+	return readdirSync(directory)
+		.flatMap((name) => {
+			const path = `${directory}/${name}`;
+			const stat = statSync(path);
+			if (stat.isDirectory()) {
+				return findHtmlFiles(path);
+			}
+			return path.endsWith(".html") ? [path] : [];
+		});
+}
+
+function getCommentValue(html: string, key: string): string | undefined {
+	const comments = [...html.matchAll(/<!--([\s\S]*?)-->/g)].map((match) => match[1]);
+	const pattern = new RegExp(`^\\s*${key}\\s*:\\s*(.+?)\\s*$`, "im");
+	for (const comment of comments) {
+		const value = comment.match(pattern)?.[1]?.trim();
+		if (value) {
+			return value;
+		}
+	}
+	return undefined;
+}
+
+function getTitle(html: string, filePath: string): string {
+	return (
+		getCommentValue(html, "title") ??
+		html.match(/<title[^>]*>(.*?)<\/title>/i)?.[1]?.trim() ??
+		filePath.split("/").pop()?.replace(/\.html$/, "") ??
+		"Untitled"
+	);
+}
+
+function getDate(html: string, relativePath: string): string {
+	return (
+		getCommentValue(html, "date") ??
+		relativePath.match(/\d{4}-\d{2}-\d{2}/)?.[0] ??
+		relativePath.match(/(\d{4})\/(\d{2})\/(\d{2})/)?.slice(1, 4).join("-") ??
+		""
+	);
+}
+
+const notes: NoteEntry[] = findHtmlFiles(noteRoot)
+	.map((filePath) => {
+		const relativePath = filePath.replace(`${noteRoot}/`, "");
+		const html = readFileSync(filePath, "utf-8");
+		return {
+			title: getTitle(html, filePath),
+			date: getDate(html, relativePath),
+			href: `/note/${relativePath}`,
+		};
+	})
+	.sort((a, b) => b.date.localeCompare(a.date));
+---
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="description" content="note形式の記事一覧です。" />
+		<title>Note | Lyricrime.com</title>
+	</head>
+	<body>
+		<main>
+			<Header />
+			<div class="content">
+				<div class="card-list">
+					{notes.map((note) => (
+						<a href={note.href}>
+							<div class="card">
+								{note.date && <div class="date">{note.date.replaceAll("-", "/")}</div>}
+								<div class="title">{note.title}</div>
+							</div>
+						</a>
+					))}
+				</div>
+			</div>
+			<Footer />
+		</main>
+	</body>
+</html>

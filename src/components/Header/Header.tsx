@@ -8,7 +8,10 @@ export default function Header() {
 			</div>
 			<div className="header-link">
 				<a href="/">
-					<div> Blog</div>
+					<div>Blog</div>
+				</a>
+				<a href="/note">
+					<div>Note</div>
 				</a>
 				<a href="/profile">
 					<div>Profile</div>
