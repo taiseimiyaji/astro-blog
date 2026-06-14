@@ -18,11 +18,11 @@ jobs:
       - name: delete article
         run: rm -rf src/content/blog/Article
       - name: delete note
-        run: rm -rf public/note
+        run: rm -rf src/note public/note
       - name: create folder
         run: mkdir -p src/content/blog/Article
       - name: create note folder
-        run: mkdir -p public/note
+        run: mkdir -p src/note
       - name: create images folder
         run: mkdir -p public/images
       - name: copy article
@@ -30,7 +30,7 @@ jobs:
       - name: copy note
         run: |
           if [ -d blog_article/Article/note ]; then
-            rsync -a --include '*/' --include '*.html' --exclude '*' blog_article/Article/note/ public/note/
+            rsync -a --include '*/' --include '*.html' --exclude '*' blog_article/Article/note/ src/note/
           fi
       - name: copy images
         run: |
