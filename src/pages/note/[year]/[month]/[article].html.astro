@@ -1,16 +1,22 @@
 ---
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-import { getNoteEntries } from "../../utils/note";
-import "../../styles/index.scss";
-import "../../styles/slug.scss";
-import "../../styles/note.scss";
+import Header from "../../../../components/Header/Header";
+import Footer from "../../../../components/Footer/Footer";
+import { getNoteEntries } from "../../../../utils/note";
+import "../../../../styles/index.scss";
+import "../../../../styles/slug.scss";
+import "../../../../styles/note.scss";
 
 export function getStaticPaths() {
-	return getNoteEntries().map((note) => ({
-		params: { slug: note.slug.join("/") },
-		props: { note },
-	}));
+	return getNoteEntries()
+		.filter((note) => note.slug.length === 3)
+		.map((note) => ({
+			params: {
+				year: note.slug[0],
+				month: note.slug[1],
+				article: note.slug[2],
+			},
+			props: { note },
+		}));
 }
 
 const { note } = Astro.props;

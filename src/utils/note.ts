@@ -1,18 +1,18 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
+import { cwd } from "node:process";
 
 export type NoteEntry = {
 	title: string;
 	date: string;
 	href: string;
-	rawHref: string;
 	slug: string[];
 	body: string;
 	description: string;
 	tags: string[];
 };
 
-const noteRoot = fileURLToPath(new URL("../../public/note", import.meta.url));
+const noteRoot = join(cwd(), "src/note");
 
 function findHtmlFiles(directory: string): string[] {
 	if (!existsSync(directory)) {
@@ -99,8 +99,7 @@ export function getNoteEntries(): NoteEntry[] {
 			return {
 				title: getTitle(html, filePath),
 				date: getDate(html, relativePath),
-				href: `/note/${slug.join("/")}/`,
-				rawHref: `/note/${relativePath}`,
+				href: `/note/${relativePath}/`,
 				slug,
 				body,
 				description: getDescription(body),
