@@ -5,7 +5,6 @@ import Footer from "../components/Footer/Footer";
 import GitHubCard from "../components/SNS/GitHubCard";
 import XCard from "../components/SNS/XCard";
 import ZennCard from "../components/SNS/ZennCard";
-import QiitaCard from "../components/SNS/QiitaCard";
 import { getCollection } from "astro:content";
 import { postOrderByCreatedAt } from "../utils/sort";
 
@@ -54,38 +53,29 @@ declare global {
             <h2>Taisei Miyaji</h2>
         </div>
         <p>
-            <h3>所属 <a href="https://corp.smaregi.jp/">株式会社スマレジ</a> CTO室</h3>
+            <h3>所属 <a href="https://corp.smaregi.jp/">株式会社スマレジ</a> AI開発基盤チーム 主任</h3>
             エンジニアとしてのキャリアは組み込み系から始まり、現在はWEBエンジニアとして開発業務のリードをしています。<br>
             <br>
             このブログでは業務や趣味の開発を通して得た知見をメモ代わりにまとめています。
         </p>
-        <h2>Skills & Offerings</h2>
+        <h2>Offerings</h2>
 
         <ul>
-            <li><strong>PHP・Laravel</strong><br>
-                中心的な技術スタックはLaravelです。SOLIDを中心とした設計を重視しています。<br>
-                PHP（Laravel）、Ruby（Ruby on Rails）を中心に、バックエンドの設計・開発を行います。API設計からデータベース設計、テストまで可能です。
-            </li>
-            <li><strong>フロントエンド</strong><br>
-                Vue or Reactを使うことが多いです。
-                このブログ自体は、最新の静的サイトジェネレーターであるAstroを用いて構築しています。
-                社内でもフロントエンドの技術選定やアーキテクチャ設計に携わっています。<br>
-                Vue.js、Nuxt.js、React.js、Next.jsなどのフロントエンド技術を用いて、アプリケーションの開発を行います。レスポンシブデザインやパフォーマンス最適化も対応可能です。
-            </li>
-            <li><strong>技術コンサルティング</strong><br>
-                システムの技術的課題の解決や、新技術の導入支援を行います。技術的負債の解消、アーキテクチャの改善、ドメイン駆動設計（DDD）の導入など技術的なサポートが可能です。
-            </li>
-            <li><strong>ユニットテスト導入支援</strong><br>
+            <li><strong>テスト支援</strong><br>
                 開発プロセスの品質向上のために、ユニットテストの導入やテスト自動化の支援を行います。CI/CD環境の構築やテストフレームワークの選定・導入も対応可能です。
             </li>
             <li><strong>受託開発</strong><br>
                生成AIを活用した開発体制の構築、およびPoCの作成が可能です。お気軽にご相談ください
             </li>
+            <li><strong>AIで作成したプロダクトへのコンサルティング</strong><br>
+                技術選定やアーキテクチャ設計、開発プロセスの改善など、さまざまな観点から、AIで作成した成果物に対する専門家のレビュー、修正対応を行います。
         </ul>
-        <h2>副業のご依頼について</h2>
+        <h2>ご依頼について</h2>
         <p>
-            上記スキルセットや提供サービスにご興味をお持ちいただけましたら、副業でのご依頼も積極的にお受けしております。<br>
-            詳細につきましては、下記メールアドレスまでお気軽にお問い合わせください。<br>
+            それぞれ初回相談無料で承っております。相談や助言は1件数万円、各種対応は1件10万円 ~ 程度で想定していますが、内容や規模によりますのでお気軽にご相談ください。<br>
+            まずは相談内容が固まっていなくても大丈夫です。以下のフォームからお気軽にご連絡ください。<br>
+            <a href="https://forms.gle/omP7TPeSf2VacxSGA" target="_blank" rel="noopener noreferrer">相談フォームはこちら</a>
+            フォームが使いづらい場合は、メールでもご連絡いただけます。
             <a href="mailto:taisei.miyaji4602@gmail.com">taisei.miyaji4602@gmail.com</a>
         </p>
         <div class="card-container" style="margin-top: 2rem; margin-bottom: 2rem;">
@@ -93,12 +83,6 @@ declare global {
             <XCard url={'https://x.com/lyricrime'} />
             <ZennCard url={'https://zenn.dev/miyaji4602/'} />
         </div>
-        <h2>Hobby</h2>
-        <p>
-            休日はバスケや音楽ライブに参戦したり、バイクに乗ったりしています。<br>
-            平日の業務終了後の時間は副業や趣味開発に充てることが多く、技術書が好きで積みすぎているので消化していることが多いです。<br>
-            このブログにもいくつか技術書を読んでまとめた記事を公開していますのでよければ読んでみてください。
-        </p>
     </div>
     <Footer></Footer>
 </main>
