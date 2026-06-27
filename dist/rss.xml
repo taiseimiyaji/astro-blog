@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI活用を個人技で終わらせないために ①AI活用の組織適用のアイデアと実施</title><link>https://www.lyricrime.com/posts/ai-individuals-to-org-1/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-individuals-to-org-1/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI活用を個人技で終わらせないために ②Human in the Loop から　Human on the Loopへ</title><link>https://www.lyricrime.com/posts/human-on-the-loop/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/human-on-the-loop/</guid><description>## はじめに
+
+今回は生成AI文脈での Human in the loop と Human on the loop の違い、実際にHuman on the loop を目指して考えた具体的なアイデアを紹介します。
+
+単に人がAIを使う状態から、AIが生成、判断、実行した内容を人間が確認してから次に進む設計が Human in the loop でしたが、ここ数ヶ月で大きくHITLからHOTLへの...</description><pubDate>Sat, 27 Jun 2026 00:00:00 GMT</pubDate><category>AI</category></item><item><title>AI活用を個人技で終わらせないために ①AI活用の組織適用のアイデアと実施</title><link>https://www.lyricrime.com/posts/ai-individuals-to-org-1/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-individuals-to-org-1/</guid><description>## はじめに
 
 AI活用を個人で工夫するフェーズが段々と終わり始め、組織への導入や活用、それによる開発フロー上の課題の顕在化など徐々にフェーズが変わってきていると感じます。
 

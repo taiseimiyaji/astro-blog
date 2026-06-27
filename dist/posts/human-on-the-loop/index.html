@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="ja"> <head><title>AI活用を個人技で終わらせないために ②Human in the Loop から　Human on the Loopへ</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+今回は生成AI文脈での Human in the loop と Human on the loop の違い、実際にHuman on the loop を目指して考えた具体的なアイデアを紹介します。
+
+単に人がAIを使う状態"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div>Blog</div></a><a href="/note"><div>Note</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2026/06/27</div> <h1>AI活用を個人技で終わらせないために ②Human in the Loop から　Human on the Loopへ</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>今回は生成AI文脈での Human in the loop と Human on the loop の違い、実際にHuman on the loop を目指して考えた具体的なアイデアを紹介します。</p>
+<p>単に人がAIを使う状態から、AIが生成、判断、実行した内容を人間が確認してから次に進む設計が Human in the loop でしたが、ここ数ヶ月で大きくHITLからHOTLへの移行が発生しています。</p>
+<p>今回はそれぞれの違いとそこからみえる今後の生成AI活用、具体的な業務への適用案を考えてみます。</p>
+<h3 id="この記事の主張">この記事の主張</h3>
+<ul>
+<li>生成AI活用は「人がAIをどううまく使うか」から「AIが安全に動けるループを人が設計し、監督する」フェーズに移っている</li>
+<li>現状ではすべてをHOTLにすることはまだ危険なので、リスクに応じてHITLとHOTLを使い分ける必要がある</li>
+</ul>
+<h2 id="human-in-the-loophitlとは">Human in the Loop(HITL)とは</h2>
+<p>文字通りAIにおけるループの中に人間が介在する設計</p>
+<p>AIの生成、判断、実行などのフェーズの途中に人間による確認、承認、修正を挟む設計を指す</p>
+<p>生成AIを使った作業では「AIに作業を任せるが、最終的に人間が成果物を確認する」ような形になりやすい</p>
+<h3 id="具体的には">具体的には</h3>
+<ul>
+<li>AIが作成した文章を人間が確認して公開する</li>
+<li>AIが仕様調査した結果を人間が確認して回答する</li>
+<li>AIがコードを生成し、人間がレビューしてマージする</li>
+<li>AIエージェントがツール実行前に人間の承認を求める</li>
+<li>RAGの回答に対して、人間が引用元や根拠を確認する</li>
+</ul>
+<h3 id="hitlのメリット">HITLのメリット</h3>
+<ul>
+<li>人間の判断が挟まるので誤情報や誤操作を止めやすい</li>
+<li>既存業務に導入しやすい</li>
+</ul>
+<h3 id="hotlの限界">HOTLの限界</h3>
+<ul>
+<li>人間が毎回確認するため、処理量が増えると人間の確認がボトルネックになる</li>
+<li>承認が形骸化しやすく、何も確認せずに承認してしまいがち</li>
+<li>人間がAIの出力をすべて正しく検証できるとは限らない</li>
+<li>AIによる実行も検証もAIに指示を出す人の個人技に依存しやすい</li>
+</ul>
+<h2 id="hotlとは">HOTLとは</h2>
+<p>AIが一定範囲で自律的に動き、人間はその外側から任意のタイミングで監視・制御・介入をする設計</p>
+<p>人間は毎回の細かい判断者ではなく、ループの設計者、監督者になる</p>
+<p>生成AIエージェントの場合、下記のような設計が必要になる</p>
+<ul>
+<li>実行の計画</li>
+<li>実行における関連ツールの権限</li>
+<li>実行内容や結果を観測する仕組み</li>
+<li>実行中に意図しない挙動を検出して停止する仕組み</li>
+<li>実行結果を評価する仕組み</li>
+</ul>
+<p>さらに、実行結果からよりよい結果に改善するために次回移行使える記憶やskillsの改善の仕組みがあると更に便利になる</p>
+<h3 id="具体的には-1">具体的には</h3>
+<ul>
+<li>AIエージェントが自律的にMRがを確認し、レビュー観点を出す</li>
+<li>AIがSlackメンションや依頼を監視し、分類・要約・下準備を行う</li>
+<li>AIがIssueやMRを読み、必要な調査やコメント案を作成する</li>
+<li>AIが定期的にログや差分を見て、異常や対応候補を通知する</li>
+<li>人間は実行ログや差分などを確認し、権限や停止条件などループが回る仕組みを監督する側に回る</li>
+</ul>
+<h3 id="hotlのメリット">HOTLのメリット</h3>
+<ul>
+<li>人間が介在しないので、24時間動き続ける事ができ、大量の処理が可能</li>
+<li>人間のリソースを本当に集中すべき箇所に集中できる</li>
+<li>判断が必要なタイミングがHITLより少なく、個人のAI活用ではなく、ループの設計ができればチームへの展開がしやすい</li>
+<li>AIが先回りして人間の判断に必要な情報収集・整理・下準備をできる</li>
+</ul>
+<h3 id="hotlのリスク">HOTLのリスク</h3>
+<ul>
+<li>AIの自律性が高くなるほど、誤動作の影響範囲や手戻りコストが上がる</li>
+<li>プロンプトインジェクションなど意図しないツール実行によるリスクが増える</li>
+<li>ログや実行内容など人間が確認するための仕組みがないと人間は把握できない</li>
+<li>手動で止められないので監視・停止・権限の設計が重要</li>
+</ul>
+<h2 id="それぞれの違い">それぞれの違い</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>観点</th><th>Human in the Loop</th><th>Human on the Loop</th></tr></thead><tbody><tr><td>人間の位置</td><td>判断サイクルの中</td><td>判断サイクルの外側・上位</td></tr><tr><td>AIの自律性</td><td>低〜中</td><td>中〜高</td></tr><tr><td>人間の役割</td><td>確認者・承認者・修正者</td><td>設計者・監督者・介入者</td></tr><tr><td>向いている業務</td><td>高リスク、不可逆、外部影響が大きい業務</td><td>低〜中リスク、大量処理、下準備、監視</td></tr><tr><td>典型例</td><td>コードレビュー、公開前確認、ツール実行承認</td><td>MR監視、Slack監視、ログ監視、調査自動化</td></tr><tr><td>失敗パターン</td><td>人間がボトルネックになる</td><td>監視不能・暴走・責任不明になる</td></tr></tbody></table>
+<p>低リスク領域、簡単なものはHOTLへ、高リスク領域、複雑なものはHITLへ振り分ける</p>
+<p>ただ、これまでAIにまかせていた1つの処理だけでなく、AをやってBをやってCを確認してDをする、のようなそれぞれのタスクが軽いが複数のタスクを必要とするようなものはskillsの登場もありHOTLで実行可能になってきている。</p>
+<h3 id="なぜ今hitlからhiolへの移行が起きているのか">なぜ今、HITLからHIOLへの移行が起きているのか</h3>
+<h4 id="aiへの期待値がチャットから作業になってきた">AIへの期待値がチャットから作業になってきた</h4>
+<p>これまでのChatGPT的な利用では、人間が問いを立て、AIが応える形式だった。</p>
+<p>現在主流なツールは商用展開されているものだとCodex、Claude Code、DevinのようなAIが調査、編集、実行、検証まで行うハーネスが用意されている物が多く、人間は生成AIに作業の代替を期待するようになっている</p>
+<p>さらにそこから、人間がプロンプトを投げる部分がボトルネックになり、AIが自分でプロンプトを作成し、自分で実行する仕組みが注目されている。ここ1年くらい生成AI活用している人間は把握していた課題だが、最近「ループエンジニアリング」、と名前がつけられ、より話題になっている。</p>
+<h4 id="承認フローだけではスケールしない">承認フローだけではスケールしない</h4>
+<p>生成AIの活用がすすむにつれ、すべてのAI出力を人間が確認するのは現実的ではなくなってきた。そもそも立ち返ると、組織内の全エンジニアのコードを確認できているわけでもなく、AIに任せても人間に任せても変わらない。</p>
+<p>大量のレビュー、ログ確認、仕様調査などが発生し、人間の確認で詰まるが、生成AIは人間に依頼するのと比べても遥かに簡単に、安価にスケールできるのでより強いボトルネック感が発生する</p>
+<p>人間が見るべき作業はどれか、を考え直す必要があり、リスクが高い判断や例外に集中する方針が選択されやすい</p>
+<h4 id="ai活用はスケールしなかった">AI活用はスケールしなかった</h4>
+<p>ここ一年くらい、ある程度生成AI活用に取り組んでいる組織ではAI活用にかなり投資している。筆者の組織もその一つ。</p>
+<p>ただ、生成AI活用はスケールしづらいことに多くの組織が気づき始めている。おそらく下記のような要因がある。</p>
+<ul>
+<li>優秀な人がAIをうまく使うだけでは組織全体の生産性は上がりづらい</li>
+<li>優秀な人の使い方などを展開してもらうのは発想、アイデアの共有として有意義なものの、プロンプト能力、言語化能力といった個人の能力に依存する部分は変わらない</li>
+<li>生成AIを正しく活用できるのはシニアエンジニアが多いが、組織のジュニアエンジニアをすぐに全員シニアエンジニアに育てることが不可能な以上、組織的な生成AI活用はシニアエンジニアだけ進んでほかは止まってしまう</li>
+<li>シニアエンジニアの負担が減らない。シニアエンジニア、マネージャー目線だと人間に作業を切り分けて振ることとAIエージェントに指示を与えることに大きく差はない。組織として、ミドルエンジニアがシニアになる可能性や属人化の防止など人間に振るメリットが残る以上、現状維持バイアスの強いマネージャーの場合は生成AI活用の動機が弱い</li>
+<li>HOTLの場合はシニアがループを設計すれば明確にシニアの負担が減ることにつながり、タスクの手離れを実現できる。シニアエンジニアのAI活用を明確に組織に適用できる手段としてHOTLの考え方に移行しつつある、と考察している</li>
+</ul>
+<h2 id="個別型-webhookを自作エージェントで受け取ってhotlっぽくする">個別型: Webhookを自作エージェントで受け取ってHOTLっぽくする</h2>
+<p>例えばGitHub/GitLabのWebhookを受け取ってレビュー、MR分類などをするエージェントを作成すると、HOTLに近づく。</p>
+<p>Webhookをエージェントのプロセスに飛ばし、その内容に応じてイベントの内容を解析し、必要なワークフローを実行する</p>
+<h3 id="処理の流れ">処理の流れ</h3>
+<ol>
+<li>GitHub/GitLabからWebhookを受け取る</li>
+<li>イベント種別を判定する</li>
+<li>対象MRやIssueの情報を取得する</li>
+<li>AIエージェントが解析する</li>
+<li>必要に応じてMRの分類や要約、レビュー観点の記載や実際のコードレビューなどを行う</li>
+<li>SlackやMRコメントとして人間に通知する</li>
+<li>マージなど高リスクの操作を人間が行う</li>
+</ol>
+<h3 id="アイデア">アイデア</h3>
+<p>開発の多くはGit起点で進むので、GitのWebhookを利用するといろんな活用ができる。実際に作成したものも含めると簡単な順に以下のようなものが挙げられる</p>
+<ul>
+<li>MRの分類
+<ul>
+<li>AIが作成したものかどうか</li>
+<li>人間がレビューしたほうがいいかどうか</li>
+</ul>
+</li>
+<li>レビュー負荷を下げる
+<ul>
+<li>変更差分の要約</li>
+<li>影響範囲の推定</li>
+<li>レビュー観点の提案</li>
+</ul>
+</li>
+<li>品質のサポート
+<ul>
+<li>テスト観点の提案</li>
+<li>テスト設計の代替</li>
+<li>セキュリティ観点の確認</li>
+</ul>
+</li>
+</ul>
+<p>この案のメリットとしては、対象業務の範囲がある程度絞られるので権限設計などが明確であること、開発フローに自然に組み込めること、AIレビューやQA観点出しといった、現在のAI活用で人間が行っている課題と接続しやすいことなどがある。</p>
+<h2 id="汎用型-hermesで自分宛てのslackをすべて監視させ自律的な作業をすべてskillsにしていく">汎用型: Hermesで自分宛てのslackをすべて監視させ、自律的な作業をすべてskillsにしていく</h2>
+<p>次に、個人的にここ半年くらいで一番筋がいいと思っているエージェント構築手段であるHermes Agentを紹介する</p>
+<p><a href="https://github.com/nousresearch/hermes-agent">NousResearch/hermes-agent: The agent that grows with you</a></p>
+<p>簡単に言うとOpenClawのようなサーバーにインストールするパーソナルエージェントで、特徴として、プロジェクトを学習して記憶したり、独自のスキルを構築したり、自動で構築したスキルのブラッシュアップをしてくれる。</p>
+<h3 id="アイデア-1">アイデア</h3>
+<p>生成AIの活用において実務ベースで面倒な業務の棚卸しごとHermesに任せる事ができる。自分宛のslackの連絡や、普段自分がwatchしているチャンネルをすべてHermesに読ませて記憶させていく。</p>
+<ol>
+<li>他人から自分宛てに作業依頼が来る</li>
+<li>Hermesが内容を確認し、対応方針をユーザーに確認する</li>
+<li>ユーザーが対応、またはHermesに指示して対応する</li>
+<li>対応内容や注意点を記憶する</li>
+<li>次回以降の対応はHermesが対応する</li>
+</ol>
+<p>という形が実現できる。この方法であれば自分から業務を棚卸ししなくても、通常通り仕事をしていれば自然とHermesに業務知識を蓄積していくことができる。もちろん、これは定型業務ではない、といった場合や機密情報を含む場合などはHermesに任せなくてもいい。</p>
+<p>この方法で単純なタスクはHermesに任せる事ができるようになる。</p>
+<p>少し具体的にすると下記のような感じになる。</p>
+<ol>
+<li>Slackで自分宛てのメンションを検知する</li>
+<li>AIが内容を分類する</li>
+<li>対応可能なskillがあるか判断する</li>
+<li>対応に必要な情報を取得する</li>
+<li>返信下書きや要約、調査結果、対応案を作成し、人間に提示する</li>
+<li>人間が承認・修正・却下する</li>
+<li>実行ログや修正内容を次回改善に使う</li>
+</ol>
+<p>この案の場合は開発に限らず、自分の業務導線に自然に入りやすい。
+作業内容がskill化されるので引き継ぎやチームへの横展開も簡単にできる。</p>
+<p>同じようなタスクをチームで分担している場合はチーム単位でHermesを用意すると個人のナレッジが集約されて組織の力になる。</p>
+<h2 id="まとめ">まとめ</h2>
+<ul>
+<li>Human in the Loop は、AIの判断や実行の途中に人間の確認点を置く設計</li>
+<li>Human on the Loop は、AIが一定範囲で自律的に動き、人間が外側から監督・介入する設計</li>
+<li>生成AIエージェントの普及により、実務ではHITLだけでは人間がボトルネックになりやすくなっている</li>
+<li>一方で、HOTLは放置ではなく、権限・ログ・評価・停止・監査の設計があって初めて成立する</li>
+<li>低リスクで大量処理が必要な領域はHOTLに向いている</li>
+<li>高リスクで不可逆な操作はHITLを残すべき</li>
+<li>AI活用を個人技で終わらせないためには、プロンプトではなく、AIが安全に動ける業務ループを設計する必要がある
+<ul>
+<li>そのための具体案がwebhookをトリガーとしたエージェントや、Hermes Agentの活用</li>
+</ul>
+</li>
+</ul> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>
