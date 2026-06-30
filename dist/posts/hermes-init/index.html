@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="ja"> <head><title>HermesによるAI活用の業務棚卸し</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+生成AIの活用は、ChatGPTから始まり、Claude、Claude Code、Codexなどを人間が都度呼び出し、指示を与えて結果を確認する使い方が主流でした。
+
+この使い方は非常に強力ですが、一方で活用度合いが個人の"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><style>@charset "UTF-8";html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}code{font-size:1rem}:root{--accent: 124, 58, 237;--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{padding:2rem 0;margin:0 auto;max-width:70rem;width:94vw}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,*:before,*:after{box-sizing:border-box}.card-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem}.sns-button{display:flex;align-items:center;justify-content:center;background-color:#23272f;border:1px solid white;color:#fff;padding:1rem;border-radius:.5rem;box-shadow:0 4px 6px #0000001a;transition:background-color .3s ease,box-shadow .3s ease;width:100%;max-width:100%;text-align:center;font-size:1.25rem;cursor:pointer;margin:0}.sns-button:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;height:1.5em;width:1.5em;margin-right:.5rem}pre.astro-code.github-dark{background-color:#2d333b!important;overflow-x:auto;padding:1rem;border-radius:.2rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}
+html{background-color:#23272f;font-size:16px;color:#f6f7f9}.header{color:#f6f7f9;justify-content:space-around;border-bottom:.5px solid}.header-link{display:flex;justify-content:space-around;font-size:1.5rem;padding:.5rem;border-color:#f6f7f9;margin:0 auto;max-width:70rem;width:94vw}.header-link div{color:#f6f7f9}.header .title{border-bottom:.5px solid;text-align:center;font-weight:700;padding:2rem;font-size:2.5rem}.footer{border-top:1px solid #F6F7F9;padding:1rem;align-items:center;display:flex;max-height:2rem}.footer .copyright{order:1}.footer .icons{margin-left:auto;order:2;width:2rem;height:2rem}.card{box-sizing:border-box;background-color:#23272f;border:1px solid #F6F7F9;border-radius:1rem;display:flex;flex-direction:column;padding:2rem;gap:1rem;color:#f6f7f9}.card .title{font-size:large;overflow:inherit}.card:hover{background-color:#2d3748;color:#fff;box-shadow:0 6px 8px #00000026}.card-list{gap:1rem;flex-direction:column;display:flex}.content a{text-decoration:underline}.content table{width:100%;border-collapse:collapse;margin:2rem 0}.content table th,.content table td{border:1px solid #F6F7F9;padding:.5rem;text-align:left}.content table th{background-color:#f6f7f933;color:#f6f7f9;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{padding:1rem;margin:1rem 0;border-left:4px solid #F6F7F9;background-color:#f6f7f91a;color:#f6f7f9;font-style:italic;overflow-wrap:break-word}.content blockquote p{margin:0}.content h2{color:#f6f7f9;margin:2rem 0 1rem;font-size:1.5rem;font-weight:700;border-bottom:2px solid #F6F7F9;padding-bottom:.5rem}
+</style></head> <!-- Google tag (gtag.js) --> <script type="module">window.dataLayer=window.dataLayer||[];function a(){dataLayer.push(arguments)}a("js",new Date);a("config","G-ZBD90YGZ4N");</script> <body> <main> <div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div>Blog</div></a><a href="/note"><div>Note</div></a><a href="/profile"><div>Profile</div></a></div></div> <div class="content"> <div class="date">2026/06/30</div> <h1>HermesによるAI活用の業務棚卸し</h1> <div class="post"> <h2 id="はじめに">はじめに</h2>
+<p>生成AIの活用は、ChatGPTから始まり、Claude、Claude Code、Codexなどを人間が都度呼び出し、指示を与えて結果を確認する使い方が主流でした。</p>
+<p>この使い方は非常に強力ですが、一方で活用度合いが個人のスキルや習慣、もともとの業務理解に依存しやすいという課題があります。</p>
+<p>生成AIをうまく使える人はどんどん効率化できますが、そうでない人にとっては「便利そうだけど、何を頼めばいいかわからない」となりがちです。</p>
+<p>そのため、組織全体の業務改善につなげようとすると、単にAIツールを配るだけでは不十分です。</p>
+<p>これから重要になるのは、人間が毎回AIを呼び出すのではなく、特定の環境にAIエージェントを常駐させ、会話や作業履歴を記憶し、繰り返し行う作業をスキルとして蓄積していくことだと考えています。</p>
+<p>その文脈で注目しているのが、Hermes Agentです。</p>
+<h2 id="hermes-agentとは">Hermes Agentとは</h2>
+<p>Hermes Agentは、Nous Researchが開発しているオープンソースの自律型AIエージェントです。</p>
+<p>公式サイトでは、2026年2月にリリースされたエージェントとして紹介されており、Linux、macOS、WSL2で動作します。</p>
+<p>また、オープンソースかつMITライセンスで、テレメトリやデータ収集がなく、記憶データはローカルの <code>~/.hermes/</code> に保存されるとされています。</p>
+<p>公式リンクはこちらです。</p>
+<ul>
+<li><a href="https://hermes-agent.org/ja/">Hermes Agent — 記憶を持つオープンソースAIエージェント</a></li>
+<li><a href="https://github.com/NousResearch/hermes-agent">NousResearch/hermes-agent</a></li>
+</ul>
+<p>Hermes Agentは、単にLLMと会話するためのCLIツールではありません。</p>
+<p>特徴として、次のような要素を持っています。</p>
+<ul>
+<li>セッションをまたいだ記憶</li>
+<li>過去の会話や作業履歴の検索</li>
+<li>作業経験からのスキル生成</li>
+<li>スキルの改善</li>
+<li>CLI、メッセージング、Cron、MCPなどを通じた外部連携</li>
+<li>ローカルまたはサーバー上での常駐実行</li>
+</ul>
+<p>一言でいえば、Hermes Agentは「使うほど業務を理解してくれるAIエージェント」です。</p>
+<p>一時的にAIへ質問するのではなく、継続的に作業を任せることで、業務の文脈や手順を蓄積していくことを目指したツールだと捉えています。</p>
+<p>常駐型である点は、一時期話題になったOpenClawのような発想にも近いです。</p>
+<h2 id="aiツールからaiエージェントへ">AIツールからAIエージェントへ</h2>
+<p>これまでの生成AI活用は、人間がAIに依頼する形が中心でした。</p>
+<p>非常に便利ですが、基本的には「人間が作業を開始する」ことが前提です。</p>
+<p>人間が課題を見つけ、AIに依頼し、出てきた結果を確認する。</p>
+<p>つまり、AIは強力な補助者ではあるものの、仕事の流れ自体は人間が握っています。</p>
+<p>一方で、Hermes Agentのような常駐型AIエージェントを使うと、発想が少し変わります。</p>
+<p>AIが特定の環境に常駐し、Slackのようなメッセージングツール、定期実行、CLI、MCP、各種社内ツールなどと接続されることで、人間が毎回ゼロから依頼しなくても、業務の初動をAI側に任せられるようになります。</p>
+<p>これは、以前書いた「Human in the Loop から Human on the Loop へ」という話ともつながります。</p>
+<p><a href="https://lyricrime.com/posts/human-on-the-loop/">AI活用を個人技で終わらせないために ②Human in the Loop から　Human on the Loopへ</a></p>
+<p>人間が毎回AIに依頼して結果を見る状態から、AIが先に動き、人間は設計・監視・最終判断に寄る状態へ。</p>
+<p>Hermes Agentは、そのような働き方を実現するための実験材料として面白いと思います。</p>
+<h2 id="基本的な仕組み">基本的な仕組み</h2>
+<p>Hermes Agentの中心的な要素として、特に重要なのは次の3つです。</p>
+<ul>
+<li>メモリ</li>
+<li>スキル</li>
+<li>ツール連携</li>
+</ul>
+<p>それぞれ見ていきます。</p>
+<h2 id="メモリ">メモリ</h2>
+<p>Hermes Agentは、セッションをまたいで情報を保持する永続的なメモリを持ちます。</p>
+<p>これにより、毎回同じ前提を説明しなくても、過去の作業やユーザーの好みを参照しながら動けるようになります。</p>
+<p>通常のChatGPTやClaudeでも、会話の中では文脈を保持できます。</p>
+<p>しかし、会話をまたいだり、別の作業として扱ったりすると、前提をもう一度説明する必要があります。</p>
+<p>Hermes Agentでは、作業履歴や判断の文脈を継続的に蓄積していくことで、より業務に寄り添った動きが期待できます。</p>
+<p>たとえば、組織で使う場合は、次のような情報を覚えさせる使い方が考えられます。</p>
+<ul>
+<li>よく使う調査観点</li>
+<li>チーム固有のレビュー観点</li>
+<li>業務ツールの使い方</li>
+<li>定例的な報告フォーマット</li>
+<li>過去に判断した方針</li>
+<li>問い合わせ対応時の確認手順</li>
+<li>障害調査時に見るべきログやメトリクス</li>
+</ul>
+<p>このような情報が記憶されていくと、AIは単なる文章生成ツールではなく、業務の前提を知っているアシスタントに近づいていきます。</p>
+<h2 id="スキル">スキル</h2>
+<p>Hermes Agentには、スキルという概念があります。</p>
+<p>スキルは、特定の作業手順やプロンプト、ツール利用をまとめた再利用可能な単位です。</p>
+<p>また、AnthropicのAgent Skill形式での保存が可能とされており、Hermes Agentの中だけに閉じない形でスキルを扱える点も面白いです。</p>
+<p>これは、将来的に別のAIエージェント環境へ乗り換えたり、複数のツール間で作業手順を再利用したりする可能性を示しています。</p>
+<p>開発や業務改善の文脈で考えると、たとえば次のようなスキルが考えられます。</p>
+<ul>
+<li>変更内容を読み、QA観点を洗い出すスキル</li>
+<li>メッセージングツール上の依頼文から必要な確認事項を抽出するスキル</li>
+<li>技術調査を行い、要点・判断材料・リスクをまとめるスキル</li>
+<li>障害や問い合わせの初動整理を行うスキル</li>
+<li>定例レポートの材料を集めるスキル</li>
+<li>議事録から決定事項と次アクションを抽出するスキル</li>
+<li>ドキュメントの更新候補を洗い出すスキル</li>
+</ul>
+<p>重要なのは、これらが一度きりのプロンプトではなく、改善されていく作業手順として扱える点です。</p>
+<p>AIに毎回同じ説明をするのではなく、「この作業はこう進める」という型を蓄積していく。</p>
+<p>この考え方は、個人のAI活用を組織の資産に変えていくうえで重要だと思います。</p>
+<h2 id="ツール連携">ツール連携</h2>
+<p>Hermes Agentは、ファイル操作、検索、シェル実行、ブラウザ操作、コード実行などのツールを呼び出せます。</p>
+<p>また、MCP、Cron、メッセージングツール、CLIなどと組み合わせることで、外部システムと連携した作業も可能になります。</p>
+<p>ツールを使えることで、AIは単に文章を生成するだけでなく、実際にファイルを読んだり、コマンドを実行したり、情報を取得したりできます。</p>
+<p>たとえば「障害や問い合わせの初動整理を行うスキル」を考える場合、エージェントは次のようなツールにアクセスできると便利です。</p>
+<ul>
+<li>エラー監視ツール</li>
+<li>ログ分析ツール</li>
+<li>メトリクス監視ツール</li>
+<li>チケット管理ツール</li>
+<li>リポジトリ管理ツール</li>
+<li>ドキュメント検索ツール</li>
+<li>メッセージングツール</li>
+</ul>
+<p>人間が毎回これらのツールを開いて、関連情報を探し、状況を整理する代わりに、Hermes Agentが初動の情報収集を担います。</p>
+<p>もちろん、最初から自動で判断・返信・修正まで任せるのは危険です。</p>
+<p>特に、本番環境に影響する操作や、外部に返信する処理、データを書き換える処理は慎重に扱う必要があります。</p>
+<p>そのため、最初は読み取り専用のツール連携から始めるのが現実的です。</p>
+<p>たとえば、エラー監視ツールやログ分析ツールから情報を取得し、状況整理と返信案の作成までを行う。</p>
+<p>この範囲であれば、人間の判断を残しつつ、初動調査の負担をかなり下げられます。</p>
+<h2 id="インストール">インストール</h2>
+<p>インストールは、READMEに従って進めます。</p>
+<p>Linux、macOSが推奨されており、Windowsの場合はWSL2が必要です。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="sh"><code><span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -fsSL</span><span style="color:#9ECBFF"> https://hermes-agent.nousresearch.com/install.sh</span><span style="color:#F97583"> |</span><span style="color:#B392F0"> bash</span></span></code></pre>
+<p>組織で利用する場合は、どの端末、どの環境で動かすかを先に検討した方がよいです。</p>
+<p>Hermes Agentは、LLMそのものというより、AIエージェントを動かすためのハーネスに近いツールです。</p>
+<p>そのため、実際にどのモデルやAPIを利用して動かすかを決める必要があります。</p>
+<p>選択肢としては、次のようなものが考えられます。</p>
+<ul>
+<li>OpenAI API</li>
+<li>Nous Portal</li>
+<li>OpenRouter</li>
+<li>ローカルLLM</li>
+<li>その他のLLM API</li>
+</ul>
+<p>個人検証であれば手元のAIツールと組み合わせてもよいですが、チームや組織で利用する場合は、利用規約やデータの扱いを確認したうえで、API利用を前提に考える方が安全です。</p>
+<h2 id="dockerの2つの使い方">Dockerの2つの使い方</h2>
+<p>Hermes AgentにおけるDockerの使い方は、大きく2種類あります。</p>
+<p>1つ目は、Hermes Agent自体をDockerコンテナ内で動かす構成です。</p>
+<p>この場合、ユーザーデータ、設定、APIキー、セッション、スキル、メモリをホスト側のディレクトリから <code>/opt/data</code> にマウントし、イメージ自体はステートレスに保ちます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">mkdir</span><span style="color:#79B8FF"> -p</span><span style="color:#9ECBFF"> ~/.hermes</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">docker</span><span style="color:#9ECBFF"> run</span><span style="color:#79B8FF"> -it</span><span style="color:#79B8FF"> --rm</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  -v</span><span style="color:#9ECBFF"> ~/.hermes:/opt/data</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#9ECBFF">  nousresearch/hermes-agent</span><span style="color:#9ECBFF"> setup</span></span></code></pre>
+<p>セットアップ後、メッセージングツールなどのGatewayとして常駐させる場合は、次のように起動できます。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">docker</span><span style="color:#9ECBFF"> run</span><span style="color:#79B8FF"> -d</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --name</span><span style="color:#9ECBFF"> hermes</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  --restart</span><span style="color:#9ECBFF"> unless-stopped</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  -v</span><span style="color:#9ECBFF"> ~/.hermes:/opt/data</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#79B8FF">  -p</span><span style="color:#9ECBFF"> 8642:8642</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#9ECBFF">  nousresearch/hermes-agent</span><span style="color:#9ECBFF"> gateway</span><span style="color:#9ECBFF"> run</span></span></code></pre>
+<p>2つ目は、Hermes Agent本体はホストOSで動かし、エージェントが実行するコマンドだけをDockerサンドボックス内で動かす構成です。</p>
+<p>この場合、Hermes Agentの操作性はホスト側に残しつつ、ファイル操作やコマンド実行の影響範囲をDocker内に閉じ込めることができます。</p>
+<p>整理すると、次のようになります。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>使い方</th><th>内容</th><th>向いているケース</th></tr></thead><tbody><tr><td>Hermes Agent自体をDockerで動かす</td><td>GatewayやDashboardも含めてコンテナ常駐させる</td><td>VPSやクラウドVMなどに常駐させたい場合</td></tr><tr><td>Terminal backendをDockerにする</td><td>Hermes本体はホスト、コマンド実行だけDocker内で行う</td><td>ローカル検証で安全にファイル操作やコマンド実行をさせたい場合</td></tr></tbody></table>
+<p>注意点として、Claude CodeやCodexのようなツールは、起動した場所をワークスペースとして扱うことが多いです。</p>
+<p>一方、Hermes AgentをDockerコンテナ内で動かす場合、マウントされているボリューム全体が見えることになります。</p>
+<p>このため、どのディレクトリをマウントするか、どの権限で動かすかは慎重に設計した方がよいです。</p>
+<h2 id="活用例メッセージングツールでの作業依頼の一次対応">活用例：メッセージングツールでの作業依頼の一次対応</h2>
+<p>まず試したい活用例は、メッセージングツールで来る作業依頼の一次対応です。</p>
+<p>リモートワークが可能な仕事では、多くの作業トリガーがメッセージングツール上にあります。</p>
+<p>たとえば、次のような依頼です。</p>
+<ul>
+<li>エラー通知の内容を確認してほしい</li>
+<li>ログを調査してほしい</li>
+<li>変更内容をレビューしてほしい</li>
+<li>エラーや権限不足の原因を調べてほしい</li>
+<li>チケットや問い合わせの内容を整理してほしい</li>
+<li>過去の類似対応を探してほしい</li>
+</ul>
+<p>これらは人間が対応すべき判断を含む一方で、毎回ゼロからすべての関連ツールにアクセスして内容を読む必要があるわけではありません。</p>
+<p>Hermes Agentに任せる場合、まずは次のような流れが考えられます。</p>
+<ol>
+<li>メッセージングツールでメンションされた依頼を受け取る</li>
+<li>依頼内容を分類する</li>
+<li>不足している情報を洗い出す</li>
+<li>参照すべきドキュメントや過去ログを探す</li>
+<li>必要に応じて監視ツールやログ分析ツールから情報を取得する</li>
+<li>状況を整理する</li>
+<li>返信案を作成する</li>
+<li>人間が確認して送信する</li>
+</ol>
+<p>最初から自動返信させるのではなく、まずは「返信案の作成」までに留めるのが安全です。</p>
+<p>この形であれば、人間は毎回依頼内容を読み解くところから始める必要がなくなります。</p>
+<p>Hermes Agentが初動整理を行い、人間は判断や修正に集中できます。</p>
+<h2 id="業務の棚卸しをしなくても始められる">業務の棚卸しをしなくても始められる</h2>
+<p>この使い方の良い点は、AI活用でよくある「業務の棚卸し」をしなくても始められることです。</p>
+<p>通常、業務にAIを適用しようとすると、次のような手順が必要になります。</p>
+<ol>
+<li>自分の業務を洗い出す</li>
+<li>AIで代替できそうな作業を探す</li>
+<li>作業手順を言語化する</li>
+<li>プロンプトを作る</li>
+<li>実際に運用して改善する</li>
+</ol>
+<p>これは正攻法ですが、特に日々忙しいチームでは「AI活用できそうな業務を洗い出しましょう」と言われても、それ自体が負担になります。</p>
+<p>一方で、Hermes Agentをメッセージングツールと組み合わせると、少し違う始め方ができます。</p>
+<p>依頼が来たタイミングで、まずHermes Agentに一度対応させる。</p>
+<p>その対応がうまくいったら、「今回の手順を覚えておいて」と指示する。</p>
+<p>これを繰り返すことで、実際に発生した業務をベースにスキルが蓄積されていきます。</p>
+<p>つまり、事前に大きな棚卸しをしなくても、実際の仕事の流れの中で業務手順をAIエージェントに移していけます。</p>
+<p>これは、個人のAI活用を組織の業務改善につなげるうえで、かなり現実的なアプローチだと思います。</p>
+<h2 id="最初にやるべきこと">最初にやるべきこと</h2>
+<p>Hermes Agentをいきなり本格導入するのではなく、まずは小さく検証するのがよさそうです。</p>
+<p>おすすめは、次のような順番です。</p>
+<h3 id="1-読み取り専用の作業から始める">1. 読み取り専用の作業から始める</h3>
+<p>最初は、情報取得や要約に限定します。</p>
+<p>たとえば、次のような作業です。</p>
+<ul>
+<li>エラー通知の要約</li>
+<li>ログ調査の初動整理</li>
+<li>チケット内容の整理</li>
+<li>変更内容の要約</li>
+<li>ドキュメント検索</li>
+<li>返信案の作成</li>
+</ul>
+<p>書き込みや自動実行を伴う作業は、後回しにします。</p>
+<h3 id="2-人間の確認を必ず挟む">2. 人間の確認を必ず挟む</h3>
+<p>最初から自動返信や自動修正をさせるのではなく、人間の確認を必ず挟みます。</p>
+<p>AIエージェントが作るのは、あくまで「判断材料」や「返信案」です。</p>
+<p>最終判断は人間が行います。</p>
+<p>この形であれば、AIのミスを前提にしながらも、初動の負担を減らせます。</p>
+<h3 id="3-うまくいった対応をスキル化する">3. うまくいった対応をスキル化する</h3>
+<p>一度うまくいった対応は、スキルとして保存します。</p>
+<ul>
+<li>エラー通知を受け取ったときの初動確認手順</li>
+<li>問い合わせを整理するときの観点</li>
+<li>変更内容からQA観点を洗い出す手順</li>
+<li>定例報告の作成手順</li>
+<li>技術調査のまとめ方</li>
+</ul>
+<p>これを繰り返すことで、AIエージェントが徐々に業務に適応していきます。</p>
+<h2 id="注意点">注意点</h2>
+<h3 id="1-権限を与えすぎない">1. 権限を与えすぎない</h3>
+<p>AIエージェントに強い権限を与えすぎると、ミスをしたときの影響が大きくなります。</p>
+<p>最初は読み取り専用に近い権限から始め、必要な範囲だけを許可するべきです。</p>
+<h3 id="2-記憶させる情報を選ぶ">2. 記憶させる情報を選ぶ</h3>
+<p>メモリがあることは強みですが、何でも記憶させればよいわけではありません。</p>
+<p>機密情報、個人情報、認証情報、不要になった古い判断などを不用意に残すと、後から問題になる可能性があります。</p>
+<p>記憶させる情報の粒度や削除方針は、運用前に考えておいた方がよいです。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>Hermes Agentは、単なるAIチャットツールではなく、業務の文脈を記憶し、作業手順をスキルとして蓄積し、外部ツールと連携しながら動く常駐型AIエージェントです。</p>
+<p>これまでの生成AI活用は、人間が毎回AIを呼び出して使う形が中心でした。</p>
+<p>しかし、これからはAIエージェントが特定の環境に常駐し、業務の初動を担い、人間は設計・監視・最終判断に寄っていく流れが強まると考えています。</p>
+<p>特に、メッセージングツール上の依頼対応、エラー調査、ログ確認、変更内容の整理、問い合わせの初動対応のような業務は、Hermes Agentの検証対象として相性がよさそうです。</p>
+<p>最初から完全自動化を目指す必要はありません。</p>
+<p>まずは、読み取り専用の情報収集と返信案の作成から始める。うまくいった対応をスキル化する。</p>
+<p>実際の依頼を通じて、少しずつAIエージェントに業務の流れを覚えさせる。</p>
+<p>このような進め方であれば、AI活用を個人技で終わらせず、組織の業務改善につなげやすくなるのではないかと思います。</p>
+<p>Hermes Agentはまだ検証段階のツールではありますが、「AIツールを使う」から「AIエージェントが業務に常駐する」への変化を考えるうえで、とても面白い存在です。</p> </div> </div> <div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div> </main> </body></html>

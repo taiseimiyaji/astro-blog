@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI活用を個人技で終わらせないために ②Human in the Loop から　Human on the Loopへ</title><link>https://www.lyricrime.com/posts/human-on-the-loop/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/human-on-the-loop/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>HermesによるAI活用の業務棚卸し</title><link>https://www.lyricrime.com/posts/hermes-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/hermes-init/</guid><description>## はじめに
+
+生成AIの活用は、ChatGPTから始まり、Claude、Claude Code、Codexなどを人間が都度呼び出し、指示を与えて結果を確認する使い方が主流でした。
+
+この使い方は非常に強力ですが、一方で活用度合いが個人のスキルや習慣、もともとの業務理解に依存しやすいという課題があります。
+
+生成AIをうまく使える人はどんどん効率化できますが、そうでない人にとっては「便利そうだけ...</description><pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate><category>AI</category></item><item><title>AI活用を個人技で終わらせないために ②Human in the Loop から　Human on the Loopへ</title><link>https://www.lyricrime.com/posts/human-on-the-loop/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/human-on-the-loop/</guid><description>## はじめに
 
 今回は生成AI文脈での Human in the loop と Human on the loop の違い、実際にHuman on the loop を目指して考えた具体的なアイデアを紹介します。
 
