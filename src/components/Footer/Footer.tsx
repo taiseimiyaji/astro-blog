@@ -6,7 +6,7 @@ export default function Footer() {
 			<div className="copyright">©︎ 2024 taisei miyaji</div>
 			<div className="icons">
 				<span className="github">
-					<a href="https://github.com/taiseimiyaji" target="_blank">
+					<a href="https://github.com/taiseimiyaji" target="_blank" rel="noopener">
 						<img
 							src="/github-mark/github-mark-white.png"
 							width="100%"

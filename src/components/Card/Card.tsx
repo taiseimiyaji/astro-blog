@@ -1,17 +1,20 @@
 import "./Card.scss";
-import type { article } from "../../entities/article";
 import { getNowDateWithString } from "../../utils/date";
 import type { CollectionEntry } from "astro:content";
 
-export default function Card(content: CollectionEntry<"blog">) {
+type CardProps = {
+	content: CollectionEntry<"blog">;
+};
+
+export default function Card({ content }: CardProps) {
 	return (
 		<div>
-			<a href={"/posts/" + content.content.slug}>
+			<a href={`/posts/${content.id}`}>
 				<div className="card">
 					<div className="date">
-						{getNowDateWithString(content.content.data.createDate)}
+						{getNowDateWithString(content.data.createDate)}
 					</div>
-					<div className="title">{content.content.data.title}</div>
+					<div className="title">{content.data.title}</div>
 				</div>
 			</a>
 		</div>
