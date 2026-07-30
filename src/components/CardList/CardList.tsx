@@ -12,7 +12,7 @@ export default function CardList({ posts }: CardListProps) {
 		<div className="card-list">
 			{posts.map((post) => {
 				return (
-					<div key={post.slug}>
+					<div key={post.id}>
 						<Card content={post} />
 					</div>
 				);

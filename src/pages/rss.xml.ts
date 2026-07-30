@@ -16,8 +16,8 @@ export async function GET(context: APIContext) {
     items: posts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.createDate,
-      description: post.body.slice(0, 200) + '...',
-      link: `/posts/${post.slug}/`,
+      description: `${post.body?.slice(0, 200) ?? ''}...`,
+      link: `/posts/${post.id}/`,
       categories: post.data.tags,
     })),
     customData: `<language>ja</language>`,
