@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI Dev Ex 2026登壇 AIを個人技で終わらせないために ③「技術は手段」を開発バリューに掲げた組織のAI活用のすべて</title><link>https://www.lyricrime.com/posts/ai-individuals-to-org-3/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-individuals-to-org-3/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI Dev Ex 2026参加で見えてきたAI活用の課題とAI活用のいま</title><link>https://www.lyricrime.com/posts/ai-dev-ex-2026/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-dev-ex-2026/</guid><description>## はじめに
+
+他の記事でも紹介している通り、弊社スマレジはAI Dev Ex Conference 2026にスポンサー、登壇した。
+
+この記事では、イベント参加時に他の参加者のかたと会話した内容から自分自身で考えたことをいくつかのトピックとしてまとめていく。
+
+## QA・テストについて
+
+開発においてAI活用が進む中、ボトルネックは上流もしくは下流に移動している、もしくは元々開発において実...</description><pubDate>Fri, 31 Jul 2026 00:00:00 GMT</pubDate><category>ai</category></item><item><title>AI Dev Ex 2026登壇 AIを個人技で終わらせないために ③「技術は手段」を開発バリューに掲げた組織のAI活用のすべて</title><link>https://www.lyricrime.com/posts/ai-individuals-to-org-3/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-individuals-to-org-3/</guid><description>## はじめに
 
 AI Dev Ex 2026に株式会社スマレジはスポンサーとして参加しました。本記事では、そのスポンサーセッションで発表した内容を、スライドに沿って紹介します。
 
