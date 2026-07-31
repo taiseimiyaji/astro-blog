@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>HermesによるAI活用の業務棚卸し</title><link>https://www.lyricrime.com/posts/hermes-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/hermes-init/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI Dev Ex 2026登壇 AIを個人技で終わらせないために ③「技術は手段」を開発バリューに掲げた組織のAI活用のすべて</title><link>https://www.lyricrime.com/posts/ai-individuals-to-org-3/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-individuals-to-org-3/</guid><description>## はじめに
+
+AI Dev Ex 2026に株式会社スマレジはスポンサーとして参加しました。本記事では、そのスポンサーセッションで発表した内容を、スライドに沿って紹介します。
+
+今回のテーマは、個人で始まった生成AI活用をどのように組織へ広げ、さらに自律化へ進めているかです。
+
+[「技術は手段」を開発バリューに掲げた組織のAI活用のすべて - Speaker Deck](https://spe...</description><pubDate>Fri, 31 Jul 2026 00:00:00 GMT</pubDate><category>ai</category></item><item><title>HermesによるAI活用の業務棚卸し</title><link>https://www.lyricrime.com/posts/hermes-init/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/hermes-init/</guid><description>## はじめに
 
 生成AIの活用は、ChatGPTから始まり、Claude、Claude Code、Codexなどを人間が都度呼び出し、指示を与えて結果を確認する使い方が主流でした。
 
