@@ -1,6 +1,7 @@
 ---
 import Header from "../../../../components/Header/Header";
 import Footer from "../../../../components/Footer/Footer";
+import NoteDisclaimer from "../../../../components/NoteDisclaimer.astro";
 import { getNoteEntries } from "../../../../utils/note";
 import "../../../../styles/index.scss";
 import "../../../../styles/slug.scss";
@@ -39,6 +40,7 @@ const { note } = Astro.props;
 						{note.tags.map((tag) => <span>{tag}</span>)}
 					</div>
 				)}
+				<NoteDisclaimer />
 				<article class="note-post post" set:html={note.body} />
 			</div>
 			<Footer />
