@@ -1,6 +1,7 @@
 ---
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import NoteDisclaimer from "../../components/NoteDisclaimer.astro";
 import { getNoteEntries } from "../../utils/note";
 import "../../styles/index.scss";
 
@@ -17,6 +18,7 @@ const notes = getNoteEntries();
 		<main>
 			<Header />
 			<div class="content">
+				<NoteDisclaimer />
 				<div class="card-list">
 					{notes.map((note) => (
 						<a href={note.href}>
