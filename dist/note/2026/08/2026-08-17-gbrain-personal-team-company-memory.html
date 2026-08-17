@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="2026/08/17 · AI / GBrain / MCP GBrainは個人用か、会社用か 結論は「両方」です。個人の長期記憶から始められますが、現在の設計はチームや会社の共有記憶まで明確に射程へ入れています。重要なのは、巨大な一つの知"><title>GBrainは個人用か、会社用か――AIエージェントの長期記憶を設計する | Lyricrime.com</title><style>html{color:#f6f7f9;background-color:#23272f;font-size:16px}.header{color:#f6f7f9;border-bottom:.5px solid;justify-content:space-around}.header-link div{color:#f6f7f9}.header-link{border-color:#f6f7f9;justify-content:space-around;width:94vw;max-width:70rem;margin:0 auto;padding:.5rem;font-size:1.5rem;display:flex}.header .title{text-align:center;border-bottom:.5px solid;padding:2rem;font-size:2.5rem;font-weight:700}.card{box-sizing:border-box;color:#f6f7f9;background-color:#23272f;border:1px solid #f6f7f9;border-radius:1rem;flex-direction:column;gap:1rem;padding:2rem;display:flex}.card .title{overflow:inherit;font-size:large}.card:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.card-list{flex-direction:column;gap:1rem;display:flex}code{font-size:1rem}:root{--accent:124, 58, 237;--accent-gradient:linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{width:94vw;max-width:70rem;margin:0 auto;padding:2rem 0}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,:before,:after{box-sizing:border-box}.card-container{grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem;display:grid}.sns-button{color:#fff;text-align:center;cursor:pointer;background-color:#23272f;border:1px solid #fff;border-radius:.5rem;justify-content:center;align-items:center;width:100%;max-width:100%;margin:0;padding:1rem;font-size:1.25rem;transition:background-color .3s,box-shadow .3s;display:flex;box-shadow:0 4px 6px #0000001a}.sns-button:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;width:1.5em;height:1.5em;margin-right:.5rem}pre.astro-code.github-dark{border-radius:.2rem;padding:1rem;overflow-x:auto;background-color:#2d333b!important}.footer{border-top:1px solid #f6f7f9;align-items:center;max-height:2rem;padding:1rem;display:flex}.footer .copyright{order:1}.footer .icons{order:2;width:2rem;height:2rem;margin-left:auto}
+.note-disclaimer[data-astro-cid-utgxfmsj]{color:#ffffffeb;border:1px solid #ffffff59;border-radius:.25rem;margin:0 0 2rem;padding:1rem}.note-disclaimer[data-astro-cid-utgxfmsj] strong[data-astro-cid-utgxfmsj]{margin-bottom:.35rem;display:block}.note-disclaimer[data-astro-cid-utgxfmsj] p[data-astro-cid-utgxfmsj]{margin:0 0 .75rem;line-height:1.7}.note-disclaimer[data-astro-cid-utgxfmsj] p[data-astro-cid-utgxfmsj]:last-child{margin-bottom:0}
+html{color:#f6f7f9;background-color:#23272f;font-size:16px}.header{color:#f6f7f9;border-bottom:.5px solid;justify-content:space-around}.header-link div{color:#f6f7f9}.header-link{border-color:#f6f7f9;justify-content:space-around;width:94vw;max-width:70rem;margin:0 auto;padding:.5rem;font-size:1.5rem;display:flex}.header .title{text-align:center;border-bottom:.5px solid;padding:2rem;font-size:2.5rem;font-weight:700}.footer{border-top:1px solid #f6f7f9;align-items:center;max-height:2rem;padding:1rem;display:flex}.footer .copyright{order:1}.footer .icons{order:2;width:2rem;height:2rem;margin-left:auto}.card{box-sizing:border-box;color:#f6f7f9;background-color:#23272f;border:1px solid #f6f7f9;border-radius:1rem;flex-direction:column;gap:1rem;padding:2rem;display:flex}.card .title{overflow:inherit;font-size:large}.card:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.card-list{flex-direction:column;gap:1rem;display:flex}.content a{text-decoration:underline}.content table{border-collapse:collapse;width:100%;margin:2rem 0}.content table th,.content table td{text-align:left;border:1px solid #f6f7f9;padding:.5rem}.content table th{color:#f6f7f9;background-color:#f6f7f933;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{color:#f6f7f9;overflow-wrap:break-word;background-color:#f6f7f91a;border-left:4px solid #f6f7f9;margin:1rem 0;padding:1rem;font-style:italic}.content blockquote p{margin:0}.content h2{color:#f6f7f9;border-bottom:2px solid #f6f7f9;margin:2rem 0 1rem;padding-bottom:.5rem;font-size:1.5rem;font-weight:700}
+html{color:#f6f7f9;background-color:#23272f;font-size:16px}.header{color:#f6f7f9;border-bottom:.5px solid;justify-content:space-around}.header-link div{color:#f6f7f9}.header-link{border-color:#f6f7f9;justify-content:space-around;width:94vw;max-width:70rem;margin:0 auto;padding:.5rem;font-size:1.5rem;display:flex}.header .title{text-align:center;border-bottom:.5px solid;padding:2rem;font-size:2.5rem;font-weight:700}.footer{border-top:1px solid #f6f7f9;align-items:center;max-height:2rem;padding:1rem;display:flex}.footer .copyright{order:1}.footer .icons{order:2;width:2rem;height:2rem;margin-left:auto}.card{box-sizing:border-box;color:#f6f7f9;background-color:#23272f;border:1px solid #f6f7f9;border-radius:1rem;flex-direction:column;gap:1rem;padding:2rem;display:flex}.card .title{overflow:inherit;font-size:large}.card:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.card-list{flex-direction:column;gap:1rem;display:flex}.note-tags{flex-wrap:wrap;gap:.5rem;margin:0 0 2rem;display:flex}.note-tags span{color:#f6f7f9;border:1px solid #f6f7f973;border-radius:.25rem;padding:.2rem .5rem;font-size:.85rem}.note-post{color:#f6f7f9;line-height:1.85}.note-post .article-header{display:none}.note-post .lead{color:#f6f7f9d1;font-size:1.08rem}.note-post h2{color:#f6f7f9;border-bottom:2px solid #f6f7f9;margin:2.5rem 0 1rem;padding-bottom:.5rem;font-size:1.5rem}.note-post h3{color:#f6f7f9;margin:1.75rem 0 .75rem;font-size:1.1rem}.note-post p,.note-post li{color:#f6f7f9eb}.note-post code{color:#f6f7f9;background-color:#f6f7f91f;border-radius:.2rem;padding:.1em .3em}.note-post .diagram,.note-post .note,.note-post .role,.note-post .node{background-color:#f6f7f90f;border:1px solid #f6f7f959}.note-post .diagram,.note-post .note{margin:2rem 0;padding:1rem}.note-post .diagram-title,.note-post .meta,.note-post .tag,.note-post .arrow,.note-post .node span,.note-post .role p{color:#f6f7f9b8}.note-post .flow{grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:.75rem;display:grid}.note-post .node{text-align:center;place-items:center;min-height:5rem;padding:.875rem;display:grid}.note-post .node strong{margin-bottom:.25rem;display:block}.note-post .responsibility-map{grid-template-columns:repeat(3,1fr);gap:.75rem;display:grid}.note-post .role{padding:1rem}.note-post .checklist{border-top:1px solid #f6f7f959;border-bottom:1px solid #f6f7f959;margin:1.75rem 0;padding:1rem 0}@media (width<=760px){.note-post .flow,.note-post .responsibility-map{grid-template-columns:1fr}.note-post .arrow{justify-self:center;transform:rotate(90deg)}}
+</style></head><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div>Blog</div></a><a href="/note"><div>Note</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2026/08/17</div><h1>GBrainは個人用か、会社用か――AIエージェントの長期記憶を設計する</h1><div class="note-tags"><span>AI</span><span>GBrain</span><span>MCP</span><span>ナレッジマネジメント</span></div><aside class="note-disclaimer" aria-label="この記事について" data-astro-cid-utgxfmsj><strong data-astro-cid-utgxfmsj>この記事について</strong><p data-astro-cid-utgxfmsj>本記事は、Codexを用いた調査結果をAIが整理・要約し、そのまま公開するワークフローの検証を兼ねた個人的な調査メモです。</p><p data-astro-cid-utgxfmsj>本文は筆者が一から手書きしたものではありませんが、調査で得られた知見を迅速に蓄積・共有することを目的としています。内容には誤りや不確実な情報が含まれる可能性があるため、重要な判断に利用する際は一次情報もあわせてご確認ください。</p></aside><article class="note-post post"><header class="article-header">
+      <p class="meta">2026/08/17 · AI / GBrain / MCP</p>
+      <h1>GBrainは個人用か、会社用か</h1>
+      <p class="lead">結論は「両方」です。個人の長期記憶から始められますが、現在の設計はチームや会社の共有記憶まで明確に射程へ入れています。重要なのは、巨大な一つの知識庫を作ることではなく、所有者と権限に沿ってbrainとsourceの境界を引くことです。</p>
+    </header>
+
+    <section>
+      <h2>GBrainは検索ではなく「答えを作る記憶層」</h2>
+      <p>GBrainは、Markdownを永続的な正本として保持し、データベースへ索引を作り、AIエージェントから検索・更新できるようにするオープンソースの記憶基盤です。MCP経由でCodex、Claude Code、Hermesなどから利用できます。</p>
+      <p>特徴は、関連ページを並べるだけでなく、複数ページを統合した回答、出典、情報の古さや不足を示すgap analysisまで返すことです。また、ページ内の人物・会社・概念などの参照から知識グラフを構築し、キーワード検索やベクトル検索だけでは扱いにくい関係もたどれます。</p>
+      <div class="callout">
+        <strong>検索ツールとの違い</strong><br>
+        「関連する10件」を返すのではなく、「いつ、何が決まり、何が未解決で、どの情報が古いか」を出典付きでまとめることを目指しています。
+      </div>
+    </section>
+
+    <section>
+      <h2>PersonalからTeam、Companyへ</h2>
+      <p>公式READMEは最初の導線としてpersonal brainを案内し、その先にmulti-user、OAuth-scopedなcompany brainのチュートリアルを用意しています。したがって「個人向け製品か、会社向け製品か」という二択より、個人を基本単位に組織へ拡張できるアーキテクチャと捉える方が正確です。</p>
+
+      <div class="diagram" aria-label="GBrainの利用単位を示す図">
+        <div class="three-levels">
+          <div class="level"><strong>Personal Brain</strong><span>メール、カレンダー、会議、メモを自分専用の長期記憶へ</span></div>
+          <div class="level"><strong>Team Brain</strong><span>案件、会議、設計判断、プロジェクト経緯を共有</span></div>
+          <div class="level"><strong>Company Brain</strong><span>部門横断の知識を、ユーザーと情報源ごとの権限付きで利用</span></div>
+        </div>
+        <p class="caption">利用規模が変わっても、中心にあるのはAIエージェントが読み書きできる永続記憶です。</p>
+      </div>
+
+      <table>
+        <thead><tr><th>利用単位</th><th>向いている使い方</th></tr></thead>
+        <tbody>
+          <tr><td>個人</td><td>自分のメール、予定、会議、メモをセッションを越えて参照する</td></tr>
+          <tr><td>チーム</td><td>プロジェクトの意思決定、会議、人物・案件情報を共通の文脈にする</td></tr>
+          <tr><td>会社</td><td>複数部門の知識を統合しつつ、利用者・チーム・情報源ごとに閲覧範囲を制御する</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>設計の核心はbrainとsourceの二軸</h2>
+      <p>公式architecture docsでは、<strong>brainは一つのデータベース</strong>、<strong>sourceはbrain内の名前付きコンテンツrepo</strong>と定義されています。両者は独立した軸です。</p>
+      <ul>
+        <li>データの所有者やアクセス方針が変わるなら、brainを分ける</li>
+        <li>所有者は同じで、テーマやrepoだけが変わるなら、sourceを分ける</li>
+      </ul>
+      <p>この原則により、personal brainを残したまま複数のteam brainをmountできます。全社で一個の巨大データベースだけを運用する必要はありません。</p>
+
+      <div class="diagram" aria-label="個人brainから複数のteam brainを利用する構成図">
+        <div class="mount-map">
+          <div class="brain"><strong>AIクライアント</strong><span>Codex / Claude Code / Hermesなど</span></div>
+          <div class="arrow">→</div>
+          <div class="stack">
+            <div class="brain"><strong>Personal Brain</strong><span>メール・個人メモ・カレンダー</span></div>
+            <div class="brain"><strong>Team A Brain</strong><span>共有wiki・開発記録・会議</span></div>
+            <div class="brain"><strong>Team B Brain</strong><span>案件資料・議事録・運用記録</span></div>
+          </div>
+        </div>
+        <p class="caption">エージェントが必要なbrainを明示的に問い合わせ、結果を統合します。cross-brain検索はDBの自動結合ではなく、エージェント側の仕事です。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>会社利用で効く、読み取りと書き込みの非対称性</h2>
+      <p>company brainでは、利用者やAIエージェントごとにOAuthクライアントを発行できます。公式チュートリアルのモデルでは、<code>--source</code>が書き込み先を一つに限定し、<code>--federated-read</code>が読み取り可能な複数sourceを指定します。読み取り範囲はSQL層でも制約されます。</p>
+      <pre><code># 例: 開発基盤エージェント
+write: ai-platform
+read:  ai-platform, shared, architecture</code></pre>
+      <p>この形なら、エージェントが他部門の文脈を参照して回答しながら、生成物の保存先は担当sourceに閉じられます。人事・法務・評価情報などを別sourceや別brainへ分離する判断もしやすくなります。</p>
+      <p class="note">ただし、権限設定だけで安全が完成するわけではありません。本番導入では、制限された資格情報を使った検索テスト、監査、バックアップ、誤取り込みへの対応を運用に含める必要があります。</p>
+    </section>
+
+    <section>
+      <h2>社内AI基盤での活用案</h2>
+      <p>社内利用では、アプリごとにsourceを切るより、<strong>所有者・機密区分・書き込み責任</strong>を先に決めるのがよいでしょう。Slack、Gitリポジトリ、ドキュメント、会議記録は入力チャネルであり、必ずしもそのまま権限境界ではありません。</p>
+
+      <div class="diagram" aria-label="会社brainのsource設計例">
+        <div class="brain"><strong>Company / Team Brain</strong><span>共有する範囲ごとにbrainを選ぶ</span></div>
+        <div class="source-grid">
+          <div class="source"><strong>shared</strong><span>全社方針、公開済み社内資料、共通知識</span></div>
+          <div class="source"><strong>ai-platform</strong><span>設計判断、コード変更、会議、運用知識</span></div>
+          <div class="source"><strong>customer-success</strong><span>案件状況、会議、承認済み顧客情報</span></div>
+        </div>
+        <p class="caption">各sourceへSlack、Git、Drive、会議など必要な入力を取り込む。入力元ではなく、誰が所有し誰が読めるべきかを境界の基準にします。</p>
+      </div>
+
+      <p>たとえば次のような質問が、単一サービスの検索を越えた活用例になります。</p>
+      <ul>
+        <li>「ある基盤移行は、最終的にどの案に決まり、未解決事項は何か」</li>
+        <li>「この認証方式を選んだ理由は、設計文書と会議記録で一貫しているか」</li>
+        <li>「この案件の現在地、直近の合意、次のアクションをまとめて」</li>
+      </ul>
+      <p>ここで価値になるのは、Slack検索、Git検索、Drive検索を別々に行うことではありません。時間の異なる複数情報を、出典と不足情報を伴う一つの回答へ統合できることです。</p>
+    </section>
+
+    <section>
+      <h2>導入するなら、最初に決めたいこと</h2>
+      <ol class="checklist">
+        <li><strong>小さく始める：</strong>一つのチーム、一つの問い、一つのsourceから価値を確認する。</li>
+        <li><strong>所有者でbrainを分ける：</strong>個人、チーム、全社でデータオーナーが違うならDB境界を検討する。</li>
+        <li><strong>権限でsourceを分ける：</strong>閲覧範囲や書き込み責任が違う情報を同じsourceへ混ぜない。</li>
+        <li><strong>正本を決める：</strong>Slackの会話、GitのADR、Driveの文書が矛盾したとき、何を優先するか定義する。</li>
+        <li><strong>鮮度を運用する：</strong>同期失敗、古いページ、矛盾、誤情報を検知し、修正できる担当を置く。</li>
+        <li><strong>権限を実測する：</strong>制限ユーザーとして検索し、見えてはいけないsourceが返らないことを継続的に確認する。</li>
+      </ol>
+      <p>なお、公式ドキュメントはSlackなどの取り込みを拡張可能なingestion sourceとして案内していますが、すべての外部サービスが標準コネクタとして揃うとは限りません。GitやDriveを含む具体的な接続方法、同期品質、API制約は導入時点の実装を確認すべきです。</p>
+    </section>
+
+    <section>
+      <h2>まとめ</h2>
+      <p>GBrainはPersonal Brainとして試しやすく、Team / Company Brainへ拡張できる記憶アーキテクチャです。会社利用で本当に重要なのは、情報を大量投入することではありません。brainを所有者の境界、sourceをrepo・テーマ・権限の境界として設計し、AIエージェントに必要最小限の読み書きを許可することです。</p>
+      <p>うまく設計できれば、GBrainは「社内を横断検索する箱」ではなく、意思決定の経緯、現在地、矛盾、まだ分からないことを出典付きで返す、組織の長期記憶になります。</p>
+
+      <h3>参考資料</h3>
+      <ul>
+        <li><a href="https://github.com/garrytan/gbrain">GBrain公式リポジトリ</a></li>
+        <li><a href="https://github.com/garrytan/gbrain/blob/master/docs/architecture/brains-and-sources.md">Brains and Sources — the mental model</a></li>
+        <li><a href="https://github.com/garrytan/gbrain/blob/master/docs/tutorials/company-brain.md">Extend your personal brain into a company brain</a></li>
+        <li><a href="https://github.com/garrytan/gbrain/blob/master/docs/architecture/topologies.md">Deployment topologies</a></li>
+      </ul>
+      <p class="caption">この記事は2026年8月17日時点の公式リポジトリとドキュメントをもとにしています。GBrainは更新が速いため、導入時には最新のREADMEとarchitecture docsを確認してください。</p>
+    </section></article></div><div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank" rel="noopener"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
