@@ -64,21 +64,27 @@ declare global {
             <li><strong>テスト支援</strong><br>
                 開発プロセスの品質向上のために、ユニットテストの導入やテスト自動化の支援を行います。CI/CD環境の構築やテストフレームワークの選定・導入も対応可能です。
             </li>
-            <li><strong>受託開発</strong><br>
-               生成AIを活用した開発体制の構築、およびPoCの作成が可能です。お気軽にご相談ください
+            <li><strong>開発支援</strong><br>
+                生成AIを活用した開発体制の構築やPoC開発をはじめ、技術課題の整理から実装・改善まで、プロジェクトの状況に合わせて支援します。
             </li>
             <li><strong>AIで作成したプロダクトへのコンサルティング</strong><br>
                 技術選定やアーキテクチャ設計、開発プロセスの改善など、さまざまな観点から、AIで作成した成果物に対する専門家のレビュー、修正対応を行います。
             </li>
         </ul>
         <h2>ご依頼について</h2>
-        <p>
-            それぞれ初回相談無料で承っております。相談や助言は1件数万円、各種対応は1件10万円 ~ 程度で想定していますが、内容や規模によりますのでお気軽にご相談ください。<br>
-            まずは相談内容が固まっていなくても大丈夫です。以下のフォームからお気軽にご連絡ください。<br>
-            <a href="https://forms.gle/omP7TPeSf2VacxSGA" target="_blank" rel="noopener noreferrer">相談フォームはこちら</a>
-            フォームが使いづらい場合は、メールでもご連絡いただけます。
-            <a href="mailto:taisei.miyaji4602@gmail.com">taisei.miyaji4602@gmail.com</a>
-        </p>
+        <div class="contact-section">
+            <p>
+                相談内容が固まっていない段階でも大丈夫です。まずは相談フォームから、現在のお悩みやご希望をお聞かせください。内容を確認後、メールでご連絡します。
+            </p>
+            <a class="contact-button" href="https://forms.gle/omP7TPeSf2VacxSGA" target="_blank" rel="noopener noreferrer">
+                相談フォームを開く
+                <span aria-hidden="true">→</span>
+            </a>
+            <p class="contact-alternative">
+                フォームを利用できない場合は、
+                <a href="mailto:taisei.miyaji4602@gmail.com">メールでお問い合わせください</a>。
+            </p>
+        </div>
         <div class="card-container" style="margin-top: 2rem; margin-bottom: 2rem;">
             <GitHubCard url={'https://github.com/taiseimiyaji'} />
             <XCard url={'https://x.com/lyricrime'} />
@@ -89,3 +95,56 @@ declare global {
 </main>
 </body>
 </html>
+
+<style>
+    .contact-section {
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        border-radius: 0.75rem;
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    .contact-section > p:first-child {
+        margin-top: 0;
+    }
+
+    .contact-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        min-height: 3rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.5rem;
+        background: rgb(var(--accent));
+        color: white;
+        font-weight: 700;
+        transition: filter 0.2s ease, transform 0.2s ease;
+    }
+
+    .contact-button:hover {
+        filter: brightness(1.15);
+        transform: translateY(-1px);
+    }
+
+    .contact-button:focus-visible {
+        outline: 3px solid white;
+        outline-offset: 3px;
+    }
+
+    .contact-alternative {
+        margin-bottom: 0;
+        font-size: 0.95rem;
+    }
+
+    .contact-alternative a {
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+    }
+
+    @media (max-width: 480px) {
+        .contact-button {
+            width: 100%;
+        }
+    }
+</style>
