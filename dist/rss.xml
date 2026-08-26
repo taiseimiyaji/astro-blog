@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI Dev Ex 2026参加で見えてきたAI活用の課題とAI活用のいま</title><link>https://www.lyricrime.com/posts/ai-dev-ex-2026/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-dev-ex-2026/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI時代のインプットの重要性と雑感</title><link>https://www.lyricrime.com/posts/ai-input-tool/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-input-tool/</guid><description>## はじめに
+
+AIが当たり前の状態になってしばらく経って、AI活用におけるスキル差はありつつも、より良いプロダクトづくりのためには従来通り技術の勉強も重要だと感じ始めています。  
+AIをそのまま利用することでは気付けない指摘や落とし穴をどう回避するか、より良いシステムを作るためにはAIの出す平均点では物足りない、そういう場面が目立つようになってきました。  
+現状のAIに関する認識と個人的な...</description><pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate><category>ai</category></item><item><title>AI Dev Ex 2026参加で見えてきたAI活用の課題とAI活用のいま</title><link>https://www.lyricrime.com/posts/ai-dev-ex-2026/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/ai-dev-ex-2026/</guid><description>## はじめに
 
 他の記事でも紹介している通り、弊社スマレジはAI Dev Ex Conference 2026にスポンサー、登壇した。
 
