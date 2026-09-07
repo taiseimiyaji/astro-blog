@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI基礎知識 技術書を読むための前提知識 モデル編</title><link>https://www.lyricrime.com/posts/2026-basic-ai-knowledge/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-basic-ai-knowledge/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>エンジニアの向かう先 ソフトウェアファクトリー</title><link>https://www.lyricrime.com/posts/software-factory/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/software-factory/</guid><description>## はじめに
+
+2025年にAIエージェント元年と呼ばれる一年を経て、私たちは2026年にソフトウェア開発の大きな岐路にいます。  
+従来エンジニアがしていた仕事をそのままやっている人はほとんどいなくなり、みんながAIを使って開発を進めています。  
+その中でも一部の人は開発の大部分をAIに任せて自動化しつつ、品質を保ってうまく本番までデリバリーし始めました。  
+
+私たちは2026年にソフトウ...</description><pubDate>Tue, 08 Sep 2026 00:00:00 GMT</pubDate><category>ai</category></item><item><title>AI基礎知識 技術書を読むための前提知識 モデル編</title><link>https://www.lyricrime.com/posts/2026-basic-ai-knowledge/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/2026-basic-ai-knowledge/</guid><description>## はじめに
 
 最近、AIエージェント関連の書籍が多く日本語訳され始め、オライリーなどからも多くの書籍が出版されるようになりました。
 
