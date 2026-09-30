@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="2026/09/30 · OpenAI / DevDay / Codex / AI Agent OpenAI DevDay 2026総まとめ 20を超える発表を貫くテーマは、モデル単体の賢さではない。エージェントを動かし、監督し、外部サービ"><title>OpenAI DevDay 2026総まとめ――エージェント開発の主戦場が「モデル」から「実行基盤」へ | Lyricrime.com</title><style>html{color:#f6f7f9;background-color:#23272f;font-size:16px}.header{color:#f6f7f9;border-bottom:.5px solid;justify-content:space-around}.header-link div{color:#f6f7f9}.header-link{border-color:#f6f7f9;justify-content:space-around;width:94vw;max-width:70rem;margin:0 auto;padding:.5rem;font-size:1.5rem;display:flex}.header .title{text-align:center;border-bottom:.5px solid;padding:2rem;font-size:2.5rem;font-weight:700}.card{box-sizing:border-box;color:#f6f7f9;background-color:#23272f;border:1px solid #f6f7f9;border-radius:1rem;flex-direction:column;gap:1rem;padding:2rem;display:flex}.card .title{overflow:inherit;font-size:large}.card:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.card-list{flex-direction:column;gap:1rem;display:flex}code{font-size:1rem}:root{--accent:124, 58, 237;--accent-gradient:linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{width:94vw;max-width:70rem;margin:0 auto;padding:2rem 0}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,:before,:after{box-sizing:border-box}.card-container{grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem;display:grid}.sns-button{color:#fff;text-align:center;cursor:pointer;background-color:#23272f;border:1px solid #fff;border-radius:.5rem;justify-content:center;align-items:center;width:100%;max-width:100%;margin:0;padding:1rem;font-size:1.25rem;transition:background-color .3s,box-shadow .3s;display:flex;box-shadow:0 4px 6px #0000001a}.sns-button:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;width:1.5em;height:1.5em;margin-right:.5rem}pre.astro-code.github-dark{border-radius:.2rem;padding:1rem;overflow-x:auto;background-color:#2d333b!important}.footer{border-top:1px solid #f6f7f9;align-items:center;max-height:2rem;padding:1rem;display:flex}.footer .copyright{order:1}.footer .icons{order:2;width:2rem;height:2rem;margin-left:auto}
+.note-disclaimer[data-astro-cid-utgxfmsj]{color:#ffffffeb;border:1px solid #ffffff59;border-radius:.25rem;margin:0 0 2rem;padding:1rem}.note-disclaimer[data-astro-cid-utgxfmsj] strong[data-astro-cid-utgxfmsj]{margin-bottom:.35rem;display:block}.note-disclaimer[data-astro-cid-utgxfmsj] p[data-astro-cid-utgxfmsj]{margin:0 0 .75rem;line-height:1.7}.note-disclaimer[data-astro-cid-utgxfmsj] p[data-astro-cid-utgxfmsj]:last-child{margin-bottom:0}
+html{color:#f6f7f9;background-color:#23272f;font-size:16px}.header{color:#f6f7f9;border-bottom:.5px solid;justify-content:space-around}.header-link div{color:#f6f7f9}.header-link{border-color:#f6f7f9;justify-content:space-around;width:94vw;max-width:70rem;margin:0 auto;padding:.5rem;font-size:1.5rem;display:flex}.header .title{text-align:center;border-bottom:.5px solid;padding:2rem;font-size:2.5rem;font-weight:700}.footer{border-top:1px solid #f6f7f9;align-items:center;max-height:2rem;padding:1rem;display:flex}.footer .copyright{order:1}.footer .icons{order:2;width:2rem;height:2rem;margin-left:auto}.card{box-sizing:border-box;color:#f6f7f9;background-color:#23272f;border:1px solid #f6f7f9;border-radius:1rem;flex-direction:column;gap:1rem;padding:2rem;display:flex}.card .title{overflow:inherit;font-size:large}.card:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.card-list{flex-direction:column;gap:1rem;display:flex}.content a{text-decoration:underline}.content table{border-collapse:collapse;width:100%;margin:2rem 0}.content table th,.content table td{text-align:left;border:1px solid #f6f7f9;padding:.5rem}.content table th{color:#f6f7f9;background-color:#f6f7f933;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{color:#f6f7f9;overflow-wrap:break-word;background-color:#f6f7f91a;border-left:4px solid #f6f7f9;margin:1rem 0;padding:1rem;font-style:italic}.content blockquote p{margin:0}.content h2{color:#f6f7f9;border-bottom:2px solid #f6f7f9;margin:2rem 0 1rem;padding-bottom:.5rem;font-size:1.5rem;font-weight:700}
+html{color:#f6f7f9;background-color:#23272f;font-size:16px}.header{color:#f6f7f9;border-bottom:.5px solid;justify-content:space-around}.header-link div{color:#f6f7f9}.header-link{border-color:#f6f7f9;justify-content:space-around;width:94vw;max-width:70rem;margin:0 auto;padding:.5rem;font-size:1.5rem;display:flex}.header .title{text-align:center;border-bottom:.5px solid;padding:2rem;font-size:2.5rem;font-weight:700}.footer{border-top:1px solid #f6f7f9;align-items:center;max-height:2rem;padding:1rem;display:flex}.footer .copyright{order:1}.footer .icons{order:2;width:2rem;height:2rem;margin-left:auto}.card{box-sizing:border-box;color:#f6f7f9;background-color:#23272f;border:1px solid #f6f7f9;border-radius:1rem;flex-direction:column;gap:1rem;padding:2rem;display:flex}.card .title{overflow:inherit;font-size:large}.card:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.card-list{flex-direction:column;gap:1rem;display:flex}.note-tags{flex-wrap:wrap;gap:.5rem;margin:0 0 2rem;display:flex}.note-tags span{color:#f6f7f9;border:1px solid #f6f7f973;border-radius:.25rem;padding:.2rem .5rem;font-size:.85rem}.note-post{color:#f6f7f9;line-height:1.85}.note-post .article-header{display:none}.note-post .lead{color:#f6f7f9d1;font-size:1.08rem}.note-post h2{color:#f6f7f9;border-bottom:2px solid #f6f7f9;margin:2.5rem 0 1rem;padding-bottom:.5rem;font-size:1.5rem}.note-post h3{color:#f6f7f9;margin:1.75rem 0 .75rem;font-size:1.1rem}.note-post p,.note-post li{color:#f6f7f9eb}.note-post code{color:#f6f7f9;background-color:#f6f7f91f;border-radius:.2rem;padding:.1em .3em}.note-post .diagram,.note-post .note,.note-post .role,.note-post .node{background-color:#f6f7f90f;border:1px solid #f6f7f959}.note-post .diagram,.note-post .note{margin:2rem 0;padding:1rem}.note-post .diagram-title,.note-post .meta,.note-post .tag,.note-post .arrow,.note-post .node span,.note-post .role p{color:#f6f7f9b8}.note-post .flow{grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:.75rem;display:grid}.note-post .node{text-align:center;place-items:center;min-height:5rem;padding:.875rem;display:grid}.note-post .node strong{margin-bottom:.25rem;display:block}.note-post .responsibility-map{grid-template-columns:repeat(3,1fr);gap:.75rem;display:grid}.note-post .role{padding:1rem}.note-post .checklist{border-top:1px solid #f6f7f959;border-bottom:1px solid #f6f7f959;margin:1.75rem 0;padding:1rem 0}@media (width<=760px){.note-post .flow,.note-post .responsibility-map{grid-template-columns:1fr}.note-post .arrow{justify-self:center;transform:rotate(90deg)}}
+</style></head><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div>Blog</div></a><a href="/note"><div>Note</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2026/09/30</div><h1>OpenAI DevDay 2026総まとめ――エージェント開発の主戦場が「モデル」から「実行基盤」へ</h1><div class="note-tags"><span>OpenAI</span><span>DevDay</span><span>Codex</span><span>AI Agent</span><span>MCP</span></div><aside class="note-disclaimer" aria-label="この記事について" data-astro-cid-utgxfmsj><strong data-astro-cid-utgxfmsj>この記事について</strong><p data-astro-cid-utgxfmsj>本記事は、Codexを用いた調査結果をAIが整理・要約し、そのまま公開するワークフローの検証を兼ねた個人的な調査メモです。</p><p data-astro-cid-utgxfmsj>本文は筆者が一から手書きしたものではありませんが、調査で得られた知見を迅速に蓄積・共有することを目的としています。内容には誤りや不確実な情報が含まれる可能性があるため、重要な判断に利用する際は一次情報もあわせてご確認ください。</p></aside><article class="note-post post"><header class="article-header">
+      <p class="meta">2026/09/30 · OpenAI / DevDay / Codex / AI Agent</p>
+      <h1>OpenAI DevDay 2026総まとめ</h1>
+      <p class="lead">20を超える発表を貫くテーマは、モデル単体の賢さではない。エージェントを動かし、監督し、外部サービスにつなぎ、チームで成果を確認するための「実行基盤」が一気に製品化されたことだ。</p>
+    </header>
+
+    <section class="summary" aria-label="記事の要約">
+      <p><strong>先に結論。</strong> DevDay 2026でOpenAIは、ChatGPT、Codex、APIを別々の製品として進化させるのではなく、同じエージェント基盤の異なる入口として接続した。</p>
+      <p>特に注目したいのは、<strong>Codex Cloudと新しいCLI、Agents API、MCP Events、Code Review、ChatGPT Space</strong>である。これまで個別ツールで組み立ててきた「複数エージェントの実行・監督・レビュー・継続作業」が、OpenAIの標準機能へ寄ってきた。</p>
+    </section>
+
+    <section>
+      <h2>発表全体を一枚で見る</h2>
+      <p>公式recapでは、DevDay 2026を5つの領域に分けている。開発者目線では、次の4層として捉えると関係が分かりやすい。</p>
+
+      <div class="diagram" role="img" aria-label="DevDay 2026の発表をモデル、エージェント実行基盤、接続面、共同作業面の4層に整理した図">
+        <div class="stack">
+          <div class="layer">
+            <b>共同作業面</b>
+            <span>Dots / Space / Pages / Slides / Team Tasks / Slack・Teams / Meetings</span>
+          </div>
+          <div class="layer">
+            <b>接続・配布面</b>
+            <span>Plugin Extensions / MCP Events / Sites / Profiles / Sign in with ChatGPT / Marketplace</span>
+          </div>
+          <div class="layer">
+            <b>エージェント実行基盤</b>
+            <span>Codex Cloud / Codex CLI / Code Review / Security Cloud / Agents API / Decisions API / Bedrock</span>
+          </div>
+          <div class="layer">
+            <b>モデル・計算資源</b>
+            <span>GPT-6.1 Sol / Ultrafast / Private Intelligence / Pro 500</span>
+          </div>
+        </div>
+        <p class="caption">上の層ほど人やチームに近く、下の層ほど推論と実行の基盤に近い。今回の重要点は、4層が一度に揃ったことにある。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>全発表を4つのテーマで整理する</h2>
+
+      <h3>1. モデルは「最高性能」だけでなく、速度と費用で使い分ける</h3>
+      <p><strong>GPT-6.1 Sol</strong>は、コーディング、Computer Use、業務タスクを主眼にした標準モデルで、公式にはAstraに近い能力をより低い価格で提供すると説明されている。API価格は入力100万トークンあたり2ドル、出力100万トークンあたり10ドルで、105万トークンのコンテキストを持つ。</p>
+      <p><strong>Ultrafast</strong>は別モデルではなく高速実行のプレミアム層で、AstraではCodex上で最大8倍、APIで最大6倍の生成速度を掲げる。あわせて、Zero Data Retention、Private Safety Processing、今秋予定のPrivate Inferenceを束ねた<strong>Private Intelligence</strong>も発表された。</p>
+      <p>これは「一番賢いモデルを常に使う」設計から、通常処理はSol、難所はAstra、待ち時間が価値を左右する箇所はUltrafastという、<strong>ワークロード別のモデル運用</strong>への移行である。</p>
+
+      <h3>2. CodexとAgents APIが、エージェントの実行基盤になる</h3>
+      <div class="grid">
+        <article class="item">
+          <h3>Codex Cloud</h3>
+          <p>再利用可能な開発環境を公開し、PCがスリープ中でもタスクを継続する。Web、モバイル、デスクトップからレビューと追加指示ができる。</p>
+        </article>
+        <article class="item">
+          <h3>刷新されたCodex CLI</h3>
+          <p>音声でタスクを開始・修正し、<code>/agents</code>で複数タスクを監督する。worktree、セッション再開、プロンプト編集も改善された。</p>
+        </article>
+        <article class="item">
+          <h3>Code Review</h3>
+          <p>デスクトップアプリでPRやMRの概要、diff、コメント、チェックを読み、Codexへ調査を依頼できる。自動クラウドレビューにも対応する。</p>
+        </article>
+        <article class="item">
+          <h3>Codex Security Cloud</h3>
+          <p>リポジトリ全体や新規コミットを継続スキャンし、重複整理、根拠提示、修正案の作成までをクラウドで行う。</p>
+        </article>
+        <article class="item">
+          <h3>Agents API + Computer Use</h3>
+          <p>CodexのハーネスをマネージドAPIとして提供する。セッション、回復、コンテキスト圧縮、マルチエージェント、MCP、ブラウザ操作を組み込める。</p>
+        </article>
+        <article class="item">
+          <h3>Decisions API / Bedrock</h3>
+          <p>有限の選択肢に絞った低遅延の判断APIと、OpenAIのエージェントをAWS管理下の資源で動かすBedrock Managed Agentsが加わった。</p>
+        </article>
+      </div>
+
+      <aside class="interest">
+        <p class="label">特に注目</p>
+        <p><strong>OrcaのようなAgent Development Environmentで見えていた方向が、Codex本体にも入った。</strong> ターミナルで一体のエージェントと対話するだけでなく、タスクごとの環境を分け、複数の仕事を並行させ、人間が差分と結果を監督する。競争軸はコード補完の精度から、エージェント群の待ち時間・状態・成果物をどう管理するかへ移っている。</p>
+      </aside>
+
+      <h3>3. MCPとプラグインが「呼び出す道具」から「常駐するアプリ」へ進む</h3>
+      <p><strong>Plugin Extensions</strong>により、プラグインは会話中にToolとして呼ばれるだけでなく、サイドバーのフルスクリーンアプリ、会話横のパネル、独自ファイルビューア／エディタ、Composerから参照できるコンテンツとしてChatGPTへ組み込める。Sitesでプラグインをホストする仕組みや、作成・審査・発見性の改善も加わった。</p>
+      <p>さらに重要なのが<strong>MCP Events</strong>である。ユーザーは「新しいレビューコメントが付いたら修正案を作る」のような監視条件を指定し、MCP ServerはWebhookでChatGPTへイベントを届ける。これはMCP 2026-07-28を前提とし、<code>events/list</code>、<code>events/subscribe</code>、<code>events/unsubscribe</code>を使う。</p>
+
+      <div class="diagram" role="img" aria-label="MCP Eventsにより外部サービスの変化を起点にエージェントが動く流れ">
+        <div class="flow">
+          <div class="node"><span>外部サービス<small>comment.created</small></span></div>
+          <div class="arrow">→</div>
+          <div class="node"><span>MCP Events<small>署名付きWebhook</small></span></div>
+          <div class="arrow">→</div>
+          <div class="node"><span>ChatGPT / Agent<small>指示に従って調査・実行</small></span></div>
+        </div>
+        <p class="caption">人が毎回プロンプトを送るPull型から、業務イベントがエージェントを起動するPush型へ。</p>
+      </div>
+
+      <aside class="interest">
+        <p class="label">特に注目</p>
+        <p><strong>MCPのステートレス化が、実運用のイベント駆動までつながった。</strong> 以前整理したMCP 2026-07-28では、初期化セッションをなくし、通常のHTTP基盤へ寄せた点が大きな変更だった。MCP Eventsはその上に永続subscriptionとWebhookを足す。つまり「RPC自体はステートレス、監視したい業務状態は明示的なsubscriptionとして管理する」という責務分離になっている。</p>
+      </aside>
+
+      <h3>4. ChatGPTが、会話画面からチームの作業空間へ広がる</h3>
+      <p><strong>Dots</strong>は、継続的な責務を引き受ける常駐型エージェントである。接続したアプリとクラウドコンピューターを使い、スケジュールや委任タスクをバックグラウンドで進める。アクションごとに「自動実行」「明示指示があるときだけ」「事前確認」「人へ引き渡す」といったルールを設定できる。</p>
+      <p><strong>ChatGPT Space</strong>と<strong>Pages</strong>は、会話を越えて人とエージェントが共有知識と成果物を育てる場所になる。共同編集スライド、Team Tasks、SlackとMicrosoft Teamsでの<code>@ChatGPT</code>、会議記録をSpaceへ保存するMeetings pluginも同じ方向にある。</p>
+      <p>そのほか、Sitesやプラグインを公開する<strong>Shareable Profiles</strong>、外部サービスでChatGPTアカウントと利用枠を使う<strong>Sign in with ChatGPT</strong>、月額500ドルの<strong>Pro 500</strong>、企業のOpenAI契約枠を提携ソフトウェアへ使う<strong>OpenAI Marketplace</strong>も発表された。</p>
+
+      <aside class="interest">
+        <p class="label">特に注目</p>
+        <p><strong>長期記憶の論点が、保存方式から共同作業の単位へ広がった。</strong> 個人・チーム・会社の記憶をどう分けるかという問題に対し、Spaceは共有境界、Pagesは人とAIが更新する成果物、Dotsは継続的に保守する主体として機能する。検索精度だけでなく、誰が所有し、誰が更新し、どのエージェントが行動できるかが設計の中心になる。</p>
+      </aside>
+    </section>
+
+    <section>
+      <h2>過去の関心軸から見た、重要度トップ5</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>順位</th>
+              <th>発表</th>
+              <th>重要な理由</th>
+              <th>まず試すこと</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="priority">1</span></td>
+              <td>Agents API</td>
+              <td>Codexの実行ループ、圧縮、回復、マルチエージェント、MCPをアプリへ持ち込める。</td>
+              <td>既存のAgent SDK実装と、運用・状態管理・費用を比較する。</td>
+            </tr>
+            <tr>
+              <td><span class="priority">2</span></td>
+              <td>Codex Cloud / CLI</td>
+              <td>worktreeと複数タスクの監督が標準ワークフローへ入った。ADEの比較軸が変わる。</td>
+              <td>同じ修正をローカル、Cloud、複数agentで実行して監督コストを測る。</td>
+            </tr>
+            <tr>
+              <td><span class="priority">3</span></td>
+              <td>MCP Events</td>
+              <td>MCPが質問への応答だけでなく、外部イベントから継続作業を起動できる。</td>
+              <td>レビューコメントから下書きPRを作る小さなsubscriptionを実装する。</td>
+            </tr>
+            <tr>
+              <td><span class="priority">4</span></td>
+              <td>Code Review / Security Cloud</td>
+              <td>AIによる変更量の増加に対し、レビューとセキュリティ検証を同じ速度へ近づける。</td>
+              <td>自動レビューの指摘をテスト層別に分類し、誤検知と再現率を測る。</td>
+            </tr>
+            <tr>
+              <td><span class="priority">5</span></td>
+              <td>Space / Pages / Dots</td>
+              <td>個人の記憶から、共有知識・共有成果物・継続保守へ設計対象が広がる。</td>
+              <td>一つの定例業務をSpace、Page、Dotの責務に分けて運用する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>利用可能時期と注意点</h2>
+      <p>発表時点で使えるものと、限定公開・近日提供のものが混ざっている。2026年9月30日時点の公式情報では、主な状況は次の通り。</p>
+      <ul class="checklist">
+        <li><strong>GPT-6.1 Sol：</strong> API、Plus、Pro、Business、Enterprise、Eduで利用可能。</li>
+        <li><strong>Astra Ultrafast：</strong> APIおよびPro 500 / EnterpriseのCodex・ChatGPT Workで利用可能。Sol版は近日提供。</li>
+        <li><strong>Codex Cloud / CLI / Code Review：</strong> Codex Cloudは複数プラン、CLIとCode Reviewは全プラン向け。組織設定や接続権限は別途必要。</li>
+        <li><strong>Agents API + Computer Use：</strong> APIおよびPro 500 / EnterpriseのCodex・ChatGPT Workで提供。</li>
+        <li><strong>Decisions API：</strong> <span class="limited">限定プレビュー</span>。広範な提供は数日以内と案内されている。</li>
+        <li><strong>Collaborative Slides：</strong> <span class="limited">今後数週間で提供予定</span>。</li>
+        <li><strong>Private Inference：</strong> <span class="limited">今秋プレビュー予定</span>。</li>
+      </ul>
+      <p class="source-note">提供プラン、地域、価格、プレビュー条件は変わりやすい。導入前に各公式ドキュメントを再確認したい。</p>
+    </section>
+
+    <section>
+      <h2>実務でどう評価するか</h2>
+      <p>新機能を一度に導入する必要はない。まずは一つの開発フローを、次の順番で小さく検証すると違いが見えやすい。</p>
+      <ol class="checklist">
+        <li><strong>実行を分離する：</strong> Codex Cloudの環境とworktreeを使い、並行タスクが互いに干渉しないか確認する。</li>
+        <li><strong>判定器を置く：</strong> Unit / Integration TestとCode Reviewを組み合わせ、エージェントが短い周期で修正できる状態にする。</li>
+        <li><strong>イベントで起動する：</strong> MCP Eventsでレビューコメントなど一種類だけを購読し、誤作動時の停止手段を用意する。</li>
+        <li><strong>権限を絞る：</strong> 読み取り、自動実行、事前承認、人への引き渡しを操作単位で決める。</li>
+        <li><strong>人の待ち時間を測る：</strong> モデルのベンチマークだけでなく、依頼からレビュー可能な差分が出るまでの時間と、手戻り回数を比較する。</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>まとめ</h2>
+      <p>DevDay 2026で最も大きく変わったのは、モデルの数字ではなく、AIを仕事の流れへ組み込むときの部品が揃ったことだ。Codexはコードを書く道具から複数タスクを監督する環境へ、MCPはツール呼び出しからイベント購読へ、ChatGPTは会話画面から共有作業空間へ広がった。</p>
+      <p>一方で、実行範囲が広がるほど、テスト、レビュー、権限、状態の所有者が重要になる。次に試すべきは「どのモデルが一番賢いか」ではなく、<strong>どの仕事をエージェントへ渡し、どの判定を自動化し、どこで人が止めるか</strong>を小さな実例で設計することだ。</p>
+    </section>
+
+    <section>
+      <h2>参考資料</h2>
+      <ul class="sources">
+        <li><a href="https://openai.com/index/devday-2026-recap/">OpenAI: DevDay 2026 Recap</a></li>
+        <li><a href="https://developers.openai.com/api/docs/models/gpt-6.1-sol">OpenAI API: GPT-6.1 Sol</a></li>
+        <li><a href="https://developers.openai.com/api/docs/guides/agents">OpenAI API: Agents</a></li>
+        <li><a href="https://developers.openai.com/api/docs/guides/agents-api/overview">OpenAI API: Agents API</a></li>
+        <li><a href="https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use">OpenAI API: Computer use in Agents API</a></li>
+        <li><a href="https://learn.chatgpt.com/docs/cloud">OpenAI Docs: Codex Cloud</a></li>
+        <li><a href="https://learn.chatgpt.com/docs/code-review">OpenAI Docs: Code Review</a></li>
+        <li><a href="https://developers.openai.com/plugins/build/extensions">OpenAI Developers: Plugin Extensions</a></li>
+        <li><a href="https://developers.openai.com/plugins/build/mcp-events">OpenAI Developers: MCP Events</a></li>
+        <li><a href="https://learn.chatgpt.com/docs/dots/controls">OpenAI Docs: Control your dot</a></li>
+      </ul>
+    </section></article></div><div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank" rel="noopener"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>
