@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>エンジニアの向かう先 ソフトウェアファクトリー</title><link>https://www.lyricrime.com/posts/software-factory/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/software-factory/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>これからのエンジニアの学習と教育</title><link>https://www.lyricrime.com/posts/learn-engineer/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/learn-engineer/</guid><description>## はじめに
+
+今回はこれからのエンジニアの学習について、私の考えをまとめてみたいと思います。
+
+これまで、組み込み、単体テストから始まり、Laravelを中心としたバックエンド、フロントエンドはSPA中心に触れてきたキャリアでしたが、生成AIの登場により、同じように学習し続けても、これまでのようにキャリアを積むことが難しくなってきたと感じています。
+
+これからは、生成AIを活用しながら、より効...</description><pubDate>Sun, 04 Oct 2026 00:00:00 GMT</pubDate><category>study</category></item><item><title>エンジニアの向かう先 ソフトウェアファクトリー</title><link>https://www.lyricrime.com/posts/software-factory/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/software-factory/</guid><description>## はじめに
 
 2025年にAIエージェント元年と呼ばれる一年を経て、私たちは2026年にソフトウェア開発の大きな岐路にいます。  
 従来エンジニアがしていた仕事をそのままやっている人はほとんどいなくなり、みんながAIを使って開発を進めています。  
