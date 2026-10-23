@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>これからのエンジニアの学習と教育</title><link>https://www.lyricrime.com/posts/learn-engineer/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/learn-engineer/</guid><description>## はじめに
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>PHP2Shellで何が起きたのか。脆弱性の仕組みと公開までの経緯</title><link>https://www.lyricrime.com/posts/202610-php2shell/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/202610-php2shell/</guid><description>## はじめに：PHP2Shellとは
+
+PHPはログインや予約、問い合わせフォームなど、Webサービスの裏側で使われるプログラミング言語です。
+
+弊社スマレジでも利用していますし、WordPressやEC-CUBEなどのCMS、LaravelやSymfonyなどのフレームワークもPHPで作られています。
+
+「PHP2Shell」はPHP本体に見つかった2つの重大な脆弱性の通称です。条件がそろうと...</description><pubDate>Fri, 23 Oct 2026 00:00:00 GMT</pubDate><category>security</category></item><item><title>これからのエンジニアの学習と教育</title><link>https://www.lyricrime.com/posts/learn-engineer/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/learn-engineer/</guid><description>## はじめに
 
 今回はこれからのエンジニアの学習について、私の考えをまとめてみたいと思います。
 
