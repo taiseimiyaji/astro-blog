@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="ja"><head><title>AI時代の開発環境の見直し</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="description" content="## はじめに
+
+AIに並列で開発を任せるようになって、先に音を上げたのは自分ではなく、手元のPCと共有CIのほうだった。
+
+コードを書く速さは確かに上がった。一人で10〜20本のマージリクエスト（MR）を同時に進めることも、もう珍しくない"><style>html{color:#f6f7f9;background-color:#23272f;font-size:16px}.header{color:#f6f7f9;border-bottom:.5px solid;justify-content:space-around}.header-link div{color:#f6f7f9}.header-link{border-color:#f6f7f9;justify-content:space-around;width:94vw;max-width:70rem;margin:0 auto;padding:.5rem;font-size:1.5rem;display:flex}.header .title{text-align:center;border-bottom:.5px solid;padding:2rem;font-size:2.5rem;font-weight:700}.card{box-sizing:border-box;color:#f6f7f9;background-color:#23272f;border:1px solid #f6f7f9;border-radius:1rem;flex-direction:column;gap:1rem;padding:2rem;display:flex}.card .title{overflow:inherit;font-size:large}.card:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.card-list{flex-direction:column;gap:1rem;display:flex}code{font-size:1rem}:root{--accent:124, 58, 237;--accent-gradient:linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%)}html{font-family:system-ui,sans-serif}code{font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace}.content{width:94vw;max-width:70rem;margin:0 auto;padding:2rem 0}.content .post{overflow-wrap:normal;overflow:hidden}.content p,.content ul li,.content ol li{line-height:1.7}a{color:#f6f7f9;text-decoration:none}img{width:100%}*,:before,:after{box-sizing:border-box}.card-container{grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:1rem;padding:1rem;display:grid}.sns-button{color:#fff;text-align:center;cursor:pointer;background-color:#23272f;border:1px solid #fff;border-radius:.5rem;justify-content:center;align-items:center;width:100%;max-width:100%;margin:0;padding:1rem;font-size:1.25rem;transition:background-color .3s,box-shadow .3s;display:flex;box-shadow:0 4px 6px #0000001a}.sns-button:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.sns-button svg{stroke:currentColor;fill:currentColor;stroke-width:0;width:1.5em;height:1.5em;margin-right:.5rem}pre.astro-code.github-dark{border-radius:.2rem;padding:1rem;overflow-x:auto;background-color:#2d333b!important}.footer{border-top:1px solid #f6f7f9;align-items:center;max-height:2rem;padding:1rem;display:flex}.footer .copyright{order:1}.footer .icons{order:2;width:2rem;height:2rem;margin-left:auto}
+html{color:#f6f7f9;background-color:#23272f;font-size:16px}.header{color:#f6f7f9;border-bottom:.5px solid;justify-content:space-around}.header-link div{color:#f6f7f9}.header-link{border-color:#f6f7f9;justify-content:space-around;width:94vw;max-width:70rem;margin:0 auto;padding:.5rem;font-size:1.5rem;display:flex}.header .title{text-align:center;border-bottom:.5px solid;padding:2rem;font-size:2.5rem;font-weight:700}.footer{border-top:1px solid #f6f7f9;align-items:center;max-height:2rem;padding:1rem;display:flex}.footer .copyright{order:1}.footer .icons{order:2;width:2rem;height:2rem;margin-left:auto}.card{box-sizing:border-box;color:#f6f7f9;background-color:#23272f;border:1px solid #f6f7f9;border-radius:1rem;flex-direction:column;gap:1rem;padding:2rem;display:flex}.card .title{overflow:inherit;font-size:large}.card:hover{color:#fff;background-color:#2d3748;box-shadow:0 6px 8px #00000026}.card-list{flex-direction:column;gap:1rem;display:flex}.content a{text-decoration:underline}.content table{border-collapse:collapse;width:100%;margin:2rem 0}.content table th,.content table td{text-align:left;border:1px solid #f6f7f9;padding:.5rem}.content table th{color:#f6f7f9;background-color:#f6f7f933;font-weight:700}.content table tr:nth-child(odd){background-color:#f6f7f91a}.content table tr:nth-child(2n){background-color:#f6f7f90d}.content blockquote{color:#f6f7f9;overflow-wrap:break-word;background-color:#f6f7f91a;border-left:4px solid #f6f7f9;margin:1rem 0;padding:1rem;font-style:italic}.content blockquote p{margin:0}.content h2{color:#f6f7f9;border-bottom:2px solid #f6f7f9;margin:2rem 0 1rem;padding-bottom:.5rem;font-size:1.5rem;font-weight:700}
+</style></head><!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD90YGZ4N"></script><script type="module">window.dataLayer=window.dataLayer||[];function e(){dataLayer.push(arguments)}e(`js`,new Date),e(`config`,`G-ZBD90YGZ4N`);</script><body><main><div class="header"><div class="title"><a href="/">Lyricrime.com</a></div><div class="header-link"><a href="/"><div>Blog</div></a><a href="/note"><div>Note</div></a><a href="/profile"><div>Profile</div></a></div></div><div class="content"><div class="date">2026/10/31</div><h1>AI時代の開発環境の見直し</h1><div class="post"><h2 id="はじめに">はじめに</h2>
+<p>AIに並列で開発を任せるようになって、先に音を上げたのは自分ではなく、手元のPCと共有CIのほうだった。</p>
+<p>コードを書く速さは確かに上がった。一人で10〜20本のマージリクエスト（MR）を同時に進めることも、もう珍しくない。ところが、そのMRを動かして確かめる段になると話が変わる。worktreeは散らかり、メモリは足りず、CIは順番待ちになる。作る速度に、確かめる環境が追いついていない。</p>
+<p>そこで、開発環境をもう一度クラウドへ寄せたいと考えている。これは完成した仕組みの紹介ではなく、今の自分が「こう変えたい」と思っているアイデアの整理に近い。以前書いた「<a href="https://lyricrime.com/posts/software-factory/">エンジニアの向かう先 ソフトウェアファクトリー</a>」の、足回りにあたる話でもある。</p>
+<h2 id="一人で数十本のmrを作ると今の環境では詰まる">一人で数十本のMRを作ると、今の環境では詰まる</h2>
+<p>AIに実装を任せるようになって、自分が同時に抱えるMRの数は一桁増えた。10〜20本が並行して開いているのが、今の普段の状態だ。</p>
+<p>ローカルで一本ずつ動作確認しようとすると、まずGit worktreeの管理で手が止まる。どのworktreeがどのMRで、どのブランチがどこまで進んでいるのか。AIは並列に作業してくれるが、その対応関係を覚えておくのは結局こちらの役目になる。</p>
+<p>worktreeを整理できたとしても、次は物理的なメモリの壁にぶつかる。アプリ本体、DB、ミドルウェア、フロントエンドのdev server。これをworktreeの数だけ立ち上げられるPCはない。同時に「動かして確かめられる」のはごく一部で、残りは順番待ちになる。</p>
+<p>では、確認はCIに任せればいいのか。</p>
+<p>こちらも余裕はない。自分が担当するプロダクトだけで共有CI/CDリソースの大半を使ってしまっている実感がある。E2Eテストは1ジョブで30分〜1時間かかり、しかもまだ作り始めた段階なので、これから確実に増える。20〜30本のMRがそれぞれパイプラインを回せば、他のプロダクトと同じリソースを分け合うという前提はまず成り立たない。</p>
+<p>これはうちだけの事情でもないらしい。LayerXのバクラク事業部も、worktreeで並列開発をしていると「人間の認知より先にマシンのメモリが限界を迎える」という同じ困りごとを出発点に、クラウド上の開発基盤を内製している（<a href="https://tech.layerx.co.jp/entry/why-we-built-our-background-agent">内製 Background Coding Agent “haro” で拓く未来の開発体験</a>）。</p>
+<p>開発者一人が同時に進める仕事量は変わった。それなのに、開発環境とCIの構成は、一人が一つのブランチを触っていた頃の前提のままになっている。</p>
+<h2 id="サーバーからローカルdockerへそして再びクラウドへ">サーバーからローカルDockerへ、そして再びクラウドへ</h2>
+<p>振り返ると、自分が見てきた範囲でも、開発環境の置き場所は一度動いている。</p>
+<p>サーバー上で開発していた時期があり、そこから個人のPCに開発環境を用意する形へ移った。Dockerで環境をそろえられるようになってからは、手元で完結する開発がすっかり当たり前になった。他人の作業に影響されず、環境差もかなり吸収できる。一人で一つの機能を作る分には、これ以上ない形だったと思う。</p>
+<p>ただ、Dockerがそろえてくれるのは環境の中身であって、それを動かすPCのメモリやCPUではない。一人が一つの環境を使っている限り、この制約はほとんど意識しなくて済んだ。意識せざるを得なくなったのは、AIが複数のタスクを同時に進めるようになってからだ。</p>
+<p>並列度が1から10を超えると、「手元」という置き場所そのものが合わなくなる。だから、開発環境をもう一度リモートやクラウドへ寄せたい。</p>
+<p>もちろん、ずっとリモートで開発してきた現場もあるだろうし、ローカルで困っていない人も多いはずだ。業界全体がこの順番で動いてきたというより、自分の開発スタイルがこう変わってきて、今また変わり目に来ている、という感覚に近い。</p>
+<h2 id="aiが実装と検証を完結できるクラウド環境">AIが実装と検証を完結できるクラウド環境</h2>
+<p>欲しいのは、タスクごとに独立した開発環境だ。</p>
+<ul>
+<li>タスクを一つ受け取るたびに、リモート・クラウド上に専用の環境を立ち上げる</li>
+<li>AIはその中でコードを書き、アプリを起動し、テストや動作確認まで行う</li>
+<li>環境の起動と破棄、タスクとの対応づけは基盤側が受け持つ</li>
+</ul>
+<p>手元のPCは、SSHなどで環境につないで指示を出したりレビューしたりする窓口になる。並列に走っている環境を、全部ひとつのPCに載せる必要はなくなる。</p>
+<p>大事なのは、AIがコードを書く場所と、そのコードを確かめる場所を一体にすることだと考えている。今は書く場所（worktree）と確かめる場所（手元のDocker、あるいはCI）が分かれていて、その間の受け渡しを人間がやっている。どのworktreeを起動して、どのMRのCIを待っているのか。この管理がそのまま、冒頭の詰まりの正体になっている。</p>
+<p>先ほどのLayerXの基盤は、まさにこの形をすでに動かしている例だ。<a href="#">AI DevEx Conference 2026での登壇資料</a>によると、彼らが試行錯誤の末に行き着いたのはAmazon EKS上の環境で、ワークスペースのライフサイクルを独自のoperatorで管理し、ポートごとにプレビューURLを払い出しているという。手元のコーディングエージェントからSSHでつなぐこともできる構成だ。</p>
+<p>資料の中で「欲しかったのはAgentより環境だった」とまとめられていたのが印象に残った。自分が言いたいこともほぼ同じで、AIを賢くする前に、AIが手を動かして結果を確かめられる場所を用意したい。</p>
+<p>もう一つ目を引いたのがモバイルの話だ。実機やエミュレーターの台数が並列開発のボトルネックになっていたところを、クラウド環境上でAndroidエミュレーターを動かすことで外したという。実装からAIによる動作確認、スクショ撮影、PR作成までが一続きに流れる。確かめる環境を並列にできれば、並列で作れる量もそこまで伸びる。</p>
+<h2 id="mr単位の細かなciをaiの作業環境へ吸収したい">MR単位の細かなCIを、AIの作業環境へ吸収したい</h2>
+<p>クラウドに作業環境を持てたとして、では共有CIはどうなるのか。ここは、CIが担っている確認を二つに分けて考えたい。</p>
+<ol>
+<li>MRごとに実行するLint・テスト・ビルドなど、開発に付随する確認</li>
+<li>統合後やリリース前、タグを打ったときなどに実行する、必ず守る必要がある確認</li>
+</ol>
+<p>今の構成では、ローカルで作って確かめたものを、MRを出したあとにCIでもう一度ビルドし、もう一度確認している。人間が一本ずつ書いていた頃は、手元の確認は抜けやすく環境差もあったため、この二度手間は保険として妥当だった。</p>
+<p>ところが、AIが実装の時点でクラウド上の環境を持ち、そこで同じLintやテストを回せるなら事情が変わる。後段のCIは、同じものをもう一度ビルドしているだけになる。</p>
+<p>自分がなくしたいのは、1をMRごとの別工程として共有CIに積む構成のほうだ。細かな確認は作業環境の中に寄せて、AIが実装しながら回す。2のリリースゲートや、必ず通さなければならない確認は残す。</p>
+<p>手元とCIに分かれていた確認を作業環境の中にまとめ、マージ後のリリースゲートだけを別工程として残すイメージだ。</p>
+<p>これを「CI/CDはもう要らない」という主張と読まれると、それは違う。変更をこまめに統合し、壊れていないことを確かめ続けるという継続的インテグレーションの考え方は、むしろ今まで以上に必要になる。変えたいのは、その確認をどこで、どのタイミングで、どういうジョブ実行の仕組みで回すかだ。</p>
+<h2 id="まだ考えきれていないこと">まだ考えきれていないこと</h2>
+<p>ただ、現時点だとこの案には穴がいくつかある。</p>
+<ul>
+<li><strong>検証したコードと、マージ・リリースするコードの同一性</strong>：作業環境で通したものと、実際にmainへ入るものが同じだと、どうやって保証するか。</li>
+<li><strong>組み合わせたときだけ起きる不具合</strong>：MR単体ではすべて緑でも、複数の変更が合わさった瞬間に壊れることはある。これをどこで検出するか。</li>
+<li><strong>検証結果の記録と信頼</strong>：AIが「テストは通りました」と言うだけでは足りない。実行結果をどう残し、あとから誰が見ても信頼できる形にするか。</li>
+<li><strong>計算量そのもの</strong>：実行場所をクラウドに移しても、計算量は減らない。重複を削らなければ、共有CIの待ち行列がクラウドの請求書に姿を変えるだけだ。重複の削減とリソース配分をどう設計するか。</li>
+</ul>
+<p>検証に関してはそれ専用のQAエージェント環境の用意で解決するしかないと思っている</p>
+<h2 id="開発環境の先にソフトウェアファクトリーを考える">開発環境の先に、ソフトウェアファクトリーを考える</h2>
+<p>ここまでは開発環境の話だった。ただ、自分が最終的に欲しいのはもう一回り大きい。Agentが即座にビルドとテストをできる「Prepared Environment」がソフトウェアファクトリーの条件の一つだと思っている。今回の話は、その条件をどう満たすかの具体化にあたる。</p>
+<p>考えている姿は、だいたい次のようなものだ。</p>
+<ul>
+<li>開発環境だけで閉じず、AWSやGCPなどのインフラ環境と密接につながる基盤にする</li>
+<li>要件、タスク、バックログ、実装、検証までを同じ流れで扱う</li>
+<li>E2Eもクラウド上で回す。WebのQAならPlaywright、iOSアプリならMaestroのようなツールを使う</li>
+<li>AIがタスクを受け取り、環境を用意し、実装し、QAまで進める</li>
+<li>人間は何を依頼するかと、最終的に受け入れるかを判断する役割に寄せる</li>
+</ul>
+<p>インフラと密接につながる、というのがどの程度のことか。これもLayerXが公開している<a href="#">プレビュー環境「3A」</a>の仕組みがわかりやすい。Kubernetes上にArgo CDのGitOpsでほぼフルスタックの環境を立ち上げられる仕組みで、PRにラベルを付けるだけでそのブランチの環境が自動で立つ。環境の作成も削除もPRのマージとして記録されるので、履歴も追える。</p>
+<p>環境の上げ下げがPRで済むなら、AIにとっても扱いやすい。タスクを受け取ったAIが自分で検証用の環境を宣言し、終わったら片付ける、という流れが現実的に見えてくる。LayerXの内製基盤「haro」も、すでに依頼から実装・QAまでを一つの流れにつなぐような使われ方が広がっているという。</p>
+<p>一方で、仕組みが整ったところで、そこに何を流すべきかまでは自動で決まらない。ファクトリーが速くなるほど、入口で何を依頼するかと、出口で何を受け入れるかの判断の重さは増していく。人間の役割をそこに寄せたいというのは、単に楽をしたいからではなく、そこが一番外せない、人間が担うべき本質的な場所だからだ。</p>
+<p>なお、iOSについては少し事情が違う。iOSシミュレーターはmacOS上でしか動かないので、Linuxのコンテナを並べるだけの基盤には乗らない。Mac側の実行基盤をどう用意するかは、具体的な構成を考える段階で詰める必要がある。</p>
+<h2 id="予言ではなく自分が作りたい環境の話">予言ではなく、自分が作りたい環境の話</h2>
+<p>今後必ずこうなる、と言いたいわけではない。</p>
+<p>ただ、AIで並列に開発するなかで、今の環境に不便と限界を感じているのは確かだ。10〜20本のMRを開いても、手元で確かめられるのはその一部で、残りはCIの順番を待っている。この状態のまま、AIの書く速さだけをさらに上げても、待ち行列が長くなるだけだろう。</p>
+<p>だから、AIが実装と検証を進めやすい環境のほうを変えていきたい。ローカルPCの性能や共有CIの待ち行列に、開発の並列度を縛られないようにしたい。具体的な仕組みも、どこまでを自動化するかも、これから考えていく。</p>
+<p>AIがコードを書く速さに合わせて、コードを作り、確かめ、受け入れるまでの環境そのものを作り直したい。そのうち最後の「受け入れる」を、人間がどんな形で担うのがいいのか。そこはまだ、自分の中でも答えが出ていない。</p></div></div><div class="footer"><div class="copyright">©︎ 2024 taisei miyaji</div><div class="icons"><span class="github"><a href="https://github.com/taiseimiyaji" target="_blank" rel="noopener"><img src="/github-mark/github-mark-white.png" width="100%" height="100%" alt="github"/></a></span></div></div></main></body></html>

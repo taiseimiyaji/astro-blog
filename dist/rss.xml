@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>PHP2Shellで何が起きたのか。脆弱性の仕組みと公開までの経緯</title><link>https://www.lyricrime.com/posts/202610-php2shell/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/202610-php2shell/</guid><description>## はじめに：PHP2Shellとは
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Lyricrime.com</title><description>技術本駆動系WEBエンジニアの備忘録 気になっている技術をキャッチアップするために記事にしたりしています。あくまで個人的な感想を含んだ備忘録です。</description><link>https://www.lyricrime.com/</link><language>ja</language><item><title>AI時代の開発環境の見直し</title><link>https://www.lyricrime.com/posts/software-dev-env/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/software-dev-env/</guid><description>## はじめに
+
+AIに並列で開発を任せるようになって、先に音を上げたのは自分ではなく、手元のPCと共有CIのほうだった。
+
+コードを書く速さは確かに上がった。一人で10〜20本のマージリクエスト（MR）を同時に進めることも、もう珍しくない。ところが、そのMRを動かして確かめる段になると話が変わる。worktreeは散らかり、メモリは足りず、CIは順番待ちになる。作る速度に、確かめる環境が追いつい...</description><pubDate>Sat, 31 Oct 2026 00:00:00 GMT</pubDate><category>ai</category></item><item><title>PHP2Shellで何が起きたのか。脆弱性の仕組みと公開までの経緯</title><link>https://www.lyricrime.com/posts/202610-php2shell/</link><guid isPermaLink="true">https://www.lyricrime.com/posts/202610-php2shell/</guid><description>## はじめに：PHP2Shellとは
 
 PHPはログインや予約、問い合わせフォームなど、Webサービスの裏側で使われるプログラミング言語です。
 
